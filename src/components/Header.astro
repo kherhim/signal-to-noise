@@ -18,14 +18,14 @@ const isActive = (href: string) =>
     >
       Home
     </a>
-    <ul class="flex items-center gap-4 sm:gap-8 text-sm">
+    <ul class="flex items-center gap-4 sm:gap-8">
       {links.map(({ href, label }) => (
         <li>
           <a
             href={href}
             class:list={[
-              'transition-colors',
-              isActive(href) ? 'text-accent' : 'text-muted hover:text-fg',
+              'font-semibold tracking-tight transition-colors',
+              isActive(href) ? 'text-accent' : 'text-fg hover:text-accent',
             ]}
           >
             {label}
