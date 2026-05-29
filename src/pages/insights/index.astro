@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('insights', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+---
+
+<BaseLayout
+  title="Insights — signal-to-noise.co"
+  description="Strategy, problem-framing, and pattern-spotting across finance, technology, digital assets, and trading."
+>
+  <section class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
+    <header class="mb-16">
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Insights</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">
+        Things I've been thinking about.
+      </h1>
+      <p class="text-lg text-muted leading-relaxed">
+        Short takes when there's a sharp point. Longer pieces when there's a real model
+        worth showing.
+      </p>
+    </header>
+
+    {posts.length === 0 ? (
+      <p class="text-muted">No posts yet.</p>
+    ) : (
+      <ul class="space-y-12">
+        {posts.map((post) => (
+          <li>
+            <article class="group">
+              <time
+                class="text-sm text-muted block mb-2"
+                datetime={post.data.date.toISOString()}
+              >
+                {post.data.date.toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </time>
+              <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-fg mb-3 group-hover:text-accent transition-colors">
+                <a href={`/insights/${post.id}`}>{post.data.title}</a>
+              </h2>
+              <p class="text-muted leading-relaxed">{post.data.excerpt}</p>
+              {post.data.tags && post.data.tags.length > 0 && (
+                <ul class="flex flex-wrap gap-3 mt-4">
+                  {post.data.tags.map((tag) => (
+                    <li class="text-xs uppercase tracking-wide text-muted">#{tag}</li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

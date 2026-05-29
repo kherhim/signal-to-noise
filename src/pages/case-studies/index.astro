@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+
+const studies = (await getCollection('case-studies')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+---
+
+<BaseLayout
+  title="Case studies — signal-to-noise.co"
+  description="Substantive work in finance, technology, digital assets, and trading."
+>
+  <section class="mx-auto max-w-[1100px] px-6 py-16 sm:py-24">
+    <header class="mb-16 max-w-[720px]">
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Case studies</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">
+        Work I've done.
+      </h1>
+      <p class="text-lg text-muted leading-relaxed">
+        A small set of cases — anonymised where they have to be. Each one tries to be
+        honest about what worked, what didn't, and what I'd change.
+      </p>
+    </header>
+
+    {studies.length === 0 ? (
+      <p class="text-muted">Case studies coming soon.</p>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {studies.map((cs) => (
+          <CaseStudyCard
+            href={`/case-studies/${cs.id}`}
+            title={cs.data.title}
+            excerpt={cs.data.excerpt}
+            client={cs.data.client}
+          />
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

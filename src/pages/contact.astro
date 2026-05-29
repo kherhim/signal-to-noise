@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+/* Edit these to your real handles before going live. */
+const email = 'himanshu@signal-to-noise.co';
+const linkedinHandle = 'himanshukher';
+---
+
+<BaseLayout
+  title="Contact — signal-to-noise.co"
+  description="Get in touch with Himanshu Kher."
+>
+  <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
+    <header class="mb-12">
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Contact</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg">
+        Let's talk.
+      </h1>
+    </header>
+
+    <div class="space-y-8 text-lg text-fg leading-relaxed">
+      <p>
+        The fastest way to reach me is email. I read everything; I reply to almost
+        everything that needs a reply.
+      </p>
+
+      <ul class="space-y-4">
+        <li class="flex items-baseline gap-3">
+          <span class="text-muted text-sm uppercase tracking-wide w-24 shrink-0">Email</span>
+          <a
+            href={`mailto:${email}`}
+            class="text-accent hover:text-accent-hover transition-colors"
+          >
+            {email}
+          </a>
+        </li>
+        <li class="flex items-baseline gap-3">
+          <span class="text-muted text-sm uppercase tracking-wide w-24 shrink-0">LinkedIn</span>
+          <a
+            href={`https://www.linkedin.com/in/${linkedinHandle}/`}
+            class="text-accent hover:text-accent-hover transition-colors"
+            rel="noopener"
+          >
+            linkedin.com/in/{linkedinHandle}
+          </a>
+        </li>
+        <li class="flex items-baseline gap-3">
+          <span class="text-muted text-sm uppercase tracking-wide w-24 shrink-0">RSS</span>
+          <a
+            href="/rss.xml"
+            class="text-accent hover:text-accent-hover transition-colors"
+          >
+            /rss.xml
+          </a>
+        </li>
+      </ul>
+
+      <p class="text-muted pt-8 border-t border-divider">
+        Working at the edges of finance and tech and stuck on something hard? Looking for
+        a strategist or advisor? Want a second pair of eyes on a tangled problem? I'd
+        genuinely like to hear from you.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

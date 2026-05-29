@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Theme tokens. In Tailwind 4 these generate matching utilities:
+   `bg-base`, `text-fg`, `text-muted`, `bg-accent`, `border-divider`, etc. */
+@theme {
+  --color-base: #1a1a1a;
+  --color-fg: #f1f5f9;
+  --color-muted: #94a3b8;
+  --color-accent: #6366f1;
+  --color-accent-hover: #818cf8;
+  --color-surface: #2d2d2d;
+  --color-divider: #3f3f46;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-base);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-fg);
+  }
+}

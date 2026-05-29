@@ -1,0 +1,43 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Prose from '../components/Prose.astro';
+
+interface Props {
+  title: string;
+  date: Date;
+  excerpt: string;
+  tags?: string[];
+}
+
+const { title, date, excerpt, tags = [] } = Astro.props;
+const formatted = date.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} — signal-to-noise.co`} description={excerpt}>
+  <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
+    <header class="mb-12">
+      <time class="text-sm text-muted block mb-3" datetime={date.toISOString()}>
+        {formatted}
+      </time>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg">
+        {title}
+      </h1>
+      {tags.length > 0 && (
+        <ul class="flex flex-wrap gap-2 mt-6">
+          {tags.map((t) => (
+            <li class="text-xs uppercase tracking-wide text-muted px-2 py-1 border border-divider rounded">
+              {t}
+            </li>
+          ))}
+        </ul>
+      )}
+    </header>
+    <Prose>
+      <slot />
+    </Prose>
+  </article>
+</BaseLayout>

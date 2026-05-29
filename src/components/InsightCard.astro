@@ -1,0 +1,38 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  excerpt: string;
+  date: Date;
+  featured?: boolean;
+}
+
+const { href, title, excerpt, date, featured = false } = Astro.props;
+const formatted = date.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+---
+
+<article
+  class:list={[
+    'group p-6 rounded-lg border bg-surface/40 hover:bg-surface/70 transition-colors h-full flex flex-col',
+    featured
+      ? 'border-l-4 border-l-accent border-y-divider/60 border-r-divider/60'
+      : 'border-divider/60',
+  ]}
+>
+  <time class="text-xs uppercase tracking-wide text-muted mb-3" datetime={date.toISOString()}>
+    {formatted}
+  </time>
+  <h3
+    class="text-xl font-semibold tracking-tight text-fg mb-3 group-hover:text-accent transition-colors"
+  >
+    <a href={href}>{title}</a>
+  </h3>
+  <p class="text-muted leading-relaxed flex-1">{excerpt}</p>
+  <p class="mt-4 text-sm text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+    Read →
+  </p>
+</article>

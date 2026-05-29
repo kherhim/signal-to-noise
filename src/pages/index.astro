@@ -1,0 +1,146 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import InsightCard from '../components/InsightCard.astro';
+import CaseStudyCard from '../components/CaseStudyCard.astro';
+
+const allInsights = (await getCollection('insights', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const featured = allInsights.find((i) => i.data.featured) ?? allInsights[0];
+const recent = allInsights.filter((i) => i.id !== featured?.id).slice(0, 3);
+
+const allCaseStudies = (await getCollection('case-studies'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout title="signal-to-noise.co — Himanshu Kher">
+  <Hero />
+
+  {featured && (
+    <section class="mx-auto max-w-[1100px] px-6 py-16">
+      <p class="text-xs uppercase tracking-widest text-muted mb-6">Featured</p>
+      <article class="border-l-2 border-accent pl-6 sm:pl-8 py-2">
+        <time
+          class="text-sm text-muted block mb-3"
+          datetime={featured.data.date.toISOString()}
+        >
+          {featured.data.date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}
+        </time>
+        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-tight text-fg mb-4">
+          <a
+            href={`/insights/${featured.id}`}
+            class="hover:text-accent transition-colors"
+          >
+            {featured.data.title}
+          </a>
+        </h2>
+        <p class="text-lg text-muted leading-relaxed max-w-2xl mb-4">
+          {featured.data.excerpt}
+        </p>
+        <a
+          href={`/insights/${featured.id}`}
+          class="text-sm text-accent hover:text-accent-hover transition-colors"
+        >
+          Read →
+        </a>
+      </article>
+    </section>
+  )}
+
+  {recent.length > 0 && (
+    <section class="mx-auto max-w-[1100px] px-6 py-16">
+      <div class="flex items-end justify-between mb-8">
+        <h2 class="text-2xl font-semibold tracking-tight text-fg">Recent insights</h2>
+        <a
+          href="/insights"
+          class="text-sm text-muted hover:text-accent transition-colors"
+        >
+          All insights →
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {recent.map((post) => (
+          <InsightCard
+            href={`/insights/${post.id}`}
+            title={post.data.title}
+            excerpt={post.data.excerpt}
+            date={post.data.date}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="mx-auto max-w-[1100px] px-6 py-16">
+    <div class="flex items-end justify-between mb-8">
+      <h2 class="text-2xl font-semibold tracking-tight text-fg">Case studies</h2>
+      <a
+        href="/case-studies"
+        class="text-sm text-muted hover:text-accent transition-colors"
+      >
+        All case studies →
+      </a>
+    </div>
+    {allCaseStudies.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {allCaseStudies.map((cs) => (
+          <CaseStudyCard
+            href={`/case-studies/${cs.id}`}
+            title={cs.data.title}
+            excerpt={cs.data.excerpt}
+            client={cs.data.client}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-muted">Case studies coming soon.</p>
+    )}
+  </section>
+
+  <section class="mx-auto max-w-[1100px] px-6 py-16">
+    <h2 class="text-2xl font-semibold tracking-tight text-fg mb-6">About</h2>
+    <div class="max-w-[720px] space-y-4 text-fg leading-relaxed">
+      <p>
+        I'm Himanshu — a senior strategist and finance operator. My work cuts across
+        finance, technology, digital assets, and trading, and tends to land where the
+        standard playbook stops being useful: novel structures, fast-moving markets,
+        problems that haven't been named yet. Less interested in what the textbook says,
+        more in what actually works.
+      </p>
+      <p>
+        I write here because that thinking is more useful when it's out loud.
+      </p>
+      <p>
+        <a
+          href="/about"
+          class="text-accent hover:text-accent-hover transition-colors"
+        >
+          More about me →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1100px] px-6 py-16 mb-12">
+    <h2 class="text-2xl font-semibold tracking-tight text-fg mb-6">Get in touch</h2>
+    <p class="text-muted mb-6 max-w-[720px]">
+      Working on something at the edges of finance and tech? I'd like to hear about it.
+    </p>
+    <div class="flex flex-wrap gap-4">
+      <a
+        href="/contact"
+        class="inline-flex items-center px-5 py-3 rounded-md bg-accent text-fg font-medium hover:bg-accent-hover transition-colors"
+      >
+        Contact →
+      </a>
+    </div>
+  </section>
+</BaseLayout>
