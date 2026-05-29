@@ -16,6 +16,9 @@ const insights = defineCollection({
     draft: z.boolean().default(false),
     // Where the article originated (imported from LinkedIn). Optional.
     sourceUrl: z.string().url().optional(),
+    // Optional cover image rendered above the article title.
+    coverImage: z.string().optional(),
+    coverImageAlt: z.string().optional(),
     // Series metadata. Set on the parent and every child of a multi-part
     // series. The parent omits `part`; children include their part number.
     series: z

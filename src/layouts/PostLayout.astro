@@ -7,6 +7,9 @@ interface Props {
   date: Date;
   excerpt: string;
   tags?: string[];
+  /* Optional cover image rendered above the header. */
+  coverImage?: string;
+  coverImageAlt?: string;
   /* Series support — set when this post is part of a multi-part series.
      Kicker text shows above the title (linked to parent for children).
      Parts list renders at the article end for the parent only. */
@@ -20,6 +23,8 @@ const {
   date,
   excerpt,
   tags = [],
+  coverImage,
+  coverImageAlt,
   seriesKicker,
   seriesKickerHref,
   seriesParts,
@@ -34,6 +39,17 @@ const formatted = date.toLocaleDateString('en-GB', {
 
 <BaseLayout title={`${title} — signal-to-noise.co`} description={excerpt}>
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
+    {coverImage && (
+      <figure class="mb-10">
+        <img
+          src={coverImage}
+          alt={coverImageAlt ?? ''}
+          loading="eager"
+          class="w-full h-auto rounded-lg border border-divider/60"
+        />
+      </figure>
+    )}
+
     <header class="mb-12">
       {seriesKicker && (
         <p class="text-sm uppercase tracking-widest text-accent mb-6">
