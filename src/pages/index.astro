@@ -17,11 +17,11 @@ const allCaseStudies = (await getCollection('case-studies'))
   .slice(0, 3);
 ---
 
-<BaseLayout title="signal-to-noise.co — Himanshu Kher">
+<BaseLayout title="signal-to-noise.co — Himanshu Kher" stars>
   <Hero />
 
   {featured && (
-    <section class="mx-auto max-w-[1100px] px-6 py-16">
+    <section class="mx-auto max-w-[1100px] px-6 py-16" data-reveal>
       <p class="text-xs uppercase tracking-widest text-muted mb-6">Featured</p>
       <article class="border-l-2 border-accent pl-6 sm:pl-8 py-2">
         <time
@@ -56,7 +56,7 @@ const allCaseStudies = (await getCollection('case-studies'))
   )}
 
   {recent.length > 0 && (
-    <section class="mx-auto max-w-[1100px] px-6 py-16">
+    <section class="mx-auto max-w-[1100px] px-6 py-16" data-reveal>
       <div class="flex items-end justify-between mb-8">
         <h2 class="text-2xl font-semibold tracking-tight text-fg">Recent insights</h2>
         <a
@@ -79,7 +79,7 @@ const allCaseStudies = (await getCollection('case-studies'))
     </section>
   )}
 
-  <section class="mx-auto max-w-[1100px] px-6 py-16">
+  <section class="mx-auto max-w-[1100px] px-6 py-16" data-reveal>
     <div class="flex items-end justify-between mb-8">
       <h2 class="text-2xl font-semibold tracking-tight text-fg">Case studies</h2>
       <a
@@ -105,7 +105,7 @@ const allCaseStudies = (await getCollection('case-studies'))
     )}
   </section>
 
-  <section class="mx-auto max-w-[1100px] px-6 py-16">
+  <section class="mx-auto max-w-[1100px] px-6 py-16" data-reveal>
     <h2 class="text-2xl font-semibold tracking-tight text-fg mb-6">About</h2>
     <div class="max-w-[720px] space-y-4 text-fg leading-relaxed">
       <p>
@@ -129,7 +129,7 @@ const allCaseStudies = (await getCollection('case-studies'))
     </div>
   </section>
 
-  <section class="mx-auto max-w-[1100px] px-6 py-16 mb-12">
+  <section class="mx-auto max-w-[1100px] px-6 py-16 mb-12" data-reveal>
     <h2 class="text-2xl font-semibold tracking-tight text-fg mb-6">Get in touch</h2>
     <p class="text-muted mb-6 max-w-[720px]">
       Working on something at the edges of finance and tech? I'd like to hear about it.
@@ -137,7 +137,7 @@ const allCaseStudies = (await getCollection('case-studies'))
     <div class="flex flex-wrap gap-4">
       <a
         href="/contact"
-        class="inline-flex items-center px-5 py-3 rounded-md bg-accent text-fg font-medium hover:bg-accent-hover transition-colors"
+        class="inline-flex items-center px-5 py-3 rounded-md bg-accent text-canvas font-medium hover:shadow-[0_0_28px_rgba(255,255,255,0.3)] transition-all duration-300"
       >
         Contact →
       </a>

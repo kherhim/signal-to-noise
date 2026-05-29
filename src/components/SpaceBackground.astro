@@ -1,0 +1,237 @@
+---
+/* Site-wide deep-space backdrop (homepage only — gated by the
+   BaseLayout `background` prop).
+   Glowing stars scattered across the viewport — varying colors,
+   brightnesses, tiny elliptical orbits, and twinkle cycles. Each
+   is pulled toward the cursor via JS gravity (convergence model).
+   The orbital in the Hero is a separate, non-interactive layer. */
+
+// Seeded PRNG so positions are stable across builds.
+function mulberry32(seed: number) {
+  return function () {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = seed;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+const rng = mulberry32(42);
+const rand = (min: number, max: number) => min + rng() * (max - min);
+
+/* Weighted star-color palette — realistic stellar classification:
+   sky-blue cool end, neutral whites, warm yellows/oranges/reds.
+   No purple — the cool end leans cyan/sky, like real starlight. */
+const palette = [
+  { hex: '#f8fafc', w: 28 }, // slate-50 — cool white (common)
+  { hex: '#ffffff', w: 18 }, // pure white
+  { hex: '#cffafe', w: 16 }, // cyan-100 — cyan-white
+  { hex: '#7dd3fc', w: 10 }, // sky-300 — pale sky-blue
+  { hex: '#fef9c3', w: 12 }, // yellow-100 — yellow-white
+  { hex: '#fed7aa', w: 9 },  // orange-200 — orange tint
+  { hex: '#fecaca', w: 7 },  // red-200 — faint red
+];
+const paletteTotal = palette.reduce((s, p) => s + p.w, 0);
+
+function pickColor(): string {
+  let n = rng() * paletteTotal;
+  for (const p of palette) {
+    if (n < p.w) return p.hex;
+    n -= p.w;
+  }
+  return palette[0].hex;
+}
+
+/* Stars: each has a fixed base position + tiny elliptical orbit
+   parameters. The script combines base + orbital offset + cursor
+   gravity each frame. */
+const stars = Array.from({ length: 75 }, (_, i) => ({
+  id: i,
+  x: rand(-25, 125),
+  y: rand(-25, 125),
+  r: rand(0.18, 0.7),
+  opacity: rand(0.4, 0.95),
+  color: pickColor(),
+  twinkleDuration: rand(2.5, 5.5),
+  twinkleDelay: -rand(0, 5),
+  // Tiny ellipse around the base position (viewBox units).
+  orbitRX: rand(0.3, 1.6),
+  orbitRY: rand(0.2, 1.2),
+  // Angular speed (rad/s) — slow enough that a full orbit takes ~10–40s.
+  orbitSpeed: rand(0.15, 0.6),
+  // Starting phase so orbits aren't synchronized.
+  orbitPhase: rand(0, Math.PI * 2),
+}));
+---
+
+<svg
+  class="space-bg"
+  viewBox="0 0 100 100"
+  preserveAspectRatio="xMidYMid slice"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  <defs>
+    {/* Soft Gaussian glow — gives each star a halo without DOM bloat. */}
+    <filter id="star-glow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="0.45" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#star-glow)">
+    {stars.map((s) => (
+      <circle
+        class="space-obj"
+        data-bx={s.x.toFixed(3)}
+        data-by={s.y.toFixed(3)}
+        data-orbit-rx={s.orbitRX.toFixed(3)}
+        data-orbit-ry={s.orbitRY.toFixed(3)}
+        data-orbit-speed={s.orbitSpeed.toFixed(4)}
+        data-orbit-phase={s.orbitPhase.toFixed(4)}
+        cx={s.x.toFixed(3)}
+        cy={s.y.toFixed(3)}
+        r={s.r.toFixed(3)}
+        fill={s.color}
+        style={`--base-opacity: ${s.opacity.toFixed(2)}; --twinkle-duration: ${s.twinkleDuration.toFixed(2)}s; --twinkle-delay: ${s.twinkleDelay.toFixed(2)}s;`}
+      />
+    ))}
+  </g>
+</svg>
+
+<script>
+  // Star motion: (1) tiny elliptical orbit around base, (2) cursor
+  // gravity pulling toward the cursor when nearby (convergence).
+  // Smooth follow via lerp. Twinkle is pure CSS.
+
+  let rafId: number | null = null;
+  let cursor: { x: number; y: number } | null = null;
+  let mouseMoveHandler: ((e: MouseEvent) => void) | null = null;
+
+  function setupSpaceBg() {
+    // Tear down any previous loop (after view-transition navigation).
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    if (mouseMoveHandler) {
+      window.removeEventListener('mousemove', mouseMoveHandler);
+      mouseMoveHandler = null;
+    }
+    cursor = null;
+
+    const svg = document.querySelector<SVGSVGElement>('.space-bg');
+    if (!svg) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    type Star = {
+      el: SVGCircleElement;
+      bx: number;
+      by: number;
+      orbitRX: number;
+      orbitRY: number;
+      orbitSpeed: number;
+      orbitPhase: number;
+      currentX: number;
+      currentY: number;
+    };
+
+    const stars: Star[] = Array.from(
+      svg.querySelectorAll<SVGCircleElement>('.space-obj'),
+    ).map((el) => {
+      const bx = Number(el.dataset.bx);
+      const by = Number(el.dataset.by);
+      return {
+        el,
+        bx,
+        by,
+        orbitRX: Number(el.dataset.orbitRx),
+        orbitRY: Number(el.dataset.orbitRy),
+        orbitSpeed: Number(el.dataset.orbitSpeed),
+        orbitPhase: Number(el.dataset.orbitPhase),
+        currentX: bx,
+        currentY: by,
+      };
+    });
+
+    /* Convert client (screen) pixel position to SVG viewBox coords.
+       Handles preserveAspectRatio="xMidYMid slice": the viewBox is
+       scaled to cover the SVG; one dimension extends beyond 0–100. */
+    function screenToVB(clientX: number, clientY: number) {
+      const rect = svg!.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return null;
+      const aspectScreen = rect.width / rect.height;
+      const svgX = clientX - rect.left;
+      const svgY = clientY - rect.top;
+      let scale: number;
+      let offX = 0;
+      let offY = 0;
+      if (aspectScreen >= 1) {
+        scale = rect.height / 100;
+        offX = (rect.width - 100 * scale) / 2;
+      } else {
+        scale = rect.width / 100;
+        offY = (rect.height - 100 * scale) / 2;
+      }
+      return {
+        x: (svgX - offX) / scale,
+        y: (svgY - offY) / scale,
+      };
+    }
+
+    mouseMoveHandler = (e: MouseEvent) => {
+      cursor = screenToVB(e.clientX, e.clientY);
+    };
+    window.addEventListener('mousemove', mouseMoveHandler);
+
+    // Cursor influence radius (viewBox units).
+    const RANGE = 25;
+    const startTime = performance.now();
+
+    function tick(now: number) {
+      const t = (now - startTime) / 1000;
+
+      for (const s of stars) {
+        // 1. Orbital position: base + small ellipse.
+        const angle = s.orbitSpeed * t + s.orbitPhase;
+        const ox = s.bx + Math.cos(angle) * s.orbitRX;
+        const oy = s.by + Math.sin(angle) * s.orbitRY;
+
+        let tx = ox;
+        let ty = oy;
+
+        // 2. Cursor gravity overrides orbital position when nearby.
+        if (cursor) {
+          const dx = cursor.x - ox;
+          const dy = cursor.y - oy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < RANGE) {
+            const falloff = 1 - dist / RANGE;
+            const convergence = falloff * falloff;
+            tx = ox + dx * convergence;
+            ty = oy + dy * convergence;
+          }
+        }
+
+        // 3. Smooth lerp toward target.
+        s.currentX += (tx - s.currentX) * 0.12;
+        s.currentY += (ty - s.currentY) * 0.12;
+
+        s.el.setAttribute('cx', s.currentX.toFixed(3));
+        s.el.setAttribute('cy', s.currentY.toFixed(3));
+      }
+
+      rafId = requestAnimationFrame(tick);
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  document.addEventListener('astro:page-load', setupSpaceBg);
+</script>

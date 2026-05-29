@@ -3,11 +3,11 @@
 /* Theme tokens. In Tailwind 4 these generate matching utilities:
    `bg-base`, `text-fg`, `text-muted`, `bg-accent`, `border-divider`, etc. */
 @theme {
-  --color-base: #1a1a1a;
+  --color-canvas: #0a0a0a;
   --color-fg: #f1f5f9;
   --color-muted: #94a3b8;
-  --color-accent: #6366f1;
-  --color-accent-hover: #818cf8;
+  --color-accent: #ffffff;
+  --color-accent-hover: #ffffff;
   --color-surface: #2d2d2d;
   --color-divider: #3f3f46;
 
@@ -17,7 +17,7 @@
 
 @layer base {
   html {
-    background-color: var(--color-base);
+    background-color: var(--color-canvas);
     color: var(--color-fg);
     font-family: var(--font-sans);
     font-feature-settings: 'cv11', 'ss01';
@@ -32,5 +32,257 @@
   ::selection {
     background-color: var(--color-accent);
     color: var(--color-fg);
+  }
+}
+
+/* ─── Motion ─────────────────────────────────────────────────
+   Principle: motion as an editor's hand, not a designer's
+   signature. Affordance > performance. Density follows function.
+   Dialed up from the first pass so the site feels alive without
+   becoming sales-marketing. */
+
+/* Site-wide ambient — soft indigo halos drifting behind every page.
+   This is what makes the rest of the site feel "alive" beyond hero. */
+.ambient-bg {
+  position: fixed;
+  inset: -10%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 55% 45% at 18% 28%,
+      color-mix(in srgb, var(--color-accent) 5%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 38% at 82% 72%,
+      color-mix(in srgb, var(--color-accent) 3%, transparent),
+      transparent 60%
+    );
+  filter: blur(70px);
+  animation: ambient-drift 30s ease-in-out infinite;
+}
+
+@keyframes ambient-drift {
+  0%, 100% {
+    opacity: 0.75;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-3%, 4%) scale(1.05);
+  }
+}
+
+/* JS-detected — `.js` is added by an inline script in <head>.
+   No-JS users skip the reveal layer entirely (content visible). */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero — headline words walk in; subhead + CTAs cascade behind. */
+.hero-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: hero-word-in 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--word-i, 0) * 65ms);
+}
+
+.hero-fade {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: hero-word-in 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes hero-word-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero glow — layered indigo blobs drifting behind the headline. */
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 20% 35%,
+      color-mix(in srgb, var(--color-accent) 12%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 35% at 75% 65%,
+      color-mix(in srgb, var(--color-accent) 8%, transparent),
+      transparent 60%
+    );
+  filter: blur(60px);
+  animation: hero-drift 9s ease-in-out infinite;
+}
+
+@keyframes hero-drift {
+  0%, 100% {
+    opacity: 0.7;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(8%, -5%) scale(1.12);
+  }
+}
+
+/* Brand-mark dot — slow, quiet pulse. The site is alive. */
+.brand-dot {
+  display: inline-block;
+  animation: brand-pulse 3s ease-in-out infinite;
+}
+
+@keyframes brand-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+}
+
+/* ─── Hero galaxy ─────────────────────────────────────────────
+   Orbital animation: central glow + two counter-rotating triangles
+   of three connected dots each. Pure CSS rotation around SVG center. */
+
+.galaxy-wrap {
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.galaxy {
+  width: 100%;
+  height: auto;
+  color: var(--color-accent);
+  filter: drop-shadow(0 0 30px color-mix(in srgb, var(--color-accent) 35%, transparent));
+}
+
+.galaxy-outer {
+  transform-box: view-box;
+  transform-origin: center;
+  animation: galaxy-spin-cw 28s linear infinite;
+}
+
+.galaxy-inner {
+  transform-box: view-box;
+  transform-origin: center;
+  animation: galaxy-spin-ccw 18s linear infinite;
+}
+
+@keyframes galaxy-spin-cw {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes galaxy-spin-ccw {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* ─── Space background ───────────────────────────────────────
+   Site-wide deep-space backdrop: stars, galaxies, comets, black
+   hole. Cursor-gravity attraction driven by JS in SpaceBackground. */
+
+.space-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Dotted grid backdrop — present on every page.
+   On home, the star field renders on top of it. */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0.5px,
+    transparent 1px
+  );
+  background-size: 32px 32px;
+}
+
+.galaxy {
+  pointer-events: none;
+}
+
+/* Star twinkle — each star's opacity pulses on its own cycle.
+   Inline vars set per-star: --base-opacity, --twinkle-duration,
+   --twinkle-delay (negative → starts mid-cycle, so stars desync). */
+.space-obj {
+  opacity: var(--base-opacity, 0.7);
+  animation: star-twinkle var(--twinkle-duration, 3s) ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: var(--base-opacity, 0.7);
+  }
+  50% {
+    opacity: calc(var(--base-opacity, 0.7) * 0.3);
+  }
+}
+
+/* Astro view transitions — fast cross-fade between routes. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reduced motion — silence the whole motion layer. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-glow,
+  .ambient-bg {
+    display: none;
+  }
+
+  .space-obj {
+    animation: none !important;
+    opacity: var(--base-opacity, 0.7);
   }
 }

@@ -17,10 +17,12 @@ const formatted = date.toLocaleDateString('en-GB', {
 
 <article
   class:list={[
-    'group p-6 rounded-lg border bg-surface/40 hover:bg-surface/70 transition-colors h-full flex flex-col',
+    'group p-6 rounded-lg border bg-surface/40 h-full flex flex-col',
+    'hover:bg-surface/70 hover:-translate-y-1 hover:shadow-[0_8px_30px_-12px_rgba(255,255,255,0.25)]',
+    'transition-all duration-300 ease-out',
     featured
       ? 'border-l-4 border-l-accent border-y-divider/60 border-r-divider/60'
-      : 'border-divider/60',
+      : 'border-divider/60 hover:border-accent/40',
   ]}
 >
   <time class="text-xs uppercase tracking-wide text-muted mb-3" datetime={date.toISOString()}>

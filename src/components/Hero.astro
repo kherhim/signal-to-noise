@@ -1,30 +1,109 @@
 ---
+const headline = 'I find the signal where most people see noise.';
+const words = headline.split(' ');
 ---
 
-<section class="mx-auto max-w-[1100px] px-6 pt-20 pb-24 sm:pt-32 sm:pb-32">
-  <p class="text-sm uppercase tracking-widest text-accent mb-6">Signal, not noise.</p>
-  <h1
-    class="text-5xl sm:text-7xl font-semibold tracking-tight leading-[1.05] text-fg max-w-3xl"
+<section class="relative overflow-hidden">
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div
+    class="relative z-10 mx-auto max-w-[1100px] px-6 pt-20 pb-20 sm:pt-32 sm:pb-28"
   >
-    I find structure where most people see noise.
-  </h1>
-  <p class="mt-8 text-lg sm:text-xl text-muted max-w-2xl leading-relaxed">
-    A strategist and pragmatist working across finance, technology, digital assets, and
-    trading. More interested in what actually works than in what the textbook says — and
-    in the patterns most readers miss.
-  </p>
-  <div class="mt-12 flex flex-wrap gap-4">
-    <a
-      href="/insights"
-      class="inline-flex items-center px-5 py-3 rounded-md bg-accent text-fg font-medium hover:bg-accent-hover transition-colors"
-    >
-      Read the insights →
-    </a>
-    <a
-      href="/case-studies"
-      class="inline-flex items-center px-5 py-3 rounded-md border border-divider text-fg font-medium hover:border-accent hover:text-accent transition-colors"
-    >
-      See the work
-    </a>
+    <div class="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center">
+      {/* Text column */}
+      <div>
+        <p class="text-sm uppercase tracking-widest text-accent mb-6">Signal, not noise.</p>
+
+        <h1
+          class="text-5xl sm:text-7xl font-semibold tracking-tight leading-[1.05] text-fg max-w-3xl"
+        >
+          {words.map((word, i) => (
+            <Fragment>
+              <span class="hero-word" style={`--word-i: ${i};`}>{word}</span>{i < words.length - 1 ? ' ' : ''}
+            </Fragment>
+          ))}
+        </h1>
+
+        <p
+          class="mt-8 text-lg sm:text-xl text-muted max-w-2xl leading-relaxed hero-fade"
+          style="--delay: 700ms;"
+        >
+          A strategist and pragmatist working across finance, technology, digital assets,
+          and trading. More interested in what actually works than in what the textbook
+          says — and in the patterns most readers miss.
+        </p>
+
+        <div class="mt-12 flex flex-wrap gap-4 hero-fade" style="--delay: 900ms;">
+          <a
+            href="/insights"
+            class="inline-flex items-center px-5 py-3 rounded-md bg-accent text-canvas font-medium hover:shadow-[0_0_28px_rgba(255,255,255,0.3)] transition-all duration-300"
+          >
+            Read the insights →
+          </a>
+          <a
+            href="/case-studies"
+            class="inline-flex items-center px-5 py-3 rounded-md border border-divider text-fg font-medium hover:border-accent hover:text-accent transition-all duration-300"
+          >
+            See the work
+          </a>
+        </div>
+      </div>
+
+      {/* Orbital — pure CSS rotation, no cursor interaction (steady identity mark) */}
+      <div class="galaxy-wrap hero-fade" style="--delay: 300ms;">
+        <svg
+          class="galaxy"
+          viewBox="0 0 400 400"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <defs>
+            <radialGradient id="core-glow">
+              <stop offset="0%" stop-color="currentColor" stop-opacity="0.85" />
+              <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          {/* Static orbital rings */}
+          <circle cx="200" cy="200" r="175" fill="none" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.18" />
+          <circle cx="200" cy="200" r="105" fill="none" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.13" />
+
+          {/* Core */}
+          <circle cx="200" cy="200" r="55" fill="url(#core-glow)" />
+          <circle cx="200" cy="200" r="7" fill="currentColor" />
+
+          {/* Outer triangle, clockwise */}
+          <g class="galaxy-outer">
+            <path
+              d="M 200 25 L 351 288 L 49 288 Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-opacity="0.45"
+            />
+            <circle cx="200" cy="25" r="14" fill="currentColor" opacity="0.22" />
+            <circle cx="200" cy="25" r="7" fill="currentColor" />
+            <circle cx="351" cy="288" r="12" fill="currentColor" opacity="0.22" />
+            <circle cx="351" cy="288" r="6" fill="currentColor" />
+            <circle cx="49" cy="288" r="12" fill="currentColor" opacity="0.22" />
+            <circle cx="49" cy="288" r="6" fill="currentColor" />
+          </g>
+
+          {/* Inner triangle, counter-clockwise */}
+          <g class="galaxy-inner">
+            <path
+              d="M 200 95 L 291 253 L 109 253 Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"
+              stroke-opacity="0.4"
+            />
+            <circle cx="200" cy="95" r="5" fill="currentColor" />
+            <circle cx="291" cy="253" r="5" fill="currentColor" />
+            <circle cx="109" cy="253" r="5" fill="currentColor" />
+          </g>
+        </svg>
+      </div>
+    </div>
   </div>
 </section>
