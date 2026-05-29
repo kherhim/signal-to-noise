@@ -11,22 +11,36 @@
   --color-surface: #2d2d2d;
   --color-divider: #3f3f46;
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Body — system sans stack. Mac users get Helvetica Neue; Windows
+     gets Arial; Linux falls through to the system UI sans. Same approach
+     as simonsinek.com: let the display serif own the identity, body
+     stays invisible. Zero webfont load for body. */
+  --font-body: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  /* Display serif for headlines, article titles, and in-article subheads.
+     Fallback chain renders Georgia before Fraunces loads (FOUT, not FOIT). */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
 }
 
 @layer base {
   html {
     background-color: var(--color-canvas);
     color: var(--color-fg);
-    font-family: var(--font-sans);
-    font-feature-settings: 'cv11', 'ss01';
+    font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
   body {
     min-height: 100vh;
+  }
+
+  /* All real headings get the display serif. Small "kicker" labels
+     (Signal not noise / Contact / series labels) remain <p> elements
+     and stay in the sans body face — that contrast is the point. */
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
   }
 
   ::selection {
