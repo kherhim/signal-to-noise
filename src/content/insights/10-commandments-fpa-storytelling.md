@@ -7,7 +7,7 @@ draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-commandments-fpa-storytelling-himanshu-kher-ti9df"
 ---
 
-In November 2023, I had posted an [article](https://www.linkedin.com/pulse/enhancing-financial-data-storytelling-cfos-cheat-sheet-himanshu-kher-k7o2f/?trackingId=Za5R2IljT%2BqyOs2kJiW7Ug%3D%3D&trk=article-ssr-frontend-pulse_little-text-block) about a storytelling cheat sheet for CFOs. This artcile is a continuation of that post, but targetted towards juniour FP&A professionals working hard to make a difference. It is a distillation of past experiences in consulting, and working in Finance over a decade.
+In November 2023, I had posted an [article](/insights/enhancing-financial-data-storytelling-cfos-cheat-sheet) about a storytelling cheat sheet for CFOs. This artcile is a continuation of that post, but targetted towards juniour FP&A professionals working hard to make a difference. It is a distillation of past experiences in consulting, and working in Finance over a decade.
 
 FP&A teams live and breathe numbers.But the true power of financial planning and analysis lies not just in accuracy of numbers or logic. It lies in storytelling. Because numbers alone don’t change minds. Stories do.
 

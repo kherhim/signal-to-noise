@@ -14,7 +14,31 @@ const allInsights = (await getCollection(
 // from their parent on the insights page instead.
 const homepageCandidates = allInsights.filter((i) => i.data.series?.part === undefined);
 
-const featured = homepageCandidates.find((i) => i.data.featured) ?? homepageCandidates[0];
+/* Featured pick — three-tier priority:
+   1. Manual: any article with featured: true in frontmatter
+   2. Fresh: most recent article published in the last 7 days
+   3. Weekly rotation: deterministic by current week-of-epoch, so the
+      featured slot rotates automatically when nothing fresh is around.
+   Rotation is computed at build time — to actually rotate weekly, the
+   site needs to be rebuilt at least weekly (a cron job can handle this). */
+function pickFeatured(candidates: typeof homepageCandidates) {
+  if (candidates.length === 0) return undefined;
+
+  const explicit = candidates.find((p) => p.data.featured);
+  if (explicit) return explicit;
+
+  const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
+  const oneWeekAgo = Date.now() - ONE_WEEK;
+  const fresh = candidates
+    .filter((p) => p.data.date.getTime() >= oneWeekAgo)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  if (fresh.length > 0) return fresh[0];
+
+  const weeksSinceEpoch = Math.floor(Date.now() / ONE_WEEK);
+  return candidates[weeksSinceEpoch % candidates.length];
+}
+
+const featured = pickFeatured(homepageCandidates);
 const recent = homepageCandidates.filter((i) => i.id !== featured?.id).slice(0, 3);
 ---
 

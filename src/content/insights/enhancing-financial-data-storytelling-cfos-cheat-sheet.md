@@ -7,7 +7,7 @@ draft: false
 sourceUrl: "https://www.linkedin.com/pulse/enhancing-financial-data-storytelling-cfos-cheat-sheet-himanshu-kher-k7o2f"
 ---
 
-In November 2023, I had written a post explaining why storytelling is a [CFO’s secret superpower](https://www.linkedin.com/pulse/once-upon-balance-sheet-10-reasons-why-storytelling-cfos-kher-t3p1e/?trk=article-ssr-frontend-pulse_little-text-block). Having seen firsthand how compelling narratives can transform dry numbers into insightful stories that drive decisions, I thought writing a cheat-cheat would help finance professionals in becoming better story tellers.
+In November 2023, I had written a post explaining why storytelling is a [CFO’s secret superpower](/insights/once-upon-balance-sheet-10-reasons-why-storytelling-cfos). Having seen firsthand how compelling narratives can transform dry numbers into insightful stories that drive decisions, I thought writing a cheat-cheat would help finance professionals in becoming better story tellers.
 
 Enhancing financial data storytelling is not just about presenting numbers; it's about weaving them into a compelling narrative that drives decisions and inspires action. By knowing your audience, simplifying complex data, engaging emotionally, and using analytics, you can transform financial reports into powerful stories.
 

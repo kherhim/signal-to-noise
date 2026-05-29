@@ -7,7 +7,7 @@ draft: false
 sourceUrl: "https://www.linkedin.com/pulse/symphony-success-ideas-execution-consistency-himanshu-kher-cpyaf"
 ---
 
-In November 23, I had posted a personal viewpoint on [strategy, culture, and execution](https://www.linkedin.com/pulse/checkmate-boardroom-ballet-how-execution-pirouettes-past-kher-727se/?trk=article-ssr-frontend-pulse_little-text-block), in the context of a company. I took the stance that execution is the key differentiator. In continuation of that piece, this week's post is a personal reflection on the the notion of Ideas, Execution & Consistency (of execution).
+In November 23, I had posted a personal viewpoint on [strategy, culture, and execution](/insights/checkmate-boardroom-ballet-how-execution-pirouettes-past), in the context of a company. I took the stance that execution is the key differentiator. In continuation of that piece, this week's post is a personal reflection on the the notion of Ideas, Execution & Consistency (of execution).
 
 Central idea of the note: In the grand theatre of business, ideas often take centre stage. They are like the dazzling soloists that captivate audiences, the melodies that linger in our minds long after the curtain falls. However, just as a symphony requires more than a single virtuoso to create a masterpiece, building a great company demands more than just brilliant ideas. It requires the harmonious interplay of ideas, execution, and consistency – a trio that, when conducted skilfully, can transform a simple tune into a timeless opus.
 
