@@ -4,12 +4,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import InsightCard from '../components/InsightCard.astro';
 
-const allInsights = (await getCollection('insights', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-);
+// In dev, show drafts so you can preview them; in prod, drafts stay hidden.
+const allInsights = (await getCollection(
+  'insights',
+  ({ data }) => import.meta.env.DEV || !data.draft,
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const featured = allInsights.find((i) => i.data.featured) ?? allInsights[0];
-const recent = allInsights.filter((i) => i.id !== featured?.id).slice(0, 3);
+// Series children don't surface independently on the homepage — they hang
+// from their parent on the insights page instead.
+const homepageCandidates = allInsights.filter((i) => i.data.series?.part === undefined);
+
+const featured = homepageCandidates.find((i) => i.data.featured) ?? homepageCandidates[0];
+const recent = homepageCandidates.filter((i) => i.id !== featured?.id).slice(0, 3);
 ---
 
 <BaseLayout title="signal-to-noise.co — Himanshu" stars>
@@ -75,19 +81,33 @@ const recent = allInsights.filter((i) => i.id !== featured?.id).slice(0, 3);
   )}
 
   <section class="mx-auto max-w-[1100px] px-6 py-16" data-reveal>
-    <h2 class="text-2xl font-semibold tracking-tight text-fg mb-6">About</h2>
-    <div class="max-w-[720px] space-y-4 text-fg leading-relaxed">
+    <h2 class="text-2xl font-semibold tracking-tight text-fg mb-8">Reading the noise</h2>
+    <div class="max-w-[720px] space-y-6 text-lg text-fg leading-relaxed">
       <p>
-        I'm Himanshu — a senior strategist and finance operator. My work cuts across
-        finance, technology, digital assets, and trading, and tends to land where the
-        standard playbook stops being useful: novel structures, fast-moving markets,
-        problems that haven't been named yet. Less interested in what the textbook says,
-        more in what actually works.
+        Most finance writing is one of two things: a quarterly earnings rehash, or a hot
+        take with no model behind it. The first is data without thinking. The second is
+        thinking without data. The space between them — <em>signal</em> — is where I want
+        to write.
       </p>
       <p>
-        I write here because that thinking is more useful when it's out loud.
+        Over 25+ years in finance, I've come to believe the most useful thing a finance
+        person does in a fast-moving business isn't reporting — it's <em>framing</em>.
+        Cutting a tangled problem down to the two or three decisions that actually matter.
+        Translating between a board that wants certainty and an operation where the answer
+        hasn't been built yet. Holding the strategic question open while the tactical one
+        gets solved.
       </p>
       <p>
+        The pieces here are mostly about that work: leadership and trade-offs, storytelling
+        for finance, how the CFO role actually operates, how AI is changing it, and the
+        recurring tensions — strategy versus execution, output versus outcome, KPIs versus
+        mission, decisions versus deferrals.
+      </p>
+      <p>
+        I won't post on a cadence. I'll post when I have something worth saying. That's
+        the deal.
+      </p>
+      <p class="pt-2">
         <a
           href="/about"
           class="text-accent hover:text-accent-hover transition-colors"

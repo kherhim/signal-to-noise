@@ -7,9 +7,24 @@ interface Props {
   date: Date;
   excerpt: string;
   tags?: string[];
+  /* Series support — set when this post is part of a multi-part series.
+     Kicker text shows above the title (linked to parent for children).
+     Parts list renders at the article end for the parent only. */
+  seriesKicker?: string;
+  seriesKickerHref?: string;
+  seriesParts?: { href: string; label: string; part: number }[];
 }
 
-const { title, date, excerpt, tags = [] } = Astro.props;
+const {
+  title,
+  date,
+  excerpt,
+  tags = [],
+  seriesKicker,
+  seriesKickerHref,
+  seriesParts,
+} = Astro.props;
+
 const formatted = date.toLocaleDateString('en-GB', {
   day: 'numeric',
   month: 'long',
@@ -20,6 +35,18 @@ const formatted = date.toLocaleDateString('en-GB', {
 <BaseLayout title={`${title} — signal-to-noise.co`} description={excerpt}>
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
     <header class="mb-12">
+      {seriesKicker && (
+        <p class="text-sm uppercase tracking-widest text-accent mb-6">
+          {seriesKickerHref ? (
+            <a href={seriesKickerHref} class="hover:underline underline-offset-4">
+              {seriesKicker}
+            </a>
+          ) : (
+            seriesKicker
+          )}
+        </p>
+      )}
+
       <time class="text-sm text-muted block mb-3" datetime={date.toISOString()}>
         {formatted}
       </time>
@@ -36,8 +63,32 @@ const formatted = date.toLocaleDateString('en-GB', {
         </ul>
       )}
     </header>
+
     <Prose>
       <slot />
     </Prose>
+
+    {seriesParts && seriesParts.length > 0 && (
+      <section class="mt-16 pt-8 border-t border-divider/60">
+        <p class="text-sm uppercase tracking-widest text-muted mb-6">
+          The {seriesParts.length} parts
+        </p>
+        <ol class="space-y-3">
+          {seriesParts.map((p) => (
+            <li class="flex items-baseline gap-4">
+              <span class="text-muted text-xs uppercase tracking-wide w-16 shrink-0">
+                Part {p.part}
+              </span>
+              <a
+                href={p.href}
+                class="text-fg hover:text-accent transition-colors"
+              >
+                {p.label}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
   </article>
 </BaseLayout>

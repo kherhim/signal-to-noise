@@ -3,7 +3,11 @@ import { getCollection, render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('insights', ({ data }) => !data.draft);
+  // In dev, generate routes for drafts too; in prod, drafts are excluded.
+  const posts = await getCollection(
+    'insights',
+    ({ data }) => import.meta.env.DEV || !data.draft,
+  );
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },
@@ -12,6 +16,42 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+/* Compute series context for this article (if any).
+   - Children get a kicker "Part X of N · <Series name>" linked to the parent.
+   - Parent gets a kicker "A N-part series" and the parts list at the bottom. */
+let seriesKicker: string | undefined;
+let seriesKickerHref: string | undefined;
+let seriesParts: { href: string; label: string; part: number }[] | undefined;
+
+if (post.data.series) {
+  const all = await getCollection(
+    'insights',
+    ({ data }) => import.meta.env.DEV || !data.draft,
+  );
+  const sid = post.data.series.id;
+  const children = all
+    .filter((p) => p.data.series?.id === sid && p.data.series.part !== undefined)
+    .sort((a, b) => (a.data.series!.part ?? 0) - (b.data.series!.part ?? 0));
+  const parent = all.find(
+    (p) => p.data.series?.id === sid && p.data.series.part === undefined,
+  );
+
+  if (post.data.series.part !== undefined) {
+    // Child article
+    seriesKicker = `Part ${post.data.series.part} of ${children.length} · ${post.data.series.name}`;
+    if (parent) seriesKickerHref = `/insights/${parent.id}`;
+  } else {
+    // Parent article
+    seriesKicker = `A ${children.length}-part series`;
+    seriesParts = children.map((c) => ({
+      href: `/insights/${c.id}`,
+      // Strip the "📌 N — " prefix from child titles — the "Part N" label already shows the number
+      label: c.data.title.replace(/^📌\s*\d+\s*—\s*/, ''),
+      part: c.data.series!.part!,
+    }));
+  }
+}
 ---
 
 <PostLayout
@@ -19,6 +59,9 @@ const { Content } = await render(post);
   date={post.data.date}
   excerpt={post.data.excerpt}
   tags={post.data.tags}
+  seriesKicker={seriesKicker}
+  seriesKickerHref={seriesKickerHref}
+  seriesParts={seriesParts}
 >
   <Content />
 </PostLayout>
