@@ -17,16 +17,4 @@ const insights = defineCollection({
   }),
 });
 
-const caseStudies = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/case-studies' }),
-  schema: z.object({
-    title: z.string(),
-    date: z.coerce.date(),
-    excerpt: z.string(),
-    client: z.string().optional(),
-    tags: z.array(z.string()).optional(),
-    externalLink: z.string().url().optional(),
-  }),
-});
-
-export const collections = { insights, 'case-studies': caseStudies };
+export const collections = { insights };
