@@ -15,8 +15,9 @@ const allInsights = (await getCollection(
 const homepageCandidates = allInsights.filter((i) => i.data.series?.part === undefined);
 
 /* Featured pick — three-tier priority:
-   1. Manual: any article with featured: true in frontmatter
-   2. Fresh: most recent article published in the last 7 days
+   1. Fresh: latest article published in the last 7 days (so adding a
+      new article and rebuilding always promotes it to the featured slot)
+   2. Manual: any article with featured: true in frontmatter
    3. Weekly rotation: deterministic by current week-of-epoch, so the
       featured slot rotates automatically when nothing fresh is around.
    Rotation is computed at build time — to actually rotate weekly, the
@@ -24,15 +25,15 @@ const homepageCandidates = allInsights.filter((i) => i.data.series?.part === und
 function pickFeatured(candidates: typeof homepageCandidates) {
   if (candidates.length === 0) return undefined;
 
-  const explicit = candidates.find((p) => p.data.featured);
-  if (explicit) return explicit;
-
   const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
   const oneWeekAgo = Date.now() - ONE_WEEK;
   const fresh = candidates
     .filter((p) => p.data.date.getTime() >= oneWeekAgo)
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
   if (fresh.length > 0) return fresh[0];
+
+  const explicit = candidates.find((p) => p.data.featured);
+  if (explicit) return explicit;
 
   const weeksSinceEpoch = Math.floor(Date.now() / ONE_WEEK);
   return candidates[weeksSinceEpoch % candidates.length];
