@@ -80,11 +80,11 @@ This project has **two outcomes**:
 
 ### Typography
 
-- **Headings**: A modern geometric sans (e.g., **Inter**, **Geist**, or **Space Grotesk**)
-- **Body**: A highly readable sans (**Inter** works as both)
-- **Monospace** (for code/data): **JetBrains Mono** or **Geist Mono**
-- Generous line-height for long-form readability (1.6–1.75)
-- Generous letting on headings
+- **Display / headings**: **Fraunces** — variable serif with optical-sizing axis (opsz 9–144, wght 400–700) by Phaedra Charles & Undercase Type. Applied via a single base rule to all `h1`/`h2`/`h3` elements, so article titles, page headings, in-article subheads, and InsightCard titles all pick it up. Small uppercase "kicker" labels (Signal not noise · Contact · series tags) stay as `<p>` in the body face — that contrast is the point.
+- **Body**: System sans stack — `Helvetica Neue` → `Arial` → `system-ui`. Zero webfont load for body. Same pattern as simonsinek.com: the display serif owns the identity; the body stays invisible. Iterated through Inter, Manrope, Source Sans 3, Newsreader, Lora, and Source Serif 4 before landing here — the lesson was that the right body font has no personality.
+- **Monospace** (for code/data): **JetBrains Mono**.
+- Generous line-height for long-form readability (1.6–1.75).
+- Tight tracking on headings; default tracking on body.
 
 ### Layout principles
 
@@ -419,7 +419,6 @@ Focus only on these for the initial launch:
 
 ## 14. Open Questions (to resolve during build)
 
-- Final font choice (Inter vs Geist vs Space Grotesk — A/B during build)
 - Photo / no photo on About page?
 - Whether to include a "Now" page (à la nownownow.com)
 - Analytics: Plausible (paid, privacy-friendly) vs none for v1
