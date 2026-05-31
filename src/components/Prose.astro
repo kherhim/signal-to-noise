@@ -114,4 +114,31 @@
     border-top: 1px solid var(--color-divider);
     margin: 3em 0;
   }
+
+  /* Tables — minimal editorial styling for the dark canvas. */
+  .prose-custom :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2em 0;
+    font-size: 0.95em;
+    line-height: 1.5;
+  }
+
+  .prose-custom :global(th),
+  .prose-custom :global(td) {
+    border: 1px solid var(--color-divider);
+    padding: 0.65em 0.85em;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose-custom :global(th) {
+    background-color: var(--color-surface);
+    font-weight: 600;
+    color: var(--color-fg);
+  }
+
+  .prose-custom :global(tbody tr:nth-child(even)) {
+    background-color: color-mix(in srgb, var(--color-surface) 30%, transparent);
+  }
 </style>
