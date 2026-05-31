@@ -4,6 +4,8 @@ date: 2026-05-31
 excerpt: "Three landmark IPOs are coming. Read them through capital structure, governance, and partner dependency — not the hype."
 tags: ["ipo", "ai", "capital-markets", "strategy"]
 draft: false
+coverImage: /img/pricing-the-future-ipos.webp
+coverImageAlt: "Editorial illustration on a dark navy field: Earth with a satellite constellation orbiting in the lower-left, a wireframe AI head rendered in polygonal blue mesh on the right, a candlestick chart rising in the background, and an 'IPO Upcoming' ticker panel listing SpaceX, Anthropic, and OpenAI on the right margin."
 ---
 
 SpaceX, Anthropic and OpenAI sit at the sharp end of both the AI and capital markets story, and their prospective IPOs will define a cycle as much as they finance their own ambitions. From a CFO's lens, these offerings are less about hype and more about how public capital, governance and risk will reshape three very different—but tightly interlinked—business models.
