@@ -5,6 +5,8 @@ excerpt: "In November 2023, I had written a post explaining why storytelling is 
 tags: ["leadership", "strategy", "ai", "fp-and-a", "cfo", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/enhancing-financial-data-storytelling-cfos-cheat-sheet-himanshu-kher-k7o2f"
+coverImage: /img/enhancing-financial-data-storytelling-cfos-cheat-sheet.webp
+coverImageAlt: "Black-and-white editorial illustration: a CFO in a suit funnels a storm of numbers, charts and reports through a kitchen funnel and turns them into a clean dashboard with a rising trend line, KPI tiles, and a lightbulb icon on the right."
 ---
 
 In November 2023, I had written a post explaining why storytelling is a [CFO’s secret superpower](/insights/once-upon-balance-sheet-10-reasons-why-storytelling-cfos). Having seen firsthand how compelling narratives can transform dry numbers into insightful stories that drive decisions, I thought writing a cheat-cheat would help finance professionals in becoming better story tellers.

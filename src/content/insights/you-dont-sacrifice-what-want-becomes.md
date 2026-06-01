@@ -5,6 +5,8 @@ excerpt: "This piece is a bit off-the-track as far as my usual writing goes - it
 tags: ["leadership", "ai", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/you-dont-sacrifice-what-want-becomes-himanshu-kher-7ll4f"
+coverImage: /img/you-dont-sacrifice-what-want-becomes.webp
+coverImageAlt: "Black-and-white illustration: a lone figure stands at a fork in the road at night. To the left, a flat city street with shop fronts and a streetlamp. To the right, a winding path climbs a steep mountain toward a glowing star at the summit."
 ---
 
 ### Introduction

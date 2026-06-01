@@ -5,6 +5,8 @@ excerpt: "Mergers and acquisitions (M&A) are often seen as a fast track to growt
 tags: ["leadership", "strategy", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/how-cfos-should-think-ma-balancing-risk-opportunity-himanshu-kher-dn1ef"
+coverImage: /img/how-cfos-should-think-ma-balancing-risk-opportunity.webp
+coverImageAlt: "Black-and-white editorial illustration: a businessman crosses a narrow paper-bridge between two cities, holding a set of scales that balance a warning triangle against a rising chart. Left side stormy with caution icons over rough seas; right side bright with gears, lightbulbs and a growth curve."
 ---
 
 Mergers and acquisitions (M&A) are often seen as a fast track to growth, innovation, and market expansion. With what is possibly the beginning of interest rate cuts on both sides of the pond, it is likely that cheap(er) financing will drive up animal spirits and we might be on the cusp of an M&A cycle. However, businesses are also facing changing market dynamics (short consumer cycles), economic uncertainty (new Government in the UK and potentially a new one in the US – policy limbo) as well as geopolitical headwinds (two ongoing wars). Most CFOs are therefore uniquely positioned at the crossroads of risk and opportunity. But how should they approach M&A in today’s unpredictable landscape?

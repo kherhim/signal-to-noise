@@ -5,6 +5,8 @@ excerpt: "Example: A CFO saying, “I believe our company should diversify into 
 tags: ["leadership", "strategy", "cfo"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/having-view-vs-way-himanshu-kher-ebj8c"
+coverImage: /img/having-view-vs-way.webp
+coverImageAlt: "Black-and-white sketched illustration: a figure stands at a fork between two whiteboards. The left board is full of question marks, scribbled arrows and tangled thought bubbles (a view without a way). The right board shows a clean staircase rising past task lists, gears and team icons toward a flag at the top (a clear path to execution)."
 ---
 
 ### 1\. Having a view

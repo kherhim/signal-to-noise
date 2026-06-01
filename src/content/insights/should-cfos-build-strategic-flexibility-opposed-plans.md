@@ -5,6 +5,8 @@ excerpt: "Strategic planning and strategic preparation, while closely related, o
 tags: ["strategy", "ai", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/should-cfos-build-strategic-flexibility-opposed-plans-himanshu-kher-hfrif"
+coverImage: /img/should-cfos-build-strategic-flexibility-opposed-plans.webp
+coverImageAlt: "Black-and-white editorial illustration: a businessman stands at the edge of a crumbling cliff of static documents and rigid plans on the left, looking toward a winding, modular path on the right that floats across the chasm, lined with dashboards, KPI tiles and connected data nodes."
 ---
 
 Strategic planning and strategic preparation, while closely related, offer distinct approaches to achieving organizational success. For a CFO, understanding the nuances between the two is critical for navigating challenges and driving performance. While planning provides direction (actions given an expected outcome), preparation ensures adaptability (actions given deviations from expected outcome) - a vital trait in today’s unpredictable business landscape. This discussion unpacks the differences and highlights why preparation often has the upper hand.

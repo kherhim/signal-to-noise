@@ -5,6 +5,8 @@ excerpt: "There’s a massive, hidden advantage to the fact that Finance has bee
 tags: ["ai", "fp-and-a", "cfo", "teams"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/where-wai-himanshu-kher-drr3e"
+coverImage: /img/where-wai.webp
+coverImageAlt: "Black-and-white minimalist illustration: a lone figure stands on a digital plain made of flowing data points and grid lines, looking toward a glowing path that winds up to a bright sun on the horizon. Mountains in the background dissolve into data streams."
 ---
 
 There’s a massive, hidden advantage to the fact that Finance has been the "under-invested child" of the fintech world for the last decade.

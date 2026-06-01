@@ -5,6 +5,8 @@ excerpt: "I've been thinking about this a lot lately, and I've come to believe t
 tags: ["leadership", "cfo", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/every-cfo-greedy-just-what-theyre-real-question-himanshu-kher-ywb7e"
+coverImage: /img/every-cfo-greedy-just-what-theyre-real-question.webp
+coverImageAlt: "Black-and-white editorial illustration: two suited figures stand back-to-back. The left figure clutches a stack of reports and a stopwatch in front of a crumbling industrial skyline with falling bar charts. The right figure waters a young sapling with deep roots that grow into an upward bar chart against a thriving city skyline."
 ---
 
 I've been thinking about this a lot lately, and I've come to believe there are really only two types of financial leadership — and the difference between them isn't talent or intelligence. It's time horizon.

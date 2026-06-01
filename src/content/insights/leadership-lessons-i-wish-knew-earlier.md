@@ -8,6 +8,8 @@ series:
   name: "Leadership lessons I wish I knew earlier"
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/leadership-lessons-i-wish-knew-earlier-himanshu-kher-we3af"
+coverImage: /img/leadership-lessons-i-wish-knew-earlier.webp
+coverImageAlt: "Black-and-white sketched illustration: a man stands at a forked path looking forward, while four ghostly silhouettes of his past selves recede into the sky above. To either side, vignettes of his journey play out — two people in conversation, colleagues pushing a giant gear uphill, a figure reading under a tree."
 ---
 
 Over the last 25 years in finance - more recently as CFO - one thing has become clear to me:

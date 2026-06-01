@@ -5,6 +5,8 @@ excerpt: "In November 2023, I had posted an article about a storytelling cheat s
 tags: ["strategy", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-commandments-fpa-storytelling-himanshu-kher-ti9df"
+coverImage: /img/10-commandments-fpa-storytelling.webp
+coverImageAlt: "Black-and-white editorial illustration: silhouettes of five business figures behind a podium watch a pair of tall stone tablets carved with ten numbered icons (chart, target, magnifier, speech bubble, people) representing the FP&A storytelling commandments, surrounded by swirls of dashboard fragments and reports."
 ---
 
 In November 2023, I had posted an [article](/insights/enhancing-financial-data-storytelling-cfos-cheat-sheet) about a storytelling cheat sheet for CFOs. This artcile is a continuation of that post, but targetted towards juniour FP&A professionals working hard to make a difference. It is a distillation of past experiences in consulting, and working in Finance over a decade.
