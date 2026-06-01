@@ -1,6 +1,9 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Prose from '../components/Prose.astro';
+import ShareLinks from '../components/ShareLinks.astro';
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 interface Props {
   title: string;
@@ -99,6 +102,8 @@ const formatted = date.toLocaleDateString('en-GB', {
     <Prose>
       <slot />
     </Prose>
+
+    <ShareLinks url={canonicalUrl} title={title} />
 
     {seriesParts && seriesParts.length > 0 && (
       <section class="mt-16 pt-8 border-t border-divider/60">

@@ -1,0 +1,168 @@
+---
+/* Article share row — bottom of every post.
+   Four destinations:
+     - LinkedIn (sharing/share-offsite — pulls OG meta from the URL)
+     - X (twitter intent — accepts url + prefilled text)
+     - Email (mailto — subject = title, body = url)
+     - Copy link (Clipboard API with a textarea fallback)
+
+   All icons are inline SVG so there's no asset to fetch. The copy-link
+   button uses a small script bound on astro:page-load so it survives
+   ClientRouter view transitions. */
+interface Props {
+  url: string;
+  title: string;
+}
+
+const { url, title } = Astro.props;
+
+const u = encodeURIComponent(url);
+const t = encodeURIComponent(title);
+
+const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${u}`;
+const xUrl = `https://twitter.com/intent/tweet?url=${u}&text=${t}`;
+const mailtoUrl = `mailto:?subject=${t}&body=${u}`;
+---
+
+<aside
+  class="mt-16 pt-8 border-t border-divider/60 flex items-center gap-5"
+  aria-label="Share this article"
+>
+  <span class="text-sm uppercase tracking-widest text-muted">Share</span>
+  <ul class="flex items-center gap-2">
+    <li>
+      <a
+        href={linkedInUrl}
+        target="_blank"
+        rel="noopener"
+        aria-label="Share on LinkedIn"
+        class="share-btn"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+          <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />
+        </svg>
+      </a>
+    </li>
+    <li>
+      <a
+        href={xUrl}
+        target="_blank"
+        rel="noopener"
+        aria-label="Share on X"
+        class="share-btn"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
+        </svg>
+      </a>
+    </li>
+    <li>
+      <a
+        href={mailtoUrl}
+        aria-label="Share via email"
+        class="share-btn"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-5 h-5">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+          <polyline points="22,6 12,13 2,6" />
+        </svg>
+      </a>
+    </li>
+    <li>
+      <button
+        type="button"
+        data-share-copy
+        data-url={url}
+        aria-label="Copy link"
+        class="share-btn"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="w-5 h-5 share-icon-link"
+        >
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        </svg>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="w-5 h-5 share-icon-check"
+        >
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </button>
+    </li>
+  </ul>
+</aside>
+
+<style>
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.375rem;
+    color: var(--color-muted);
+    transition: color 0.2s ease, background-color 0.2s ease;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+  .share-btn:hover {
+    color: var(--color-accent);
+    background-color: color-mix(in srgb, var(--color-divider) 60%, transparent);
+  }
+  .share-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  /* Copy-link icon toggle */
+  [data-share-copy] .share-icon-check { display: none; }
+  [data-share-copy].copied .share-icon-link { display: none; }
+  [data-share-copy].copied .share-icon-check { display: inline-block; }
+  [data-share-copy].copied { color: var(--color-accent); }
+</style>
+
+<script>
+  // Bound on astro:page-load so it survives ClientRouter view transitions.
+  function initShareCopy() {
+    document.querySelectorAll<HTMLButtonElement>('button[data-share-copy]').forEach((btn) => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', async () => {
+        const url = btn.dataset.url || window.location.href;
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch {
+          // Fallback for older browsers / non-secure contexts.
+          const ta = document.createElement('textarea');
+          ta.value = url;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch { /* noop */ }
+          document.body.removeChild(ta);
+        }
+        btn.classList.add('copied');
+        const w = btn as HTMLButtonElement & { _copyTimer?: number };
+        if (w._copyTimer) window.clearTimeout(w._copyTimer);
+        w._copyTimer = window.setTimeout(() => btn.classList.remove('copied'), 1500);
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initShareCopy);
+</script>
