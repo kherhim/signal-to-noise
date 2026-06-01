@@ -5,7 +5,7 @@ excerpt: "I want you to look at the graph for a second. Really look at it. Look 
 tags: ["ai", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/600-year-curve-why-your-ai-anxiety-actually-history-repeating-kher-sthge"
-coverImage: /img/600-year-curve.png
+coverImage: /img/600-year-curve.webp
 coverImageAlt: "The Explosion of Knowledge: 1450 to 2026 — log-scale chart of millions of books over time, marked at the Gutenberg Press (1450), the Industrial Revolution (~1800), and the AI Era (2026)."
 ---
 
