@@ -9,7 +9,7 @@ sourceUrl: "https://www.linkedin.com/pulse/crowdsourcing-financial-decisions-whe
 
 ### Introduction
 
-Today, I'm writing about a topic that marries the ancient wisdom of collective decision-making with the cutting-edge challenges faced by modern CFOs. Inspired by the recent re-reading of [James Surowiecki](https://www.linkedin.com/in/james-surowiecki-530808a5?trk=article-ssr-frontend-pulse_little-mention) 's insightful book, "The Wisdom of Crowds," I want to explore how its principles apply directly to our work in finance and strategy. Imagine harnessing the collective intelligence of a diverse group to make smarter, more effective decisions. Curious? Lets explore how this concept isn't just theoretical but could be a tool, for CFOs and other leaders alike.
+Today, I'm writing about a topic that marries the ancient wisdom of collective decision-making with the cutting-edge challenges faced by modern CFOs. Inspired by the recent re-reading of James Surowiecki 's insightful book, "The Wisdom of Crowds," I want to explore how its principles apply directly to our work in finance and strategy. Imagine harnessing the collective intelligence of a diverse group to make smarter, more effective decisions. Curious? Lets explore how this concept isn't just theoretical but could be a tool, for CFOs and other leaders alike.
 
 * * *
 

@@ -23,7 +23,7 @@ Case in point: KPMG signed its audit opinion on SVB on 24/Feb/23 - two weeks bef
 
 Financial statements often fail to capture the worth of intangible assets such as brand reputation, intellectual property, and human capital – elements that are increasingly crucial in our knowledge-based economy.
 
-Case in point: According to [BrandFinance](https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fbrandfinance%2Ecom%2Finsights%2Fhow-much-value-is-there-in-intangible-assets&urlhash=M4pJ&trk=article-ssr-frontend-pulse_little-text-block), the value of intangible assets has risen from 17% of the value of the S&P 500 in 1975 to around 90% in 2022. Do financial analysts/shareholders have enough understanding to assign value to these intangible assets?
+Case in point: According to [BrandFinance](https://brandfinance.com/insights/how-much-value-is-there-in-intangible-assets), the value of intangible assets has risen from 17% of the value of the S&P 500 in 1975 to around 90% in 2022. Do financial analysts/shareholders have enough understanding to assign value to these intangible assets?
 
 * * *
 

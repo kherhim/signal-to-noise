@@ -49,7 +49,7 @@ The distinction between a 'know-it-all' and a 'learn-it-all' mentality can funda
 
 In contrast, the 'learn-it-all' is always in pursuit of growth, understanding that knowledge and skills can always be expanded. This mentality not only fosters personal and professional development but also encourages a culture of collaboration and innovation. 'Learn-it-alls' are typically more successful in adapting to changes and overcoming challenges because they are open to exploring various solutions and learning from mistakes.
 
-Microsoft CEO [Satya Nadella](https://www.linkedin.com/in/satyanadella?trk=article-ssr-frontend-pulse_little-mention) champions the 'learn-it-all' culture and credits it as a significant factor in the company's recent successes. By promoting an environment where employees feel comfortable admitting mistakes and ignorance, they are more likely to seek knowledge and innovative solutions, driving the company forward in a competitive tech landscape.
+Microsoft CEO Satya Nadella champions the 'learn-it-all' culture and credits it as a significant factor in the company's recent successes. By promoting an environment where employees feel comfortable admitting mistakes and ignorance, they are more likely to seek knowledge and innovative solutions, driving the company forward in a competitive tech landscape.
 
 Adopting a 'learn-it-all' mentality does not imply a lack of confidence; rather, it demonstrates a robust form of self-confidence that is not threatened by the unknown but is invigorated by it. It represents a commitment to personal mastery and an understanding that true expertise is not demonstrated by never being wrong, but by the ongoing pursuit of what is right.
 

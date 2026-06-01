@@ -7,7 +7,7 @@ draft: false
 sourceUrl: "https://www.linkedin.com/pulse/output-vs-outcome-himanshu-kher-dn8bf"
 ---
 
-In a [recent post](https://www.linkedin.com/feed/update/urn:li:activity:7388834143310172160/?trk=article-ssr-frontend-pulse_little-text-block), I wrote personal reflections on the distinction between correlation and causation. This post is a few more personal thoughts on another related topic - outputs and outcomes. It is born out of frustration of having interacted with teams that 'produce' reports, 'complete' projects, and more generally spend Herculean effort on doing 'things' - yet the desired outcome is missing in action. I am hoping I am not alone in observing this.
+In a recent post, I wrote personal reflections on the distinction between correlation and causation. This post is a few more personal thoughts on another related topic - outputs and outcomes. It is born out of frustration of having interacted with teams that 'produce' reports, 'complete' projects, and more generally spend Herculean effort on doing 'things' - yet the desired outcome is missing in action. I am hoping I am not alone in observing this.
 
 So here we go.
 
