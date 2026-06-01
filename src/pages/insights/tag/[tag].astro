@@ -1,31 +1,59 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { formatTag, getPublishedInsights, getTagCounts } from '../../../lib/tags';
+import PostList from '../../../components/PostList.astro';
+import {
+  formatTag,
+  getPublishedInsights,
+  getTagCounts,
+  groupPostsForListing,
+} from '../../../lib/tags';
 
 export async function getStaticPaths() {
   const counts = await getTagCounts();
-  const posts = await getPublishedInsights();
+  const all = await getPublishedInsights();
   return counts.map(({ tag }) => {
-    const matching = posts
-      .filter((p) => p.data.tags?.includes(tag))
+    // Any post that carries the tag OR is the parent of a series whose
+    // child carries the tag — so the series parent is included as a
+    // header even when only its children match.
+    const directMatches = all.filter((p) => p.data.tags?.includes(tag));
+    const childSeriesIds = new Set(
+      directMatches
+        .filter((p) => p.data.series?.part !== undefined)
+        .map((p) => p.data.series!.id),
+    );
+    const seriesParents = all.filter(
+      (p) =>
+        p.data.series?.id &&
+        p.data.series.part === undefined &&
+        childSeriesIds.has(p.data.series.id),
+    );
+
+    const matchSet = new Set([
+      ...directMatches.map((p) => p.id),
+      ...seriesParents.map((p) => p.id),
+    ]);
+    const posts = all
+      .filter((p) => matchSet.has(p.id))
       .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
     return {
       params: { tag },
-      props: { tag, posts: matching },
+      props: { tag, posts, all },
     };
   });
 }
 
-const { tag, posts } = Astro.props;
+const { tag, posts, all } = Astro.props;
 const label = formatTag(tag);
-
-const fmt = (d: Date) =>
-  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const items = groupPostsForListing(posts, all);
+// "Posts on this topic" count excludes series parents that were pulled
+// in only for context (they don't themselves carry the tag).
+const directCount = posts.filter((p) => p.data.tags?.includes(tag)).length;
 ---
 
 <BaseLayout
   title={`${label} — essays on signal-to-noise.co`}
-  description={`Every essay on signal-to-noise.co tagged ${label}. ${posts.length} ${posts.length === 1 ? 'piece' : 'pieces'} from Himanshu Kher.`}
+  description={`Every essay on signal-to-noise.co tagged ${label}. ${directCount} ${directCount === 1 ? 'piece' : 'pieces'} from Himanshu Kher.`}
 >
   <section class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
     <header class="mb-16" data-reveal>
@@ -38,52 +66,13 @@ const fmt = (d: Date) =>
         {label}
       </h1>
       <p class="text-lg text-muted leading-relaxed">
-        {posts.length === 1
+        {directCount === 1
           ? 'One essay on this topic.'
-          : `${posts.length} essays on this topic.`}
+          : `${directCount} essays on this topic.`}
       </p>
     </header>
 
-    {posts.length === 0 ? (
-      <p class="text-muted">No posts yet.</p>
-    ) : (
-      <ul class="space-y-12">
-        {posts.map((post) => (
-          <li>
-            <article class="group">
-              <time
-                class="text-sm text-muted block mb-2"
-                datetime={post.data.date.toISOString()}
-              >
-                {fmt(post.data.date)}
-              </time>
-              <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-fg mb-3 group-hover:text-accent transition-colors">
-                <a href={`/insights/${post.id}`}>{post.data.title}</a>
-              </h2>
-              <p class="text-muted leading-relaxed">{post.data.excerpt}</p>
-              {post.data.tags && post.data.tags.length > 0 && (
-                <ul class="flex flex-wrap gap-3 mt-4">
-                  {post.data.tags.map((t) => (
-                    <li class="text-xs uppercase tracking-wide text-muted">
-                      {t === tag ? (
-                        <span>#{t}</span>
-                      ) : (
-                        <a
-                          href={`/insights/tag/${t}/`}
-                          class="hover:text-accent transition-colors"
-                        >
-                          #{t}
-                        </a>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </article>
-          </li>
-        ))}
-      </ul>
-    )}
+    <PostList items={items} highlightTag={tag} />
 
     <footer class="mt-16 pt-8 border-t border-divider/60">
       <a

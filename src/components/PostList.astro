@@ -1,0 +1,121 @@
+---
+/* Unified post list used by /insights and /insights/tag/[tag].
+   Renders standalone posts as flat cards and series as a parent
+   header with matching children indented underneath.
+
+   The `highlightTag` prop, when set, renders that tag's chip as a
+   non-link span (clicking your own tag from itself is useless). */
+import type { ListItem } from '../lib/tags';
+
+interface Props {
+  items: ListItem[];
+  highlightTag?: string;
+}
+
+const { items, highlightTag } = Astro.props;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+{items.length === 0 ? (
+  <p class="text-muted">No posts yet.</p>
+) : (
+  <ul class="space-y-12">
+    {items.map((item) =>
+      item.type === 'series' ? (
+        <li>
+          <article class="group">
+            <time
+              class="text-sm text-muted block mb-2"
+              datetime={item.parent.data.date.toISOString()}
+            >
+              {fmt(item.parent.data.date)}
+            </time>
+            <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-fg mb-2 group-hover:text-accent transition-colors">
+              <a href={`/insights/${item.parent.id}`}>{item.parent.data.title}</a>
+            </h2>
+            <p class="text-xs uppercase tracking-widest text-accent mb-4">
+              {item.children.length === 0 || item.children.length === item.totalChildren
+                ? `A ${item.totalChildren}-part series`
+                : `A ${item.totalChildren}-part series — ${item.children.length} ${item.children.length === 1 ? 'part' : 'parts'} on this topic`}
+            </p>
+            <p class="text-muted leading-relaxed">{item.parent.data.excerpt}</p>
+
+            {item.children.length > 0 && (
+              <ul class="mt-6 space-y-3 border-l-2 border-divider/40 pl-6">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={`/insights/${child.id}`}
+                      class="group/child inline-flex items-baseline gap-4 text-base"
+                    >
+                      <span class="text-muted text-xs uppercase tracking-wide w-14 shrink-0">
+                        Part {child.data.series?.part}
+                      </span>
+                      <span class="text-fg group-hover/child:text-accent transition-colors">
+                        {child.data.title.replace(/^📌\s*\d+\s*—\s*/, '')}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {item.parent.data.tags && item.parent.data.tags.length > 0 && (
+              <ul class="flex flex-wrap gap-3 mt-6">
+                {item.parent.data.tags.map((tag) => (
+                  <li class="text-xs uppercase tracking-wide text-muted">
+                    {tag === highlightTag ? (
+                      <span>#{tag}</span>
+                    ) : (
+                      <a
+                        href={`/insights/tag/${tag}/`}
+                        class="hover:text-accent transition-colors"
+                      >
+                        #{tag}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </article>
+        </li>
+      ) : (
+        <li>
+          <article class="group">
+            <time
+              class="text-sm text-muted block mb-2"
+              datetime={item.post.data.date.toISOString()}
+            >
+              {fmt(item.post.data.date)}
+            </time>
+            <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-fg mb-3 group-hover:text-accent transition-colors">
+              <a href={`/insights/${item.post.id}`}>{item.post.data.title}</a>
+            </h2>
+            <p class="text-muted leading-relaxed">{item.post.data.excerpt}</p>
+            {item.post.data.tags && item.post.data.tags.length > 0 && (
+              <ul class="flex flex-wrap gap-3 mt-4">
+                {item.post.data.tags.map((tag) => (
+                  <li class="text-xs uppercase tracking-wide text-muted">
+                    {tag === highlightTag ? (
+                      <span>#{tag}</span>
+                    ) : (
+                      <a
+                        href={`/insights/tag/${tag}/`}
+                        class="hover:text-accent transition-colors"
+                      >
+                        #{tag}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </article>
+        </li>
+      ),
+    )}
+  </ul>
+)}

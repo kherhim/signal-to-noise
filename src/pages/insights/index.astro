@@ -1,66 +1,19 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { formatTag, getTagCounts } from '../../lib/tags';
+import PostList from '../../components/PostList.astro';
+import {
+  formatTag,
+  getPublishedInsights,
+  getTagCounts,
+  groupPostsForListing,
+} from '../../lib/tags';
 
-// In dev, show drafts so you can preview them; in prod, drafts stay hidden.
-const posts = (await getCollection(
-  'insights',
-  ({ data }) => import.meta.env.DEV || !data.draft,
-)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const posts = (await getPublishedInsights()).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
 
+const items = groupPostsForListing(posts, posts);
 const tagCounts = await getTagCounts();
-
-/* Group series parents with their children for the list view.
-   - Posts not in any series render as before.
-   - A series parent renders with its children indented underneath.
-   - An orphan child (parent not visible) renders as a standalone post.
-
-   Two-pass algorithm so children that come earlier in date order than
-   their parent don't get rendered twice. */
-
-type Post = (typeof posts)[number];
-
-// Pass 1 — identify series parents + their children.
-const seriesByParent = new Map<string, { parent: Post; children: Post[] }>();
-const nestedChildIds = new Set<string>();
-
-for (const post of posts) {
-  if (post.data.series?.id && post.data.series.part === undefined) {
-    const sid = post.data.series.id;
-    const children = posts
-      .filter((p) => p.data.series?.id === sid && p.data.series.part !== undefined)
-      .sort((a, b) => (a.data.series!.part ?? 0) - (b.data.series!.part ?? 0));
-    seriesByParent.set(post.id, { parent: post, children });
-    children.forEach((c) => nestedChildIds.add(c.id));
-  }
-}
-
-// Pass 2 — build a unified list of items with an effective sort date.
-type ListItem =
-  | { type: 'post'; post: Post; sortDate: number }
-  | { type: 'series'; parent: Post; children: Post[]; sortDate: number };
-
-const items: ListItem[] = [];
-
-// Series items — effective date = most recent activity in the series,
-// so the series stays near the top while new parts are being published.
-for (const { parent, children } of seriesByParent.values()) {
-  const dates = [parent.data.date.getTime(), ...children.map((c) => c.data.date.getTime())];
-  items.push({ type: 'series', parent, children, sortDate: Math.max(...dates) });
-}
-
-// Standalone posts — skip series parents and any child of a visible parent.
-for (const post of posts) {
-  if (seriesByParent.has(post.id)) continue;
-  if (nestedChildIds.has(post.id)) continue;
-  items.push({ type: 'post', post, sortDate: post.data.date.getTime() });
-}
-
-items.sort((a, b) => b.sortDate - a.sortDate);
-
-const fmt = (d: Date) =>
-  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <BaseLayout
@@ -100,94 +53,6 @@ const fmt = (d: Date) =>
       </nav>
     )}
 
-    {items.length === 0 ? (
-      <p class="text-muted">No posts yet.</p>
-    ) : (
-      <ul class="space-y-12">
-        {items.map((item) =>
-          item.type === 'series' ? (
-            <li>
-              <article class="group">
-                <time
-                  class="text-sm text-muted block mb-2"
-                  datetime={item.parent.data.date.toISOString()}
-                >
-                  {fmt(item.parent.data.date)}
-                </time>
-                <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-fg mb-2 group-hover:text-accent transition-colors">
-                  <a href={`/insights/${item.parent.id}`}>{item.parent.data.title}</a>
-                </h2>
-                <p class="text-xs uppercase tracking-widest text-accent mb-4">
-                  A {item.children.length}-part series
-                </p>
-                <p class="text-muted leading-relaxed">{item.parent.data.excerpt}</p>
-
-                <ul class="mt-6 space-y-3 border-l-2 border-divider/40 pl-6">
-                  {item.children.map((child) => (
-                    <li>
-                      <a
-                        href={`/insights/${child.id}`}
-                        class="group/child inline-flex items-baseline gap-4 text-base"
-                      >
-                        <span class="text-muted text-xs uppercase tracking-wide w-14 shrink-0">
-                          Part {child.data.series?.part}
-                        </span>
-                        <span class="text-fg group-hover/child:text-accent transition-colors">
-                          {child.data.title.replace(/^📌\s*\d+\s*—\s*/, '')}
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-
-                {item.parent.data.tags && item.parent.data.tags.length > 0 && (
-                  <ul class="flex flex-wrap gap-3 mt-6">
-                    {item.parent.data.tags.map((tag) => (
-                      <li class="text-xs uppercase tracking-wide text-muted">
-                        <a
-                          href={`/insights/tag/${tag}/`}
-                          class="hover:text-accent transition-colors"
-                        >
-                          #{tag}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </article>
-            </li>
-          ) : (
-            <li>
-              <article class="group">
-                <time
-                  class="text-sm text-muted block mb-2"
-                  datetime={item.post.data.date.toISOString()}
-                >
-                  {fmt(item.post.data.date)}
-                </time>
-                <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-fg mb-3 group-hover:text-accent transition-colors">
-                  <a href={`/insights/${item.post.id}`}>{item.post.data.title}</a>
-                </h2>
-                <p class="text-muted leading-relaxed">{item.post.data.excerpt}</p>
-                {item.post.data.tags && item.post.data.tags.length > 0 && (
-                  <ul class="flex flex-wrap gap-3 mt-4">
-                    {item.post.data.tags.map((tag) => (
-                      <li class="text-xs uppercase tracking-wide text-muted">
-                        <a
-                          href={`/insights/tag/${tag}/`}
-                          class="hover:text-accent transition-colors"
-                        >
-                          #{tag}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </article>
-            </li>
-          ),
-        )}
-      </ul>
-    )}
+    <PostList items={items} />
   </section>
 </BaseLayout>
