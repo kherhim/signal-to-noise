@@ -1,5 +1,5 @@
 ---
-title: "Checkmate in the Boardroom Ballet: How Execution Pirouettes Past Strategy and Culture"
+title: "Checkmate in the boardroom ballet: How execution pirouettes past strategy and culture"
 date: 2023-11-16
 excerpt: "In the grand symphony of corporate management, the perennial debate between strategy and culture often takes center stage. As CFOs, while we may be inclined to lean towards stra…"
 tags: ["leadership", "strategy", "fp-and-a", "cfo", "teams", "reflections"]

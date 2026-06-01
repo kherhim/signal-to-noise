@@ -1,5 +1,5 @@
 ---
-title: "Oh Captain! My Captain!"
+title: "Oh captain! My captain!"
 date: 2024-05-14
 excerpt: "In a society that reveres stories of heroism and dramatic success, the image of a decisive, action-oriented leader dominates our collective imagination. This leader, lets call h…"
 tags: ["leadership", "strategy", "fp-and-a", "teams", "risk"]

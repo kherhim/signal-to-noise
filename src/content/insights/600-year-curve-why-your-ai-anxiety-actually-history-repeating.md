@@ -1,5 +1,5 @@
 ---
-title: "The 600-year curve: Why your \"AI Anxiety\" is actually History repeating itself."
+title: "The 600-year curve: Why your \"AI anxiety\" is actually history repeating itself."
 date: 2026-05-12
 excerpt: "I want you to look at the graph for a second. Really look at it. Look hard."
 tags: ["ai", "risk", "reflections"]

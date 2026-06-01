@@ -1,5 +1,5 @@
 ---
-title: "The Power of Precision: Focus for Success"
+title: "The power of precision: Focus for success"
 date: 2023-12-07
 excerpt: "As a CFO, my perspective on business strategy has always been grounded in the principle of focus. In a competitive marketplace, companies often face the temptation to diversify…"
 tags: ["leadership", "strategy", "cfo", "risk"]

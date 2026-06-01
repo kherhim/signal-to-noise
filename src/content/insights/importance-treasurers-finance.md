@@ -1,5 +1,5 @@
 ---
-title: "The importance of Treasurers in Finance"
+title: "The importance of treasurers in finance"
 date: 2024-03-11
 excerpt: "This week , I am departing from writing about something topical, but rather expressing a \\strong\\ point of view on why Treasurers should be considered as top candidates for CFO…"
 tags: ["leadership", "strategy", "fp-and-a", "cfo", "teams", "risk"]

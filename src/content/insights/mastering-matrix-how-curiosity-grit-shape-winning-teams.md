@@ -1,5 +1,5 @@
 ---
-title: "Mastering the matrix: how Curiosity and Grit shape winning teams"
+title: "Mastering the matrix: How curiosity and grit shape winning teams"
 date: 2024-03-26
 excerpt: "In a world where change is the only constant, the art of building great teams requires more than just matching skills to roles. It demands a deeper understanding of the innate q…"
 tags: ["leadership", "strategy", "ai", "teams", "risk", "reflections"]

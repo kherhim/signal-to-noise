@@ -1,5 +1,5 @@
 ---
-title: "The 10 commandments of FP&A storytelling - Part 2"
+title: "The 10 commandments of FP&A storytelling - part 2"
 date: 2025-08-18
 excerpt: "Two months ago, I posted an article, on what I thought were the 10 commandments of FP&A story telling. It was born out of the some of my past frustrations of working with FP&A p…"
 tags: ["strategy", "fp-and-a", "cfo", "teams", "risk", "reflections"]

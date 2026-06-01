@@ -1,5 +1,5 @@
 ---
-title: "Output, Outcome, and Systems Approach: Friday focus from a CFO"
+title: "Output, outcome, and systems approach: Friday focus from a CFO"
 date: 2024-11-29
 excerpt: "I often find myself reflecting on how companies, teams, and even individuals measure success. In my opinion there are three distinct approaches : output focus, outcome focus, an…"
 tags: ["leadership", "strategy", "cfo", "teams", "risk", "reflections"]

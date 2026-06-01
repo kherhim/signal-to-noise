@@ -1,5 +1,5 @@
 ---
-title: "Output Vs. Outcome"
+title: "Output vs. outcome"
 date: 2025-11-20
 excerpt: "In a recent post, I wrote personal reflections on the distinction between correlation and causation. This post is a few more personal thoughts on another related topic - outputs…"
 tags: ["teams", "reflections"]

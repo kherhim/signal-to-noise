@@ -1,5 +1,5 @@
 ---
-title: "Time Ticks On: Why We Can’t Embezzle Hours from Father Time"
+title: "Time ticks on: Why we can’t embezzle hours from Father Time"
 date: 2023-12-31
 excerpt: "As we stand on the brink of another year-end, I find myself musing humorously over a question that's more philosophical than financial: Why do we move forwards in time and not b…"
 tags: ["cfo", "risk", "reflections"]

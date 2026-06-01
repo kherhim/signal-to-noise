@@ -1,5 +1,5 @@
 ---
-title: "Freud, Finance & Folly: A CFO's Perspective"
+title: "Freud, finance & folly: A CFO's perspective"
 date: 2024-02-08
 excerpt: "Generally, finance is a world of numbers, graphs, and cold, hard data. Nevertheless, behind the world of spreadsheets and financial models, there is a very human sea of emotions…"
 tags: ["leadership", "strategy", "fp-and-a", "cfo", "teams", "risk", "reflections"]

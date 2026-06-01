@@ -1,5 +1,5 @@
 ---
-title: "The 10 Commandments of FP&A storytelling"
+title: "The 10 commandments of FP&A storytelling"
 date: 2025-06-04
 excerpt: "In November 2023, I had posted an article about a storytelling cheat sheet for CFOs. This artcile is a continuation of that post, but targetted towards juniour FP&A professional…"
 tags: ["strategy", "fp-and-a", "cfo", "teams", "risk"]

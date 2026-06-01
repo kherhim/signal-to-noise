@@ -1,5 +1,5 @@
 ---
-title: "High-Wire Acts in High Finance: The CFO’s Circus of Growth vs. Cash Flow"
+title: "High-wire acts in high finance: The CFO’s circus of growth vs. cash flow"
 date: 2023-11-07
 excerpt: "As CFOs, we are often likened to navigators steering through the treacherous waters of corporate finance, where the twin beacons of growth and cash flow guide our journey. The p…"
 tags: ["strategy", "ai", "fp-and-a", "cfo", "risk"]

@@ -1,5 +1,5 @@
 ---
-title: "Having a view vs Having a way"
+title: "Having a view vs having a way"
 date: 2025-09-04
 excerpt: "Example: A CFO saying, “I believe our company should diversify into crypto trading.” That’s a view."
 tags: ["leadership", "strategy", "cfo"]

@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/lint-titles.mjs",
     "build": "astro build",
+    "lint:titles": "node scripts/lint-titles.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

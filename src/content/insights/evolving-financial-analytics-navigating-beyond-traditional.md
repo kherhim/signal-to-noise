@@ -1,5 +1,5 @@
 ---
-title: "Evolving Financial Analytics: Navigating Beyond Traditional Statements in the Digital Age"
+title: "Evolving financial analytics: Navigating beyond traditional statements in the digital age"
 date: 2024-01-11
 excerpt: "In this age of information, the significance and usefulness of traditional financial statements, for assessing a company’s wellbeing have become a topic of intense debate. As a…"
 tags: ["leadership", "ai", "fp-and-a", "risk", "reflections"]
