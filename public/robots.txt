@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://signal-to-noise.co/sitemap-index.xml

@@ -43,7 +43,11 @@ const featured = pickFeatured(homepageCandidates);
 const recent = homepageCandidates.filter((i) => i.id !== featured?.id).slice(0, 3);
 ---
 
-<BaseLayout title="signal-to-noise.co — Himanshu" stars>
+<BaseLayout
+  title="Signal to Noise — Finance, AI, and Capital Strategy by Himanshu Kher"
+  description="Pragmatic essays on finance, AI, and capital strategy from a CFO with 25+ years in the field. Signal, not noise."
+  stars
+>
   <Hero />
 
   {featured && (

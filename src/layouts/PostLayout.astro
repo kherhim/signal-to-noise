@@ -37,7 +37,11 @@ const formatted = date.toLocaleDateString('en-GB', {
 });
 ---
 
-<BaseLayout title={`${title} — signal-to-noise.co`} description={excerpt}>
+<BaseLayout
+  title={`${title} — signal-to-noise.co`}
+  description={excerpt}
+  ogImage={coverImage}
+>
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
     {coverImage && (
       <figure class="mb-10">
