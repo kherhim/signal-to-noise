@@ -1,12 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatTag, getTagCounts } from '../../lib/tags';
 
 // In dev, show drafts so you can preview them; in prod, drafts stay hidden.
 const posts = (await getCollection(
   'insights',
   ({ data }) => import.meta.env.DEV || !data.draft,
 )).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const tagCounts = await getTagCounts();
 
 /* Group series parents with their children for the list view.
    - Posts not in any series render as before.
@@ -76,6 +79,27 @@ const fmt = (d: Date) =>
       </p>
     </header>
 
+    {tagCounts.length > 0 && (
+      <nav class="mb-16" aria-label="Browse by topic">
+        <h2 class="text-sm uppercase tracking-widest text-accent mb-4">
+          Browse by topic
+        </h2>
+        <ul class="flex flex-wrap gap-2">
+          {tagCounts.map(({ tag, count }) => (
+            <li>
+              <a
+                href={`/insights/tag/${tag}/`}
+                class="inline-flex items-baseline gap-1.5 px-3 py-1.5 border border-divider rounded text-sm text-fg hover:text-accent hover:border-accent/40 transition-colors"
+              >
+                <span>{formatTag(tag)}</span>
+                <span class="text-xs text-muted">{count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
     {items.length === 0 ? (
       <p class="text-muted">No posts yet.</p>
     ) : (
@@ -119,7 +143,14 @@ const fmt = (d: Date) =>
                 {item.parent.data.tags && item.parent.data.tags.length > 0 && (
                   <ul class="flex flex-wrap gap-3 mt-6">
                     {item.parent.data.tags.map((tag) => (
-                      <li class="text-xs uppercase tracking-wide text-muted">#{tag}</li>
+                      <li class="text-xs uppercase tracking-wide text-muted">
+                        <a
+                          href={`/insights/tag/${tag}/`}
+                          class="hover:text-accent transition-colors"
+                        >
+                          #{tag}
+                        </a>
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -141,7 +172,14 @@ const fmt = (d: Date) =>
                 {item.post.data.tags && item.post.data.tags.length > 0 && (
                   <ul class="flex flex-wrap gap-3 mt-4">
                     {item.post.data.tags.map((tag) => (
-                      <li class="text-xs uppercase tracking-wide text-muted">#{tag}</li>
+                      <li class="text-xs uppercase tracking-wide text-muted">
+                        <a
+                          href={`/insights/tag/${tag}/`}
+                          class="hover:text-accent transition-colors"
+                        >
+                          #{tag}
+                        </a>
+                      </li>
                     ))}
                   </ul>
                 )}

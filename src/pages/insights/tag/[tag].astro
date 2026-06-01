@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { formatTag, getPublishedInsights, getTagCounts } from '../../../lib/tags';
+
+export async function getStaticPaths() {
+  const counts = await getTagCounts();
+  const posts = await getPublishedInsights();
+  return counts.map(({ tag }) => {
+    const matching = posts
+      .filter((p) => p.data.tags?.includes(tag))
+      .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+    return {
+      params: { tag },
+      props: { tag, posts: matching },
+    };
+  });
+}
+
+const { tag, posts } = Astro.props;
+const label = formatTag(tag);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout
+  title={`${label} — essays on signal-to-noise.co`}
+  description={`Every essay on signal-to-noise.co tagged ${label}. ${posts.length} ${posts.length === 1 ? 'piece' : 'pieces'} from Himanshu Kher.`}
+>
+  <section class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
+    <header class="mb-16" data-reveal>
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">
+        <a href="/insights" class="hover:underline underline-offset-4">Insights</a>
+        <span class="text-muted px-2">/</span>
+        <span>Topic</span>
+      </p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">
+        {label}
+      </h1>
+      <p class="text-lg text-muted leading-relaxed">
+        {posts.length === 1
+          ? 'One essay on this topic.'
+          : `${posts.length} essays on this topic.`}
+      </p>
+    </header>
+
+    {posts.length === 0 ? (
+      <p class="text-muted">No posts yet.</p>
+    ) : (
+      <ul class="space-y-12">
+        {posts.map((post) => (
+          <li>
+            <article class="group">
+              <time
+                class="text-sm text-muted block mb-2"
+                datetime={post.data.date.toISOString()}
+              >
+                {fmt(post.data.date)}
+              </time>
+              <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-fg mb-3 group-hover:text-accent transition-colors">
+                <a href={`/insights/${post.id}`}>{post.data.title}</a>
+              </h2>
+              <p class="text-muted leading-relaxed">{post.data.excerpt}</p>
+              {post.data.tags && post.data.tags.length > 0 && (
+                <ul class="flex flex-wrap gap-3 mt-4">
+                  {post.data.tags.map((t) => (
+                    <li class="text-xs uppercase tracking-wide text-muted">
+                      {t === tag ? (
+                        <span>#{t}</span>
+                      ) : (
+                        <a
+                          href={`/insights/tag/${t}/`}
+                          class="hover:text-accent transition-colors"
+                        >
+                          #{t}
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <footer class="mt-16 pt-8 border-t border-divider/60">
+      <a
+        href="/insights"
+        class="text-accent hover:text-accent-hover transition-colors"
+      >
+        ← All insights
+      </a>
+    </footer>
+  </section>
+</BaseLayout>

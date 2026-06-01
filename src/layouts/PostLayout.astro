@@ -16,6 +16,9 @@ interface Props {
   seriesKicker?: string;
   seriesKickerHref?: string;
   seriesParts?: { href: string; label: string; part: number }[];
+  /* Related insights — 2-3 posts sharing tags with this one, rendered
+     at the article end. Computed at the page level. */
+  related?: { href: string; title: string; excerpt: string; date: Date }[];
 }
 
 const {
@@ -28,7 +31,11 @@ const {
   seriesKicker,
   seriesKickerHref,
   seriesParts,
+  related = [],
 } = Astro.props;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
 const formatted = date.toLocaleDateString('en-GB', {
   day: 'numeric',
@@ -76,8 +83,13 @@ const formatted = date.toLocaleDateString('en-GB', {
       {tags.length > 0 && (
         <ul class="flex flex-wrap gap-2 mt-6">
           {tags.map((t) => (
-            <li class="text-xs uppercase tracking-wide text-muted px-2 py-1 border border-divider rounded">
-              {t}
+            <li>
+              <a
+                href={`/insights/tag/${t}/`}
+                class="inline-block text-xs uppercase tracking-wide text-muted px-2 py-1 border border-divider rounded hover:text-accent hover:border-accent/40 transition-colors"
+              >
+                {t}
+              </a>
             </li>
           ))}
         </ul>
@@ -109,6 +121,38 @@ const formatted = date.toLocaleDateString('en-GB', {
           ))}
         </ol>
       </section>
+    )}
+
+    {related.length > 0 && (
+      <aside
+        class="mt-16 pt-8 border-t border-divider/60"
+        aria-labelledby="related-heading"
+      >
+        <h2
+          id="related-heading"
+          class="text-sm uppercase tracking-widest text-accent mb-6"
+        >
+          Related insights
+        </h2>
+        <ul class="space-y-8">
+          {related.map((r) => (
+            <li>
+              <article class="group">
+                <time
+                  class="text-xs text-muted block mb-2"
+                  datetime={r.date.toISOString()}
+                >
+                  {fmt(r.date)}
+                </time>
+                <h3 class="text-lg sm:text-xl font-semibold tracking-tight text-fg mb-2 group-hover:text-accent transition-colors">
+                  <a href={r.href}>{r.title}</a>
+                </h3>
+                <p class="text-sm text-muted leading-relaxed">{r.excerpt}</p>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </aside>
     )}
   </article>
 </BaseLayout>

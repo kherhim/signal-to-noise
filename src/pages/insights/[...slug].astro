@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
+import { getRelatedPosts } from '../../lib/tags';
 
 export async function getStaticPaths() {
   // In dev, generate routes for drafts too; in prod, drafts are excluded.
@@ -16,6 +17,12 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+/* Related insights — chosen by tag overlap, then recency. Suppressed for
+   series children (their parent + sibling parts are already listed) and
+   posts with no tags + no fallback corpus. */
+const isSeriesChild = post.data.series?.part !== undefined;
+const related = isSeriesChild ? [] : await getRelatedPosts(post, 3);
 
 /* Compute series context for this article (if any).
    - Children get a kicker "Part X of N · <Series name>" linked to the parent.
@@ -64,6 +71,12 @@ if (post.data.series) {
   seriesKicker={seriesKicker}
   seriesKickerHref={seriesKickerHref}
   seriesParts={seriesParts}
+  related={related.map((p) => ({
+    href: `/insights/${p.id}`,
+    title: p.data.title,
+    excerpt: p.data.excerpt,
+    date: p.data.date,
+  }))}
 >
   <Content />
 </PostLayout>
