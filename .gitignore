@@ -26,3 +26,8 @@ pnpm-debug.log*
 .idea/
 *.swp
 *.swo
+
+# Personal reference material — keep locally, never commit
+Linkedin Profile-self.pdf
+*.resume.pdf
+*.cv.pdf
