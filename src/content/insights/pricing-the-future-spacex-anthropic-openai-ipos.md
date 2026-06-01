@@ -1,5 +1,5 @@
 ---
-title: "Pricing the Future: How CFOs Should Read the SpaceX, Anthropic and OpenAI IPOs"
+title: "Pricing the future: How CFOs should read the SpaceX, Anthropic and OpenAI IPOs"
 date: 2026-05-31
 excerpt: "Three landmark IPOs are coming. Read them through capital structure, governance, and partner dependency — not the hype."
 tags: ["ipo", "ai", "capital-markets", "strategy"]
