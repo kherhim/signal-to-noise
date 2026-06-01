@@ -5,6 +5,8 @@ excerpt: "In a world where change is the only constant, the art of building grea
 tags: ["leadership", "strategy", "ai", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/mastering-matrix-how-curiosity-grit-shape-winning-teams-himanshu-kher-q9osf"
+coverImage: /img/curiosity-vs-grit.webp
+coverImageAlt: "A 2x2 matrix on a black canvas, Curiosity on the y-axis and Grit on the x-axis. Quadrants labeled: high-curiosity/low-grit Ideators needing direction; high-curiosity/high-grit Visionaries with determination; low-curiosity/low-grit Seekers of motivation; low-curiosity/high-grit Executors with a mission."
 ---
 
 * * *
