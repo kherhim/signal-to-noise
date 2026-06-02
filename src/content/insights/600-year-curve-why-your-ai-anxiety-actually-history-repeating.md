@@ -55,7 +55,7 @@ But on the other side of that chaos was the enlightenment. The Scientific Revolu
 
 * * *
 
-## The 2026 Pivot
+## The 2026 pivot
 
 Look at the end of that graph. That line isn't just a count of "books"—it represents the total sum of human output.
 

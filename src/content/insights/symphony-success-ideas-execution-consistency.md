@@ -65,7 +65,7 @@ Building a culture that values ideas, execution, and consistency is akin to cond
 
 * * *
 
-### The Audience’s perspective: Impact
+### The audience’s perspective: Impact
 
 Ultimately, the success of our symphony is judged by its impact on the audience – the customers, stakeholders, and communities we serve. A great company, like a great symphony, resonates with its audience, creating lasting value and leaving a memorable impression.
 

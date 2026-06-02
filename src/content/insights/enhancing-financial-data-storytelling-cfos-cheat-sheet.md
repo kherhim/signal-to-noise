@@ -82,7 +82,7 @@ Remember, the goal is to inform, engage, and motivate your audience to make info
 
 -   Predictive analytics: Use predictive analytics to forecast future trends and scenarios. This can provide a forward-looking perspective that is highly valuable for strategic planning. Incorporate seasonality, trends rather than ‘assume’ straight-line
 -   AI and machine learning: Incorporate AI and machine learning for deeper insights and more accurate predictions.
--   Data Segmentation: Segment data to uncover hidden patterns and insights. This can reveal opportunities and risks that might not be apparent from aggregate data. Its easier to data dump, harder to segment intelligently.
+-   Data segmentation: Segment data to uncover hidden patterns and insights. This can reveal opportunities and risks that might not be apparent from aggregate data. Its easier to data dump, harder to segment intelligently.
 
 * * *
 
@@ -112,7 +112,7 @@ Remember, the goal is to inform, engage, and motivate your audience to make info
 
 ### 13\. Leverage technology
 
--   Data Visualization Tools: Utilize tools like Tableau, Power BI, or Google Data Studio for advanced data visualization.
+-   Data visualization tools: Utilize tools like Tableau, Power BI, or Google Data Studio for advanced data visualization.
 -   Collaborative platforms: Use collaborative platforms like Slack or Microsoft Teams to share data stories and gather feedback in real-time.
 -   Automation: Automate data collection and reporting processes to ensure accuracy and save time.
 

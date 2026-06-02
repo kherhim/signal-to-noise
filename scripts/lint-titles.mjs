@@ -41,6 +41,10 @@ const ALLOWLIST = new Set([
   'wAI', // "Where there is will, there is wAI"
   // Style choice: Fintech as a brand/category capitalization
   'Fintech', 'Fintechs',
+  // Named individuals / paradigms referenced across the corpus
+  'Stockdale',                  // James Stockdale / the Stockdale Paradox
+  'Porat',                      // Ruth Porat (Alphabet CFO)
+  'Ruth',                       // First-name reference when paired with Porat
   // Common days/months
   'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
   'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
@@ -120,10 +124,10 @@ function lintTitle(title) {
     (m) => m.replace(/[.?!;]/g, PLACEHOLDER),
   );
 
-  // Clause separators: colon, em-dash, sentence-end punctuation.
+  // Clause separators: colon, em-dash, en-dash, sentence-end punctuation.
   const offenders = [];
   const placeholderRe = new RegExp(PLACEHOLDER, 'g');
-  const clauses = masked.split(/[:—?!.;]+/);
+  const clauses = masked.split(/[:—–?!.;]+/);
   for (const clause of clauses) {
     const restored = clause.replace(placeholderRe, '.');
     const tokens = restored.trim().split(/\s+/).filter(Boolean);

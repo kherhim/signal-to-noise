@@ -13,7 +13,7 @@ The allocation of funds towards brand investments, especially in sports sponsors
 
 * * *
 
-Understanding the Value of Sports Sponsorship
+### Understanding the value of sports sponsorship
 
 The strategic decision to invest in sports sponsorship is driven by the unique value it brings to the brand. From enhancing brand visibility across diverse audiences to fostering deep and meaningful engagement, sports sponsorships offer a direct pathway to the heart of consumer passions.
 
@@ -23,7 +23,7 @@ Successful cases, such as Nike's long-standing association with global football 
 
 * * *
 
-### A CFO's framework for measuring RoI
+### A CFO's framework for measuring ROI
 
 Traditionally, the success of sports sponsorships has been gauged by visibility and reach—metrics that, while important, fall short of illustrating the full spectrum of potential returns. In today's data-driven world, CFOs are increasingly tasked with quantifying the impact of every dollar spent. The need for a robust framework to measure the returns on brand investments in sports sponsorship is more critical than ever, ensuring these ventures contribute to the company's bottom line and strategic goals. Presented below is a six-step framework that attempts to do just that.
 

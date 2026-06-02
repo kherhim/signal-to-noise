@@ -19,7 +19,7 @@ In a world where change is the only constant, the art of building great teams re
 
 ## What’s the big deal with curiosity and grit?
 
-### The power of Curiosity in a team
+### The power of curiosity in a team
 
 Curiosity goes beyond questioning; it serves as a tool for leaders to question existing norms imagine fresh opportunities and steer their organizations towards uncharted territories. Figures such, as Elon Musk and Jeff Bezos showcase how curiosity can spur space exploration or transform the retail landscape. They illustrate that curiosity fuels innovation pushing limits and venturing into domains. By fostering a mindset of growth and education curiosity promotes the pursuit of knowledge that paves the way, for ideas and offerings.
 
@@ -27,7 +27,7 @@ Curiosity goes beyond questioning; it serves as a tool for leaders to question e
 
 Grit, the relentless pursuit of long-term goals, stands at the core of enduring success. It’s the quality that enables leaders like Nelson Mandela to pursue their vision with unwavering dedication, despite immense challenges. Through grit, teams maintain their course toward impactful achievements, inspiring their peers to persevere through hardships and celebrate the rewards of their persistence.
 
-### High Curiosity and High Grit: The leaders of tomorrow
+### High curiosity and high grit: The leaders of tomorrow
 
 Why high Curiosity? In an era marked by rapid technological advancements and shifting market dynamics, high curiosity is non-negotiable for leaders. It’s the driving force behind lifelong learning and adaptability — qualities essential for navigating the future. Curious leaders are better equipped to anticipate changes, innovate in response to emerging trends, and lead their organizations through transformational shifts.
 
@@ -35,7 +35,7 @@ Why high Grit? The journey towards innovation and achieving success is filled wi
 
 * * *
 
-## The Curiosity vs. Grit matrix
+## The curiosity vs. Grit matrix
 
 Exploring the way curiosity and grit work together in a team can offer valuable insights into enhancing its effectiveness. Picture a chart with one side representing Curiosity and the other side representing Grit. This chart serves as a useful tool for understanding how these two qualities interact and impact an individual’s ability to contribute to a team. By examining the different sections of the Curiosity vs. Grit matrix, we can recognize each team member’s unique strengths and areas for improvement, allowing us to develop strategies that leverage their abilities while addressing their shortcomings.
 
@@ -61,7 +61,7 @@ Facing the constant evolution of technology, the key skill now lies not in maste
 
 * * *
 
-## Bridging Curiosity and Grit: strategies for cultivating both
+## Bridging curiosity and grit: strategies for cultivating both
 
 Developing these essential qualities in teams isn’t just beneficial; it’s necessary for the sustainability and growth of organizations. Here’s how to cultivate both:
 
@@ -73,7 +73,7 @@ Developing these essential qualities in teams isn’t just beneficial; it’s ne
 4.  Valuing exploration over efficiency: Sometimes, the pursuit of new ideas means taking the longer route. Reward the journey of exploration, not just the destination.
 5.  Learning from setbacks: Foster resilience by highlighting what can be learned from every failure, turning setbacks into stepping stones.decidimus, discimus, surgimus
 
-### Building Grit for long-term success
+### Building grit for long-term success
 
 1.  Set clear, long-term goals: Help employees define their long-term aspirations and understand how their work contributes to these goals. The clarity can fuel persistence.
 2.  Foster a resilient culture: Create a supportive environment that views setbacks as learning opportunities. Share stories of perseverance within the organization to inspire others.
@@ -83,7 +83,7 @@ Developing these essential qualities in teams isn’t just beneficial; it’s ne
 
 * * *
 
-## The future of leadership: adapting to change with Curiosity and Grit
+## The future of leadership: adapting to change with curiosity and grit
 
 Fostering a strong sense of curiosity and grit within teams takes dedicated effort and thoughtful planning. Training programs aimed at nurturing talent should highlight the importance of being adaptable, bouncing back from setbacks and thriving in uncertain situations. Promoting a mindset focused on continual growth, fostering an environment that values creativity and creating supportive communities within the workplace all play a role in developing these essential traits.
 

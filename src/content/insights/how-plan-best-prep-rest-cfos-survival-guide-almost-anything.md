@@ -7,7 +7,7 @@ draft: false
 sourceUrl: "https://www.linkedin.com/pulse/how-plan-best-prep-rest-cfos-survival-guide-almost-anything-kher-b4zyc"
 ---
 
-### Introduction to the Stockdale Paradox
+### Introduction to the Stockdale paradox
 
 In the heart of Vietnam War history lies a powerful lesson on resilience and faith, known today as the Stockdale Paradox. This concept was named after Admiral James Stockdale, who survived eight years of captivity under harsh conditions by embracing a stark reality while never losing faith in the eventual outcome. For finance leaders, this paradox isn't just a tale of survival; it's a strategic blueprint for navigating the unpredictable tides of the business world.
 
@@ -25,7 +25,7 @@ In the next sections, we'll explore how to apply this mindset more concretely in
 
 * * *
 
-### Application of the Stockdale Paradox in financial leadership
+### Application of the Stockdale paradox in financial leadership
 
 In corporate finance, the application of the Stockdale Paradox involves a nuanced blend of optimism and realism. Here's how finance leaders can adopt this mindset:
 

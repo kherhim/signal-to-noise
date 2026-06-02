@@ -102,7 +102,7 @@ Here’s how I approach these three frameworks in practice:
 
 * * *
 
-### Why Systems Focus Is the Key to Longevity
+### Why systems focus is the key to longevity
 
 As finance leaders, our role is not just to drive results but to build resilience. Outcomes may fluctuate with market conditions, but a strong system will adapt and endure.
 

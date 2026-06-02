@@ -35,7 +35,7 @@ The modern CFO does more than crunch numbers and balance books. They are the nar
 
 > Through her storytelling approach, Ruth Porat has been instrumental in building investor confidence and conveying Alphabet’s financial health and strategic direction, demonstrating the power of effective communication in the role of a CFO.
 
-### Key Aspects of Ruth Porat's Storytelling:
+### Key aspects of Ruth porat's storytelling:
 
 Clarity and Transparency: Porat has been known for her clear communication style, making complex financial concepts and results understandable. She breaks down Alphabet's diverse and intricate revenue streams, ranging from advertising to cloud computing, in a way that is accessible to a broad audience.        
 

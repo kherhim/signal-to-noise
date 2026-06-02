@@ -24,8 +24,8 @@ What it really means: your message should change based on who’s in the room. S
 Real example: You’re reviewing Q3 marketing ROI.
 
 -   For the CFO: “We can hit FY EBITDA with a £1.2m reallocation from brand to performance without raising total spend; CAC drops from £142 to £128 within two quarters.”
--   For the CMO: “Shifting £1.2m from channels A & B to paid search and affiliate lifts net-new customers by ~9% this half without hurting brand search.”
--   For the Board: “Reallocation preserves FY EBITDA while keeping growth guidance intact; risk is execution timing over Black Friday.”
+-   For the cmo: “Shifting £1.2m from channels A & B to paid search and affiliate lifts net-new customers by ~9% this half without hurting brand search.”
+-   For the board: “Reallocation preserves FY EBITDA while keeping growth guidance intact; risk is execution timing over Black Friday.”
 
 Try this prompt before you build slides:
 

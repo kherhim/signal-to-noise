@@ -75,7 +75,7 @@ Case in point: Think Crypto (what's the accounting treatment again?) and AI (How
 
 * * *
 
-### Time for Evolution
+### Time for evolution
 
 While traditional financial statements remain a fundamental element of financial analysis, their role must evolve. As financial stewards, we must embrace a more comprehensive approach to assessing company health, one that recognizes the value of both quantitative and qualitative data in painting a true picture of a company's vitality in an era of ubiquitous information.
 

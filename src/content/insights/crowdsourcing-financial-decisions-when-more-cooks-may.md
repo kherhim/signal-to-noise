@@ -13,7 +13,7 @@ Today, I'm writing about a topic that marries the ancient wisdom of collective d
 
 * * *
 
-### The essence of "The Wisdom of Crowds"
+### The essence of "the wisdom of crowds"
 
 At its core, "The Wisdom of Crowds" presents a compelling argument: under the right conditions, the collective insight of a group can surpass even the smartest individual within it. Surowiecki identifies three crucial conditions for a crowd's wisdom to shine: diversity of opinion, independence, and decentralization. Additionally, a proper mechanism to aggregate these diverse opinions into a collective decision is vital.
 

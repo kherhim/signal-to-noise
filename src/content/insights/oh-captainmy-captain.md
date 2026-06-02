@@ -11,7 +11,7 @@ In a society that reveres stories of heroism and dramatic success, the image of 
 
 * * *
 
-### The allure of Captain A: "Leadership as Spectacle"
+### The allure of captain a: "Leadership as spectacle"
 
 Captain A's leadership style is magnetic and often mythic. It's the kind that makes headlines and wins awards; the type that is immortalized in film and literature. This leader thrives on challenge and change, demonstrating their capabilities most vividly in times of intense pressure or crisis. They are the CEO who steers a company through a financial downturn with a bold, unexpected strategy, or the commander who leads their crew safely out of a perilous storm. Their actions are visible and their results, dramatic.
 
@@ -19,7 +19,7 @@ Such leaders capture our admiration because they fulfil the human need for narra
 
 * * *
 
-### The quiet diligence of Captain B: "Preventative Mastery"
+### The quiet diligence of captain b: "Preventative mastery"
 
 In contrast, Captain B excels in the art of prevention. Their leadership is characterized by foresight and an almost prophetic ability to manage resources and risks. They navigate their ship with such precision that storms are rarely encountered, and not because they are lucky, but because they are prepared. This leader might be the head of operations who implements cutting-edge technology and protocols to prevent cybersecurity attacks, or the healthcare executive whose early adoption of innovative practices and policies safeguards the organization from potential crises
 
@@ -27,7 +27,7 @@ Captain B's success is in the absence of drama. Unlike Captain A, Captain B’s 
 
 * * *
 
-### Cultural Bias and the Hero Paradigm
+### Cultural bias and the hero paradigm
 
 Our societal bias towards leaders like Captain A stems from deeper psychological and cultural roots. Heroic tales have been a staple of human culture for millennia, shaping our understanding of what it means to be a leader. This preference for the dramatic over the mundane, the reactive over the proactive, skews not only whom we recognize as leaders but how we value different leadership qualities.
 
@@ -35,7 +35,7 @@ This bias can be problematic, particularly in a complex, interconnected world wh
 
 * * *
 
-### Rebalancing Our Leadership Values
+### Rebalancing our leadership values
 
 To cultivate healthier organizations and societies, we need to recalibrate our leadership ideals to value the qualities of both Captain A and Captain B. This means not only celebrating the hero who navigates the crisis but also recognizing the strategist who keeps the seas calm.
 
@@ -45,7 +45,7 @@ Moreover, narrative change is crucial. We need more stories about leaders like C
 
 * * *
 
-### <TLDR>Inclusive Recognition
+### <TLDR>Inclusive recognition
 
 In the current times, the need for diverse leadership styles has never been more apparent. The challenges we face as a global community—be they environmental, economic, or social—are too varied and too interconnected for any one style of leadership to meet. By expanding our recognition and appreciation of different leadership types, we can better prepare ourselves to face these challenges.
 

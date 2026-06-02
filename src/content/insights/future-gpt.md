@@ -13,7 +13,7 @@ Generative Pretrained Transformers (GPT) are a breakthrough, in the field of int
 
 * * *
 
-### Technological Advancements
+### Technological advancements
 
 The progression of GPT has been characterized by impressive advancements. With each iteration, from GPT 2 to the current GPT 4, we have witnessed substantial leaps forward in the understanding of language and accuracy of responses. Looking ahead there are developments that are expected to shape the future of GPT models;
 
@@ -26,7 +26,7 @@ These advancements hold promise, for opening up possibilities for application an
 
 * * *
 
-### Societal Implications
+### Societal implications
 
 As GPT technology progresses it brings forth a range of societal concerns that require thoughtful examination;
 
@@ -38,7 +38,7 @@ As GPT technology progresses it brings forth a range of societal concerns that r
 
 * * *
 
-### Market Impact & Commercial Applications
+### Market impact & commercial applications
 
 As GPT technology becomes more integrated into our routines these ethical and societal considerations will be pivotal, in shaping its growth and implementation.
 
@@ -54,7 +54,7 @@ The commercial applications of GPT are diverse and wide ranging. They reflect it
 
 * * *
 
-### Challenges and Limitations
+### Challenges and limitations
 
 Despite the capabilities of GPT technology there are a challenges and limitations that need attention
 
@@ -66,6 +66,6 @@ It is crucial to address these challenges, for the responsible development of GP
 
 * * *
 
-### Conclusion and Future Outlook
+### Conclusion and future outlook
 
 In conclusion, the future of GPT technology is brimming with possibilities, from technological advancements to wide-ranging applications across industries. Despite facing challenges, its potential for positive impact is immense. As we navigate its ethical and societal implications, GPT stands as a testament to the ever-evolving landscape of artificial intelligence.

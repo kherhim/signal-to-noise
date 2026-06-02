@@ -43,7 +43,7 @@ Thus, while self-doubt can be a formidable obstacle, it also possesses the poten
 
 * * *
 
-### The 'Know-It-All' vs. 'Learn-It-All' mentality
+### The 'know-it-all' vs. 'Learn-It-All' mentality
 
 The distinction between a 'know-it-all' and a 'learn-it-all' mentality can fundamentally influence one's career trajectory and quality of professional relationships. The 'know-it-all' approaches situations with the assumption that they already possess all the necessary knowledge and skills, often leading to a closed-off attitude towards feedback and new information. This mindset can hinder progress, as it stifles creativity and prevents the adaptation of new, potentially more effective methods and ideas.
 

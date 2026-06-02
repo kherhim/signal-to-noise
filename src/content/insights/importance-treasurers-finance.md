@@ -17,7 +17,7 @@ At the heart of Treasurer’s responsibilities lies cash management; ensuring th
 
 Treasurers also play a role in managing risks by identifying assessing and mitigating potential exposures related to currency fluctuations, interest rates and commodities. Their expertise in hedging techniques and derivatives is vital for protecting the company from market conditions. Given today’s economy, with interconnected markets their role becomes even more indispensable.
 
-## The lack of discussion regarding Treasury roles
+## The lack of discussion regarding treasury roles
 
 Despite their importance, a Treasurer’s role is often not given attention in financial discussions. This is due to several reasons.
 
@@ -25,7 +25,7 @@ Despite their importance, a Treasurer’s role is often not given attention in f
 -   Operational focus: Treasurers typically focus on operations and debt management rather than the more sexy (equity) financial markets. This often contributes to their lower visibility, than let’s say a Head of Investor relations or a Head of FP&A.
 -   Misunderstanding of scope: There's a misconception that Treasury's role is limited to cash management. This overlooks its contributions to corporate finance and risk management and very often the ever changing financial regulations (especially for FS Treasurers).
 
-## Treasurers as candidates for CFO Positions
+## Treasurers as candidates for CFO positions
 
 With their skill set, Treasurers are well equipped for CFO roles. Their transition to the position is a progression supported by compelling reasons.
 

@@ -13,7 +13,7 @@ In continuation of my recent post on the [Future of GPT](/insights/future-gpt/),
 
 * * *
 
-### The Acceleration of Decision-Making
+### The acceleration of decision-making
 
 The advent of GenAI has brought about a remarkable increase in the speed of decision-making in the corporate world. Leaders now have access to tools that can analyze complex data sets in mere moments, offering insights that were once out of reach. This rapid processing power enables quicker, more informed decisions, often in real-time.
 
@@ -23,7 +23,7 @@ Leaders must balance the efficiency and objectivity of AI insights with the cont
 
 * * *
 
-### Navigating Uncertainty in Decision-Making
+### Navigating uncertainty in decision-making
 
 In the financial services sector, leaders are increasingly confronted with the challenge of decision-making under uncertainty (wars, volatality etc.), amplified by the rapid advancements in GenAI. Banks like [JPMorgan Chase](https://www.jpmorgan.com/technology/news/ai-and-model-risk-governance) and [Goldman Sachs](https://www.cnbc.com/2023/03/22/goldman-sachs-experiments-with-chatgpt-like-ai-to-help-devs-write-code.html) are leveraging GenAI for model risk governance and becoming more efficient (e.g. enerating and testing code at GS comes with lower cost to build) with greater confidence.
 
@@ -31,7 +31,7 @@ However, the unpredictability inherent in financial markets means that leaders m
 
 * * *
 
-### Leadership Skills for the GenAI Era
+### Leadership skills for the GenAI era
 
 In the era of GenAI, certain leadership skills have become indispensable, particularly in the financial services sector. Adaptability is paramount; leaders must be flexible and responsive to the rapid changes driven by AI advancements. This includes staying informed about the latest AI trends and their implications for financial markets and services. Continuous learning is another critical skill.Needless to say, a "rapid trial and error" apprach as opposed to "wait and watch " approach are likely to be the tenets to leadership in deploying GenAI in business.
 
@@ -41,7 +41,7 @@ The leaders who thrive are those who can balance technological expertise with a 
 
 * * *
 
-### Case Studies: Leaders Embracing GenAI in Financial Services
+### Case studies: Leaders embracing GenAI in financial services
 
 The financial services sector offers compelling examples of how leaders are embracing GenAI to enhance operations and decision-making. For instance, consider [Banco Santander's Corporate & Investment Banking](https://www.santandercib.com/insights/innovation/discover-kairos-power-ai-service-santander-cib-clients) division that build an AI tool called Kairos that can show how a corprate client could be impacted by econimic events. This in turn helps in creating prediction patterns that enable Santamder employees make more informed lending decision. This is a good example of how a bank utilizes AI algorithms to analyze market trends and predict risks, allowing for more proactive and precise decision-making. By leveraging AI, the bank's leadership can identify potential financial crises or market opportunities faster than traditional methods, leading to more strategic and timely responses.
 
@@ -51,6 +51,6 @@ The above two cases illustrate a broader trend in the financial sector: leaders 
 
 * * *
 
-### Concluding Thoughts <TLDR>
+### Concluding thoughts <tldr>
 
 The role of leadership in the GenAI era, particularly in financial services, revolves around embracing technological advancements while maintaining human-centered decision-making. The leaders who will excel are those who can skillfully integrate AI into their strategies, ensuring ethical, adaptable, and forward-thinking leadership.
