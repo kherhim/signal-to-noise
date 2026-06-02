@@ -5,6 +5,8 @@ excerpt: "In this age of information, the significance and usefulness of traditi
 tags: ["leadership", "ai", "fp-and-a", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/evolving-financial-analytics-navigating-beyond-traditional-kher-b6the"
+coverImage: /img/evolving-financial-analytics-navigating-beyond-traditional.webp
+coverImageAlt: "Black-and-white illustration: a businessman stands between a wall of traditional financial statements (income statement, balance sheet, cash flow statement) on the left and a flowing digital lattice on the right; a glowing path winds through icons for predictive insights, scenario planning, and driver analysis into a network of connected data nodes."
 ---
 
 In this age of information, the significance and usefulness of traditional financial statements, for assessing a company’s wellbeing have become a topic of intense debate. As a finance leader, entrenched in the financial dynamics of corporate operations, I propose a controversial yet necessary introspection into the relevance of these time-honoured documents in today’s rapidly evolving digital economy.

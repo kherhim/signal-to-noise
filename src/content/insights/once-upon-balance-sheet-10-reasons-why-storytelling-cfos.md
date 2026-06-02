@@ -5,6 +5,8 @@ excerpt: "In the world of finance, numbers reign supreme. But what happens when 
 tags: ["leadership", "strategy", "ai", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/once-upon-balance-sheet-10-reasons-why-storytelling-cfos-kher-t3p1e"
+coverImage: /img/once-upon-balance-sheet-10-reasons-why-storytelling-cfos.webp
+coverImageAlt: "Black-and-white sketched illustration: a CFO speaks from a podium to a small seated audience while an open balance-sheet book in the foreground releases three story bubbles — 'a stronger foundation', 'investing for the future', 'creating long-term value' — beside income statement and KPI chart pages."
 ---
 
 In the world of finance, numbers reign supreme. But what happens when the CFO decides to take a page out of a storyteller's book? Magic. Here are ten compelling reasons why the art of storytelling is an indispensable skill for modern CFOs.

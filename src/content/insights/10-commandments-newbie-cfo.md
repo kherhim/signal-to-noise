@@ -5,6 +5,8 @@ excerpt: "1.      Thou shalt help the Board in setting (& execution of) of
 tags: ["leadership", "strategy", "cfo", "teams", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-commandments-newbie-cfo-himanshu-kher-fct"
+coverImage: /img/10-commandments-newbie-cfo.webp
+coverImageAlt: "Black-and-white sketched illustration: a man pins ten numbered notecards to a planning wall titled '10 commandments of a newbie CFO' — Know the Business, Master the Numbers, Partner Don't Police, Think Strategically, Manage Risk Wisely, Be Agile and Adapt, Communicate With Impact, Build Great Teams, Drive Efficiency Relentlessly, Lead With Integrity — alongside scribbled margin notes and a CFO journey notebook on the desk."
 ---
 
 1.      Thou shalt help the Board in setting (& execution of) of corporate strategy.

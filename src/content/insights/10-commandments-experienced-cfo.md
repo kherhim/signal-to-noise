@@ -5,6 +5,8 @@ excerpt: "It’s more than a year since I posted on LinkedIn about the 10 comman
 tags: ["leadership", "strategy", "ai", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-commandments-experienced-cfo-himanshu-kher"
+coverImage: /img/10-commandments-experienced-cfo.webp
+coverImageAlt: "Black-and-white editorial illustration: a CFO in a dark suit stands before ten engraved stone tablets labelled with the commandments of an experienced CFO — Protect Cash, Master Risk, Align With Strategy, Invest in People, Drive Performance, Tell the Truth, Think Long Term, Steward of Capital / Driver of Value, Communicate Clearly, Embrace Change — set against a stormy industrial skyline and headline 'Prepare. Anticipate. Protect. Perform.'"
 ---
 
 It’s more than a year since I posted on LinkedIn about the 10 commandments for the newbie CFO. It got over 4,000 impressions (number of times the post was displayed on a screen), over 250 views (number of times the article has received), and 2 comments, and one killer question from a complete stranger – “Now that you are an experienced CFO , what are your 10 commandments”. So here is my attempt at answering the question.

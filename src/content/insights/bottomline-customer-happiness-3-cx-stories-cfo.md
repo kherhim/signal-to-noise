@@ -5,6 +5,8 @@ excerpt: "In today's fiercely competitive business landscape, customer experienc
 tags: ["strategy", "ai", "cfo", "teams", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/bottomline-customer-happiness-3-cx-stories-cfo-himanshu-kher-ulcef"
+coverImage: /img/bottomline-customer-happiness-3-cx-stories-cfo.webp
+coverImageAlt: "Black-and-white illustration: a CFO at a desk studies a wide dashboard titled 'From customer experience to financial performance' showing NPS score 68, CSAT score 4.6/5, repeat-purchase rate 78%, an NPS-segment trend curve, a health score of 82, revenue growth +18%, ROIC +18%, gross margin +1%, and a rising revenue chart reaching $245M; three small customer-moment vignettes on the left."
 ---
 
 ### Introduction

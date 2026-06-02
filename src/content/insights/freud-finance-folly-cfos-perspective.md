@@ -5,6 +5,8 @@ excerpt: "Generally, finance is a world of numbers, graphs, and cold, hard data.
 tags: ["leadership", "strategy", "fp-and-a", "cfo", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/freud-finance-folly-cfos-perspective-himanshu-kher-vbzuf"
+coverImage: /img/freud-finance-folly-cfos-perspective.webp
+coverImageAlt: "Black-and-white editorial illustration: a CFO in a suit faces a tall mirror that reflects him as 'CFO — steward, strategist, decision-maker, accountable'; behind him a Rorschach inkblot is labelled with bias words (greed, fear, uncertainty, control, ego), and at his feet a tangle of shadow text reads overconfidence, loss aversion, herd mentality, anchoring, status-quo bias, fear of failure, fear of missing out, control illusion; a chaise lounge and a capital-allocation distribution chart frame the scene."
 ---
 
 ### Introduction

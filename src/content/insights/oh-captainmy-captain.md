@@ -5,6 +5,8 @@ excerpt: "In a society that reveres stories of heroism and dramatic success, the
 tags: ["leadership", "strategy", "fp-and-a", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/oh-captainmy-captain-himanshu-kher-2kmhc"
+coverImage: /img/oh-captainmy-captain.webp
+coverImageAlt: "Black-and-white illustration: a senior figure stands at the helm of a small ship navigating choppy seas, with four colleagues seated at the boat's bench labelled 'Balance Sheet' and 'Income Statement' (assets, liabilities, equity, revenue, operating expenses, operating income, net income); the waves below show market data — Volatility -2.4%, Uncertainty +5.7%."
 ---
 
 In a society that reveres stories of heroism and dramatic success, the image of a decisive, action-oriented leader dominates our collective imagination. This leader, lets call him(or her) Captain A, is the archetype of the celebrated hero—the individual whose bold actions and daring decisions guide their team through crises and challenges. In stark contrast, there's Captain B—methodical, strategic, and often overlooked despite their consistent success. These contrasting figures symbolize the divergence in leadership styles that exist within the modern workplace, and they invite us to question which type truly merits acclaim.

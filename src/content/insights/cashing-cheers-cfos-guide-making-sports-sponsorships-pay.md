@@ -5,6 +5,8 @@ excerpt: "The allocation of funds towards brand investments, especially in sport
 tags: ["strategy", "fp-and-a", "cfo", "teams"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/cashing-cheers-cfos-guide-making-sports-sponsorships-pay-kher-tyhkf"
+coverImage: /img/cashing-cheers-cfos-guide-making-sports-sponsorships-pay.webp
+coverImageAlt: "Black-and-white illustration: a packed sports stadium with a cheering crowd waving 'Together. We Win.' and 'GOAL!' flags on the left, a CFO at a desk on the right reviewing a sponsorship-ROI dashboard with 3.6x cumulative ROI over time, brand awareness +28%, consideration lift +19%, revenue influence +24%, and a return-driver donut chart; bridging banner reads 'Passion. Engagement. Loyalty. Translated into financial returns.'"
 ---
 
 ### Introduction

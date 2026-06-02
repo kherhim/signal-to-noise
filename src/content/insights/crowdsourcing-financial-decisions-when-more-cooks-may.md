@@ -5,6 +5,8 @@ excerpt: "Today, I'm writing about a topic that marries the ancient wisdom of co
 tags: ["leadership", "strategy", "ai", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/crowdsourcing-financial-decisions-when-more-cooks-may-himanshu-kher-tq9ef"
+coverImage: /img/crowdsourcing-financial-decisions-when-more-cooks-may.webp
+coverImageAlt: "Black-and-white sketched illustration: a calm CFO holds a clean 'Financial Performance Overview' card on the right while on the left many hands point at a chaotic 'Financial Performance Dashboard' covered in scribbled and conflicting suggestions — Grow faster, Focus on margin, Invest now, Acquire?, Hold steady?, Cut costs, Return cash?, Increase prices, No growth first."
 ---
 
 ### Introduction

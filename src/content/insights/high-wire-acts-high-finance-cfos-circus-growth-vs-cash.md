@@ -5,6 +5,8 @@ excerpt: "As CFOs, we are often likened to navigators steering through the treac
 tags: ["strategy", "ai", "fp-and-a", "cfo", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/high-wire-acts-high-finance-cfos-circus-growth-vs-cash-himanshu-kher-kihue"
+coverImage: /img/high-wire-acts-high-finance-cfos-circus-growth-vs-cash.webp
+coverImageAlt: "Black-and-white illustration: a CFO walks a tightrope above a city skyline holding a balancing pole labelled 'Growth' on the left and 'Cash' on the right; below him a circus tent reads 'Market Circus' and background tickers show 23,850 +1.20% and Volatility 21.7 +2.31%."
 ---
 
 As CFOs, we are often likened to navigators steering through the treacherous waters of corporate finance, where the twin beacons of growth and cash flow guide our journey. The pursuit of growth is a testament to a company’s vitality and ambition, yet it must be tempered by the prudent management of cash flow to ensure ongoing operations and financial health. This delicate balance poses a challenge that is as much an art as it is a science.

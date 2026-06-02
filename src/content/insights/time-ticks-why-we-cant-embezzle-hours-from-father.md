@@ -5,6 +5,8 @@ excerpt: "As we stand on the brink of another year-end, I find myself musing hum
 tags: ["cfo", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/time-ticks-why-we-cant-embezzle-hours-from-father-himanshu-kher-i4i3e"
+coverImage: /img/time-ticks-why-we-cant-embezzle-hours-from-father.webp
+coverImageAlt: "Black-and-white illustration: a man with a briefcase stands in front of an enormous clock that splits the scene; on the left an urban office skyline with strategy / performance / results / stakeholders monitors; on the right a domestic interior with a family playing on the floor; caption below reads 'Time ticks: why we can't embezzle hours.'"
 ---
 
 As we stand on the brink of another year-end, I find myself musing humorously over a question that's more philosophical than financial: Why do we move forwards in time and not backwards? After all, in the world of finance, we're quite adept at juggling past, present, and future numbers. Yet, when it comes to time, it's a one-way street. This is an attempt on a light-hearted exploration of this temporal conundrum, with a CFO's twist.

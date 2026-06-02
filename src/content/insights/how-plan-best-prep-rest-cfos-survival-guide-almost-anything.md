@@ -5,6 +5,8 @@ excerpt: "In the heart of Vietnam War history lies a powerful lesson on resilien
 tags: ["leadership", "strategy", "cfo", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/how-plan-best-prep-rest-cfos-survival-guide-almost-anything-kher-b4zyc"
+coverImage: /img/how-plan-best-prep-rest-cfos-survival-guide-almost-anything.webp
+coverImageAlt: "Black-and-white illustration: a CFO stands before a large wall display titled 'CFO Survival Guide: Prepare. Anticipate. Protect. Perform.' containing a contingency map, risk catalog, response playbook, resilience checklist, scenario planning, early warning signals, and liquidity / cost-flex / communication / governance plans, framed by scenes of supply-chain disruption, market crash, cyber attack, geopolitical conflict, and inflation surge."
 ---
 
 ### Introduction to the Stockdale paradox

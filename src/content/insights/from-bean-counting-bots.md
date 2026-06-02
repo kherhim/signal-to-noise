@@ -5,6 +5,8 @@ excerpt: "CFOs can harness the capabilities of large language models (LLMs) like
 tags: ["strategy", "ai", "fp-and-a", "cfo", "teams"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/from-bean-counting-bots-himanshu-kher-ozf7e"
+coverImage: /img/from-bean-counting-bots.webp
+coverImageAlt: "Black-and-white illustration titled 'From bean-counting to bots: the evolution of the CFO in the age of augmented intelligence': a businessman walks a bridge made of ledger pages between an old abacus and ledger book on the left and a robotic humanoid figure on the right, with side panels for predictive insights, scenario modeling, real-time analytics, automation, and risk intelligence."
 ---
 
 CFOs can harness the capabilities of large language models (LLMs) like ChatGPT and Robotic Process Automation (RPA) to create value in several distinct ways. In essence, the combination of LLMs and RPA can drive efficiency, accuracy, and strategic insights for CFOs. By integrating these technologies into financial operations, CFOs can ensure that their departments are not just cost centers but value drivers for the entire organization. Some ideas:

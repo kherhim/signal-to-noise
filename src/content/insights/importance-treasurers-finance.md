@@ -5,6 +5,8 @@ excerpt: "This week , I am departing from writing about something topical, but r
 tags: ["leadership", "strategy", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/importance-treasurers-finance-himanshu-kher-1gcmf"
+coverImage: /img/importance-treasurers-finance.webp
+coverImageAlt: "Black-and-white technical illustration titled 'Cash: the circulatory system — flowing, connecting, sustaining'; a Treasurer at a control desk in the centre is connected by pipework to Banks on the left and Markets on the right, with three gauges labelled Risk, Liquidity and Funding feeding into a Company icon at the bottom and a System Health 'Stable' indicator on the side."
 ---
 
 This week , I am departing from writing about something topical, but rather expressing a \*strong\* point of view on why Treasurers should be considered as top candidates for CFO roles (which in my view, they currently aren’t in the UK).  A Treasurer plays an important role in an organization’s operations. (S)he is responsible for managing the company’s cash flow, ensuring its stability and planning for its long-term financial wellbeing. Despite their significance, the Treasurer’s role often works behind the scenes, overshadowed by other financial roles such as in investor relations, controllership, financial planning & analysis, or internal audit. However, this low visibility should not undermine the importance of a Treasurer in safeguarding the company’s assets and securing its future through effective cash management, investment strategies and risk mitigation.

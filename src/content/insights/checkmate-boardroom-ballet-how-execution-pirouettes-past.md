@@ -5,6 +5,8 @@ excerpt: "In the grand symphony of corporate management, the perennial debate be
 tags: ["leadership", "strategy", "fp-and-a", "cfo", "teams", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/checkmate-boardroom-ballet-how-execution-pirouettes-past-kher-727se"
+coverImage: /img/checkmate-boardroom-ballet-how-execution-pirouettes-past.webp
+coverImageAlt: "Black-and-white illustration: a CFO writes an 'Execution Plan' at a desk overlooking a glowing chess board where ballet-dancing chess pieces — queen, king, rook — pirouette across the squares; floating icons trace Strategy → Execution → Outcomes leading to Revenue Growth, Operational Excellence, Customer Impact, and Sustainable Advantage."
 ---
 
 In the grand symphony of corporate management, the perennial debate between strategy and culture often takes center stage. As CFOs, while we may be inclined to lean towards strategy with its tangible targets and measurable returns, we must acknowledge that culture is the bedrock upon which any strategy is built. However, the unsung hero, often overlooked in this debate, is execution. Execution is the powerful undercurrent that turns the wheels of both strategy and culture, propelling a company toward success.

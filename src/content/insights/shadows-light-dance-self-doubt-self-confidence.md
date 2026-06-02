@@ -5,6 +5,8 @@ excerpt: "Self-confidence and self-doubt play pivotal roles in business and pers
 tags: ["leadership", "strategy", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/shadows-light-dance-self-doubt-self-confidence-himanshu-kher-qgupc"
+coverImage: /img/shadows-light-dance-self-doubt-self-confidence.webp
+coverImageAlt: "Black-and-white illustration titled 'The dance within — leadership is movement, not a destination'; two silhouettes dance — a shadow figure on the left labelled 'Self-doubt: the pull inward' (overconfidence, loss aversion, short-termism, herd mentality, anchoring, status quo bias, fear of failure, fear of missing out, control illusion) and a lit figure on the right labelled 'Self-confidence: the reach outward' (self-awareness, clarity, courage, decisiveness, adaptability, resilience, empathy, integrity, vision)."
 ---
 
 ### Introduction
