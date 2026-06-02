@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { TOPICS, resolveTopicPosts } from '../../lib/topics';
+
+/* For each pillar we want to surface (a) the topic itself and
+   (b) the title of the flagship cornerstone, so the index card
+   gives the reader a concrete sense of what they'll find. */
+const cards = await Promise.all(
+  TOPICS.map(async (topic) => {
+    const cornerstones = await resolveTopicPosts(topic.cornerstoneSlugs);
+    return {
+      topic,
+      essayCount: topic.cornerstoneSlugs.length + topic.furtherSlugs.length,
+      flagship: cornerstones[0],
+    };
+  }),
+);
+---
+
+<BaseLayout
+  title="Topics — signal-to-noise.co"
+  description="Curated entry points into the corpus. Each topic page collects the cornerstone essays plus further reading on one theme."
+>
+  <section class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
+    <header class="mb-16" data-reveal>
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Topics</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">
+        Where to start.
+      </h1>
+      <p class="text-lg text-muted leading-relaxed">
+        Curated entry points into the corpus. Each topic page collects the cornerstone
+        essays plus further reading on one theme. For the full archive in date order,
+        see <a href="/insights" class="text-accent hover:text-accent-hover transition-colors">/insights</a>.
+      </p>
+    </header>
+
+    <ul class="space-y-12">
+      {cards.map(({ topic, essayCount, flagship }) => (
+        <li>
+          <article class="group border border-divider/60 rounded-lg p-6 sm:p-8 hover:border-accent/40 transition-colors">
+            <a href={`/topics/${topic.slug}/`} class="block">
+              <p class="text-xs uppercase tracking-widest text-accent mb-3">
+                {essayCount} essays
+              </p>
+              <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-fg mb-3 group-hover:text-accent transition-colors">
+                {topic.title}
+              </h2>
+              <p class="text-muted leading-relaxed mb-4">
+                {topic.description}
+              </p>
+              {flagship && (
+                <p class="text-sm text-muted">
+                  Starts with: <span class="text-fg">{flagship.data.title}</span>
+                </p>
+              )}
+            </a>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
