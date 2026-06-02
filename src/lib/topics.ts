@@ -59,6 +59,46 @@ export const TOPICS: Topic[] = [
       'every-cfo-greedy-just-what-theyre-real-question',
     ],
   },
+  {
+    slug: 'leadership-and-teams',
+    title: 'Leadership & teams',
+    description:
+      "Leadership as the working condition under which finance actually happens. Essays on judgment, framing, team dynamics, and the CFO's role at the board.",
+    framing:
+      "Finance roles are usually framed in technical terms — modelling, controlling, reporting. What changes them in practice is everything around that: how decisions get made under uncertainty, how teams scale or break, how a board reads a CFO's framing. These essays sit at that intersection — leadership as the working condition under which finance actually happens.",
+    cornerstoneSlugs: [
+      'leadership-lessons-i-wish-knew-earlier',
+      'trust-bridging-gap',
+      'oh-captainmy-captain',
+    ],
+    furtherSlugs: [
+      'mastering-matrix-how-curiosity-grit-shape-winning-teams',
+      'shadows-light-dance-self-doubt-self-confidence',
+      'crowdsourcing-financial-decisions-when-more-cooks-may',
+      'symphony-success-ideas-execution-consistency',
+      'winning-chaos',
+    ],
+  },
+  {
+    slug: 'fpa-and-storytelling',
+    title: 'FP&A & storytelling',
+    description:
+      "Numbers don't make decisions — narratives do. Essays on FP&A craft, financial storytelling, and the discipline of saying less so more lands.",
+    framing:
+      "Numbers don't make decisions — narratives do. The CFO who tells a sharper story about the same data ends the meeting with a different outcome. These essays are about the craft side of finance: how to present, what to cut, what storytelling owes to discipline and what discipline owes to storytelling.",
+    cornerstoneSlugs: [
+      '10-commandments-fpa-storytelling',
+      '10-commandments-fpa-storytelling-part-2',
+      'enhancing-financial-data-storytelling-cfos-cheat-sheet',
+    ],
+    furtherSlugs: [
+      'once-upon-balance-sheet-10-reasons-why-storytelling-cfos',
+      '10-commandments-experienced-cfo',
+      '10-commandments-newbie-cfo',
+      'output-outcome-systems-approach-friday-focus-from-cfo',
+      'output-vs-outcome',
+    ],
+  },
 ];
 
 /** Resolve an ordered list of post slugs against the insights
