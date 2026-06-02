@@ -31,10 +31,10 @@ In the next sections, we'll explore how to apply this mindset more concretely in
 
 In corporate finance, the application of the Stockdale Paradox involves a nuanced blend of optimism and realism. Here's how finance leaders can adopt this mindset:
 
--   Scenario planning and stress testing: Prepare for a variety of future scenarios, not just the most likely ones. This involves conducting stress tests under different economic conditions, which allows a company to anticipate potential challenges and develop strategies to mitigate risks.
--   Risk management: Embrace the brutal facts of your current financial standing and market conditions to manage risks effectively. This means not only identifying potential risks but also assessing their impact and likelihood, and then prioritizing them based on your strategic objectives.
--   Fostering transparency and open communication: One of the pillars of the Stockdale Paradox is not to shy away from the harsh realities. For CFOs, this means ensuring that there's an open line of communication within the team and with other stakeholders about the financial health and challenges facing the organization.
--   Building resilience into the corporate culture: Encourage a corporate culture that values perseverance and adaptability. This can be achieved by celebrating small wins, learning from failures, and constantly reminding the team of the long-term vision.
+-   **Scenario planning and stress testing:** Prepare for a variety of future scenarios, not just the most likely ones. This involves conducting stress tests under different economic conditions, which allows a company to anticipate potential challenges and develop strategies to mitigate risks.
+-   **Risk management:** Embrace the brutal facts of your current financial standing and market conditions to manage risks effectively. This means not only identifying potential risks but also assessing their impact and likelihood, and then prioritizing them based on your strategic objectives.
+-   **Fostering transparency and open communication:** One of the pillars of the Stockdale Paradox is not to shy away from the harsh realities. For CFOs, this means ensuring that there's an open line of communication within the team and with other stakeholders about the financial health and challenges facing the organization.
+-   **Building resilience into the corporate culture:** Encourage a corporate culture that values perseverance and adaptability. This can be achieved by celebrating small wins, learning from failures, and constantly reminding the team of the long-term vision.
 
 * * *
 
@@ -42,8 +42,8 @@ In corporate finance, the application of the Stockdale Paradox involves a nuance
 
 Let's consider how some finance leaders have applied the Stockdale Paradox principles to navigate their organizations through crises:
 
--   During the 2008 financial crisis, some banks (interesting link [here](https://www.cnbc.com/2018/09/11/jamie-dimon-made-a-bank-in-his-image-what-happens-when-he-bows-out.html)) were better prepared than others due to their rigorous scenario planning and risk management practices. These banks had already modelled scenarios including severe economic downturns and had set aside adequate capital reserves, which allowed them to navigate the crisis more effectively.
--   A tech company (the ride of the decade [here](https://www.marketwatch.com/story/how-uber-pulled-off-its-stunning-turnaround-from-money-pit-to-cash-machine-856bf492)) facing a sudden downturn in sales used the paradox by acknowledging the severe impact of the market conditions while simultaneously launching an innovative new product line that capitalized on changing consumer behaviours. This dual approach of confronting the brutal facts while maintaining faith in their innovative capabilities helped the company rebound faster than competitors.
+-   **During the 2008 financial crisis, some banks (interesting link [here](https:** //www.cnbc.com/2018/09/11/jamie-dimon-made-a-bank-in-his-image-what-happens-when-he-bows-out.html)) were better prepared than others due to their rigorous scenario planning and risk management practices. These banks had already modelled scenarios including severe economic downturns and had set aside adequate capital reserves, which allowed them to navigate the crisis more effectively.
+-   **A tech company (the ride of the decade [here](https:** //www.marketwatch.com/story/how-uber-pulled-off-its-stunning-turnaround-from-money-pit-to-cash-machine-856bf492)) facing a sudden downturn in sales used the paradox by acknowledging the severe impact of the market conditions while simultaneously launching an innovative new product line that capitalized on changing consumer behaviours. This dual approach of confronting the brutal facts while maintaining faith in their innovative capabilities helped the company rebound faster than competitors.
 
 * * *
 

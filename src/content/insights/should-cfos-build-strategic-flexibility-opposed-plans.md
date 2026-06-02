@@ -19,11 +19,11 @@ Strategic planning involves defining a company’s goals and determining the res
 
 ### Key traits of strategic planning:
 
-1.  Goal-focused: It starts with clear objectives that align with the organization’s vision.
-2.  Step-by-step process: Planning follows a logical sequence, such as analysing strengths and weaknesses, setting targets, and developing action plans.
-3.  Resource management: It allocates resources like finances, talent, and technology toward specific priorities.
-4.  Time-specific: Plans are often structured around short-term, medium-term, or long-term goals.
-5.  Predictive in nature: It depends on forecasts and assumptions about market trends and internal capabilities.
+1.  **Goal-focused:** It starts with clear objectives that align with the organization’s vision.
+2.  **Step-by-step process:** Planning follows a logical sequence, such as analysing strengths and weaknesses, setting targets, and developing action plans.
+3.  **Resource management:** It allocates resources like finances, talent, and technology toward specific priorities.
+4.  **Time-specific:** Plans are often structured around short-term, medium-term, or long-term goals.
+5.  **Predictive in nature:** It depends on forecasts and assumptions about market trends and internal capabilities.
 
 While strategic planning is essential for establishing a roadmap, its reliance on forecasts can make it vulnerable to rapid changes in the external environment.
 
@@ -35,11 +35,11 @@ Strategic preparation is about building the capacity to act effectively, regardl
 
 ### Key traits of strategic preparation:
 
-1.  Flexibility: Preparation prioritizes adaptability to shifting circumstances, whether caused by economic changes, regulatory updates, or unexpected crises.
-2.  Scenario-based thinking: It involves planning for multiple potential outcomes rather than relying on a single predicted future.
-3.  Skill building: Investing in training and technology ensures teams are equipped to handle new challenges.
-4.  Risk awareness: Preparation identifies vulnerabilities and establishes contingency measures.
-5.  Continuous adjustment: It relies on real-time monitoring and the ability to recalibrate quickly as conditions change.
+1.  **Flexibility:** Preparation prioritizes adaptability to shifting circumstances, whether caused by economic changes, regulatory updates, or unexpected crises.
+2.  **Scenario-based thinking:** It involves planning for multiple potential outcomes rather than relying on a single predicted future.
+3.  **Skill building:** Investing in training and technology ensures teams are equipped to handle new challenges.
+4.  **Risk awareness:** Preparation identifies vulnerabilities and establishes contingency measures.
+5.  **Continuous adjustment:** It relies on real-time monitoring and the ability to recalibrate quickly as conditions change.
 
 Preparation equips organizations to not only survive disruptions but also seize opportunities in a changing environment.
 
@@ -49,28 +49,28 @@ Preparation equips organizations to not only survive disruptions but also seize 
 
 ### 1\. Focus 🔍 :
 
--   Planning: Defines what to achieve and how to achieve it (expected outcome based)
--   Preparation: Ensures readiness to respond to unforeseen events and opportunities (based on expected outcomes not happening i.e. chaos based)
+-   **Planning:** Defines what to achieve and how to achieve it (expected outcome based)
+-   **Preparation:** Ensures readiness to respond to unforeseen events and opportunities (based on expected outcomes not happening i.e. chaos based)
 
 ### 2\. Methodology ✍ :
 
--   Planning: Follows a structured and often linear approach.
--   Preparation: Is dynamic and iterative, accommodating constant learning and adaptation .
+-   **Planning:** Follows a structured and often linear approach.
+-   **Preparation:** Is dynamic and iterative, accommodating constant learning and adaptation .
 
 ### 3\. Time orientation ⏳:
 
--   Planning: Operates within set timelines and milestones.
--   Preparation: Recognizes time as fluid and prioritizes ongoing vigilance.
+-   **Planning:** Operates within set timelines and milestones.
+-   **Preparation:** Recognizes time as fluid and prioritizes ongoing vigilance.
 
 ### 4\. Dependence on assumptions 🔂:
 
--   Planning: Relies on expected scenarios and forecasts.
--   Preparation: Acknowledges uncertainty and emphasizes resilience.
+-   **Planning:** Relies on expected scenarios and forecasts.
+-   **Preparation:** Acknowledges uncertainty and emphasizes resilience.
 
 ### 5\. Desired outcomes 🎯:
 
--   Planning: Aims to achieve specific goals.
--   Preparation: Ensures success even when plans need to be revised.
+-   **Planning:** Aims to achieve specific goals.
+-   **Preparation:** Ensures success even when plans need to be revised.
 
 * * *
 

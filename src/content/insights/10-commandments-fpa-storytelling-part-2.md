@@ -23,9 +23,9 @@ What it really means: your message should change based on who’s in the room. S
 
 Real example: You’re reviewing Q3 marketing ROI.
 
--   For the CFO: “We can hit FY EBITDA with a £1.2m reallocation from brand to performance without raising total spend; CAC drops from £142 to £128 within two quarters.”
--   For the cmo: “Shifting £1.2m from channels A & B to paid search and affiliate lifts net-new customers by ~9% this half without hurting brand search.”
--   For the board: “Reallocation preserves FY EBITDA while keeping growth guidance intact; risk is execution timing over Black Friday.”
+-   **For the CFO:** “We can hit FY EBITDA with a £1.2m reallocation from brand to performance without raising total spend; CAC drops from £142 to £128 within two quarters.”
+-   **For the cmo:** “Shifting £1.2m from channels A & B to paid search and affiliate lifts net-new customers by ~9% this half without hurting brand search.”
+-   **For the board:** “Reallocation preserves FY EBITDA while keeping growth guidance intact; risk is execution timing over Black Friday.”
 
 Try this prompt before you build slides:
 
@@ -112,8 +112,8 @@ Real example: Instead of “Gross margin compresses 160 bps due to adverse mix,�
 
 Before/after:
 
--   Before: “Capex carry forward reduces FY CFADS.”
--   After: “Pushing two projects to Q1 improves year-end cash by ~£1.4m.”
+-   **Before:** “Capex carry forward reduces FY CFADS.”
+-   **After:** “Pushing two projects to Q1 improves year-end cash by ~£1.4m.”
 
 Simple rule: if your slide needs a glossary, rewrite it.
 
@@ -127,10 +127,10 @@ Real example: “We planned for 12% growth; we’re tracking to 8%. Three things
 
 Useful device: the “red thread” slide
 
--   Expectation: “Plan: 12%”
--   Reality: “Run-rate: 8%”
--   Root causes: “conv −1.5pp, delivery +1.2 days, returns +0.8pp”
--   Resolution: “Fixes and their impact (+1.4pp, +0.9pp, +0.6pp)”
+-   **Expectation:** “Plan: 12%”
+-   **Reality:** “Run-rate: 8%”
+-   **Root causes:** “conv −1.5pp, delivery +1.2 days, returns +0.8pp”
+-   **Resolution:** “Fixes and their impact (+1.4pp, +0.9pp, +0.6pp)”
 
 Common pitfall: soft-pedalling the bad news until Q4. Tension early = time to act.
 
@@ -142,10 +142,10 @@ What it really means: quantify the delta, not just the state.
 
 Real example: A cost programme promised “£3m savings.” That meant little until we showed:
 
--   Before: £38m annual OPEX
--   After: £35m by month 9
--   Delta: £3m, of which £2.2m hard, £0.8m dependent on vendor renegotiations
--   EBITDA impact: +£2.6m after one-offs Seeing the bridge from current to future made the plan credible.
+-   **Before:** £38m annual OPEX
+-   **After:** £35m by month 9
+-   **Delta:** £3m, of which £2.2m hard, £0.8m dependent on vendor renegotiations
+-   **EBITDA impact:** +£2.6m after one-offs Seeing the bridge from current to future made the plan credible.
 
 Template:
 
@@ -181,14 +181,14 @@ Real example (final slide text): Decision today:
 
 1.  Approve £1.2m channel reallocation (now)
 2.  Pause 11 roles (now)
-3.  Revisit growth guidance on 30 September (commitment) If approved: EBITDA +£1.8m, runway +3 months; main risks A & B with owners named.
+3.  **Revisit growth guidance on 30 September (commitment) if approved:** EBITDA +£1.8m, runway +3 months; main risks A & B with owners named.
 
 Checklist for your last slide:
 
--   Ask: what exactly are you asking for?
--   Impact: £/KPI change, with confidence range
--   Risks: top two, with mitigations
--   Owner & timeline: who drives it, by when
+-   **Ask:** what exactly are you asking for?
+-   **Impact:** £/KPI change, with confidence range
+-   **Risks:** top two, with mitigations
+-   **Owner & timeline:** who drives it, by when
 
 Common pitfall: ending with “happy to take questions” instead of an ask.
 

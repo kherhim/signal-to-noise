@@ -23,19 +23,19 @@ Cash flow, more specifically Free Cash Flow, the lifeblood of any business, is t
 
 The interplay between growth and cash flow is where many firms find their greatest challenges:
 
--   Investment vs. Liquidity: Investing in growth often means channeling funds into new initiatives, which can reduce liquidity. The CFO must ensure that these investments do not compromise the ability to cover short-term obligations.
+-   **Investment vs. Liquidity:** Investing in growth often means channeling funds into new initiatives, which can reduce liquidity. The CFO must ensure that these investments do not compromise the ability to cover short-term obligations.
 
 > Real example from the tech. industry: a midsize SaaS firm looking to invest into new product development initiative - upfront cost $2m, with expectation of nil revenue for at least 18 months post launch. The firm has $5m in cash, monthly recurring OpEx of $500k with a quarterly tax obligation of approx. $250k. How should a CFO weigh up the risk of reducing cash reserves to $3m ($5m - upfront cost of $2m) despite a strategically sound investment case?
 
--   Leverage vs. Solvency: Borrowing can fuel growth, but excessive debt can endanger a firm's solvency. A balanced approach to financing ensures that leverage ratios remain within healthy limits.
+-   **Leverage vs. Solvency:** Borrowing can fuel growth, but excessive debt can endanger a firm's solvency. A balanced approach to financing ensures that leverage ratios remain within healthy limits.
 
 > Real example from a renewable energy company: the company identifies an opportunity expand its production capacity by investing in a new manufacturing facility that was projected to double production capacity and increase annual revenues significantly. The project required an investment of $15 million at a time when the debt-to-equity ratio was at 1:1 which was higher end for the sector. How should the CFO consider solving this problem whilst considering over-leveraging, and future cash flow management?
 
--   Operational efficiency vs. Expansion costs: Scaling operations can lead to inefficiencies that strain cash flow. A focus on process improvement and cost management is vital as a company grows.
+-   **Operational efficiency vs. Expansion costs:** Scaling operations can lead to inefficiencies that strain cash flow. A focus on process improvement and cost management is vital as a company grows.
 
 > Real example from a fintech firm: A firm specializing in digital payment solutions is seeing rapid growth due to the increasing adoption of mobile banking and e-commerce. It also expands into new markets whilst broadening its services and starts to experience growth pains - slowing of customer response time, while volume of inquiries surpasses the capacity of existing support and technology. Scaling up also increased the complexity of transactions that the firm processes with existing fraud detection systems flagging too many false positives, increasing manual review and operational costs. This put pressure on cash flows. How should the CFO approach this challenge?
 
--   Strategic planning vs. Market pressures: Long-term strategic investments are essential for growth but may not yield immediate cash flows. CFOs must communicate the value of these investments to stakeholders who may be fixated on short-term cash flows.
+-   **Strategic planning vs. Market pressures:** Long-term strategic investments are essential for growth but may not yield immediate cash flows. CFOs must communicate the value of these investments to stakeholders who may be fixated on short-term cash flows.
 
 > Real example from a vido gaming company: A famous video game company embarked on a project to develop a new game that promised to revolutionize video gaming experience. This venture required a substantial upfront investment in research and development, specialized personnel, and state-of-the-art hardware facilities (traditionally just software). The timeline for this project to yield a marketable product and positive cash flow was estimated to be at least five years, a duration that could test the patience of even visionary stakeholders. How should the CFO go about solving this problem?
 

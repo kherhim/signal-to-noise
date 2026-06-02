@@ -47,9 +47,9 @@ We are currently transitioning from compositional literacy (the ability to write
 
 If you feel like the world is spinning too fast, remember that the people of the 16th century felt the exact same "information shock."
 
--   They had "fake news": The 1500s were flooded with sensationalist pamphlets that led to massive social unrest (the Sea Monster of Rome which appeared in various broadsides across Europe in 1496 and throughout the 1500s)
--   They had job displacement: Professional scribes saw their entire industry vanish in a generation (in 1450, nearly 100% of the estimated 50,000 books in Europe were hand-copied by scribes. By 1500, only fifty years later, scribes accounted for less than 2% of the total output, as the number of printed books surged to approximately 10 million)
--   They had a truth crisis: When anyone could print, who was the expert? (The Malleus Maleficarum was the 16th-century equivalent of an algorithmic bias—it took a fringe, incorrect ideology and used a high-speed distribution network to scale it until it was accepted as objective reality. When the cost of production drops, the cost of verifying the truth must rise proportionally)
+-   **They had "fake news":** The 1500s were flooded with sensationalist pamphlets that led to massive social unrest (the Sea Monster of Rome which appeared in various broadsides across Europe in 1496 and throughout the 1500s)
+-   **They had job displacement:** Professional scribes saw their entire industry vanish in a generation (in 1450, nearly 100% of the estimated 50,000 books in Europe were hand-copied by scribes. By 1500, only fifty years later, scribes accounted for less than 2% of the total output, as the number of printed books surged to approximately 10 million)
+-   **They had a truth crisis:** When anyone could print, who was the expert? (The Malleus Maleficarum was the 16th-century equivalent of an algorithmic bias—it took a fringe, incorrect ideology and used a high-speed distribution network to scale it until it was accepted as objective reality. When the cost of production drops, the cost of verifying the truth must rise proportionally)
 
 But on the other side of that chaos was the enlightenment. The Scientific Revolution happened because scientists could finally "build" on each other's work instead of starting from scratch every time.
 

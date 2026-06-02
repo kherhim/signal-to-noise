@@ -19,9 +19,9 @@ This piece is a bit off-the-track as far as my usual writing goes - its neither 
 
 Sacrifice is an important aspect of achieving success and fulfilment. It requires letting go of immediate gratifications and comforts to pursue long-term goals. Sacrifice is not just about giving up material things; it often involves time, effort, and sometimes personal pleasures.
 
--   Time and effort: To achieve anything substantial, one must invest a significant amount of time and effort. This means dedicating hours to practice, study, or work, often at the expense of leisure activities.
--   Personal comforts: Sacrificing personal comfort is another aspect. This could mean waking up early, staying up late, or pushing oneself beyond physical and mental limits.
--   Social sacrifices: Sometimes, achieving a goal requires sacrificing social interactions. This could mean spending less time with friends and family or missing out on social events.
+-   **Time and effort:** To achieve anything substantial, one must invest a significant amount of time and effort. This means dedicating hours to practice, study, or work, often at the expense of leisure activities.
+-   **Personal comforts:** Sacrificing personal comfort is another aspect. This could mean waking up early, staying up late, or pushing oneself beyond physical and mental limits.
+-   **Social sacrifices:** Sometimes, achieving a goal requires sacrificing social interactions. This could mean spending less time with friends and family or missing out on social events.
 
 * * *
 
@@ -29,9 +29,9 @@ Sacrifice is an important aspect of achieving success and fulfilment. It require
 
 When we avoid making sacrifices, we often end up sacrificing our dreams and goals. This can lead to a life of mediocrity and unfulfilled potential. The consequences are far-reaching and impact various aspects of life:
 
--   Unrealized potential: By not making the necessary sacrifices, we hinder our growth and development. Our talents and abilities remain underutilized, and our true potential is never realized.
--   Regret and disappointment: Avoiding sacrifice often leads to regret. Looking back and realizing that certain dreams were not pursued because of a lack of willingness to sacrifice can be disheartening.
--   Loss of opportunities: Opportunities are often time sensitive. By not acting and making sacrifices when needed, we may miss out on these opportunities forever.
+-   **Unrealized potential:** By not making the necessary sacrifices, we hinder our growth and development. Our talents and abilities remain underutilized, and our true potential is never realized.
+-   **Regret and disappointment:** Avoiding sacrifice often leads to regret. Looking back and realizing that certain dreams were not pursued because of a lack of willingness to sacrifice can be disheartening.
+-   **Loss of opportunities:** Opportunities are often time sensitive. By not acting and making sacrifices when needed, we may miss out on these opportunities forever.
 
 * * *
 
@@ -43,37 +43,37 @@ To ensure that our goals do not become the sacrifice, it is essential to embrace
 
 The first step in embracing sacrifice is setting clear, achievable goals. Knowing exactly what you want makes it easier to identify what you need to sacrifice.
 
--   Specificity: Define your goals clearly. Instead of saying "I want to be fit," specify "I want to lose 20 pounds in six months."
--   Measurable: Ensure your goals are measurable so you can track progress. For example, setting milestones can help you see how far you’ve come and what still needs to be done.
--   Realistic: While it's good to aim high, make sure your goals are realistic and achievable within your current circumstances.
+-   **Specificity:** Define your goals clearly. Instead of saying "I want to be fit," specify "I want to lose 20 pounds in six months."
+-   **Measurable:** Ensure your goals are measurable so you can track progress. For example, setting milestones can help you see how far you’ve come and what still needs to be done.
+-   **Realistic:** While it's good to aim high, make sure your goals are realistic and achievable within your current circumstances.
 
 2\. Prioritize your time
 
 Time management is crucial when making sacrifices. Prioritizing your time ensures that you allocate sufficient time to activities that bring you closer to your goals.
 
--   Create a schedule: Plan your day, week, or month in advance. Allocate specific times for work, study, exercise, and relaxation.
--   Eliminate distractions: Identify and eliminate distractions that consume your time without adding value to your goals.
--   Stay consistent: Consistency is key. Stick to your schedule as much as possible, adjusting only when necessary.
+-   **Create a schedule:** Plan your day, week, or month in advance. Allocate specific times for work, study, exercise, and relaxation.
+-   **Eliminate distractions:** Identify and eliminate distractions that consume your time without adding value to your goals.
+-   **Stay consistent:** Consistency is key. Stick to your schedule as much as possible, adjusting only when necessary.
 
 3\. Cultivate discipline
 
 Discipline is the backbone of sacrifice. Without discipline, it's challenging to stay committed to your goals.
 
--   Build habits: Focus on building positive habits that align with your goals. Habits such as regular exercise, reading, or skill development are crucial.
--   Self-control: Develop self-control to resist temptations that lead you away from your goals.
--   Accountability: Hold yourself accountable for your actions. Consider finding an accountability partner to keep you on track.
+-   **Build habits:** Focus on building positive habits that align with your goals. Habits such as regular exercise, reading, or skill development are crucial.
+-   **Self-control:** Develop self-control to resist temptations that lead you away from your goals.
+-   **Accountability:** Hold yourself accountable for your actions. Consider finding an accountability partner to keep you on track.
 
 4\. Make incremental changes
 
 Sacrifice does not always mean making massive changes overnight. Sometimes, small, incremental changes can lead to significant results over time.
 
--   Gradual adjustments: Start with small sacrifices and gradually increase them as you become more comfortable.
--   Sustainable changes: Ensure that the changes you make are sustainable in the long run. Avoid extreme sacrifices that lead to burnout.
+-   **Gradual adjustments:** Start with small sacrifices and gradually increase them as you become more comfortable.
+-   **Sustainable changes:** Ensure that the changes you make are sustainable in the long run. Avoid extreme sacrifices that lead to burnout.
 
 5\. Seek support
 
--   Support system: Having a support system can make sacrifices more manageable. Whether it’s family, friends, or mentors, their support can provide the emotional strength needed to stay the course
--   Choose the right people: Surround yourself with people who understand your goals and can offer encouragement. Avoid people who sap your energy or discourage you.
+-   **Support system:** Having a support system can make sacrifices more manageable. Whether it’s family, friends, or mentors, their support can provide the emotional strength needed to stay the course
+-   **Choose the right people:** Surround yourself with people who understand your goals and can offer encouragement. Avoid people who sap your energy or discourage you.
 
 * * *
 

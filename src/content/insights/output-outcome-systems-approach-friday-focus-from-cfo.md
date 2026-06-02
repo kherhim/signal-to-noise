@@ -27,8 +27,8 @@ This focus is task-driven and works well when goals are straightforward and the 
 
 However, in more complex environments, relying solely on outputs can lead to challenges. As CFOs, we often encounter the pitfalls of an output-focused approach:
 
--   Misaligned incentives: Teams might prioritize quantity over quality. For example, sales teams chasing high deal volume may ignore profitability or risk.
--   Short-term thinking: A fixation on hitting quarterly numbers might overshadow long-term growth strategies, such as building recurring revenue streams or investing in innovation.
+-   **Misaligned incentives:** Teams might prioritize quantity over quality. For example, sales teams chasing high deal volume may ignore profitability or risk.
+-   **Short-term thinking:** A fixation on hitting quarterly numbers might overshadow long-term growth strategies, such as building recurring revenue streams or investing in innovation.
 
 Outputs are important, but they are not the destination—they’re mile markers along the way. This leads us to outcome focus.
 
@@ -52,8 +52,8 @@ One of my favourite examples involves M&A. When evaluating a potential acquisiti
 
 This approach ensures that efforts are aligned with value creation. However, it has its challenges:
 
--   Overemphasis on results: Solely focusing on outcomes can lead to frustration when external factors—such as market volatility—hinder progress.
--   Pressure on teams: Teams may feel overwhelmed by ambitious targets if they aren’t given a clear roadmap to achieve them.
+-   **Overemphasis on results:** Solely focusing on outcomes can lead to frustration when external factors—such as market volatility—hinder progress.
+-   **Pressure on teams:** Teams may feel overwhelmed by ambitious targets if they aren’t given a clear roadmap to achieve them.
 
 This brings us to the most powerful framework for sustainable success: systems focus.
 
@@ -87,15 +87,15 @@ By investing in systems, organizations position themselves to succeed not just i
 
 The reality is that no single focus is sufficient on its own. Effective leadership requires balancing all three:
 
-1.  Start with outputs: Outputs provide immediate feedback. If your finance team isn’t meeting reporting deadlines, you have a tangible problem to address.
-2.  Align with outcomes: Once outputs are under control, ask whether they’re contributing to desired outcomes. Are those reports enabling better decision-making?
-3.  Invest in systems: To ensure sustained success, build systems that support your outcomes. A robust budgeting system, for example, helps achieve cost control year after year.
+1.  **Start with outputs:** Outputs provide immediate feedback. If your finance team isn’t meeting reporting deadlines, you have a tangible problem to address.
+2.  **Align with outcomes:** Once outputs are under control, ask whether they’re contributing to desired outcomes. Are those reports enabling better decision-making?
+3.  **Invest in systems:** To ensure sustained success, build systems that support your outcomes. A robust budgeting system, for example, helps achieve cost control year after year.
 
 ### A CFO’s checklist for integration
 
 Here’s how I approach these three frameworks in practice:
 
-1.  Define success clearly Output: What needs to get done? Outcome: What are we trying to achieve? Systems: What will make this repeatable and efficient?
+1.  **Define success clearly output:** What needs to get done? Outcome: What are we trying to achieve? Systems: What will make this repeatable and efficient?
 2.  Align incentives Ensure that team KPIs balance output, outcome, and system metrics. For example, a sales team’s success shouldn’t be measured only by revenue (output) but also by customer satisfaction (outcome) and adherence to CRM usage (system) and allocation of sensible costs they are spending to generate revenue
 3.  Evaluate regularly Review outputs weekly, outcomes quarterly, and systems annually (Easier said than done as often the act of reviewing depends on ouputs from other teams and needs the Board/Executive to rally behind the evaliuation)
 4.  Build a culture of continuous improvement Encourage teams to question, “How can we improve this system?”
@@ -118,9 +118,9 @@ This long-term mindset builds the foundation for sustainable growth, not just fo
 
 This framework doesn’t just apply to organizations—it’s equally powerful in personal development. For instance:
 
--   Output focus: Reading a set number of business books each year.
--   Outcome focus: Gaining actionable insights that improve decision-making.
--   Systems focus: Developing a habit of reflective learning and applying insights consistently.
+-   **Output focus:** Reading a set number of business books each year.
+-   **Outcome focus:** Gaining actionable insights that improve decision-making.
+-   **Systems focus:** Developing a habit of reflective learning and applying insights consistently.
 
 By focusing on systems, you create a structure that supports long-term success, regardless of immediate circumstances.
 

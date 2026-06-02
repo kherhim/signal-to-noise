@@ -24,9 +24,9 @@ The growth narrative is anchored in Starlink recurring revenue and launch domina
 
 ### Key financial and structural questions for SpaceX
 
-- Capital allocation: Balancing launch, Starlink expansion, and long-dated projects like Mars architectures will define free cash flow trajectories and, by extension, valuation multiples.
-- Governance and control: Elon Musk's influence, dual-class structures and the role of long-standing private investors will shape index eligibility, stewardship debates and the eventual cost of capital.
-- Risk profile: Regulatory, launch failure, and geopolitical risk will require a robust risk-management narrative in the prospectus and at roadshow.
+- **Capital allocation:** Balancing launch, Starlink expansion, and long-dated projects like Mars architectures will define free cash flow trajectories and, by extension, valuation multiples.
+- **Governance and control:** Elon Musk's influence, dual-class structures and the role of long-standing private investors will shape index eligibility, stewardship debates and the eventual cost of capital.
+- **Risk profile:** Regulatory, launch failure, and geopolitical risk will require a robust risk-management narrative in the prospectus and at roadshow.
 
 ## Anthropic: Capital discipline in a crowded AI field
 
@@ -36,9 +36,9 @@ From a CFO's perspective, Anthropic's story is about disciplined scale-up in the
 
 ### Key financial and structural questions for Anthropic
 
-- Revenue visibility: Investors will look for a credible path from research-heavy burn to durable, recurring enterprise and platform revenues, rather than dependence on one-off deals or bulk cloud commitments.
-- Partner concentration: With hyperscalers providing both capital and infrastructure, concentration risk is non-trivial. The prospectus will need to show that Anthropic is not merely an R&D arm of its largest partners, but a company with independent economics and optionality.
-- Governance and safety: Anthropic has positioned itself as safety-forward, with governance structures oriented around AI risk. Public investors will need reassurance that safety commitments and governance mechanisms are compatible with the growth and profitability targets implied by a very high valuation.
+- **Revenue visibility:** Investors will look for a credible path from research-heavy burn to durable, recurring enterprise and platform revenues, rather than dependence on one-off deals or bulk cloud commitments.
+- **Partner concentration:** With hyperscalers providing both capital and infrastructure, concentration risk is non-trivial. The prospectus will need to show that Anthropic is not merely an R&D arm of its largest partners, but a company with independent economics and optionality.
+- **Governance and safety:** Anthropic has positioned itself as safety-forward, with governance structures oriented around AI risk. Public investors will need reassurance that safety commitments and governance mechanisms are compatible with the growth and profitability targets implied by a very high valuation.
 
 ## OpenAI: From capped-profit experiment to public market heavyweight
 
@@ -48,9 +48,9 @@ The company's complex history—transitioning from a non-profit to a capped-prof
 
 ### Key financial and structural questions for OpenAI
 
-- Business model durability: OpenAI's revenue base spans API usage, enterprise contracts and embedded distribution via partners. Public investors will demand evidence that revenues are not overly reliant on a narrow band of flagship products.
-- Capital intensity and margins: Training frontier models is inherently capital intensive, with large, lumpy capex cycles. An investor-grade story must demonstrate improving efficiency, clear capital allocation frameworks and a path to operating leverage as models are reused across multiple products.
-- Governance evolution: OpenAI's governance has been under intense scrutiny, including board changes and debates over mission versus commercial imperatives. A successful IPO will likely rest on a governance reset that reassures both regulators and public-market stewards that decision-making is robust, transparent and aligned with long-term shareholder value.
+- **Business model durability:** OpenAI's revenue base spans API usage, enterprise contracts and embedded distribution via partners. Public investors will demand evidence that revenues are not overly reliant on a narrow band of flagship products.
+- **Capital intensity and margins:** Training frontier models is inherently capital intensive, with large, lumpy capex cycles. An investor-grade story must demonstrate improving efficiency, clear capital allocation frameworks and a path to operating leverage as models are reused across multiple products.
+- **Governance evolution:** OpenAI's governance has been under intense scrutiny, including board changes and debates over mission versus commercial imperatives. A successful IPO will likely rest on a governance reset that reassures both regulators and public-market stewards that decision-making is robust, transparent and aligned with long-term shareholder value.
 
 ## What matters most
 

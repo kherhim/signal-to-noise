@@ -25,18 +25,18 @@ Yet, amidst this duet, execution is the force that drives performance. It is the
 
 ### The execution edge
 
--   Translating vision into action: A strategy is only as good as its implementation. Execution is the bridge that connects the strategic vision of the company with the tangible actions needed to achieve it.
--   Cultivating accountability: Execution fosters a culture of accountability. When teams understand their role in the larger picture, they are more likely to take ownership of outcomes.
--   Enabling adaptability: Execution requires a responsive approach. It’s about making adjustments, learning from the market, and pivoting when necessary.
--   Measuring impact: Through execution, we can measure the impact of strategies and cultural initiatives, refining our approach as we learn what works and what doesn’t.
+-   **Translating vision into action:** A strategy is only as good as its implementation. Execution is the bridge that connects the strategic vision of the company with the tangible actions needed to achieve it.
+-   **Cultivating accountability:** Execution fosters a culture of accountability. When teams understand their role in the larger picture, they are more likely to take ownership of outcomes.
+-   **Enabling adaptability:** Execution requires a responsive approach. It’s about making adjustments, learning from the market, and pivoting when necessary.
+-   **Measuring impact:** Through execution, we can measure the impact of strategies and cultural initiatives, refining our approach as we learn what works and what doesn’t.
 
 ### Integrating strategy, culture, and execution
 
 The true power lies in integrating strategy, culture, and execution. A robust strategy provides the direction, a strong culture provides the drive, but without execution, they both remain theoretical constructs.
 
--   Aligning teams: Execution aligns teams with strategy and culture, ensuring that everyone is working towards the same goals.
--   Building momentum: As strategies are executed and cultural values are acted upon, it builds momentum within the organization, creating a cycle of positive reinforcement and success.
--   Creating competitive advantage: Companies that excel at execution can outperform competitors who may have similar strategies but fail to implement them effectively.
+-   **Aligning teams:** Execution aligns teams with strategy and culture, ensuring that everyone is working towards the same goals.
+-   **Building momentum:** As strategies are executed and cultural values are acted upon, it builds momentum within the organization, creating a cycle of positive reinforcement and success.
+-   **Creating competitive advantage:** Companies that excel at execution can outperform competitors who may have similar strategies but fail to implement them effectively.
 
 > Apple Inc. is a prime example of a company that has effectively integrated strategy, culture, and execution to build momentum and achieve impressive results. Under the leadership of Steve Jobs, Apple adopted a strategy of innovation, aiming to create user-friendly, design-centric, and ecosystem-oriented products.
 

@@ -11,10 +11,10 @@ coverImageAlt: "Black-and-white sketched illustration: a figure stands at a fork
 
 ### 1\. Having a view
 
--   What it means: You hold an opinion, perspective, or belief about how things should be.
--   Nature: Conceptual, intellectual, sometimes abstract.
--   Strength: Shows clarity of thought and conviction.
--   Weakness: Can remain passive — an idea without execution.
+-   **What it means:** You hold an opinion, perspective, or belief about how things should be.
+-   **Nature:** Conceptual, intellectual, sometimes abstract.
+-   **Strength:** Shows clarity of thought and conviction.
+-   **Weakness:** Can remain passive — an idea without execution.
 
 Example: A CFO saying, “I believe our company should diversify into crypto trading.” That’s a view.
 
@@ -22,10 +22,10 @@ Example: A CFO saying, “I believe our company should diversify into crypto tra
 
 ### 2\. Having a way
 
--   What it means: You have not only a belief but also a method, plan, or system to achieve it.
--   Nature: Practical, action-oriented, repeatable.
--   Strength: Demonstrates leadership through implementation and results.
--   Weakness: Without a strong underlying view, the way may lack purpose.
+-   **What it means:** You have not only a belief but also a method, plan, or system to achieve it.
+-   **Nature:** Practical, action-oriented, repeatable.
+-   **Strength:** Demonstrates leadership through implementation and results.
+-   **Weakness:** Without a strong underlying view, the way may lack purpose.
 
 Example: The same CFO says, “Here’s the roadmap for launching a crypto desk: hiring, tech stack, regulation, capital allocation.” That’s a way.
 

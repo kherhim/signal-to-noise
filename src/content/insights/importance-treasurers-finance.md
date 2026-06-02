@@ -23,17 +23,17 @@ Treasurers also play a role in managing risks by identifying assessing and mitig
 
 Despite their importance, a Treasurer’s role is often not given attention in financial discussions. This is due to several reasons.
 
--   Complexity and specialization: The technical complexity and specialized nature of Treasury functions can make them less visible to those outside the finance industry.
--   Operational focus: Treasurers typically focus on operations and debt management rather than the more sexy (equity) financial markets. This often contributes to their lower visibility, than let’s say a Head of Investor relations or a Head of FP&A.
--   Misunderstanding of scope: There's a misconception that Treasury's role is limited to cash management. This overlooks its contributions to corporate finance and risk management and very often the ever changing financial regulations (especially for FS Treasurers).
+-   **Complexity and specialization:** The technical complexity and specialized nature of Treasury functions can make them less visible to those outside the finance industry.
+-   **Operational focus:** Treasurers typically focus on operations and debt management rather than the more sexy (equity) financial markets. This often contributes to their lower visibility, than let’s say a Head of Investor relations or a Head of FP&A.
+-   **Misunderstanding of scope:** There's a misconception that Treasury's role is limited to cash management. This overlooks its contributions to corporate finance and risk management and very often the ever changing financial regulations (especially for FS Treasurers).
 
 ## Treasurers as candidates for CFO positions
 
 With their skill set, Treasurers are well equipped for CFO roles. Their transition to the position is a progression supported by compelling reasons.
 
--   Broad financial expertise: Treasurers have a deep understanding of both the micro and macro aspects of finance. Their hands on experience with capital markets, funding , liquidity management and risk assessment provide them with insights that're crucial for a CFO.
--    Strategic vision and risk management: The strategic dimension of the Treasury function, in forecasting, planning and risk management closely aligns with the responsibilities of a CFO. The foresight and expertise of treasurers enable them to navigate financial landscapes providing them with the strategic insight necessary for making important financial decisions at a high level.
--    Leadership & communication: In addition to their financial management skills, treasurers also possess leadership and communication abilities. Most excel in collaborating across functions, negotiating with banks and financial institutions, and presenting financial information in a way that is easily understandable. These skills are crucial as a CFO given CFOs need to communicate financial strategy and the associated risks to stakeholders, while leading the company’s overall financial direction.
+-   **Broad financial expertise:** Treasurers have a deep understanding of both the micro and macro aspects of finance. Their hands on experience with capital markets, funding , liquidity management and risk assessment provide them with insights that're crucial for a CFO.
+-    **Strategic vision and risk management:** The strategic dimension of the Treasury function, in forecasting, planning and risk management closely aligns with the responsibilities of a CFO. The foresight and expertise of treasurers enable them to navigate financial landscapes providing them with the strategic insight necessary for making important financial decisions at a high level.
+-    **Leadership & communication:** In addition to their financial management skills, treasurers also possess leadership and communication abilities. Most excel in collaborating across functions, negotiating with banks and financial institutions, and presenting financial information in a way that is easily understandable. These skills are crucial as a CFO given CFOs need to communicate financial strategy and the associated risks to stakeholders, while leading the company’s overall financial direction.
 
 ## <TLDR>
 

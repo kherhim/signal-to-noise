@@ -23,7 +23,7 @@ In my posts, I emphasized the importance of strategic flexibility and scenario p
 
 * * *
 
-###  2. The transformative power of AI in finance
+### 2. The transformative power of AI in finance
 
 Few topics garnered as much interest—and as much forward momentum—this year as artificial intelligence. In several articles, I explored how AI has moved beyond proof-of-concept pilots into the heart of financial operations, strategic decision-making, and investor communications.
 
@@ -31,7 +31,7 @@ Few topics garnered as much interest—and as much forward momentum—this year 
 
 * * *
 
-###  3. Leadership: the human element in financial strategy
+### 3. Leadership: the human element in financial strategy
 
 On multiple occasions this year, I wrote about the evolving nature of leadership. The lessons we’ve drawn are not confined to financial metrics or boardroom analytics. Instead, they emphasize personal authenticity, empathetic communication, and building trust with both internal teams and external stakeholders.
 
@@ -41,7 +41,7 @@ On multiple occasions this year, I wrote about the evolving nature of leadership
 
 * * *
 
-###  4. Integrating technology with strategy and culture
+### 4. Integrating technology with strategy and culture
 
 Another throughline in my writing was the idea that technology—be it AI, advanced analytics, or automation—is only as powerful as the environment into which it’s introduced. Throughout 2024, I stressed that digital transformation is not just a technology upgrade; it’s a cultural shift.
 
@@ -49,7 +49,7 @@ Another throughline in my writing was the idea that technology—be it AI, advan
 
 * * *
 
-###  5. Building organizational resilience through trust and transparency
+### 5. Building organizational resilience through trust and transparency
 
 Trust emerged as a quiet but persistent theme in many of my reflections this year. Markets care about results, certainly, but stakeholders care about the integrity behind those results. In several posts, I argued that trust—across teams, with customers, with investors, and with the broader public—is the currency that underpins sustainable value creation.
 
@@ -57,7 +57,7 @@ Trust emerged as a quiet but persistent theme in many of my reflections this yea
 
 * * *
 
-###  6. Continuous learning and personal growth
+### 6. Continuous learning and personal growth
 
 Over the year, I also shared personal reflections on the value of continuous learning. In a landscape where yesterday’s best practices quickly age, maintaining a learner’s mindset is essential. One of my final articles before this one dealt with how leaders can remain flexible and open-minded without losing their sense of purpose. The conclusion: balancing expertise with curiosity leads to more robust strategies and a more fulfilling professional journey.
 
@@ -73,7 +73,7 @@ Publishing online has been an exercise in reciprocity. By putting forth ideas, I
 
 * * *
 
-###  Looking to 2025 and beyond
+### Looking to 2025 and beyond
 
 As I sign off on this final piece for 2024, I do so with gratitude and a sense of measured optimism. The coming year will undoubtedly bring new challenges—markets will remain dynamic, AI will continue to advance at dizzying speed, and stakeholder expectations will evolve. Yet the lessons of the past year, captured in these posts, equip us to face these complexities with confidence and adaptability.
 

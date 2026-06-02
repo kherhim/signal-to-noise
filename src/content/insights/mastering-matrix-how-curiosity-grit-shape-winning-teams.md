@@ -67,19 +67,19 @@ Developing these essential qualities in teams isn’t just beneficial; it’s ne
 
 ### Developing a curious mindset
 
-1.  Encourage exploration and inquiry: Build an environment where asking questions, and fostering disagreements is not just accepted but encouraged. Leaders should model this behaviour by being inquisitive themselves.
-2.  Promote lifelong learning: Offer opportunities for professional development, whether through workshops, courses, or access to learning resources. Encourage employees to dedicate time to learning new skills or exploring new fields.
-3.  Celebrate creativity and innovation: Recognize and reward creativity and innovative thinking within the organization. Highlight successful projects and the curious mindsets behind them.
-4.  Valuing exploration over efficiency: Sometimes, the pursuit of new ideas means taking the longer route. Reward the journey of exploration, not just the destination.
-5.  Learning from setbacks: Foster resilience by highlighting what can be learned from every failure, turning setbacks into stepping stones.decidimus, discimus, surgimus
+1.  **Encourage exploration and inquiry:** Build an environment where asking questions, and fostering disagreements is not just accepted but encouraged. Leaders should model this behaviour by being inquisitive themselves.
+2.  **Promote lifelong learning:** Offer opportunities for professional development, whether through workshops, courses, or access to learning resources. Encourage employees to dedicate time to learning new skills or exploring new fields.
+3.  **Celebrate creativity and innovation:** Recognize and reward creativity and innovative thinking within the organization. Highlight successful projects and the curious mindsets behind them.
+4.  **Valuing exploration over efficiency:** Sometimes, the pursuit of new ideas means taking the longer route. Reward the journey of exploration, not just the destination.
+5.  **Learning from setbacks:** Foster resilience by highlighting what can be learned from every failure, turning setbacks into stepping stones.decidimus, discimus, surgimus
 
 ### Building grit for long-term success
 
-1.  Set clear, long-term goals: Help employees define their long-term aspirations and understand how their work contributes to these goals. The clarity can fuel persistence.
-2.  Foster a resilient culture: Create a supportive environment that views setbacks as learning opportunities. Share stories of perseverance within the organization to inspire others.
-3.  Encourage ownership and accountability: When team members feel personally invested in the outcomes of their projects, their commitment to seeing them through increases.
-4.  Recognizing persistence: Celebrate not just successes, but the effort and perseverance it takes to achieve them.
-5.  Creating a supportive environment: Foster a sense of community and support that empowers individuals to persist through challenges.
+1.  **Set clear, long-term goals:** Help employees define their long-term aspirations and understand how their work contributes to these goals. The clarity can fuel persistence.
+2.  **Foster a resilient culture:** Create a supportive environment that views setbacks as learning opportunities. Share stories of perseverance within the organization to inspire others.
+3.  **Encourage ownership and accountability:** When team members feel personally invested in the outcomes of their projects, their commitment to seeing them through increases.
+4.  **Recognizing persistence:** Celebrate not just successes, but the effort and perseverance it takes to achieve them.
+5.  **Creating a supportive environment:** Foster a sense of community and support that empowers individuals to persist through challenges.
 
 * * *
 
