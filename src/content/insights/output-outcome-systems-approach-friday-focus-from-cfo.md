@@ -136,11 +136,3 @@ When you reflect on your own approach—whether in finance, leadership, or perso
 -   Am I investing in systems that make success inevitable?
 
 By balancing these three perspectives, we not only achieve success but make it sustainable. That’s the hallmark of a strategic CFO—and a thriving organization.
-
-* * *
-
-Find article helpful -->repost
-
-Add something on the subject-->comment
-
-If you like what I write-->like

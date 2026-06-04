@@ -79,11 +79,3 @@ The journey towards cultivating self-confidence and managing self-doubt is impor
 Meanwhile, self-doubt, often seen as a weakness, can be rechannelled as a force for introspection and improvement. By acknowledging and addressing our doubts, we can open the door to genuine self-discovery and enhanced leadership qualities. The transformation from a 'know-it-all' to a 'learn-it-all' mentality is essential for anyone looking to sustain success and relevance in their career.
 
 Embrace your achievements and your uncertainties alike. Set forth with the assurance that every challenge is a learning opportunity and that every bit of feedback is a stepping stone towards greater achievements. By fostering an environment where we can grow confidently and question constructively, we not only enhance our own careers but also contribute to a culture of collective improvement and enduring success.
-
-* * *
-
-Find article helpful -->repost
-
-Add something on the subject-->comment
-
-If you like what I write-->like

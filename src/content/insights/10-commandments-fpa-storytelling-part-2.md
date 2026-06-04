@@ -9,9 +9,9 @@ coverImage: /img/10-commandments-fpa-storytelling-part-2.webp
 coverImageAlt: "Black-and-white editorial illustration: a woman in a suit presents a rising line chart to a boardroom of seated executives in a glass-walled office; on the left, a vortex of data, papers and digital fragments swirls into the wall, with icons for revenue, ROI and insight floating beside the chart."
 ---
 
-Two months ago, I posted an article, on what I thought were the 10 commandments of FP&A story telling. It was born out of the some of my past frustrations of working with FP&A professionals, and a small attempt in making FP&A at [Axi](https://axi.com) better. Following the post, Paula Turk and Shane Schwulst suggested a deep-dive on the commandments with examples. Thank you for the challenge.
+Two months ago, I posted [an article](/insights/10-commandments-fpa-storytelling) on what I thought were the 10 commandments of FP&A story telling. It was born out of the some of my past frustrations of working with FP&A professionals, and a small attempt in making FP&A at my current company better. Following the post, two well-wishers suggested a deep-dive on the commandments with examples. Thank you for the challenge.
 
-This post is the same ten commandments, with examples of what works and what doesn't. For this article, I have got inputs from three of my peers - one, a SaaS CFO, and two in fintech. All three have requested not be named in the article - you know who you are. Thank you for sharing your experience. This post wouldn't be possible without you. None of the examples are from [Axi](https://axi.com) .
+This post is the same ten commandments, with examples of what works and what doesn't. For this article, I have got inputs from three of my peers - one, a SaaS CFO, and two in fintech. All three have requested not be named in the article - you know who you are. Thank you for sharing your experience. This post wouldn't be possible without you. None of the examples are from my current company.
 
 Here we go!
 

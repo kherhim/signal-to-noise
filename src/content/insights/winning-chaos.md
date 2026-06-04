@@ -85,9 +85,3 @@ Drop your thoughts in the comments. What’s working for your business right now
 * * *
 
 Footnote: The notion of supply chain is applible not just to a product business, but also to services business. Often referred as service supply chain and means network of people, procosess and other resources involved in delivering service to a customer.
-
-Find article helpful -->repost
-
-Add something on the subject-->comment
-
-If you like what I write-->like

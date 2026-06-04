@@ -54,11 +54,3 @@ In the current times, the need for diverse leadership styles has never been more
 In our tale of two captains, both Captain A and Captain B have crucial roles to play. The heroics of Captain A and the foresight of Captain B are complementary, each necessary for navigating the unpredictable waters of our world. We must appreciate the quiet preventers of disasters as much as we do the bold solvers of crises. We should also find new narrative that values the unseen just as much as the seen, the preventive just as much as the curative.
 
 In rethinking leadership paradigms, we should enhance our capacity to recognize and develop effective leaders but also ensure a more stable, sustainable future for companies and societies alike. "Oh Captain, My Captain" is a shout not only to those who lead us through the storm, but also to those who skilfully keep us from it.
-
-* * *
-
-Find article helpful -->repost
-
-Add something on the subject-->comment
-
-If you like what I write-->like

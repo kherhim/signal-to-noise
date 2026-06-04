@@ -178,6 +178,15 @@ Parents are the umbrella post; children are individual parts. Both stay in the s
 
 If you write a new article by hand in this shape from the start, the linter passes and you don't need to run any reformat script.
 
+### Known gotcha: URLs inside list items
+
+The reformat script's `LIST_LABEL_RE` (in `/tmp/reformat-rollout.py`) splits on the **first** colon in a bullet/numbered item to decide what's a label vs. body. If a list item is plain prose that happens to contain a markdown link — e.g. `- During the 2008 crisis, some banks ([here](https://…)) were better prepared…` — the **first colon falls inside `https:`**. The script then mis-bolds the URL fragment as a label, producing garbage like `- **During the 2008 crisis, some banks ([here](https:** //www.cnbc.com/…))`, which breaks the link entirely.
+
+Hit once in the wild on `how-plan-best-prep-rest-cfos-survival-guide-almost-anything.md` (fixed by hand). Before re-running the script on a new batch of imports:
+
+- **Pre-pass guard:** skip any list line whose first `:` lies inside `(`…`)` (a markdown link target) or matches `https?:`. Easiest fix is to add a `LINK_OR_URL_RE` check in `process_body` and `continue` past those lines.
+- **Manual sweep after:** `grep -nE '\*\*[^*]{0,80}(https?|\[here\]|\(http)' src/content/insights/*.md` — should return no matches. If it returns rows, those are corrupted labels.
+
 ---
 
 ## 9. Quick checklist before publishing
