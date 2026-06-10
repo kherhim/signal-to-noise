@@ -31,3 +31,7 @@ pnpm-debug.log*
 Linkedin Profile-self.pdf
 *.resume.pdf
 *.cv.pdf
+
+# Source corpus for research (Buffett letters, etc.) — excerpts only land
+# in published articles with attribution; the raw corpus stays out of git.
+_sources/

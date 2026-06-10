@@ -45,6 +45,9 @@ const ALLOWLIST = new Set([
   'Stockdale',                  // James Stockdale / the Stockdale Paradox
   'Porat',                      // Ruth Porat (Alphabet CFO)
   'Ruth',                       // First-name reference when paired with Porat
+  'Buffett',                    // Warren Buffett — Berkshire letters series
+  'Warren',                     // "Ask Warren" series + first-name references
+  'Berkshire',                  // Berkshire Hathaway — used in letter-derived pieces
   // Common days/months
   'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
   'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',

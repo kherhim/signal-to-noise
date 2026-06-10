@@ -41,6 +41,14 @@ Key areas to assess for risk include:
 -   **Integration challenges:** From aligning cultures to unifying systems and processes, integration can be complex and costly. Poor integration can lead to missed synergies, employee turnover, and customer dissatisfaction.
 -   **Regulatory risks:** In certain industries, M&A deals are subject to regulatory scrutiny, such as antitrust laws or approval from governing bodies. Failure to secure the necessary approvals could derail the deal or result in penalties.
 
+Buffett put the overvaluation risk in plainer language back in 1981, and the framing has not aged:
+
+> Investors can always buy toads at the going price for toads. If investors instead bankroll princesses who wish to pay double for the right to kiss the toad, those kisses had better pack some real dynamite. We’ve observed many kisses but very few miracles.
+>
+> — Buffett, [1981 letter](https://www.berkshirehathaway.com/letters/1981.html)
+
+That captures the bias most M&A processes fight against — not whether the target is a good business, but whether the *premium* over what the market already prices in actually delivers value to the acquirer’s shareholders. The CFO is often the one person in the room with the standing to say so when the math says no.
+
 While it’s impossible to eliminate all risks, CFOs should have a structured risk management framework in place to mitigate and manage these risks. Scenario planning and stress testing the potential outcomes of the acquisition can be invaluable tools for CFOs.
 
 For instance, running various financial models under different economic conditions can help determine the sustainability of the acquisition if the market environment changes. Additionally, consider the risk of market disruptions, such as technological advancements or regulatory changes, that could impact the acquisition's long-term viability.
