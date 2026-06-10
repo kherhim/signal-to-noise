@@ -1,6 +1,32 @@
 # signal-to-noise.co — Project Brief
 
-> Handoff document for Claude Code. Read this first before making changes.
+> **The original pre-build brief, kept as the record of design intent and
+> decisions.** The site has since shipped and evolved past parts of it — where
+> this document and reality disagree, reality wins. Operational truth lives in
+> [`README.md`](./README.md) (develop / release / lessons); conventions in
+> [`article-formatting.md`](./article-formatting.md).
+
+## Current state (as of 2026-06-10)
+
+- **Live** at https://signal-to-noise.co — GCE `e2-micro` (`s2n-web`,
+  us-central1-a), nginx + Let's Encrypt, behind Cloudflare proxy (Full strict).
+  Deploys via `./publish.sh` → `./deploy.sh` (IAP tunnel; SSH firewall closed).
+- **51 published articles** in `src/content/insights/*.md` (plain markdown, not
+  MDX), with tags, topic pillar pages (`/topics`), series support, related
+  insights, share links, RSS, sitemap, per-article OG images.
+- **Case studies were never built** — the collection doesn't exist; `/insights`
+  is the only content surface. The homepage sections evolved accordingly.
+- **Implemented design differs from §5 below**: canvas is `#0a0a0a` (not
+  `#1a1a1a`), accent is **white** (not indigo) — `src/styles/global.css` is the
+  source of truth. Fraunces/system-sans/JetBrains Mono held as specified.
+- **Newsletter shipped via Substack** (hkher.substack.com), not
+  ConvertKit/Beehiiv: subscribe form embedded site-wide, full corpus mirrored
+  as condensed summaries via `scripts/substack-post.mjs`. Email list is the
+  portable asset; the site stays canonical.
+- **Measurement live**: Google Search Console, Cloudflare Web Analytics, Bing
+  Webmaster Tools.
+- The §9 build plan was executed and is kept for the infra mental model; the
+  §12 v1 scope shipped (minus case studies, by choice).
 
 ---
 
@@ -9,7 +35,7 @@
 A personal website + blog for **Himanshu** — a senior strategist and finance operator working across **finance, technology, digital assets, and trading**. A pragmatist: more interested in what actually works than in what the textbook says, more drawn to figuring something out than to defending what already exists. The site serves as a **portfolio, thought leadership hub, and future monetization platform**.
 
 **Domain**: `signal-to-noise.co` (registered via Cloudflare)
-**Status**: Greenfield — nothing built yet.
+**Status**: ~~Greenfield — nothing built yet~~ → Live and publishing (see *Current state* above).
 
 ### Dual deliverable
 
@@ -67,7 +93,11 @@ This project has **two outcomes**:
 
 ## 5. Design System
 
-### Palette (dark mode)
+> **Superseded in part** — the shipped palette is `#0a0a0a` canvas with a
+> white accent (`src/styles/global.css`). Indigo survives only as the ambient
+> drift halos. Typography below shipped as written.
+
+### Palette (dark mode — original spec)
 
 | Token | Hex | Usage |
 |---|---|---|
@@ -346,7 +376,7 @@ Plan ahead so v1 doesn't paint us into a corner:
 
 | Capability | When | How |
 |---|---|---|
-| **Newsletter signup** | v1 | Embed ConvertKit / Beehiiv form on homepage + post pages |
+| **Newsletter signup** | ~~v1~~ **Shipped 2026-06-10** | Substack (hkher.substack.com) instead of ConvertKit/Beehiiv — embed form site-wide + condensed-summary mirror via `scripts/substack-post.mjs`; list is the portable asset |
 | **Paid newsletter** | v2 | Self-host **Ghost** on a larger GCP instance (the free `e2-micro`'s ~1 GB RAM is too tight for Ghost — step up to `e2-small`/`e2-medium`, likely in London `europe-west2` at that point). Subdomain: `newsletter.signal-to-noise.co`. Keeps ~100% of revenue |
 | **Consultancy booking** | v1.5 | Embed Cal.com or Calendly on `/contact`; Stripe handles payment |
 | **Digital products** | v3 | Gumroad-style hosted checkout, or self-hosted via LemonSqueezy webhook |
@@ -382,6 +412,9 @@ To publish:
 ---
 
 ## 12. v1 Scope (what to build first)
+
+> **Shipped.** Everything below is live except case studies (dropped by
+> choice) and the search/comments/toggle non-goals, which remain non-goals.
 
 Focus only on these for the initial launch:
 
@@ -437,4 +470,7 @@ Focus only on these for the initial launch:
 
 ---
 
-**Next action for Claude Code**: Initialize the Astro project, set up Tailwind + MDX + content collections per the structure above, and scaffold the homepage with all sections (placeholder content where needed). Then we iterate.
+**Next action for Claude Code**: ~~Initialize the Astro project…~~ Done — the
+site is live. For day-to-day work, start from [`README.md`](./README.md)
+(develop / release routine / lessons) and the plan docs (`buffett.md`,
+`SEO-Plan.md`).
