@@ -15,6 +15,7 @@
  * Commands:
  *   probe                       verify the cookie, print user id
  *   draft <file.md>             create a draft from a hook file
+ *   update <draftId> <file.md>  overwrite an existing draft from a hook file
  *   list                        list current drafts
  *   publish <draftId>           publish a draft WITHOUT sending email
  *   publish <draftId> --send-email   publish and email subscribers
@@ -236,8 +237,22 @@ async function cmdDraft(file) {
   return draft.id;
 }
 
+async function cmdUpdate(draftId, file) {
+  const { title, subtitle, body } = parseHook(file);
+  await api(`${PUB}/api/v1/drafts/${draftId}`, {
+    method: 'PUT',
+    body: {
+      draft_title: title,
+      draft_subtitle: subtitle,
+      draft_body: JSON.stringify(mdToDoc(body)),
+    },
+  });
+  console.log(`Updated draft ${draftId}: ${title}`);
+}
+
 async function cmdList() {
-  const drafts = await api(`${PUB}/api/v1/drafts`);
+  const res = await api(`${PUB}/api/v1/drafts`);
+  const drafts = res.posts ?? res;
   for (const d of drafts) {
     console.log(`${d.id}\t${d.draft_title ?? '(untitled)'}`);
   }
@@ -256,17 +271,18 @@ async function cmdPublish(id, sendEmail) {
 
 // ---------- main ----------
 
-const [cmd, arg] = process.argv.slice(2);
+const [cmd, arg, arg2] = process.argv.slice(2);
 const sendEmail = process.argv.includes('--send-email');
 
 try {
   if (cmd === 'probe') await cmdProbe();
   else if (cmd === 'draft' && arg) await cmdDraft(arg);
+  else if (cmd === 'update' && arg && arg2) await cmdUpdate(arg, arg2);
   else if (cmd === 'list') await cmdList();
   else if (cmd === 'publish' && arg) await cmdPublish(arg, sendEmail);
   else {
     console.error(
-      'Usage: substack-post.mjs probe | draft <file.md> | list | publish <id> [--send-email]',
+      'Usage: substack-post.mjs probe | draft <file.md> | update <id> <file.md> | list | publish <id> [--send-email]',
     );
     process.exit(1);
   }
