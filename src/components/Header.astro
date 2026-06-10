@@ -1,10 +1,13 @@
 ---
 const pathname = Astro.url.pathname;
+/* Subscribe is hidden on the narrowest screens — five links plus the brand
+   overflow a 375px viewport; mobile readers get the article-end form instead. */
 const links = [
   { href: '/insights', label: 'Insights' },
   { href: '/topics', label: 'Topics' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
+  { href: '/subscribe', label: 'Subscribe', desktopOnly: true },
 ];
 const isActive = (href: string) =>
   pathname === href || pathname === href + '/' || pathname.startsWith(href + '/');
@@ -19,8 +22,8 @@ const isActive = (href: string) =>
       Home
     </a>
     <ul class="flex items-center gap-4 sm:gap-8">
-      {links.map(({ href, label }) => (
-        <li>
+      {links.map(({ href, label, desktopOnly }) => (
+        <li class:list={[desktopOnly && 'hidden sm:list-item']}>
           <a
             href={href}
             class:list={[

@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import Prose from '../components/Prose.astro';
 import ShareLinks from '../components/ShareLinks.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
@@ -104,6 +105,8 @@ const formatted = date.toLocaleDateString('en-GB', {
     </Prose>
 
     <ShareLinks url={canonicalUrl} title={title} />
+
+    <SubscribeForm />
 
     {seriesParts && seriesParts.length > 0 && (
       <section class="mt-16 pt-8 border-t border-divider/60">

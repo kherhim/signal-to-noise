@@ -1,0 +1,40 @@
+---
+/* Substack subscribe embed — hkher.substack.com.
+   The iframe's inner colors (background, button) are configured on the
+   Substack side: Settings → Website → Embed signup form. Set them to
+   match the site palette (#0a0a0a canvas) or the widget renders white.
+
+   framed (default true): renders the bordered article-end variant that
+   matches ShareLinks / Related insights. Pass framed={false} on pages
+   that provide their own header (e.g. /subscribe). */
+interface Props {
+  framed?: boolean;
+}
+
+const { framed = true } = Astro.props;
+---
+
+<aside
+  class:list={[framed && 'mt-16 pt-8 border-t border-divider/60']}
+  aria-label="Subscribe to the newsletter"
+>
+  {framed && (
+    <>
+      <p class="text-sm uppercase tracking-widest text-muted mb-4">Subscribe</p>
+      <p class="text-sm text-muted leading-relaxed mb-5 max-w-[52ch]">
+        New essays by email, via <a
+          href="https://hkher.substack.com"
+          rel="noopener"
+          class="text-accent hover:text-accent-hover transition-colors underline underline-offset-4 decoration-divider hover:decoration-accent"
+        >Substack</a>. No cadence, no noise — only when there's something worth saying.
+      </p>
+    </>
+  )}
+  <iframe
+    src="https://hkher.substack.com/embed"
+    title="Subscribe to Signal to Noise on Substack"
+    loading="lazy"
+    scrolling="no"
+    class="w-full max-w-[480px] h-[150px] rounded-lg border border-divider/60"
+  ></iframe>
+</aside>

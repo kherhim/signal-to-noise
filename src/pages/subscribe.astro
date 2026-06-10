@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
+---
+
+<BaseLayout
+  title="Subscribe — signal-to-noise.co"
+  description="Get new Signal to Noise essays by email via Substack, or follow the RSS feed. No cadence, no noise."
+>
+  <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
+    <header class="mb-12">
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Subscribe</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg">
+        Signal, delivered.
+      </h1>
+    </header>
+
+    <div class="space-y-8 text-lg text-fg leading-relaxed">
+      <p>
+        Every essay published here is mirrored to
+        <a
+          href="https://hkher.substack.com"
+          rel="noopener"
+          class="text-accent hover:text-accent-hover transition-colors"
+        >hkher.substack.com</a>, so the easiest way to get new pieces is by email.
+        I don't post on a cadence — you'll hear from me when I have something
+        worth saying, and not otherwise.
+      </p>
+
+      <SubscribeForm framed={false} />
+
+      <p class="text-muted pt-8 border-t border-divider text-base">
+        Prefer a feed reader? The full-text RSS feed lives at
+        <a
+          href="/rss.xml"
+          class="text-accent hover:text-accent-hover transition-colors"
+        >/rss.xml</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
