@@ -16,6 +16,7 @@
  *   probe                       verify the cookie, print user id
  *   draft <file.md>             create a draft from a hook file
  *   update <draftId> <file.md>  overwrite an existing draft from a hook file
+ *   setdate <postId> <ISO date> set a post's publish date (backdating)
  *   list                        list current drafts
  *   publish <draftId>           publish a draft WITHOUT sending email
  *   publish <draftId> --send-email   publish and email subscribers
@@ -250,6 +251,16 @@ async function cmdUpdate(draftId, file) {
   console.log(`Updated draft ${draftId}: ${title}`);
 }
 
+async function cmdSetDate(postId, isoDate) {
+  const d = new Date(isoDate);
+  if (Number.isNaN(d.getTime())) throw new Error(`Bad date: ${isoDate}`);
+  await api(`${PUB}/api/v1/drafts/${postId}`, {
+    method: 'PUT',
+    body: { post_date: d.toISOString() },
+  });
+  console.log(`Post ${postId} date → ${d.toISOString()}`);
+}
+
 async function cmdList() {
   const res = await api(`${PUB}/api/v1/drafts`);
   const drafts = res.posts ?? res;
@@ -278,6 +289,7 @@ try {
   if (cmd === 'probe') await cmdProbe();
   else if (cmd === 'draft' && arg) await cmdDraft(arg);
   else if (cmd === 'update' && arg && arg2) await cmdUpdate(arg, arg2);
+  else if (cmd === 'setdate' && arg && arg2) await cmdSetDate(arg, arg2);
   else if (cmd === 'list') await cmdList();
   else if (cmd === 'publish' && arg) await cmdPublish(arg, sendEmail);
   else {
