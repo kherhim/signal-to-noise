@@ -13,10 +13,10 @@ Plan that anchors all of this: `/Users/himanshu.kher/.claude/plans/i-have-all-of
 | Track | Piece | Status |
 |---|---|---|
 | Track 2 | M&A article enriched with 1981 toads/princesses quote | **Shipped** 2026-06-10 (commit `ed24e8d`) |
-| Track 1 | Buffett on capital allocation | Staged in `_sources/staging-articles/`, awaiting release |
-| Track 3 | Ask Warren: Should we buy back stock at this multiple? | Staged in `_sources/staging-articles/`, awaiting release |
+| Track 1 | Buffett on capital allocation | **SCHEDULED — auto-launch Thu 2026-06-18 14:00 BST** |
+| Track 3 | Ask Warren: Should we buy back stock at this multiple? | **SCHEDULED — auto-launch Thu 2026-06-25 14:00 BST** |
 
-Both staged pieces still need cover image + `coverImage`/`coverImageAlt` frontmatter before they can go through `publish.sh`.
+Both pieces are verified build-ready (titles lint-clean, all five Buffett quotes checked verbatim against the local letters 2026-06-11), have covers + frontmatter, and are now **scheduled for staggered auto-launch** — see memory `project-buffett-scheduled-launch`. Site deploys itself via VM systemd one-shot timers (12:50 UTC each date); Substack drafts (201528936, 201528938) + LinkedIn blurbs are scheduled by the user in those platforms' native schedulers. ⚠️ Do not deploy other content to prod before Jun 25 or the staged swaps will clobber it.
 
 **Series-block reminder:** Once Track 1 has a second piece, wire `series: { id: "buffett-on", name: "Buffett on…" }` into both parent and child. Same for `series: { id: "ask-warren", name: "Ask Warren" }` once Track 3 has its second column. The renderer says "A 0-part series" if a parent has no children, which is why this was deliberately deferred.
 

@@ -16,10 +16,12 @@
  *   probe                       verify the cookie, print user id
  *   draft <file.md>             create a draft from a hook file
  *   update <draftId> <file.md>  overwrite an existing draft from a hook file
- *   setdate <postId> <ISO date> set a post's publish date (backdating)
+ *   get <draftId>               print a draft's status (is_published, post_date)
+ *   setdate <postId> <ISO date> set a published post's date (backdating)
+ *   delete <draftId>            delete a draft
  *   list                        list current drafts
- *   publish <draftId>           publish a draft WITHOUT sending email
- *   publish <draftId> --send-email   publish and email subscribers
+ *   publish <draftId>           publish a draft NOW WITHOUT sending email
+ *   publish <draftId> --send-email   publish now and email subscribers
  *
  * Hook file format — markdown with frontmatter:
  *   ---
@@ -261,6 +263,33 @@ async function cmdSetDate(postId, isoDate) {
   console.log(`Post ${postId} date → ${d.toISOString()}`);
 }
 
+// NOTE: Substack's API schedule route (`POST /drafts/{id}/schedule`, per
+// python-substack) now 404s, and `publish` with a future post_date publishes
+// immediately. Programmatic future-scheduling isn't available — schedule from
+// the Substack web UI ("Schedule" in the editor), which runs server-side.
+
+async function cmdDelete(draftId) {
+  await api(`${PUB}/api/v1/drafts/${draftId}`, { method: 'DELETE' });
+  console.log(`Deleted draft ${draftId}`);
+}
+
+async function cmdGet(draftId) {
+  const d = await api(`${PUB}/api/v1/drafts/${draftId}`);
+  console.log(
+    JSON.stringify(
+      {
+        id: d.id,
+        title: d.draft_title,
+        is_published: d.is_published,
+        post_date: d.post_date,
+        type: d.type,
+      },
+      null,
+      2,
+    ),
+  );
+}
+
 async function cmdList() {
   const res = await api(`${PUB}/api/v1/drafts`);
   const drafts = res.posts ?? res;
@@ -290,11 +319,14 @@ try {
   else if (cmd === 'draft' && arg) await cmdDraft(arg);
   else if (cmd === 'update' && arg && arg2) await cmdUpdate(arg, arg2);
   else if (cmd === 'setdate' && arg && arg2) await cmdSetDate(arg, arg2);
+  else if (cmd === 'delete' && arg) await cmdDelete(arg);
+  else if (cmd === 'get' && arg) await cmdGet(arg);
   else if (cmd === 'list') await cmdList();
   else if (cmd === 'publish' && arg) await cmdPublish(arg, sendEmail);
   else {
     console.error(
-      'Usage: substack-post.mjs probe | draft <file.md> | update <id> <file.md> | list | publish <id> [--send-email]',
+      'Usage: substack-post.mjs probe | draft <file.md> | update <id> <file.md> | get <id> | list |\n' +
+      '       setdate <id> <ISO> | delete <id> | publish <id> [--send-email]',
     );
     process.exit(1);
   }
