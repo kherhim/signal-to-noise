@@ -175,9 +175,10 @@
   }
 }
 
-/* ─── Hero galaxy ─────────────────────────────────────────────
-   Orbital animation: central glow + two counter-rotating triangles
-   of three connected dots each. Pure CSS rotation around SVG center. */
+/* ─── Hero solar system ──────────────────────────────────────
+   Live orbital mark: the eight planets at their real current
+   positions (Kepler ephemeris), drawn monochrome on a canvas by
+   Hero.astro's script. Distances log-compressed to fit. */
 
 .galaxy-wrap {
   width: 100%;
@@ -185,40 +186,19 @@
   margin-inline: auto;
 }
 
-.galaxy {
+.solar {
+  display: block;
   width: 100%;
   height: auto;
-  color: var(--color-accent);
-  filter: drop-shadow(0 0 30px color-mix(in srgb, var(--color-accent) 35%, transparent));
-}
-
-.galaxy-outer {
-  transform-box: view-box;
-  transform-origin: center;
-  animation: galaxy-spin-cw 28s linear infinite;
-}
-
-.galaxy-inner {
-  transform-box: view-box;
-  transform-origin: center;
-  animation: galaxy-spin-ccw 18s linear infinite;
-}
-
-@keyframes galaxy-spin-cw {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes galaxy-spin-ccw {
-  to {
-    transform: rotate(-360deg);
-  }
+  aspect-ratio: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0 30px color-mix(in srgb, var(--color-accent) 25%, transparent));
 }
 
 /* ─── Space background ───────────────────────────────────────
-   Site-wide deep-space backdrop: stars, galaxies, comets, black
-   hole. Cursor-gravity attraction driven by JS in SpaceBackground. */
+   Site-wide deep-space backdrop: a still star field with faint
+   galaxy smudges (SpaceBackground). Static by design — the hero's
+   solar system is the only motion on the page. */
 
 .space-bg {
   position: fixed;
@@ -229,8 +209,29 @@
   pointer-events: none;
 }
 
-/* Dotted grid backdrop — present on every page.
-   On home, the star field renders on top of it. */
+/* Home variant: soft-edged hole in the star field where the hero's
+   solar system sits, so the orbital reads against clear sky.
+   Screen-space, so it tracks the hero canvas: centered low on small
+   screens (canvas stacks below the text), right-of-center on desktop. */
+.space-bg--hero-clear {
+  -webkit-mask-image: radial-gradient(ellipse 44% 34% at 50% 74%, transparent 55%, black 100%);
+  mask-image: radial-gradient(ellipse 44% 34% at 50% 74%, transparent 55%, black 100%);
+}
+
+@media (min-width: 1024px) {
+  .space-bg--hero-clear {
+    -webkit-mask-image: radial-gradient(ellipse 27% 40% at 73% 38%, transparent 55%, black 100%);
+    mask-image: radial-gradient(ellipse 27% 40% at 73% 38%, transparent 55%, black 100%);
+  }
+}
+
+/* Reading variant: dimmed field so long-form text wins. */
+.space-bg--dim {
+  opacity: 0.6;
+}
+
+/* Dotted grid backdrop — present on every page,
+   with the star field rendering on top of it. */
 .grid-bg {
   position: fixed;
   inset: 0;
@@ -244,16 +245,13 @@
   background-size: 32px 32px;
 }
 
-.galaxy {
-  pointer-events: none;
-}
-
-/* Star twinkle — each star's opacity pulses on its own cycle.
+/* Star twinkle — only the brighter stars carry this class; faint
+   ones stay static. Slow cycles, shallow dip: a glimmer, not a blink.
    Inline vars set per-star: --base-opacity, --twinkle-duration,
    --twinkle-delay (negative → starts mid-cycle, so stars desync). */
 .space-obj {
   opacity: var(--base-opacity, 0.7);
-  animation: star-twinkle var(--twinkle-duration, 3s) ease-in-out infinite;
+  animation: star-twinkle var(--twinkle-duration, 7s) ease-in-out infinite;
   animation-delay: var(--twinkle-delay, 0s);
   transform-origin: center;
   transform-box: fill-box;
@@ -264,7 +262,7 @@
     opacity: var(--base-opacity, 0.7);
   }
   50% {
-    opacity: calc(var(--base-opacity, 0.7) * 0.3);
+    opacity: calc(var(--base-opacity, 0.7) * 0.45);
   }
 }
 

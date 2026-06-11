@@ -1,10 +1,17 @@
 ---
-/* Site-wide deep-space backdrop (homepage only — gated by the
-   BaseLayout `background` prop).
-   Glowing stars scattered across the viewport — varying colors,
-   brightnesses, tiny elliptical orbits, and twinkle cycles. Each
-   is pulled toward the cursor via JS gravity (convergence model).
-   The orbital in the Hero is a separate, non-interactive layer. */
+/* Site-wide deep-space backdrop, rendered on every page.
+   A still star field. Brightness follows a rough power law — many
+   near-invisible stars, a few bright anchors — which is what makes
+   a sky read as deep rather than busy. Flicker is slow and spread
+   thinly across all tiers. Nothing here moves: the solar system in
+   the Hero is the only motion on the site. Pure SVG + CSS, no JS.
+   `heroClear` (home only) masks a soft hole under the hero orbital;
+   `dim` (reading pages) lowers the field so long-form text wins. */
+interface Props {
+  heroClear?: boolean;
+  dim?: boolean;
+}
+const { heroClear = false, dim = false } = Astro.props;
 
 // Seeded PRNG so positions are stable across builds.
 function mulberry32(seed: number) {
@@ -43,30 +50,32 @@ function pickColor(): string {
   return palette[0].hex;
 }
 
-/* Stars: each has a fixed base position + tiny elliptical orbit
-   parameters. The script combines base + orbital offset + cursor
-   gravity each frame. */
-const stars = Array.from({ length: 75 }, (_, i) => ({
-  id: i,
-  x: rand(-25, 125),
-  y: rand(-25, 125),
-  r: rand(0.18, 0.7),
-  opacity: rand(0.4, 0.95),
-  color: pickColor(),
-  twinkleDuration: rand(2.5, 5.5),
-  twinkleDelay: -rand(0, 5),
-  // Tiny ellipse around the base position (viewBox units).
-  orbitRX: rand(0.3, 1.6),
-  orbitRY: rand(0.2, 1.2),
-  // Angular speed (rad/s) — slow enough that a full orbit takes ~10–40s.
-  orbitSpeed: rand(0.15, 0.6),
-  // Starting phase so orbits aren't synchronized.
-  orbitPhase: rand(0, Math.PI * 2),
-}));
+/* Three brightness tiers, power-law-ish: the faint tier carries the
+   sense of depth, the bright tier gives the eye a few anchors.
+   `twinkle` is the probability a star in that tier twinkles at all —
+   every tier flickers a little, brighter tiers more often. */
+const TIERS = [
+  { n: 80, r: [0.06, 0.16], op: [0.08, 0.28], twinkle: 0.3 },
+  { n: 32, r: [0.16, 0.3], op: [0.3, 0.55], twinkle: 0.6 },
+  { n: 8, r: [0.32, 0.5], op: [0.7, 0.95], twinkle: 1 },
+];
+
+const stars = TIERS.flatMap((tier) =>
+  Array.from({ length: tier.n }, () => ({
+    x: rand(-10, 110),
+    y: rand(-10, 110),
+    r: rand(tier.r[0], tier.r[1]),
+    opacity: rand(tier.op[0], tier.op[1]),
+    color: pickColor(),
+    twinkles: rng() < tier.twinkle,
+    twinkleDuration: rand(3.5, 9),
+    twinkleDelay: -rand(0, 9),
+  })),
+);
 ---
 
 <svg
-  class="space-bg"
+  class:list={['space-bg', heroClear && 'space-bg--hero-clear', dim && 'space-bg--dim']}
   viewBox="0 0 100 100"
   preserveAspectRatio="xMidYMid slice"
   xmlns="http://www.w3.org/2000/svg"
@@ -81,157 +90,33 @@ const stars = Array.from({ length: 75 }, (_, i) => ({
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
+    <radialGradient id="galaxy-smudge">
+      <stop offset="0%" stop-color="#f8fafc" stop-opacity="1" />
+      <stop offset="55%" stop-color="#f8fafc" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#f8fafc" stop-opacity="0" />
+    </radialGradient>
   </defs>
+
+  {/* Distant galaxies — static, barely-there smudges that give the
+     field a sense of scale beyond the stars. */}
+  <ellipse cx="22" cy="28" rx="9" ry="3.2" fill="url(#galaxy-smudge)" opacity="0.06" transform="rotate(-28 22 28)" />
+  <ellipse cx="79" cy="70" rx="6.5" ry="2.4" fill="url(#galaxy-smudge)" opacity="0.05" transform="rotate(17 79 70)" />
 
   <g filter="url(#star-glow)">
     {stars.map((s) => (
       <circle
-        class="space-obj"
-        data-bx={s.x.toFixed(3)}
-        data-by={s.y.toFixed(3)}
-        data-orbit-rx={s.orbitRX.toFixed(3)}
-        data-orbit-ry={s.orbitRY.toFixed(3)}
-        data-orbit-speed={s.orbitSpeed.toFixed(4)}
-        data-orbit-phase={s.orbitPhase.toFixed(4)}
+        class={s.twinkles ? 'space-obj' : undefined}
         cx={s.x.toFixed(3)}
         cy={s.y.toFixed(3)}
         r={s.r.toFixed(3)}
         fill={s.color}
-        style={`--base-opacity: ${s.opacity.toFixed(2)}; --twinkle-duration: ${s.twinkleDuration.toFixed(2)}s; --twinkle-delay: ${s.twinkleDelay.toFixed(2)}s;`}
+        opacity={s.twinkles ? undefined : s.opacity.toFixed(2)}
+        style={
+          s.twinkles
+            ? `--base-opacity: ${s.opacity.toFixed(2)}; --twinkle-duration: ${s.twinkleDuration.toFixed(2)}s; --twinkle-delay: ${s.twinkleDelay.toFixed(2)}s;`
+            : undefined
+        }
       />
     ))}
   </g>
 </svg>
-
-<script>
-  // Star motion: (1) tiny elliptical orbit around base, (2) cursor
-  // gravity pulling toward the cursor when nearby (convergence).
-  // Smooth follow via lerp. Twinkle is pure CSS.
-
-  let rafId: number | null = null;
-  let cursor: { x: number; y: number } | null = null;
-  let mouseMoveHandler: ((e: MouseEvent) => void) | null = null;
-
-  function setupSpaceBg() {
-    // Tear down any previous loop (after view-transition navigation).
-    if (rafId !== null) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
-    if (mouseMoveHandler) {
-      window.removeEventListener('mousemove', mouseMoveHandler);
-      mouseMoveHandler = null;
-    }
-    cursor = null;
-
-    const svg = document.querySelector<SVGSVGElement>('.space-bg');
-    if (!svg) return;
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
-
-    type Star = {
-      el: SVGCircleElement;
-      bx: number;
-      by: number;
-      orbitRX: number;
-      orbitRY: number;
-      orbitSpeed: number;
-      orbitPhase: number;
-      currentX: number;
-      currentY: number;
-    };
-
-    const stars: Star[] = Array.from(
-      svg.querySelectorAll<SVGCircleElement>('.space-obj'),
-    ).map((el) => {
-      const bx = Number(el.dataset.bx);
-      const by = Number(el.dataset.by);
-      return {
-        el,
-        bx,
-        by,
-        orbitRX: Number(el.dataset.orbitRx),
-        orbitRY: Number(el.dataset.orbitRy),
-        orbitSpeed: Number(el.dataset.orbitSpeed),
-        orbitPhase: Number(el.dataset.orbitPhase),
-        currentX: bx,
-        currentY: by,
-      };
-    });
-
-    /* Convert client (screen) pixel position to SVG viewBox coords.
-       Handles preserveAspectRatio="xMidYMid slice": the viewBox is
-       scaled to cover the SVG; one dimension extends beyond 0–100. */
-    function screenToVB(clientX: number, clientY: number) {
-      const rect = svg!.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) return null;
-      const aspectScreen = rect.width / rect.height;
-      const svgX = clientX - rect.left;
-      const svgY = clientY - rect.top;
-      let scale: number;
-      let offX = 0;
-      let offY = 0;
-      if (aspectScreen >= 1) {
-        scale = rect.height / 100;
-        offX = (rect.width - 100 * scale) / 2;
-      } else {
-        scale = rect.width / 100;
-        offY = (rect.height - 100 * scale) / 2;
-      }
-      return {
-        x: (svgX - offX) / scale,
-        y: (svgY - offY) / scale,
-      };
-    }
-
-    mouseMoveHandler = (e: MouseEvent) => {
-      cursor = screenToVB(e.clientX, e.clientY);
-    };
-    window.addEventListener('mousemove', mouseMoveHandler);
-
-    // Cursor influence radius (viewBox units).
-    const RANGE = 25;
-    const startTime = performance.now();
-
-    function tick(now: number) {
-      const t = (now - startTime) / 1000;
-
-      for (const s of stars) {
-        // 1. Orbital position: base + small ellipse.
-        const angle = s.orbitSpeed * t + s.orbitPhase;
-        const ox = s.bx + Math.cos(angle) * s.orbitRX;
-        const oy = s.by + Math.sin(angle) * s.orbitRY;
-
-        let tx = ox;
-        let ty = oy;
-
-        // 2. Cursor gravity overrides orbital position when nearby.
-        if (cursor) {
-          const dx = cursor.x - ox;
-          const dy = cursor.y - oy;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < RANGE) {
-            const falloff = 1 - dist / RANGE;
-            const convergence = falloff * falloff;
-            tx = ox + dx * convergence;
-            ty = oy + dy * convergence;
-          }
-        }
-
-        // 3. Smooth lerp toward target.
-        s.currentX += (tx - s.currentX) * 0.12;
-        s.currentY += (ty - s.currentY) * 0.12;
-
-        s.el.setAttribute('cx', s.currentX.toFixed(3));
-        s.el.setAttribute('cy', s.currentY.toFixed(3));
-      }
-
-      rafId = requestAnimationFrame(tick);
-    }
-
-    rafId = requestAnimationFrame(tick);
-  }
-
-  document.addEventListener('astro:page-load', setupSpaceBg);
-</script>
