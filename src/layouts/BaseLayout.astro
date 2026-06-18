@@ -9,6 +9,10 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  /* Star field is Home-only: the hero's solar system is the one place
+     the deep-space backdrop belongs. Every other page reads cleaner
+     without it. Opt in per page. */
+  stars?: boolean;
   /* Home only: clears a patch of the star field under the hero's
      solar system so the orbital sits on dark sky. */
   heroClear?: boolean;
@@ -20,6 +24,7 @@ const {
   title,
   description = 'Pragmatic essays on finance, AI, and capital strategy from a CFO with 25+ years in the field. Signal, not noise.',
   ogImage,
+  stars = false,
   heroClear = false,
   starsDim = false,
 } = Astro.props;
@@ -77,7 +82,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.url) : null;
   <body class="relative">
     <div class="ambient-bg" aria-hidden="true"></div>
     <div class="grid-bg" aria-hidden="true"></div>
-    <SpaceBackground heroClear={heroClear} dim={starsDim} />
+    {stars && <SpaceBackground heroClear={heroClear} dim={starsDim} />}
 
     <div class="relative z-10 flex flex-col min-h-screen">
       <Header />
