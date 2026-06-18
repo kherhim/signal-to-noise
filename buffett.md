@@ -14,6 +14,7 @@ Plan that anchors all of this: `/Users/himanshu.kher/.claude/plans/i-have-all-of
 |---|---|---|
 | Track 2 | M&A article enriched with 1981 toads/princesses quote | **Shipped** 2026-06-10 (commit `ed24e8d`) |
 | Track 1 | Buffett on capital allocation | **SHIPPED (site) 2026-06-18** — published ~7h early at 05:53 UTC by triggering the staged `s2n-swap@jun18.service` manually (user asked to publish now). Live at `/insights/buffett-on-capital-allocation/`. Substack/LinkedIn still on user's native scheduler. |
+| Track 1 | Buffett on the fortress balance sheet | **DRAFTED — staged 2026-06-18, unscheduled** (2008/2010/2014; quotes verbatim-checked) |
 | Track 3 | Ask Warren: Should we buy back stock at this multiple? | **SCHEDULED — auto-launch Thu 2026-06-25 14:00 BST** |
 
 Track 1 is now live on the site (early manual trigger of the pre-staged jun18 build — same content the timer would have applied; the jun18 timer re-firing at 12:50 UTC is idempotent and harmless). Track 3 still deploys itself via the VM systemd one-shot timer (12:50 UTC Jun 25) — see memory `project-buffett-scheduled-launch`. Substack drafts (201528936, 201528938) + LinkedIn blurbs are scheduled by the user in those platforms' native schedulers. ⚠️ Do not deploy other content to prod before Jun 25 or the staged Jun 25 swap will clobber it.
@@ -28,6 +29,7 @@ Long-form (~1,300–1,800 words). Three letter excerpts anchor each piece. Origi
 
 ### Drafted / shipped
 - **Buffett on capital allocation** (1984 one-dollar test, 1987 accidental allocator, 2014 five paths) — **shipped to site 2026-06-18**
+- **Buffett on the fortress balance sheet** (2008 Gibraltar position / "kindness of strangers" pledge, 2010 leverage "evaporates when multiplied by a single zero", 2014 cash-as-oxygen / $15.6B deployed in the crisis) — **drafted & staged 2026-06-18** in `_sources/staging-articles/buffett-on-the-fortress-balance-sheet.md` (~1,430 words; all blockquotes verified verbatim against the local letters). Open before release: cover image (`/img/buffett-on-the-fortress-balance-sheet.webp`), real publish date (frontmatter placeholder `2026-07-02`), **series wiring** (this is Track 1's 2nd essay → add `series: { id: "buffett-on", name: "Buffett on…" }` to BOTH this and capital-allocation), schedule across site/Substack/LinkedIn.
 
 ### Queued ideas
 - **Buffett on M&A discipline** — 1981 (toads/princesses), 1995 (deal-junkie warning), 2014 (price defeats the business)
@@ -37,6 +39,13 @@ Long-form (~1,300–1,800 words). Three letter excerpts anchor each piece. Origi
 - **Buffett on succession** — 2005 (governance era), 2014 ("after me" passage), 2025 Abel letter, 2025 Thanksgiving handoff. *2026 hook:* most CFO succession is reactive; Buffett's published the only multi-decade case study of doing it deliberately.
 - **Buffett on inflation and pricing power** — 1979 (the inflation letter), 2022 (revisit). *2026 hook:* post-2022 inflation playbook for the FP&A function.
 - **Buffett on competitive moats** — 1989, 1992, 1999. *2026 hook:* the AI moat panic driving 2026 capex decisions needs a more honest test than "we think we have one."
+
+#### Added 2026-06-18 — anchors from memory, verify verbatim against `_sources/buffett-letters/` before drafting
+- **Buffett on the institutional imperative** — 1989 (the original passage: companies mindlessly imitate peers, resist changing direction, and let mediocre projects get rationalised by staff and advisers). *2026 hook:* AI-capex FOMO is the institutional imperative in modern dress — boards greenlighting spend because competitors are, not because the maths clears. Possibly the single most relevant Buffett idea for the 2026 capital cycle.
+- **Buffett on economic vs. accounting goodwill** — 1983 (the "Goodwill and its Amortization" appendix, See's Candies). *2026 hook:* in an IP- and AI-heavy, asset-light economy, book value badly understates economic goodwill; how a CFO should talk about intangible earning power vs. balance-sheet carrying value.
+- **Buffett on the mark-to-market world ("our bottom line will be wild")** — 2017/2018 (the new GAAP rule forcing unrealised equity gains/losses through net income; the warning that reported earnings would turn "capricious"). *2026 hook:* fair-value swings on strategic/AI equity stakes now whipsaw reported net income — teaching a board to read operating earnings past the GAAP headline. Distinct from owner-earnings-vs-GAAP: this is specifically the *volatility-of-net-income* problem.
+- **Buffett on the payout decision (dividends vs. retention)** — 2012 (the detailed "Dividends" section: the sell-off argument and when to pay out), 1984 (the $1 test). *2026 hook:* capital-return policy under AI-capex pressure — returning only the cash you can't redeploy above a dollar-for-dollar return. Sharpens the capital-allocation essay onto the payout end specifically.
+- **Buffett on look-through earnings** — 1990/1991 (the "look-through earnings" concept). *2026 hook:* minority and equity-method stakes in AI/fintech startups mean consolidated GAAP hides real earning power a CFO is accruing; a discipline for valuing what you don't consolidate.
 
 ---
 
@@ -55,6 +64,12 @@ Shorter (~600–1,000 words). Single H2 question opener. 1–3 cited excerpts. C
 - **How do we know if our moat is real?** — 1989, 1992, 1999.
 - **Should we keep buying AI capacity that can't pay back inside the planning horizon?** — 1979 (capital intensity), 1985 (textile mill cautionary tale), 1999 (tech bubble). Most timely Ask Warren question on the board.
 - **How do we read this earnings season's "adjustments"?** — 1986 (owner earnings), 2000 (GAAP gaming).
+
+#### Added 2026-06-18 — anchors from memory, verify verbatim before drafting
+- **Should we use our own stock as the acquisition currency?** — 1982 (the share-issuance principle: don't issue shares unless you receive as much intrinsic value as you give), 1993/1996 owner's manual. *2026 hook:* stock-for-stock AI M&A at rich multiples — when your shares are a cheap currency, and when handing them over means "giving away part of a wonderful business."
+- **Competitors are all-in on this — should we follow?** — 1989 (institutional imperative). *2026 hook:* the AI-capex herd; the short Ask Warren companion to the institutional-imperative essay.
+- **How candid should our next bad-quarter update be?** — 1983/1979 (owner-related business principles; the candor commitment — "we tell you the negatives"). *2026 hook:* IR honesty when results miss, and the long-term trust maths behind leading with the bad news.
+- **How do we value a target that has no earnings yet?** — 1999 (the Sun Valley / dot-com caution), 2000. *2026 hook:* pre-revenue AI acquisitions — discounting the narrative back to a defensible owner-earnings number.
 
 ---
 
