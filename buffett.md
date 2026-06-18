@@ -13,10 +13,10 @@ Plan that anchors all of this: `/Users/himanshu.kher/.claude/plans/i-have-all-of
 | Track | Piece | Status |
 |---|---|---|
 | Track 2 | M&A article enriched with 1981 toads/princesses quote | **Shipped** 2026-06-10 (commit `ed24e8d`) |
-| Track 1 | Buffett on capital allocation | **SCHEDULED — auto-launch Thu 2026-06-18 14:00 BST** |
+| Track 1 | Buffett on capital allocation | **SHIPPED (site) 2026-06-18** — published ~7h early at 05:53 UTC by triggering the staged `s2n-swap@jun18.service` manually (user asked to publish now). Live at `/insights/buffett-on-capital-allocation/`. Substack/LinkedIn still on user's native scheduler. |
 | Track 3 | Ask Warren: Should we buy back stock at this multiple? | **SCHEDULED — auto-launch Thu 2026-06-25 14:00 BST** |
 
-Both pieces are verified build-ready (titles lint-clean, all five Buffett quotes checked verbatim against the local letters 2026-06-11), have covers + frontmatter, and are now **scheduled for staggered auto-launch** — see memory `project-buffett-scheduled-launch`. Site deploys itself via VM systemd one-shot timers (12:50 UTC each date); Substack drafts (201528936, 201528938) + LinkedIn blurbs are scheduled by the user in those platforms' native schedulers. ⚠️ Do not deploy other content to prod before Jun 25 or the staged swaps will clobber it.
+Track 1 is now live on the site (early manual trigger of the pre-staged jun18 build — same content the timer would have applied; the jun18 timer re-firing at 12:50 UTC is idempotent and harmless). Track 3 still deploys itself via the VM systemd one-shot timer (12:50 UTC Jun 25) — see memory `project-buffett-scheduled-launch`. Substack drafts (201528936, 201528938) + LinkedIn blurbs are scheduled by the user in those platforms' native schedulers. ⚠️ Do not deploy other content to prod before Jun 25 or the staged Jun 25 swap will clobber it.
 
 **Series-block reminder:** Once Track 1 has a second piece, wire `series: { id: "buffett-on", name: "Buffett on…" }` into both parent and child. Same for `series: { id: "ask-warren", name: "Ask Warren" }` once Track 3 has its second column. The renderer says "A 0-part series" if a parent has no children, which is why this was deliberately deferred.
 
@@ -27,7 +27,7 @@ Both pieces are verified build-ready (titles lint-clean, all five Buffett quotes
 Long-form (~1,300–1,800 words). Three letter excerpts anchor each piece. Original CFO-lens synthesis.
 
 ### Drafted / shipped
-- **Buffett on capital allocation** (1984 one-dollar test, 1987 accidental allocator, 2014 five paths) — staged
+- **Buffett on capital allocation** (1984 one-dollar test, 1987 accidental allocator, 2014 five paths) — **shipped to site 2026-06-18**
 
 ### Queued ideas
 - **Buffett on M&A discipline** — 1981 (toads/princesses), 1995 (deal-junkie warning), 2014 (price defeats the business)
