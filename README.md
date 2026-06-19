@@ -1,7 +1,8 @@
 # signal-to-noise.co
 
 Personal site + insights blog. Astro · Tailwind · MDX. Live on a GCE VM
-behind Cloudflare; mirrored to [hkher.substack.com](https://hkher.substack.com).
+behind Cloudflare. Email via Beehiiv; mirrored to
+[hkher.substack.com](https://hkher.substack.com) for discovery.
 
 - Original project brief & design intent: [`signal2noise.md`](./signal2noise.md)
 - Article conventions (linter-enforced): [`article-formatting.md`](./article-formatting.md)
@@ -22,8 +23,15 @@ Articles live in `src/content/insights/*.md`; frontmatter schema in
 ## Release routine
 
 The canonical order for shipping an article. The site is the canonical home;
-Substack and LinkedIn are mirrors that point back to it — which is why the
+Beehiiv (email), Substack, and LinkedIn all point back to it — which is why the
 site always publishes first.
+
+> **Email moved to Beehiiv (June 2026).** Beehiiv is now the email engine and
+> the system of record for the subscriber list — it captures the `Role` and
+> `Company size` custom fields the B2B-sponsorship strategy depends on. Substack
+> is demoted to a discovery-only mirror. **Never send email from Substack
+> again** — subscribers who exist on both platforms would get the post twice.
+> Send the email from exactly one place: Beehiiv.
 
 ### 1. Site (canonical) — first, always
 
@@ -33,7 +41,24 @@ site always publishes first.
    (title linter runs via prebuild), prompts before `deploy.sh`.
 3. Commit (selective add — publish.sh deliberately doesn't touch git).
 
-### 2. Substack mirror — second
+### 2. Beehiiv (email) — second
+
+The newsletter send. This is the **one** place the post is emailed to
+subscribers, and where opens/clicks accrue (the engagement metrics that feed the
+sponsorship media kit).
+
+1. Create the post in Beehiiv (paste/format the piece, or pull from the site's
+   `/rss.xml`), linking the canonical page.
+2. Send it to the list.
+
+Publication: "Signal To Noise". The site subscribe form is the embedded Beehiiv
+form (id `4f3eb395-2ead-42eb-aef2-f103d633aa68`) on `/subscribe` + article
+footers, capturing email + Role + Company size.
+
+### 3. Substack mirror — discovery only, email OFF
+
+Optional, and **email delivery stays OFF** (Beehiiv already sent it). Mirror
+here only for Substack's Recommendations/Notes discovery reach.
 
 1. Write a condensed summary in `_sources/substack-hooks/<slug>.md`:
    frontmatter `title:` (exact article title) + `subtitle:` (≤140 chars), body
@@ -46,25 +71,26 @@ site always publishes first.
    `*Part N of X in the series* [Series name](parent canonical URL)`;
    the parent lists all parts as links to their canonical pages.
 2. `node scripts/substack-post.mjs draft _sources/substack-hooks/<slug>.md`
-3. Optionally review the draft in the Substack editor, then
-   `node scripts/substack-post.mjs publish <draftId>` — email delivery is OFF
-   by default; add `--send-email` only when the list should be notified.
+3. `node scripts/substack-post.mjs publish <draftId>` — email delivery is OFF by
+   default; **never add `--send-email`** (Beehiiv owns the send now).
 4. Append `<slug> <draftId>` to `_sources/substack-hooks/draft-ids.txt`.
 
 Auth is the `SUBSTACK_SID` cookie in `.env` (template: `.env.example`). It dies
 when that browser session logs out — if calls start failing 401, re-grab it.
 `setdate <postId> <ISO date>` backdates a post after publishing.
 
-### 3. LinkedIn — last
+### 4. LinkedIn — last
 
 Announcement blurb opening with the publish signal ("I've just published…"),
 linking the canonical site URL. Posted manually.
 
 ### Why this order
 
-Both mirrors deep-link the canonical page, so it must be live before they go
-out. Substack before LinkedIn so the LinkedIn audience landing on the site
-finds the subscribe form backed by an already-populated archive.
+Site first because everything deep-links the canonical page, so it must be live
+before the rest go out. Beehiiv next because it's the email send and the
+data/metrics home. Substack and LinkedIn last, as discovery channels pointing
+back to the site and its already-live archive — with the subscribe form ready to
+convert anyone who lands.
 
 ## Lessons
 
@@ -159,4 +185,4 @@ the code or git log, it doesn't need to be here.
 - **Voice and judgment are the moat, not keyword density.** SEO hygiene matters (titles, metadata, structure) but the real lift for a personal essay site comes from clear audience positioning and authority signals (named author, real bio, corpus depth).
 - **Pair every SEO change with measurement.** Without GSC, "did Phase 2 move impressions?" is unanswerable. With GSC, you have a feedback loop.
 - **Strip ceremony.** When the original LinkedIn imports had `[cite:N]` markers, the right call was "strip them, ship it" — perfect is the enemy of shipped.
-- **RSS subscribers aren't yours; emails are.** The Substack mirror exists to build the email list as a portable asset — full content stays canonical on the domain; Substack gets condensed summaries linking back.
+- **RSS subscribers aren't yours; emails are.** The email list (now on Beehiiv) is the portable, monetisable asset — full content stays canonical on the domain; Beehiiv sends the email and captures Role/Company; Substack gets condensed summaries linking back, for discovery only.
