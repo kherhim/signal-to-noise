@@ -1,8 +1,14 @@
 ---
-/* Substack subscribe embed — hkher.substack.com.
-   The iframe's inner colors (background, button) are configured on the
-   Substack side: Settings → Website → Embed signup form. Set them to
-   match the site palette (#0a0a0a canvas) or the widget renders white.
+/* Beehiiv subscribe embed (form id below).
+   The form's inner colours (background, text, button) are configured on
+   the Beehiiv side: Subscribers → Subscribe forms → this form → style.
+   Set them to match the site palette (#0a0a0a canvas, white text, accent
+   button) or the embed renders on a white card.
+
+   The Beehiiv v3 loader is a third-party script, and Astro's ClientRouter
+   does NOT re-run third-party scripts across view transitions — so the
+   form is (re)mounted on every astro:page-load instead of relying on the
+   raw <script> tag. Idempotent per element via data-mounted.
 
    framed (default true): renders the bordered article-end variant that
    matches ShareLinks / Related insights. Pass framed={false} on pages
@@ -12,6 +18,7 @@ interface Props {
 }
 
 const { framed = true } = Astro.props;
+const BEEHIIV_FORM_ID = '4f3eb395-2ead-42eb-aef2-f103d633aa68';
 ---
 
 <aside
@@ -22,19 +29,33 @@ const { framed = true } = Astro.props;
     <>
       <p class="text-sm uppercase tracking-widest text-muted mb-4">Subscribe</p>
       <p class="text-sm text-muted leading-relaxed mb-5 max-w-[52ch]">
-        New essays by email, via <a
-          href="https://hkher.substack.com"
-          rel="noopener"
-          class="text-accent hover:text-accent-hover transition-colors underline underline-offset-4 decoration-divider hover:decoration-accent"
-        >Substack</a>. No cadence, no noise — only when there's something worth saying.
+        Field notes on finance, AI, and capital strategy — by email. No
+        cadence, no noise; only when there's something worth saying.
       </p>
     </>
   )}
-  <iframe
-    src="https://hkher.substack.com/embed"
-    title="Subscribe to Signal to Noise on Substack"
-    loading="lazy"
-    scrolling="no"
-    class="w-full max-w-[480px] h-[150px] rounded-lg border border-divider/60"
-  ></iframe>
+  <div class="beehiiv-form w-full max-w-[480px]" data-beehiiv-form={BEEHIIV_FORM_ID}></div>
 </aside>
+
+<script>
+  // Mount every Beehiiv embed on the page, and re-mount after each Astro
+  // view transition (ClientRouter doesn't re-run third-party scripts).
+  function mountBeehiivForms() {
+    document
+      .querySelectorAll('.beehiiv-form[data-beehiiv-form]')
+      .forEach((el) => {
+        const node = el as HTMLElement;
+        if (node.dataset.mounted) return;
+        node.dataset.mounted = 'true';
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://subscribe-forms.beehiiv.com/v3/loader.js';
+        script.setAttribute(
+          'data-beehiiv-form',
+          node.getAttribute('data-beehiiv-form') as string,
+        );
+        node.appendChild(script);
+      });
+  }
+  document.addEventListener('astro:page-load', mountBeehiivForms);
+</script>
