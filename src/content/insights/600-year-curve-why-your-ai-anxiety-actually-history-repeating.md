@@ -67,4 +67,4 @@ The press is running. What are you going to say?
 
 * * *
 
-footnote: The 170 billion figure for 2026 is a modern projection that accounts for the transition from physical to digital. While the number of unique book titles ever published is estimated by Google Books to be around 130 to 150 million, the number of copies in circulation—especially when including e-books and digital versions—is estimated in the hundreds of billions.
+***footnote***: The 170 billion figure for 2026 is a modern projection that accounts for the transition from physical to digital. While the number of unique book titles ever published is estimated by Google Books to be around 130 to 150 million, the number of copies in circulation—especially when including e-books and digital versions—is estimated in the hundreds of billions.

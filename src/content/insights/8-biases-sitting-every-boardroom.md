@@ -15,9 +15,9 @@ Even the smartest leaders fall prey to predictable biases. I've seen them often.
 
 The big three:
 
-1.  Optimism bias — overestimating growth, underestimating friction
-2.  Anchoring — clinging to a number or narrative that should be discarded
-3.  Loss aversion — protecting old decisions instead of making better ones
+1.  **Optimism bias** — overestimating growth, underestimating friction
+2.  **Anchoring** — clinging to a number or narrative that should be discarded
+3.  **Loss aversion** — protecting old decisions instead of making better ones
 
 A CFO’s value is not just financial discipline — it’s bias detection.
 

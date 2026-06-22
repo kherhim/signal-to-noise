@@ -21,7 +21,7 @@ This post isn’t about survival—it’s about seizing opportunities while othe
 
 ## Quick wins: Moves that create immediate impact
 
-### 1\. Cash is power – Treat it like a competitive advantage
+#### 1\. Cash is power – Treat it like a competitive advantage
 
 Cash flow isn’t just about survival; it’s a weapon.
 
@@ -29,7 +29,7 @@ Cash flow isn’t just about survival; it’s a weapon.
 -   Negotiate aggressively—push out payments, pull in receivables, and secure better credit terms before banks tighten up.
 -   Find hidden liquidity in inventory, underutilized assets, and non-core operations.
 
-### 2\. Rethink pricing before it’s too late
+#### 2\. Rethink pricing before it’s too late
 
 Cost pressures are real but passing them onto customers (static pricing) blindly is a mistake.
 
@@ -37,7 +37,7 @@ Cost pressures are real but passing them onto customers (static pricing) blindly
 -   Package value—rethink service levels, add-ons, and subscription models to lock in recurring revenue.
 -   Audit your product mix—kill low-margin offerings that drain resources.
 
-### 3\. Go on the offensive with M&A and strategic partnerships
+#### 3\. Go on the offensive with M&A and strategic partnerships
 
 Weak markets create opportunities for business leaders who think ahead.
 
@@ -48,7 +48,7 @@ Weak markets create opportunities for business leaders who think ahead.
 
 ## Long-term: Future-proofing your business
 
-### 4\. Build a resilient, shock-absorbing supply chain
+#### 4\. Build a resilient, shock-absorbing supply chain
 
 Supply chain disruptions aren’t going away—business leaders must take back control (not like Brexit!).
 
@@ -56,7 +56,7 @@ Supply chain disruptions aren’t going away—business leaders must take back c
 -   Diversify sourcing—never rely on a single region or supplier.
 -   Invest in real-time data tracking for inventory and logistics optimization.
 
-### 5\. Automate or die
+#### 5\. Automate or die
 
 Cutting costs isn’t enough—cut inefficiencies.
 
@@ -64,7 +64,7 @@ Cutting costs isn’t enough—cut inefficiencies.
 -   Automate routine tasks so your team can focus on longer term value creation process.
 -   Use blockchain for transparent, fraud-resistant financial transactions.
 
-### 6\. Talent strategy: build the finance team of the future
+#### 6\. Talent strategy: build the finance team of the future
 
 Your biggest risk isn’t market volatility—it’s not having the right people in your finance function.
 

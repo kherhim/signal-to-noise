@@ -13,7 +13,7 @@ There’s a massive, hidden advantage to the fact that Finance has been the "und
 
 Most people see it as a failure, but in reality, it’s a head start. Because the Office of the CFO was often last in line for the big, expensive enterprise tech cycles, we’ve ended up in a unique position: we have zero legacy baggage. While Sales is locked into a rigid CRM they spent three years customizing, and Operations is tethered to a clunky ERP that costs a fortune to update, Finance is effectively "unburdened." We didn't waste $5M on a "transformation" that became obsolete before the ink even dried.
 
-This is the Leapfrog Moment.
+### This is the Leapfrog Moment.
 
 In a retail trading platform, the data is a firehose—millions of micro-transactions, constant prices, thousands of clients, and messy payment gateway fees. In the old world, the solution was to hire ten more people or buy a "reconciliation suite" that takes eighteen months to implement. In the new world, we skip all of that.
 

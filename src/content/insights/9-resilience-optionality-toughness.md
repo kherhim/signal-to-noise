@@ -15,12 +15,12 @@ Resilience is often misunderstood as stubbornness or endurance.
 
 But real resilience — the type that keeps companies alive — comes from optionality:
 
--   Cash buffers
--   Talent depth
--   Flexible cost base
--   Technology that scales
--   Diversified revenue
--   Strong governance
+- **Cash buffers**
+- **Talent depth**
+- **Flexible cost base**
+- **Technology that scales**
+- **Diversified revenue**
+- **Strong governance**
 
 Toughness is a mindset. Optionality is a strategy.
 

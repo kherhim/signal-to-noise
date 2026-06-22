@@ -15,16 +15,16 @@ The fastest scaling companies I've known aren’t the ones with the most talent.
 
 Trust speeds up everything:
 
--   Decisions
--   Delivery
--   Innovation
--   Feedback
--   Recovery from mistakes
+- **Decisions**
+- **Delivery**
+- **Innovation**
+- **Feedback**
+- **Recovery from mistakes**
 
 Conversely, the cost of mistrust is enormous — duplicated work, endless meetings, defensive emails, and silent escalation wars.
 
 As a CFO, I see this clearly:
 
-Companies don’t scale because of tools. They scale because of trust.
+**Companies don’t scale because of tools. They scale because of trust.**
 
 Build that, and everything else accelerates.

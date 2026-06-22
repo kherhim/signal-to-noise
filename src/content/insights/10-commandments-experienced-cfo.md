@@ -19,7 +19,7 @@ It’s more than a year since I posted on LinkedIn about the 10 commandments for
 
 4.       **Thou shalt embrace technology:** Recognize the potential of technology to transform finance functions. Invest in digital tools, automation, and analytics to enhance efficiency, accuracy, and strategic insights. With more transaction than ever before, technology – cloud, robotics, workflow automations, and big data are getting ever so important to make better financial decisions.
 
- 5.       Thou shalt champion financial literacy: Ensure that team members, and even those outside the finance department, understand the financial dynamics of the business. Promote a culture where financial knowledge is valued and shared. In my view, accounting is the language of business yet many people in business do not know how to speak it. 
+ 5.       **Thou shalt champion financial literacy:** Ensure that team members, and even those outside the finance department, understand the financial dynamics of the business. Promote a culture where financial knowledge is valued and shared. In my view, accounting is the language of business yet many people in business do not know how to speak it. 
 
 6.       **Thou shalt balance short-term and long-term views:** While quarterly results matter, always consider the long-term health and strategy of the organization. Make decisions that balance immediate needs with long-term growth and sustainability. Sometimes the CFO needs to compromise the short-term value creation for the long-term knowing well long-term forecasts are harder.
 

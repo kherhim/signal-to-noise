@@ -13,7 +13,7 @@ In a society that reveres stories of heroism and dramatic success, the image of 
 
 * * *
 
-### The allure of captain a: "Leadership as spectacle"
+### The allure of captain A: "Leadership as spectacle"
 
 Captain A's leadership style is magnetic and often mythic. It's the kind that makes headlines and wins awards; the type that is immortalized in film and literature. This leader thrives on challenge and change, demonstrating their capabilities most vividly in times of intense pressure or crisis. They are the CEO who steers a company through a financial downturn with a bold, unexpected strategy, or the commander who leads their crew safely out of a perilous storm. Their actions are visible and their results, dramatic.
 
@@ -21,7 +21,7 @@ Such leaders capture our admiration because they fulfil the human need for narra
 
 * * *
 
-### The quiet diligence of captain b: "Preventative mastery"
+### The quiet diligence of captain B: "Preventative mastery"
 
 In contrast, Captain B excels in the art of prevention. Their leadership is characterized by foresight and an almost prophetic ability to manage resources and risks. They navigate their ship with such precision that storms are rarely encountered, and not because they are lucky, but because they are prepared. This leader might be the head of operations who implements cutting-edge technology and protocols to prevent cybersecurity attacks, or the healthcare executive whose early adoption of innovative practices and policies safeguards the organization from potential crises
 

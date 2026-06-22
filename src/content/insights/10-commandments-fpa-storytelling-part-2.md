@@ -17,7 +17,7 @@ Here we go!
 
 * * *
 
-### 1) Know your audience
+#### 1) Know your audience
 
 What it really means: your message should change based on who’s in the room. Same facts, different framing.
 
@@ -35,7 +35,7 @@ Common pitfall: presenting the model’s structure instead of the decision at ha
 
 * * *
 
-### 2) Don’t drown them in data
+#### 2) Don’t drown them in data
 
 What it really means: every number must earn its place. If it doesn’t change the decision, it’s noise.
 
@@ -50,7 +50,7 @@ Watch-out: vanity metrics (“impressions up 120%”) without a link to revenue,
 
 * * *
 
-### 3) Begin with the “so what”
+#### 3) Begin with the “so what”
 
 What it really means: headline first, proof second.
 
@@ -66,7 +66,7 @@ Common pitfall: thirty minutes of context before the ask. Executives don’t hav
 
 * * *
 
-### 4) Use visuals wisely
+#### 4) Use visuals wisely
 
 What it really means: visuals should reveal a pattern, not decorate the story.
 
@@ -84,7 +84,7 @@ Watch-out: “Frankencharts” — 3 axes, dual scales, tiny fonts. If you need 
 
 * * *
 
-### 5) Build bridges, not silos
+#### 5) Build bridges, not silos
 
 What it really means: connect finance to operations, customers, and strategy.
 
@@ -102,7 +102,7 @@ Common pitfall: presenting variances as fate, not as choices.
 
 * * *
 
-### 6) Speak human, not jargon
+#### 6) Speak human, not jargon
 
 What it really means: translate ratios into actions.
 
@@ -119,7 +119,7 @@ Simple rule: if your slide needs a glossary, rewrite it.
 
 * * *
 
-### 7) Create tension
+#### 7) Create tension
 
 What it really means: highlight the gap between plan and reality, then show the path to resolution.
 
@@ -136,7 +136,7 @@ Common pitfall: soft-pedalling the bad news until Q4. Tension early = time to ac
 
 * * *
 
-### 8) Show the before and after
+#### 8) Show the before and after
 
 What it really means: quantify the delta, not just the state.
 
@@ -157,7 +157,7 @@ Watch-out: percentage changes without a base (“+12% of what?”).
 
 * * *
 
-### 9) Make time a character
+#### 9) Make time a character
 
 What it really means: use time to explain why something happened and when it will change.
 
@@ -173,7 +173,7 @@ Common pitfall: comparing one month to the prior without acknowledging seasonali
 
 * * *
 
-### 10) End with a decision
+#### 10) End with a decision
 
 What it really means: finish with a clear, bounded ask.
 
@@ -194,23 +194,23 @@ Common pitfall: ending with “happy to take questions” instead of an ask.
 
 * * *
 
-### Three short war stories (borrowed)
+#### Three short war stories (borrowed)
 
-a) the pricing tweak that paid the rent A SaaS company missed its gross margin target. The finance team showed a tidy variance table; nothing moved. A junior analyst rebuilt the story as a customer-level price/mix waterfall, revealing that a 5% discount on just two enterprise accounts drove half the miss.
+a) **the pricing tweak that paid the rent**: A SaaS company missed its gross margin target. The finance team showed a tidy variance table; nothing moved. A junior analyst rebuilt the story as a customer-level price/mix waterfall, revealing that a 5% discount on just two enterprise accounts drove half the miss.
 
 Recommendation: cap discretionary discounts and introduce guardrails in the quoting tool. Margin recovered within a quarter.
 
-b) the headcount debate that evaporated Operations argued for 25 new hires; finance resisted. We reframed the pack: start with a throughput-based capacity model linked to SLAs and churn. Tension slide: “If wait time exceeds 2 minutes, churn rises 60 bps; current trend breaches in six weeks.”
+b) **the headcount debate that evaporated**: Operations argued for 25 new hires; finance resisted. We reframed the pack: start with a throughput-based capacity model linked to SLAs and churn. Tension slide: “If wait time exceeds 2 minutes, churn rises 60 bps; current trend breaches in six weeks.”
 
 Decision slide: approve 12 hires now, 8 later if KPIs breach. Both sides felt heard because the story connected people to outcomes.
 
-c) the marketing miracle that wasn’t Marketing claimed “record engagement” during a campaign. Instead of pageviews, we showed a cohort payback chart: the promo pulled in low-quality traffic with 14-month payback vs the 9-month benchmark.
+c) **the marketing miracle that wasn’t**: Marketing claimed “record engagement” during a campaign. Instead of pageviews, we showed a cohort payback chart: the promo pulled in low-quality traffic with 14-month payback vs the 9-month benchmark.
 
 Reallocating budget lifted net revenue with less spend. The team learned to celebrate payback, not impressions.
 
 * * *
 
-### Closing thought
+#### Closing thought
 
 Great FP&A isn’t about prettier models; it’s about clearer choices. When you know your audience, strip out noise, lead with the “so what,” and end with an ask, your work stops being interesting and starts being useful. Numbers don’t move people — stories do.
 

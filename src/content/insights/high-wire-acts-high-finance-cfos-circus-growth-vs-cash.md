@@ -35,7 +35,7 @@ The interplay between growth and cash flow is where many firms find their greate
 
 > Real example from a fintech firm: A firm specializing in digital payment solutions is seeing rapid growth due to the increasing adoption of mobile banking and e-commerce. It also expands into new markets whilst broadening its services and starts to experience growth pains - slowing of customer response time, while volume of inquiries surpasses the capacity of existing support and technology. Scaling up also increased the complexity of transactions that the firm processes with existing fraud detection systems flagging too many false positives, increasing manual review and operational costs. This put pressure on cash flows. How should the CFO approach this challenge?
 
--   **Strategic planning vs. Market pressures:** Long-term strategic investments are essential for growth but may not yield immediate cash flows. CFOs must communicate the value of these investments to stakeholders who may be fixated on short-term cash flows.
+-   **Strategic planning vs. market pressures:** Long-term strategic investments are essential for growth but may not yield immediate cash flows. CFOs must communicate the value of these investments to stakeholders who may be fixated on short-term cash flows.
 
 > Real example from a vido gaming company: A famous video game company embarked on a project to develop a new game that promised to revolutionize video gaming experience. This venture required a substantial upfront investment in research and development, specialized personnel, and state-of-the-art hardware facilities (traditionally just software). The timeline for this project to yield a marketable product and positive cash flow was estimated to be at least five years, a duration that could test the patience of even visionary stakeholders. How should the CFO go about solving this problem?
 
@@ -57,6 +57,4 @@ As CFOs, our role is not just to safeguard the financial wellbeing of our firms 
 
 Navigating the balance between growth and cash flow is a perennial challenge for firms. It demands not just financial acumen but strategic foresight and operational excellence. As financial stewards, we hold the compass that guides our firms, ensuring that the quest for growth does not jeopardize the fundamental financial stability upon which all businesses rest.
 
-  
 
-All views expressed are my own and do not represent the views of the firm I work(ed) with present or past

@@ -48,6 +48,4 @@ A common pitfall is focusing too narrowly on immediate sales uplifts without con
 
 Measuring the returns on sports sponsorship investments requires a balanced approach, integrating financial analysis with an understanding of brand strategy. By adopting the framework outlined above, CFOs can ensure that their companies' investments in sports sponsorships are not just expenditures but strategic assets that contribute to long-term brand value and financial health. The journey from expenditure to investment requires diligence, strategic alignment, and an unwavering focus on measurable outcomes, paving the way for informed, impactful decisions that drive brand growth and profitability. In doing so, CFOs can help turn the passion of sports into a powerful engine for business growth.
 
-* * *
 
-All views expressed are my own and do not represent the views of the firm I work(ed) with present or past. I'd love to hear from experts in the field as to whether the above framework is practical.

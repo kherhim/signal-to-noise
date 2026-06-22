@@ -17,10 +17,10 @@ The moment teams start optimising the metric instead of the mission, you are on 
 
 I’ve seen:
 
--   Revenue targets that kill profitability
--   Cost targets that kill growth
--   Efficiency targets that kill innovation
--   Acquisition targets that destroy culture
+- **Revenue targets that kill profitability**
+- **Cost targets that kill growth**
+- **Efficiency targets that kill innovation**
+- **Acquisition targets that destroy culture**
 
 The CFO’s job isn’t to police KPIs — it’s to keep them honest.
 

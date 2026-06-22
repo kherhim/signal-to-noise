@@ -39,13 +39,17 @@ Why high Grit? The journey towards innovation and achieving success is filled wi
 
 Exploring the way curiosity and grit work together in a team can offer valuable insights into enhancing its effectiveness. Picture a chart with one side representing Curiosity and the other side representing Grit. This chart serves as a useful tool for understanding how these two qualities interact and impact an individual’s ability to contribute to a team. By examining the different sections of the Curiosity vs. Grit matrix, we can recognize each team member’s unique strengths and areas for improvement, allowing us to develop strategies that leverage their abilities while addressing their shortcomings.
 
-Quadrant 1: High Curiosity, High Grit (Visionaries with determination) — These are the dream team members, always eager to explore new ideas and relentless in their pursuit of goals. They’re the innovators and the finishers, often driving the team’s success.
+#### Quadrant 1: 
+High Curiosity, High Grit (Visionaries with determination) — These are the dream team members, always eager to explore new ideas and relentless in their pursuit of goals. They’re the innovators and the finishers, often driving the team’s success.
 
-Quadrant 2: High Curiosity, Low Grit (Ideators needing direction) — Full of ideas but sometimes lacking the perseverance to see them through, these team members thrive when paired with grittier counterparts or when given structured support to bring their innovations to life.
+#### Quadrant 2: 
+High Curiosity, Low Grit (Ideators needing direction) — Full of ideas but sometimes lacking the perseverance to see them through, these team members thrive when paired with grittier counterparts or when given structured support to bring their innovations to life.
 
-Quadrant 3: Low Curiosity, High Grit (Executors with a mission) — These individuals may not seek out change, but they’re the ones you can count on to get the job done. Encouraging them to engage with new ideas can spark their curiosity and lead to unexpected innovations.
+#### Quadrant 3: 
+Low Curiosity, High Grit (Executors with a mission) — These individuals may not seek out change, but they’re the ones you can count on to get the job done. Encouraging them to engage with new ideas can spark their curiosity and lead to unexpected innovations.
 
-Quadrant 4: Low Curiosity, Low Grit (Seekers of motivation) — Often underestimated, these team members can flourish with the right motivation and by fostering a sense of belonging. They represent untapped potential waiting to be unlocked.
+#### Quadrant 4: 
+Low Curiosity, Low Grit (Seekers of motivation) — Often underestimated, these team members can flourish with the right motivation and by fostering a sense of belonging. They represent untapped potential waiting to be unlocked.
 
  
 

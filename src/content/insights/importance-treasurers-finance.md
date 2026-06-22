@@ -9,17 +9,17 @@ coverImage: /img/importance-treasurers-finance.webp
 coverImageAlt: "Black-and-white technical illustration titled 'Cash: the circulatory system — flowing, connecting, sustaining'; a Treasurer at a control desk in the centre is connected by pipework to Banks on the left and Markets on the right, with three gauges labelled Risk, Liquidity and Funding feeding into a Company icon at the bottom and a System Health 'Stable' indicator on the side."
 ---
 
-This week , I am departing from writing about something topical, but rather expressing a \*strong\* point of view on why Treasurers should be considered as top candidates for CFO roles (which in my view, they currently aren’t in the UK).  A Treasurer plays an important role in an organization’s operations. (S)he is responsible for managing the company’s cash flow, ensuring its stability and planning for its long-term financial wellbeing. Despite their significance, the Treasurer’s role often works behind the scenes, overshadowed by other financial roles such as in investor relations, controllership, financial planning & analysis, or internal audit. However, this low visibility should not undermine the importance of a Treasurer in safeguarding the company’s assets and securing its future through effective cash management, investment strategies and risk mitigation.
+This week , I am departing from writing about something topical, but rather expressing a **strong** point of view on why Treasurers should be considered as top candidates for CFO roles (which in my view, they currently aren’t in the UK).  A Treasurer plays an important role in an organization’s operations. (S)he is responsible for managing the company’s cash flow, ensuring its stability and planning for its long-term financial wellbeing. Despite their significance, the Treasurer’s role often works behind the scenes, overshadowed by other financial roles such as in investor relations, controllership, financial planning & analysis, or internal audit. However, this low visibility should not undermine the importance of a Treasurer in safeguarding the company’s assets and securing its future through effective cash management, investment strategies and risk mitigation.
 
-## Effective cash & strategic funding
+#### Effective cash & strategic funding
 
 At the heart of Treasurer’s responsibilities lies cash management; ensuring that the organization has funds to meet its obligations and capitalize on growth opportunities. This involves planning, accurate forecasting and strategic allocation of resources. During times of uncertainty a Treasurer’s ability to secure funding and effectively manage cash flows becomes even more crucial as (s)he directly impacts the company’s operational viability and strategic flexibility.
 
-## Mitigating financial risks
+#### Mitigating financial risks
 
 Treasurers also play a role in managing risks by identifying assessing and mitigating potential exposures related to currency fluctuations, interest rates and commodities. Their expertise in hedging techniques and derivatives is vital for protecting the company from market conditions. Given today’s economy, with interconnected markets their role becomes even more indispensable.
 
-## The lack of discussion regarding treasury roles
+#### The lack of discussion regarding treasury roles
 
 Despite their importance, a Treasurer’s role is often not given attention in financial discussions. This is due to several reasons.
 
@@ -27,7 +27,7 @@ Despite their importance, a Treasurer’s role is often not given attention in f
 -   **Operational focus:** Treasurers typically focus on operations and debt management rather than the more sexy (equity) financial markets. This often contributes to their lower visibility, than let’s say a Head of Investor relations or a Head of FP&A.
 -   **Misunderstanding of scope:** There's a misconception that Treasury's role is limited to cash management. This overlooks its contributions to corporate finance and risk management and very often the ever changing financial regulations (especially for FS Treasurers).
 
-## Treasurers as candidates for CFO positions
+#### Treasurers as candidates for CFO positions
 
 With their skill set, Treasurers are well equipped for CFO roles. Their transition to the position is a progression supported by compelling reasons.
 

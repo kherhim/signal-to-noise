@@ -15,7 +15,7 @@ Every leader has to decline ideas, delay projects, or tighten resources.
 
 But here’s what separates high-trust leaders from the rest:
 
-They explain the WHY.
+**They explain the WHY.**
 
 Not in financial jargon. Not with defensiveness. But with context, clarity, and respect.
 

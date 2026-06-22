@@ -20,25 +20,25 @@ Over the next few weeks, I plan on sharing a 10-part weekly series on some lesso
 
 Here’s what the series will try to cover:
 
-1️⃣ Trade-offs and decision making
+1️⃣ **Trade-offs and decision making**
 
-2️⃣ The hidden cost of indecision
+2️⃣ **The hidden cost of indecision** 
 
-3️⃣ Why culture is really about incentives
+3️⃣ **Why culture is really about incentives**
 
-4️⃣ Cross-functional trust and organisational speed
+4️⃣ **Cross-functional trust and organisational speed**
 
-5️⃣ The danger of KPI-driven thinking
+5️⃣ **The danger of KPI-driven thinking**
 
-6️⃣ How great leaders communicate constraints
+6️⃣ **How great leaders communicate constraints**
 
-7️⃣ Crisis as the most honest performance review
+7️⃣ **Crisis as the most honest performance review**
 
-8️⃣ The biases that sit in every boardroom
+8️⃣ **The biases that sit in every boardroom**
 
-9️⃣ Resilience as optionality, not toughness
+9️⃣ **Resilience as optionality, not toughness**
 
-🔟 Why scaling requires stopping, not adding
+🔟 **Why scaling requires stopping, not adding**
 
 My goal with this series is straightforward: To share the patterns, truths, and practical insights that I wish I knew earlier in my own journey.
 

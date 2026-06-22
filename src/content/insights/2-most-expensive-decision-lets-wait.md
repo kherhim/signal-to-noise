@@ -21,7 +21,7 @@ In executive decisions, “Let’s wait” often feels safe. It isn't. It quietl
 
 As CFO, I’ve learned to ask one simple question:
 
-“What is the cost of not deciding?”
+**“What is the cost of not deciding?”**
 
 Most leaders don’t calculate it. But it’s always there — and often huge.
 

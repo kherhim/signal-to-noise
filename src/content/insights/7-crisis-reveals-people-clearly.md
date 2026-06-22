@@ -15,11 +15,11 @@ Crisis doesn’t create character. It reveals it.
 
 In tough moments, I’ve seen:
 
--   People who become calm multipliers
--   People who freeze
--   People who blame
--   People who step up and surprise you
--   People who rise to leadership without a title
+- **People who become calm multipliers**
+- **People who freeze**
+- **People who blame**
+- **People who step up and surprise you**
+- **People who rise to leadership without a title**
 
 In a crisis, you suddenly see your real team. Your future leaders. Your cultural anchors. And occasionally, your biggest risks.
 

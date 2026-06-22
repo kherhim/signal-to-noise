@@ -27,6 +27,3 @@ CFOs can harness the capabilities of large language models (LLMs) like ChatGPT a
 
 .......What else can you add to the list?
 
-  
-
-All views expressed are my own and do not represent the views of the firm I work(ed) with present or past

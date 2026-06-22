@@ -17,11 +17,11 @@ People judge leaders by the trade-offs they make, not the speeches they give.
 
 Every day, leaders choose:
 
--   What to prioritise
--   What to delay
--   What to stop
--   Who to trust
--   Where to allocate time, money, and attention
+-   **What to prioritise**
+-   **What to delay**
+-   **What to stop**
+-   **Who to trust**
+-   **Where to allocate time, money, and attention**
 
 As a CFO, you see this clearly because every trade-off eventually shows up in the numbers. The pattern is unmistakable.
 

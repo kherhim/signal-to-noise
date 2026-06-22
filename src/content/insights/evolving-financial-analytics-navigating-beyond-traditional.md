@@ -13,7 +13,7 @@ In this age of information, the significance and usefulness of traditional finan
 
 * * *
 
-1\. The Limitations of Historical Perspectives
+1\. **The limitations of historical perspectives**
 
 Financial statements inherently provide a view presenting a static snapshot of the past. However, in todays paced world where market dynamics rapidly evolve , relying solely on this historical perspective may not accurately depict a company’s current reality or future potential.
 
@@ -21,7 +21,7 @@ Case in point: KPMG signed its audit opinion on SVB on 24/Feb/23 - two weeks bef
 
 * * *
 
-2\. Ignoring the Value of Intagible Assets
+2\. **Ignoring the value of intagible assets**
 
 Financial statements often fail to capture the worth of intangible assets such as brand reputation, intellectual property, and human capital – elements that are increasingly crucial in our knowledge-based economy.
 
@@ -29,7 +29,7 @@ Case in point: According to [BrandFinance](https://brandfinance.com/insights/how
 
 * * *
 
-3\. The Emergence of Alternative Data
+3\. **The emergence of alternative data**
 
 In today’s landscape alternative data sources like customer reviews, social media sentiment analysis and web traffic analytics offer real time insights into a company’s performance and prospects. This challenges the standing supremacy of statements as the primary source, for business intelligence.
 
@@ -37,7 +37,7 @@ Case in point: Early 2010s, Tesla's financial statements painted a picture of a 
 
 * * *
 
-4\. Technological Advancements and Real Time Analytics
+4\. **Technological advancements and real time analytics**
 
 Advancements in technology have paved the way for real time analytics providing insights into performance and market trends. These innovations challenge the relevance of reporting models ingrained in financial statements.
 
@@ -45,7 +45,7 @@ Case in point: In logistic and delivery companies like FedEx and DHL, real-time 
 
 * * *
 
-5\. The Dilemma of Cryptocurrencies
+5\. **The dilemma of cryptocurrencies**
 
 The emergence of cryptocurrencies and digital assets brings forth challenges for reporting. The volatility and regulatory uncertainties surrounding these assets make it challenging to incorporate them within financial frameworks.
 
@@ -53,7 +53,7 @@ Case in point: Are they cash (IAS7), or financial instument(IAS 32), or an Intan
 
 * * *
 
-6\. Evolving Business Models
+6\. **Evolving business models**
 
 The gig economy, subscription-based services and online platforms have revolutionized business models. Financial statements originally designed for business structures may struggle to capture the intricacies of these modern operations fully.
 
@@ -61,7 +61,7 @@ Case in point: Coinbase, the publicly listed crypto currency exchangespent $510m
 
 * * *
 
-7\. Clarifying Liquidity Misconceptions
+7\. **Clarifying liquidity misconceptions**
 
 Financial statements can occasionally present a picture of liquidity. In todays interconnected economy factors such as market access and credit facilities significantly influence a company’s liquidity position – aspects that may not be immediately evident through traditional financial statements alone.
 
@@ -69,7 +69,7 @@ Case in point: How can SVB fail due to a bank run on 10/Mar/2023 within a month 
 
 * * *
 
-8\. Regulatory Delays
+8\. **Regulatory delays**
 
 Regulatory frameworks often lag technological changes which creates a delay, in their ability to adapt effectively. This delay can result in statements that meet the requirements but may not truly reflect the economic conditions or risks involved.
 
@@ -83,6 +83,4 @@ While traditional financial statements remain a fundamental element of financial
 
 This evolution will undoubtedly be complex and controversial, requiring a revaluation of long-standing accounting practices and principles. However, it is a necessary step towards ensuring that our financial assessment tools remain relevant and effective in a world that is constantly and rapidly changing.
 
-  
 
-All views expressed are my own and do not represent the views of the firm I work(ed) with present or past

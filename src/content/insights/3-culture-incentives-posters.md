@@ -17,11 +17,11 @@ Here’s what most leaders forget:
 
 People do what is rewarded, tolerated, or ignored — not what is printed on a wall.
 
-\>> If you reward urgency, you get urgency.
+\>> If you **reward urgency, you get urgency.**
 
-\>> If you tolerate mediocrity, you get mediocrity.
+\>> If you **tolerate mediocrity, you get mediocrity.**
 
-\>> If you ignore values, you get misalignment.
+\>> If you **ignore values, you get misalignment.**
 
 A CFO sees culture long before HR does — because it shows up in spend patterns, decision speed, accountability, and quality of escalations.
 

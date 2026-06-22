@@ -4,11 +4,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 /* Edit these to your real handles before going live. */
 const email = 'himanshu@signal-to-noise.co';
 const linkedinHandle = 'hkher';
+const substackUrl = 'https://hkher.substack.com';
 ---
 
 <BaseLayout
   title="Contact Himanshu Kher — signal-to-noise.co"
-  description="Reach Himanshu Kher: email, LinkedIn, RSS. Working at the edges of finance and AI? I'd like to hear about it."
+  description="Reach Himanshu Kher: email, LinkedIn, Substack. Working at the edges of finance and AI? I'd like to hear about it."
 >
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
     <header class="mb-12">
@@ -42,6 +43,16 @@ const linkedinHandle = 'hkher';
             rel="noopener"
           >
             linkedin.com/in/{linkedinHandle}
+          </a>
+        </li>
+        <li class="flex items-baseline gap-3">
+          <span class="text-muted text-sm uppercase tracking-wide w-24 shrink-0">Substack</span>
+          <a
+            href={substackUrl}
+            class="text-accent hover:text-accent-hover transition-colors"
+            rel="noopener"
+          >
+            Follow on Substack
           </a>
         </li>
       </ul>

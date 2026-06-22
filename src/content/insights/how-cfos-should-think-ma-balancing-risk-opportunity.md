@@ -15,7 +15,7 @@ This post explores four critical areas every CFO should consider when navigating
 
 * * *
 
-1\. **Strategic alignment:** does the M&A fit the big picture?
+1\. **Strategic alignment:** ***does the M&A fit the big picture?***
 
 The first and perhaps most essential step for CFOs considering M&A is ensuring strategic alignment between the acquiring company and the target. While it’s tempting to focus on financial returns or immediate market share gains, CFOs must keep the bigger picture in mind.
 
@@ -31,7 +31,7 @@ In your experience, how do you ensure strategic alignment in M&A deals? What are
 
 * * *
 
-2\. **Risk management:** weighing the pros and cons
+2\. **Risk management:** ***weighing the pros and cons***
 
 M&A is inherently risky. Many deals fail to deliver on expected synergies or lead to unexpected costs. CFOs, as stewards of risk management, must balance the potential upside of the acquisition with the numerous risks it can entail.
 
@@ -57,7 +57,7 @@ How do you mitigate the risks associated with M&A? Have you encountered any unex
 
 * * *
 
-3\. **Financial due diligence:** beyond the numbers
+3\. **Financial due diligence:** ***beyond the numbers***
 
 A CFO’s role in M&A is deeply rooted in financial analysis, but numbers alone don’t tell the full story. Financial due diligence should be comprehensive, going beyond the income statement and balance sheet to uncover hidden liabilities, cash flow issues, and operational inefficiencies.
 
@@ -74,7 +74,7 @@ What financial metrics/ indicators do you prioritize during the due diligence ph
 
 * * *
 
-4\. **Post-merger integration:** the real test of success
+4\. **Post-merger integration:** ***the real test of success***
 
 Even the most strategically aligned and financially sound M&A deal can fail if the post-merger integration (PMI) is not managed effectively. Integration is where the theoretical benefits of the deal must be translated into reality, and CFOs play a key role in this process.
 

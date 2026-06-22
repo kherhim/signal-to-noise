@@ -55,7 +55,7 @@ Moreover, implementing this paradox requires a level of emotional intelligence a
 
 * * *
 
-### <TLDR>: A call to action for finance leaders
+### <TLDR> A call to action for finance leaders
 
 In an era marked by uncertainty (the buzzword being VUCA), the Stockdale Paradox provides a guiding light for CFOs and finance leaders. By embodying the paradox's principles of realism and optimism, leaders can navigate their organizations through tumultuous times with resilience and strategic foresight.
 
