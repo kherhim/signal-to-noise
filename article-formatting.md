@@ -55,9 +55,10 @@ To add a new proper noun, edit `scripts/lint-titles.mjs` — the `ALLOWLIST` (si
 ## 2. Headings
 
 - Use exactly **one space** after the `#` characters: `## Foo`, never `##  Foo`.
-- Heading hierarchy: `##` for major sections; `###` for sub-sections; `####` for sub-sub. Don't skip levels.
+- Heading hierarchy: `##` for major sections; `###` for sub-sections; `####` for sub-sub. Don't skip levels (e.g. don't jump `##` → `####`; an article whose first heading is `####` is almost always wrong). All of `h2`–`h6` are styled in `Prose.astro`, so an under-styled-looking heading means a missing CSS rule, not a markdown problem.
 - Don't include trailing punctuation in headings (no period at the end).
 - Avoid headings that look like list items — if you find yourself writing `1. Foo: body…` as a heading, you probably want a numbered list with a bold label instead. See §3.
+- **A heading is a section label, not emphasis.** Don't turn a punchline or a displayed formula into a heading just to make it stand out (e.g. `#### But busyness isn't business.` or `#### Trust = (…) / Self-Orientation`). Use a **bold lead-line** — a `**…**` sentence on its own paragraph — instead. Headings carry document structure (they appear in the outline and skip-level checks); emphasis lines don't.
 
 ---
 

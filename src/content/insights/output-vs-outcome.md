@@ -17,7 +17,7 @@ So here we go.
 
 We often mistake movement for meaning. Slides, reports, meetings, dashboards — all beautifully done. It’s easy to celebrate what we can count. Reports produced. Calls made. Campaigns launched.
 
-#### But busyness isn’t business.
+**But busyness isn’t business.**
 
 Output measures what we did. Outcome measures what changed because we did it. It needs the ability to connect the effort to, what changed because of the effort. That needs the ability to establish causality whilst not being confused with correlation.
 
