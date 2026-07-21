@@ -211,31 +211,43 @@ const words = headline.split(' ');
         ctx.stroke();
       }
 
-      const cx = W / 2;
-      const glow = ctx.createRadialGradient(cx, cx, 0, cx, cx, 46 * scale);
-      glow.addColorStop(0, 'rgba(255, 224, 150, 0.75)');
-      glow.addColorStop(0.25, 'rgba(255, 190, 90, 0.14)');
-      glow.addColorStop(1, 'rgba(255, 170, 60, 0)');
-      ctx.fillStyle = glow;
-      ctx.beginPath(); ctx.arc(cx, cx, 46 * scale, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#fff3d0';
-      ctx.beginPath(); ctx.arc(cx, cx, 5 * scale, 0, Math.PI * 2); ctx.fill();
+      // Depth cues: perspective scale (pScale) sizes the dots ~±25%, planets
+      // behind the sun's plane dim slightly, and painter's algorithm —
+      // farthest first, sun at depth 0 — lets near planets cross in front
+      // of the glow.
+      const bodies = PLANETS.map((p) => {
+        const [sx, sy, d, ps] = project(compress(helioPos(p, jd)), az, el);
+        return { p, sx, sy, d, ps };
+      }).concat([{ p: null as (typeof PLANETS)[number] | null, sx: W / 2, sy: W / 2, d: 0, ps: 1 }]);
+      bodies.sort((a, b) => a.d - b.d);
 
-      ctx.shadowBlur = 7 * scale;
-      for (let i = 0; i < PLANETS.length; i++) {
-        const p = PLANETS[i];
-        const [sx, sy] = project(compress(helioPos(p, jd)), az, el);
-        const r = p.dot * scale;
-        ctx.shadowColor = p.color;
-        ctx.fillStyle = p.color;
-        ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI * 2); ctx.fill();
-        if (p.ring) {
+      for (const b of bodies) {
+        if (!b.p) {
+          const cx = W / 2;
+          const glow = ctx.createRadialGradient(cx, cx, 0, cx, cx, 46 * scale);
+          glow.addColorStop(0, 'rgba(255, 224, 150, 0.75)');
+          glow.addColorStop(0.25, 'rgba(255, 190, 90, 0.14)');
+          glow.addColorStop(1, 'rgba(255, 170, 60, 0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath(); ctx.arc(cx, cx, 46 * scale, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#fff3d0';
+          ctx.beginPath(); ctx.arc(cx, cx, 5 * scale, 0, Math.PI * 2); ctx.fill();
+          continue;
+        }
+        const r = b.p.dot * scale * b.ps;
+        ctx.globalAlpha = b.d < 0 ? Math.max(0.55, 1 + (0.35 * b.d) / maxR) : 1;
+        ctx.shadowBlur = 7 * scale;
+        ctx.shadowColor = b.p.color;
+        ctx.fillStyle = b.p.color;
+        ctx.beginPath(); ctx.arc(b.sx, b.sy, r, 0, Math.PI * 2); ctx.fill();
+        if (b.p.ring) {
           ctx.strokeStyle = 'rgba(227, 207, 155, 0.6)';
           ctx.lineWidth = 0.9 * scale;
-          ctx.beginPath(); ctx.ellipse(sx, sy, r * 2.1, r * 0.8, -0.5, 0, Math.PI * 2); ctx.stroke();
+          ctx.beginPath(); ctx.ellipse(b.sx, b.sy, r * 2.1, r * 0.8, -0.5, 0, Math.PI * 2); ctx.stroke();
         }
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
       }
-      ctx.shadowBlur = 0;
     }
 
     function loop(now: number) {
