@@ -95,6 +95,13 @@ const words = headline.split(' ');
   const DEG = Math.PI / 180;
   const SIM_DAYS_PER_SEC = 3; // Mercury laps in ~29 s — same cadence as the old 28 s triangle
 
+  // 3D camera. TILT is elevation from the ecliptic pole (0 = the old
+  // top-down view); CAM_DIST is camera distance in units of the outermost
+  // orbit radius — smaller means stronger perspective. Both tuned visually.
+  const TILT = 58 * DEG;
+  const CAM_DIST = 4.5;
+  const DRIFT_PERIOD = 90; // seconds per full azimuth revolution
+
   function keplerE(M: number, e: number) {
     M = ((M % (2 * Math.PI)) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
     let E = M;
@@ -102,7 +109,7 @@ const words = headline.split(' ');
     return E;
   }
 
-  // Heliocentric ecliptic [x, y] in AU (top-down view; z dropped)
+  // Heliocentric ecliptic [x, y, z] in AU
   function helioPos(p: (typeof PLANETS)[number], jd: number) {
     const T = (jd - 2451545.0) / 36525;
     const a = p.el[0] + p.rate[0] * T, e = p.el[1] + p.rate[1] * T, I = (p.el[2] + p.rate[2] * T) * DEG;
@@ -110,10 +117,11 @@ const words = headline.split(' ');
     const w = lp - node;
     const E = keplerE(L - lp, e);
     const xp = a * (Math.cos(E) - e), yp = a * Math.sqrt(1 - e * e) * Math.sin(E);
-    const cw = Math.cos(w), sw = Math.sin(w), cn = Math.cos(node), sn = Math.sin(node), ci = Math.cos(I);
+    const cw = Math.cos(w), sw = Math.sin(w), cn = Math.cos(node), sn = Math.sin(node), ci = Math.cos(I), si = Math.sin(I);
     return [
       (cw * cn - sw * sn * ci) * xp + (-sw * cn - cw * sn * ci) * yp,
       (cw * sn + sw * cn * ci) * xp + (-sw * sn + cw * cn * ci) * yp,
+      (sw * si) * xp + (cw * si) * yp,
     ];
   }
 
@@ -129,7 +137,8 @@ const words = headline.split(' ');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const jd0 = Date.now() / 86400000 + 2440587.5;
     const t0 = performance.now();
-    let W = 0, scale = 1, paths: Path2D[] = [];
+    let W = 0, scale = 1, maxR = 0;
+    let orbits: number[][][] = []; // per planet: 121 compressed 3D points, px
     let raf = 0, running = false, visible = true;
 
     // log-compress heliocentric distance; linear inside Mercury's orbit
@@ -138,10 +147,34 @@ const words = headline.split(' ');
       if (rAU <= 0.387) return (rAU / 0.387) * minR;
       return minR + (Math.log(rAU / 0.387) / Math.log(30.07 / 0.387)) * (maxR - minR);
     }
-    function toScreen([x, y]: number[]) {
-      const r = Math.hypot(x, y) || 1e-9;
+    // log-compress a 3D heliocentric position (AU) into canvas px,
+    // preserving its direction — same radial mapping as the old flat view
+    function compress(pos: number[]) {
+      const r = Math.hypot(pos[0], pos[1], pos[2]) || 1e-9;
       const s = rPx(r) / r;
-      return [W / 2 + x * s, W / 2 - y * s]; // y flipped: orbits run CCW as seen from ecliptic north
+      return [pos[0] * s, pos[1] * s, pos[2] * s];
+    }
+
+    // Rotate a compressed point by camera azimuth + tilt, then apply a mild
+    // perspective divide. Returns [sx, sy, depth, pScale]; depth > 0 is
+    // nearer the camera (screen-bottom side of the tilted plane). At el = 0
+    // this reduces to the old top-down view, y still flipped: orbits run
+    // CCW as seen from ecliptic north.
+    function project(pos: number[], az: number, el: number): [number, number, number, number] {
+      const ca = Math.cos(az), sa = Math.sin(az);
+      const x = pos[0] * ca - pos[1] * sa;
+      const y = pos[0] * sa + pos[1] * ca;
+      const ce = Math.cos(el), se = Math.sin(el);
+      const yt = y * ce + pos[2] * se; // screen-vertical after tilt
+      const d = pos[2] * ce - y * se;  // toward-camera component
+      const ps = CAM_DIST / (CAM_DIST - d / (maxR || 1));
+      return [W / 2 + x * ps, W / 2 - yt * ps, d, ps];
+    }
+
+    function camera(now: number): [number, number] {
+      // 0.6 rad gives reduced-motion users a fixed, asymmetric tilted frame
+      const az = reduced ? 0.6 : ((now - t0) / 1000 / DRIFT_PERIOD) * 2 * Math.PI;
+      return [az, TILT];
     }
 
     function layout() {
@@ -149,26 +182,34 @@ const words = headline.split(' ');
       W = Math.max(1, Math.round(canvas.clientWidth * dpr));
       canvas.width = canvas.height = W;
       scale = W / 420;
-      // orbit paths: one analytic period each, sampled through the same projection
-      paths = PLANETS.map((p) => {
+      maxR = W * 0.47;
+      // orbit paths: one analytic period each, compressed to 3D px points;
+      // they get re-projected every frame as the camera drifts
+      orbits = PLANETS.map((p) => {
         const period = 365.25 * Math.pow(p.el[0], 1.5);
-        const path = new Path2D();
-        for (let i = 0; i <= 120; i++) {
-          const [sx, sy] = toScreen(helioPos(p, jd0 + (i / 120) * period));
-          i ? path.lineTo(sx, sy) : path.moveTo(sx, sy);
-        }
-        path.closePath();
-        return path;
+        const pts: number[][] = [];
+        for (let i = 0; i <= 120; i++) pts.push(compress(helioPos(p, jd0 + (i / 120) * period)));
+        return pts;
       });
-      draw(jd0 + ((performance.now() - t0) / 1000) * SIM_DAYS_PER_SEC);
+      draw(performance.now());
     }
 
-    function draw(jd: number) {
+    function draw(now: number) {
+      const jd = jd0 + ((now - t0) / 1000) * SIM_DAYS_PER_SEC;
+      const [az, el] = camera(now);
       ctx.clearRect(0, 0, W, W);
 
       ctx.lineWidth = Math.max(0.6, 0.6 * scale);
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
-      for (const path of paths) ctx.stroke(path);
+      for (const pts of orbits) {
+        ctx.beginPath();
+        for (let i = 0; i <= 120; i++) {
+          const [sx, sy] = project(pts[i], az, el);
+          i ? ctx.lineTo(sx, sy) : ctx.moveTo(sx, sy);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
 
       const cx = W / 2;
       const glow = ctx.createRadialGradient(cx, cx, 0, cx, cx, 46 * scale);
@@ -183,7 +224,7 @@ const words = headline.split(' ');
       ctx.shadowBlur = 7 * scale;
       for (let i = 0; i < PLANETS.length; i++) {
         const p = PLANETS[i];
-        const [sx, sy] = toScreen(helioPos(p, jd));
+        const [sx, sy] = project(compress(helioPos(p, jd)), az, el);
         const r = p.dot * scale;
         ctx.shadowColor = p.color;
         ctx.fillStyle = p.color;
@@ -197,9 +238,9 @@ const words = headline.split(' ');
       ctx.shadowBlur = 0;
     }
 
-    function loop() {
+    function loop(now: number) {
       if (!visible) { running = false; return; }
-      draw(jd0 + ((performance.now() - t0) / 1000) * SIM_DAYS_PER_SEC);
+      draw(now);
       raf = requestAnimationFrame(loop);
     }
     function start() {
