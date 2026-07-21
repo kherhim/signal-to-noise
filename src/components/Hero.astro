@@ -101,6 +101,8 @@ const words = headline.split(' ');
   const TILT = 58 * DEG;
   const CAM_DIST = 4.5;
   const DRIFT_PERIOD = 90; // seconds per full azimuth revolution
+  const SWAY = 5 * DEG;    // max mouse-tilt deflection
+  const SPRING = 4;        // critically-damped spring rate, 1/s
 
   function keplerE(M: number, e: number) {
     M = ((M % (2 * Math.PI)) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
@@ -135,11 +137,25 @@ const words = headline.split(' ');
     if (!ctx) return;
 
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hoverFine = matchMedia('(hover: hover) and (pointer: fine)').matches;
     const jd0 = Date.now() / 86400000 + 2440587.5;
     const t0 = performance.now();
     let W = 0, scale = 1, maxR = 0;
     let orbits: number[][][] = []; // per planet: 121 compressed 3D points, px
     let raf = 0, running = false, visible = true;
+
+    // mouse sway: two critically-damped springs (position, velocity, target)
+    const sway = {
+      az: { p: 0, v: 0, t: 0 },
+      el: { p: 0, v: 0, t: 0 },
+    };
+    let lastT = t0;
+
+    function damp(s: { p: number; v: number; t: number }, dt: number) {
+      const x = s.p - s.t, tmp = (s.v + SPRING * x) * dt, decay = Math.exp(-SPRING * dt);
+      s.p = s.t + (x + tmp) * decay;
+      s.v = (s.v - SPRING * tmp) * decay;
+    }
 
     // log-compress heliocentric distance; linear inside Mercury's orbit
     function rPx(rAU: number) {
@@ -173,8 +189,8 @@ const words = headline.split(' ');
 
     function camera(now: number): [number, number] {
       // 0.6 rad gives reduced-motion users a fixed, asymmetric tilted frame
-      const az = reduced ? 0.6 : ((now - t0) / 1000 / DRIFT_PERIOD) * 2 * Math.PI;
-      return [az, TILT];
+      const az = (reduced ? 0.6 : ((now - t0) / 1000 / DRIFT_PERIOD) * 2 * Math.PI) + sway.az.p;
+      return [az, TILT + sway.el.p];
     }
 
     function layout() {
@@ -252,12 +268,17 @@ const words = headline.split(' ');
 
     function loop(now: number) {
       if (!visible) { running = false; return; }
+      const dt = Math.min(0.05, Math.max(0, (now - lastT) / 1000));
+      lastT = now;
+      damp(sway.az, dt);
+      damp(sway.el, dt);
       draw(now);
       raf = requestAnimationFrame(loop);
     }
     function start() {
       if (running || reduced) return;
       running = true;
+      lastT = performance.now(); // avoid a giant dt after an offscreen pause
       raf = requestAnimationFrame(loop);
     }
 
@@ -267,6 +288,20 @@ const words = headline.split(' ');
     });
     io.observe(canvas);
 
+    // Mouse tilt: ease the camera a few degrees toward the cursor anywhere
+    // over the hero. Hover-gated — touch devices keep drift only.
+    const hero = canvas.closest('section');
+    function onMove(e: MouseEvent) {
+      const rect = canvas.getBoundingClientRect();
+      sway.az.t = (((e.clientX - rect.left) / rect.width) * 2 - 1) * SWAY;
+      sway.el.t = (((e.clientY - rect.top) / rect.height) * 2 - 1) * SWAY;
+    }
+    function onLeave() { sway.az.t = 0; sway.el.t = 0; }
+    if (hoverFine && !reduced && hero) {
+      hero.addEventListener('mousemove', onMove);
+      hero.addEventListener('mouseleave', onLeave);
+    }
+
     addEventListener('resize', layout);
     layout(); // also draws the static frame reduced-motion users keep
     start();
@@ -274,6 +309,10 @@ const words = headline.split(' ');
     cleanup = () => {
       cancelAnimationFrame(raf);
       removeEventListener('resize', layout);
+      if (hero) {
+        hero.removeEventListener('mousemove', onMove);
+        hero.removeEventListener('mouseleave', onLeave);
+      }
       io.disconnect();
     };
   }
