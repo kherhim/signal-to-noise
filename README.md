@@ -111,7 +111,7 @@ the code or git log, it doesn't need to be here.
 
 ### Cloudflare
 
-- **Don't orange-cloud MX, TXT, or DKIM CNAME records.** Cloudflare's HTTP proxy doesn't handle email. Email records (Fastmail) must stay on grey cloud (DNS only). Only the `A` records for `signal-to-noise.co` and `www` should be proxied.
+- **Don't orange-cloud MX, TXT, or DKIM CNAME records.** Cloudflare's HTTP proxy doesn't handle email. Email records (Zoho Mail) must stay on grey cloud (DNS only). Only the `A` records for `signal-to-noise.co` and `www` should be proxied.
 - **SSL mode must be Full (strict)** in the CF dashboard. The default "Flexible" sends HTTP edge-to-origin and breaks HTTPS. Full (strict) validates the LE cert on the GCE VM and keeps end-to-end encryption.
 - **The origin's Let's Encrypt cert (Certbot) is still load-bearing** even with CF in front. Don't retire it. CF Full (strict) validates against it.
 - **Cloudflare Web Analytics in proxied mode is server-side** — no JS beacon needed in BaseLayout. Ad-blockers can't strip it. Less accurate beacon mode is only needed when DNS isn't on CF.
