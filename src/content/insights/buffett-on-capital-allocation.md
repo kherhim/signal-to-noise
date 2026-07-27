@@ -4,6 +4,7 @@ date: 2026-06-18
 excerpt: "For forty years Warren Buffett has been making the same quiet argument about the CFO function. Most CFOs still haven't fully internalised it — and the cost of not internalising it compounds…"
 tags: ["cfo", "capital-markets", "strategy", "buffett", "leadership"]
 draft: false
+featured: true
 coverImage: /img/buffett-on-capital-allocation.webp
 coverImageAlt: "A minimalist cover on a near-black canvas: a single luminous dollar sign at the top from which five thin lines fan downward to five small nodes — operating earnings, bolt-on acquisitions, investee growth, share buybacks, and a large acquisition — illustrating Buffett's five paths for every retained dollar. The title 'Buffett on capital allocation' sits in white sentence-case type to the left."
 ---
