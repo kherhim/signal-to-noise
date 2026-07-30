@@ -3,7 +3,7 @@ title: "Bayesian thinking: Why CFOs need it more than they admit"
 date: 2026-07-28
 excerpt: "Finance is built on the premise that an answer is either right or wrong. The business it reports on has never worked that way — which is why the habit of updating cleanly is a CFO's real advantage."
 tags: ["cfo", "risk", "fp-and-a", "ai", "strategy"]
-draft: true
+draft: false
 coverImage: /img/bayesian-thinking-for-cfos.webp
 coverImageAlt: "A minimalist cream-on-near-black diagram labelled FIG. 02: three overlapping bell curves above a ticked baseline. A wide, faint curve marked PRIOR sits left; a dashed curve marked EVIDENCE sits right; between them a tall, narrow, softly filled curve marked POSTERIOR, its peak pulled towards the evidence. Scattered small squares drift above, densest over the evidence. Caption below: BELIEF, REVISED."
 ---
