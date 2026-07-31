@@ -2,6 +2,10 @@
 dist/
 .output/
 
+# Generated Open Graph cards — derived from public/img/*.webp by
+# scripts/make-og-images.mjs, which prebuild runs on every build.
+public/og/
+
 # Dependencies
 node_modules/
 

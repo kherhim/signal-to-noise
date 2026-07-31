@@ -9,6 +9,8 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  /* 'article' on post pages, 'website' everywhere else. */
+  ogType?: string;
   /* Star field is Home-only: the hero's solar system is the one place
      the deep-space backdrop belongs. Every other page reads cleaner
      without it. Opt in per page. */
@@ -24,13 +26,23 @@ const {
   title,
   description = 'Pragmatic essays on finance, AI, and capital strategy from a CFO with 25+ years in the field. Signal, not noise.',
   ogImage,
+  ogType = 'website',
   stars = false,
   heroClear = false,
   starsDim = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = ogImage ? new URL(ogImage, Astro.url) : null;
+
+/* Crawlers get the JPEG twin from /og/, not the on-page WebP: LinkedIn's
+   preview crawler does not reliably render WebP, which leaves a shared
+   post as a bare link with no card. scripts/make-og-images.mjs generates
+   these. Pages with no cover of their own fall back to the default card
+   rather than sharing blank. */
+const ogImagePath = ogImage
+  ? ogImage.replace(/^\/img\//, '/og/').replace(/\.webp$/, '.jpg')
+  : '/og/default.jpg';
+const ogImageURL = new URL(ogImagePath, Astro.url);
 ---
 
 <!doctype html>
@@ -53,17 +65,19 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.url) : null;
     <link rel="canonical" href={canonicalURL} />
 
     {/* Open Graph */}
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    {ogImageURL && <meta property="og:image" content={ogImageURL.toString()} />}
+    <meta property="og:image" content={ogImageURL.toString()} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     {/* Twitter */}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    {ogImageURL && <meta name="twitter:image" content={ogImageURL.toString()} />}
+    <meta name="twitter:image" content={ogImageURL.toString()} />
 
     {/* RSS */}
     <link rel="alternate" type="application/rss+xml" title="signal-to-noise" href="/rss.xml" />
