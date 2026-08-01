@@ -8,15 +8,23 @@ Nothing here posts anything automatically — LinkedIn and Substack publishing i
 manual and yours to control. These are finished and semi-finished assets that
 remove the blank page.
 
+**Start with [`WHEN-YOU-LAND.md`](./WHEN-YOU-LAND.md)** — the single sequenced
+execution list (one-time setup, then a day-by-day first month).
+
 ## What's here
 
 | Path | What it is |
 |---|---|
-| `ready-to-post/` | Hand-crafted, in-voice posts for the 5 breakout articles — native LinkedIn posts (no body link), Substack Notes, carousel outlines, news-peg triggers. **Start here.** |
+| `WHEN-YOU-LAND.md` | The execution checklist. Open this first. |
+| `ready-to-post/` | Hand-crafted, in-voice posts for **12 articles** — native LinkedIn posts (no body link), Substack Notes, carousel outlines, news-peg triggers. The heart of the campaign. |
 | `linkedin-newsletter/launch-checklist.md` | One-time setup for the *Signal to Noise* LinkedIn newsletter — the single highest-leverage lever, and the only LinkedIn surface that links to the site without a reach penalty. |
-| `linkedin-newsletter/edition-01-600-year-curve.md` | A finished launch edition, ready to paste. |
+| `linkedin-newsletter/edition-0{1,2,3}-*.md` | Three finished newsletter editions, ready to paste. |
 | `back-catalog-queue.md` | All 57 articles ranked by breakout / evergreen / news-peg value, with a suggested first-month schedule that needs zero new writing. |
-| `packs/` | Output of `scripts/repurpose.mjs` — auto-scaffolded packs to finish by editing. (Gitignored dirs aside, committed examples land here.) |
+| `packs/` | Output of `scripts/repurpose.mjs` — auto-scaffolded packs to finish by editing, for articles without a hand-crafted pack yet. |
+
+Plus two scripts in `../scripts/`: `repurpose.mjs` (scaffold a pack from any
+article) and `normalize-tags.mjs` (dry-run tag-taxonomy cleanup — not yet
+applied; re-tagging is an editorial call).
 
 ## The daily loop (once set up)
 
