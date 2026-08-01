@@ -16,7 +16,8 @@ execution list (one-time setup, then a day-by-day first month).
 | Path | What it is |
 |---|---|
 | `WHEN-YOU-LAND.md` | The execution checklist. Open this first. |
-| `ready-to-post/` | Hand-crafted, in-voice posts for **12 articles** — native LinkedIn posts (no body link), Substack Notes, carousel outlines, news-peg triggers. The heart of the campaign. |
+| `ready-to-post/` | Hand-crafted, in-voice posts for **20 articles** (incl. the full Leadership Lessons series) — native LinkedIn posts (no body link), Substack Notes, carousel outlines, news-peg triggers. The heart of the campaign. ~3 months of material. |
+| `POSTING-AUTOMATION.md` | How I could post for you after your approval — the researched Substack + LinkedIn options, what's safe, and what I won't build (LinkedIn cookie automation = ban risk). |
 | `linkedin-newsletter/launch-checklist.md` | One-time setup for the *Signal to Noise* LinkedIn newsletter — the single highest-leverage lever, and the only LinkedIn surface that links to the site without a reach penalty. |
 | `linkedin-newsletter/edition-0{1,2,3}-*.md` | Three finished newsletter editions, ready to paste. |
 | `back-catalog-queue.md` | All 57 articles ranked by breakout / evergreen / news-peg value, with a suggested first-month schedule that needs zero new writing. |

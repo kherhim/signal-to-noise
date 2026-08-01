@@ -4,9 +4,22 @@
 ~570 posts — over two years of daily presence without writing anything new. This
 ranks the corpus so you work the high-value pieces first instead of chronologically.
 
-**How to use:** work 2–3 pieces a week. Run `node scripts/repurpose.mjs <slug>`
-to scaffold each, then edit. The five starred pieces already have hand-crafted,
-ready-to-post packs in `distribution/ready-to-post/` — start there.
+**How to use:** work 2–3 pieces a week. **20 articles already have finished,
+hand-crafted packs** in `distribution/ready-to-post/` (listed below with ✓) —
+start there. For the rest, run `node scripts/repurpose.mjs <slug>` to scaffold,
+then edit.
+
+**Packs already written (✓):** 600-year-curve, when-cognition-becomes-metered,
+pricing-the-future-ipos, leadership-lessons-shorts (lessons 2 & 5),
+leadership-lessons-series (lessons 1,3,4,6–10), future-gpt,
+using-llms-cheat-sheet-cfos, from-bean-counting-bots, leadership-era-genai,
+10-commandments-experienced-cfo, 10-commandments-newbie-cfo,
+10-commandments-fpa-storytelling (both parts), bayesian-thinking-for-cfos,
+future-finance-talent-stack, buffett-on-the-fortress-balance-sheet,
+buffett-on-capital-allocation, every-cfo-greedy, when-culture-eats-your-strategy,
+how-cfos-should-think-ma, what-keeps-fintech-cfo-up-night. That's roughly three
+months of material. The remaining ~35 articles (Tier 4 below) use `repurpose.mjs`
+as you get to them.
 
 Ranking axes: **B** = breakout potential (travels beyond finance), **E** =
 evergreen (no expiry), **N** = news-peggable (re-postable on a news hook),
