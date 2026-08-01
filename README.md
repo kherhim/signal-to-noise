@@ -7,6 +7,9 @@ behind Cloudflare. Email + subscriptions via
 - Original project brief & design intent: [`signal2noise.md`](./signal2noise.md)
 - Article conventions (linter-enforced): [`article-formatting.md`](./article-formatting.md)
 - SEO phases: [`SEO-Plan.md`](./SEO-Plan.md) · Buffett series plan: [`buffett.md`](./buffett.md)
+- Substack/LinkedIn distribution: [`DISTRIBUTION-Plan.md`](./DISTRIBUTION-Plan.md) — proposes
+  changes to the release routine below (full-text Substack, native LinkedIn posts,
+  a LinkedIn newsletter). Nothing there is shipped yet; the routine below is current.
 
 ## Develop
 
