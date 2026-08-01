@@ -2,6 +2,17 @@
 
 *Drafted 2026-08-01. Companion to [`SEO-Plan.md`](./SEO-Plan.md). That doc covers how people find the site through search; this one covers how they find it through Substack and LinkedIn. Phases are independent — pick à la carte.*
 
+> **Build status (2026-08-01).** The tooling and assets are shipped; the
+> *posting* is manual and yours. Done: the repurpose engine
+> (`scripts/repurpose.mjs`, item 2.1), full-text Substack support with a
+> canonical safeguard (`scripts/substack-post.mjs` + README §2, items 1.1–1.3),
+> hand-crafted ready-to-post packs for the 5 breakout pieces, the LinkedIn
+> newsletter launch checklist + first edition (§3.1), and the ranked
+> back-catalogue queue (item 2.2) — all under [`distribution/`](./distribution/).
+> Still needs you: create the newsletter, post the assets, wire up GSC +
+> analytics (`SEO-Plan.md` §4), and — if you want it — the tag-taxonomy
+> script (item 2.3).
+
 ---
 
 ## The question this answers
