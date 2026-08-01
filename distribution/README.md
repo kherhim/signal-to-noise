@@ -4,8 +4,9 @@ Everything needed to execute the Substack + LinkedIn distribution strategy in
 [`../DISTRIBUTION-Plan.md`](../DISTRIBUTION-Plan.md). The plan is the *why*;
 this directory is the *what to paste*.
 
-Nothing here posts anything automatically — LinkedIn and Substack publishing is
-manual and yours to control. These are finished and semi-finished assets that
+By default nothing here posts automatically — publishing is yours to control.
+There's also an optional **autopilot** (`AUTONOMY.md`) that can run it hands-off
+once you connect credentials. Everything is finished or semi-finished assets that
 remove the blank page.
 
 **Start with [`WHEN-YOU-LAND.md`](./WHEN-YOU-LAND.md)** — the single sequenced
@@ -16,16 +17,18 @@ execution list (one-time setup, then a day-by-day first month).
 | Path | What it is |
 |---|---|
 | `WHEN-YOU-LAND.md` | The execution checklist. Open this first. |
-| `ready-to-post/` | Hand-crafted, in-voice posts for **20 articles** (incl. the full Leadership Lessons series) — native LinkedIn posts (no body link), Substack Notes, carousel outlines, news-peg triggers. The heart of the campaign. ~3 months of material. |
-| `POSTING-AUTOMATION.md` | How I could post for you after your approval — the researched Substack + LinkedIn options, what's safe, and what I won't build (LinkedIn cookie automation = ban risk). |
-| `linkedin-newsletter/launch-checklist.md` | One-time setup for the *Signal to Noise* LinkedIn newsletter — the single highest-leverage lever, and the only LinkedIn surface that links to the site without a reach penalty. |
-| `linkedin-newsletter/edition-0{1,2,3}-*.md` | Three finished newsletter editions, ready to paste. |
-| `back-catalog-queue.md` | All 57 articles ranked by breakout / evergreen / news-peg value, with a suggested first-month schedule that needs zero new writing. |
-| `packs/` | Output of `scripts/repurpose.mjs` — auto-scaffolded packs to finish by editing, for articles without a hand-crafted pack yet. |
+| `ready-to-post/` | Hand-crafted, in-voice posts for **~38 articles** (incl. the full Leadership Lessons series) — native LinkedIn posts (no body link), Substack Notes, carousel outlines, news-peg triggers. The heart of the campaign. ~4+ months of material. |
+| `AUTONOMY.md` | Hands-off posting: the queue + `scripts/autopilot.mjs` + a scheduled Routine, with guardrails. Built and dry-run tested; goes live when you connect creds. |
+| `autopilot/` | The queue the autopilot posts from + its README. |
+| `POSTING-AUTOMATION.md` | The researched options for posting after your approval — what's safe, and what I won't build (LinkedIn cookie automation = ban risk). |
+| `linkedin-newsletter/` | Launch checklist + editions 1–3 (full) and 4–8 (frames). The newsletter is the highest-leverage lever and the only LinkedIn surface that links to the site without a reach penalty. |
+| `back-catalog-queue.md` | All 57 articles ranked by breakout / evergreen / news-peg value, with a first-month schedule that needs zero new writing. |
+| `packs/` | Output of `scripts/repurpose.mjs` — auto-scaffolded packs for the remaining long-tail articles. |
 
-Plus two scripts in `../scripts/`: `repurpose.mjs` (scaffold a pack from any
-article) and `normalize-tags.mjs` (dry-run tag-taxonomy cleanup — not yet
-applied; re-tagging is an editorial call).
+Scripts in `../scripts/`: `repurpose.mjs` (scaffold a pack), `normalize-tags.mjs`
+(dry-run tag cleanup — not applied; editorial call), `autopilot.mjs` (hands-off
+poster), `buffer-queue.mjs` (LinkedIn-via-Buffer layer), `substack-post.mjs`
+(Substack, with `canonical` support).
 
 ## The daily loop (once set up)
 

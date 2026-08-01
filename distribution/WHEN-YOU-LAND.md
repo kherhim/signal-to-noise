@@ -108,6 +108,25 @@ or two; don't judge week one on it.
 
 ---
 
+## Optional: hands-off mode (autopilot)
+
+If you'd rather not paste at all, there's a built, tested autonomous poster —
+`distribution/AUTONOMY.md` has the full design. In short: a pre-approved queue of
+posts + a scheduled Routine that publishes the due ones (LinkedIn via Buffer, an
+official partner; Substack via the existing script), with a kill switch, a
+no-accidental-email safeguard, a rate cap, and an audit log. It runs in dry-run
+today with zero credentials. Switching it live is ~15 min on landing:
+
+1. Set `SUBSTACK_SID`, `BUFFER_ACCESS_TOKEN`, `BUFFER_LINKEDIN_PROFILE_ID` as
+   **environment secrets** (never in the repo or chat).
+2. `node scripts/autopilot.mjs` — dry-run the queue, read the preview.
+3. Tell me your cadence and I create the Routine.
+
+The one thing it can't automate is the LinkedIn newsletter (UI-only) — that stays
+a manual paste from `linkedin-newsletter/`.
+
+---
+
 ## The one guardrail
 
 The brand is *"signal, not noise."* Every asset here is built to increase reach
@@ -116,11 +135,15 @@ smaller true audience compounds; a larger hollow one doesn't.
 
 ---
 
-## If you want me to do more while you're away
+## Status of the prep (as of the flight)
 
-Reply and I can, without your accounts: draft the remaining ready-to-post packs
-for the whole back catalogue, write newsletter editions 4–8, or prep the
-tag-taxonomy changes for your review (the script's ready — `node
-scripts/normalize-tags.mjs` — but re-tagging is your editorial call, so I left it
-un-applied). What I can't do is post, publish, or create accounts — those wait
-for you.
+Mostly done, so landing is execution not authoring:
+
+- **30 ready-to-post packs** in `ready-to-post/` (~3 months of material).
+- **Newsletter:** editions 1–3 fully drafted; 4–8 framed (`editions-04-08-frames.md`).
+- **Autopilot** built + tested in dry-run (`AUTONOMY.md`).
+- **Tag taxonomy** script ready but un-applied — re-tagging is your editorial call
+  (`node scripts/normalize-tags.mjs` to see the proposed diff).
+- **Still yours, unavoidably:** connect accounts/secrets, create the newsletter,
+  approve the queue, wire up GSC + analytics. I can't post, publish, or create
+  accounts — those wait for you.
