@@ -35,3 +35,14 @@ Linkedin Profile-self.pdf
 # Source corpus for research (Buffett letters, etc.) — excerpts only land
 # in published articles with attribution; the raw corpus stays out of git.
 _sources/
+
+# Autopilot runtime artifacts (see distribution/AUTONOMY.md).
+# The queue/ items ARE committed (they're pre-approved content); these are
+# per-run state that shouldn't churn git or leak across machines.
+# (Comments must be on their own line — git ignores no inline trailing comments.)
+# temp Substack hook files
+.autopilot-hook-*.md
+# local audit trail
+distribution/autopilot/log.md
+# kill-switch marker
+distribution/autopilot/PAUSE
