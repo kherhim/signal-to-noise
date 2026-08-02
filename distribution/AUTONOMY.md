@@ -146,6 +146,9 @@ step on landing.
 - **LinkedIn newsletter.** Cannot be created by any API (UI-only). It's your
   single highest-leverage surface, so this is a real limit, not laziness. ~10
   min per edition, editions are drafted (`distribution/linkedin-newsletter/`).
+  A browser agent (Claude in Chrome) *can* drive the composer and turn the paste
+  into near-one-click — but attended only, not part of this autonomous engine.
+  See [`CLAUDE-IN-CHROME.md`](./CLAUDE-IN-CHROME.md) for why and how.
 - **LinkedIn document carousels.** Also UI-only.
 - **Substack Notes.** Technically automatable later, but Notes reward
   spontaneity and reacting to *other* people's posts — the one place a human beats

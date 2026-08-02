@@ -21,6 +21,7 @@ execution list (one-time setup, then a day-by-day first month).
 | `AUTONOMY.md` | Hands-off posting: the queue + `scripts/autopilot.mjs` + a scheduled Routine, with guardrails. Built and dry-run tested; goes live when you connect creds. |
 | `autopilot/` | The queue the autopilot posts from + its README. |
 | `POSTING-AUTOMATION.md` | The researched options for posting after your approval — what's safe, and what I won't build (LinkedIn cookie automation = ban risk). |
+| `CLAUDE-IN-CHROME.md` | The browser-agent option — the only way to reach the UI-only LinkedIn newsletter. When to use it (attended, ~fortnightly) and its injection caveat. |
 | `linkedin-newsletter/` | Launch checklist + editions 1–3 (full) and 4–8 (frames). The newsletter is the highest-leverage lever and the only LinkedIn surface that links to the site without a reach penalty. |
 | `back-catalog-queue.md` | All 57 articles ranked by breakout / evergreen / news-peg value, with a first-month schedule that needs zero new writing. |
 | `packs/` | Output of `scripts/repurpose.mjs` — auto-scaffolded packs for the remaining long-tail articles. |
