@@ -7,6 +7,11 @@ behind Cloudflare. Email + subscriptions via
 - Original project brief & design intent: [`signal2noise.md`](./signal2noise.md)
 - Article conventions (linter-enforced): [`article-formatting.md`](./article-formatting.md)
 - SEO phases: [`SEO-Plan.md`](./SEO-Plan.md) · Buffett series plan: [`buffett.md`](./buffett.md)
+- Substack/LinkedIn distribution: [`DISTRIBUTION-Plan.md`](./DISTRIBUTION-Plan.md)
+  (strategy) · [`distribution/`](./distribution/) (ready-to-post assets, newsletter,
+  back-catalogue queue). The release routine below reflects this — full-text
+  Substack, native LinkedIn posts, a LinkedIn newsletter. Execution (posting) is
+  manual and the user's call; the tooling and assets are shipped.
 
 ## Develop
 
@@ -40,44 +45,72 @@ the site always publishes first.
    (title linter runs via prebuild), prompts before `deploy.sh`.
 3. Commit (selective add — publish.sh deliberately doesn't touch git).
 
-### 2. Substack — email send + discovery mirror
+> **Distribution strategy (Aug 2026).** The routine below was rewritten to
+> stop leaking reach — full-text on Substack instead of a teaser, native
+> LinkedIn posts instead of link posts, plus a LinkedIn newsletter. The
+> reasoning, the diagnosis, and the ready-to-post assets live in
+> [`DISTRIBUTION-Plan.md`](./DISTRIBUTION-Plan.md) and
+> [`distribution/`](./distribution/). The old teaser-based Substack flow is
+> preserved in git history (pre-`article-virality-strategy` branch) if needed.
 
-The one place the post is emailed to subscribers, plus Substack's
-Recommendations/Notes discovery reach. The site subscribe form is the embedded
-Substack form on `/subscribe` + article footers.
+### 2. Substack — email send + discovery engine
 
-1. Write a condensed summary in `_sources/substack-hooks/<slug>.md`:
-   frontmatter `title:` (exact article title) + `subtitle:` (≤140 chars), body
-   preserving the article's H2 skeleton (one short paragraph per section;
-   2–3 paragraphs with no headings for short essays), ending with:
+The one place the post is emailed to subscribers, plus Substack's Notes /
+Recommendations discovery reach — which keys on on-platform read-through and
+restacks, so post the **full text**, not a teaser. The site subscribe form is
+the embedded Substack form on `/subscribe` + article footers.
 
-   `This is a condensed version. [Read the full piece at signal-to-noise.co →](https://signal-to-noise.co/insights/<slug>/)`
+1. Wait 24–48h after the site version is live, so Google indexes the canonical
+   first. Then write `_sources/substack-hooks/<slug>.md`: frontmatter
+   `title:` (exact article title) + `subtitle:` (≤140 chars) +
+   `canonical: https://signal-to-noise.co/insights/<slug>/`, then the **whole
+   essay body**, opened with:
 
-   Series posts: children open with
-   `*Part N of X in the series* [Series name](parent canonical URL)`;
-   the parent lists all parts as links to their canonical pages.
+   `*Originally published at [signal-to-noise.co](https://signal-to-noise.co/insights/<slug>/)*`
+
+   The `canonical` field points Google back at the site so the
+   higher-authority substack.com copy doesn't outrank the original — the
+   mitigation that makes full-text mirroring safe. Series posts: children still
+   open with `*Part N of X in the series* [Series name](parent canonical URL)`.
 2. `node scripts/substack-post.mjs draft _sources/substack-hooks/<slug>.md`
-3. `node scripts/substack-post.mjs publish <draftId> --send-email` — email
-   delivery is OFF by default; pass `--send-email` so subscribers get the post
-   (Substack is the email engine again).
-4. Append `<slug> <draftId>` to `_sources/substack-hooks/draft-ids.txt`.
+3. `node scripts/substack-post.mjs get <draftId>` — confirm `canonical_url` came
+   back set (first time only; verifies the API accepted the field).
+4. `node scripts/substack-post.mjs publish <draftId> --send-email` — email
+   delivery is OFF by default; pass `--send-email` so subscribers get the post.
+5. Append `<slug> <draftId>` to `_sources/substack-hooks/draft-ids.txt`.
+6. Restack your own post the day it goes out, then again 2–3 days later as a
+   Note with a pulled quote. Restacks are Substack's primary distribution signal.
 
 Auth is the `SUBSTACK_SID` cookie in `.env` (template: `.env.example`). It dies
 when that browser session logs out — if calls start failing 401, re-grab it.
 `setdate <postId> <ISO date>` backdates a post after publishing.
 
-### 3. LinkedIn — last
+### 3. LinkedIn — native posts + newsletter, last
 
-Announcement blurb opening with the publish signal ("I've just published…"),
-linking the canonical site URL. Posted manually.
+Feed posts with outbound links are reach-taxed (~60% as of 2026), so LinkedIn's
+job here is **audience acquisition**, not clicks. Two surfaces:
+
+- **Feed posts** — post the argument *natively* (120–250 words, no link in the
+  body), ending with a soft pointer ("full version on my site — link on my
+  profile"). One essay → several native posts, spaced over ~2 weeks. Drop the
+  "I've just published…" framing. Reply to comments in the first 90 minutes.
+- **LinkedIn newsletter** (*Signal to Noise*) — publish each essay as an edition
+  ~a week after the site version. This is the one LinkedIn surface where links
+  aren't downranked, so it links the canonical freely. Setup + first edition:
+  [`distribution/linkedin-newsletter/`](./distribution/linkedin-newsletter/).
+
+Ready-to-paste native posts, Notes, and carousels per article:
+`node scripts/repurpose.mjs <slug>` to scaffold, or grab a finished pack from
+[`distribution/ready-to-post/`](./distribution/ready-to-post/).
 
 ### Why this order
 
 Site first because everything deep-links the canonical page, so it must be live
-before the rest go out. Substack next because it's the email send and the
-subscriber-list home. LinkedIn last, as a discovery channel pointing back to
-the site and its already-live archive — with the subscribe form ready to
-convert anyone who lands.
+before the rest go out. Substack next (after a 48h indexing gap) because it's
+the email send, the subscriber-list home, and — via Notes — the biggest
+discovery engine. LinkedIn last: feed posts acquire followers, the newsletter
+converts them to guaranteed reach, and both point back to the canonical archive
+with the subscribe form ready to convert anyone who lands.
 
 ## Lessons
 

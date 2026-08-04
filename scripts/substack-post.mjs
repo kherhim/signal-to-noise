@@ -27,9 +27,18 @@
  *   ---
  *   title: ...
  *   subtitle: ...
+ *   canonical: https://signal-to-noise.co/insights/<slug>/   (optional)
+ *   search_engine_title: ...                                 (optional)
+ *   search_engine_description: ...                           (optional)
  *   ---
  *   body markdown (## headings, paragraphs, **bold**, *em*, [links](url),
  *   > blockquotes, - lists, --- rules)
+ *
+ * The optional `canonical` field supports the full-text-repost strategy
+ * (see DISTRIBUTION-Plan.md §1): when the WHOLE essay is mirrored to
+ * Substack rather than a teaser, canonical tells Google the site is the
+ * original so the higher-authority substack.com copy doesn't outrank it.
+ * Verify it took effect once with `get <draftId>` (prints canonical_url).
  */
 
 import { readFileSync } from 'node:fs';
@@ -176,7 +185,37 @@ function parseHook(path) {
     if (m) meta[m[1]] = m[2].replace(/^["']|["']$/g, '');
   }
   if (!meta.title) throw new Error(`${path}: frontmatter needs a title`);
-  return { title: meta.title, subtitle: meta.subtitle ?? '', body: fm[2].trim() };
+  return {
+    title: meta.title,
+    subtitle: meta.subtitle ?? '',
+    body: fm[2].trim(),
+    // Optional SEO fields for the full-text-repost strategy. When a full
+    // essay is mirrored to Substack, canonical points Google back at the
+    // site so the higher-authority substack.com copy doesn't outrank the
+    // canonical. All three are pass-through: absent → payload unchanged.
+    //   canonical:                  https://signal-to-noise.co/insights/<slug>/
+    //   search_engine_title:        optional distinct <title> for search
+    //   search_engine_description:  optional distinct meta description
+    canonical: meta.canonical ?? null,
+    seoTitle: meta.search_engine_title ?? null,
+    seoDescription: meta.search_engine_description ?? null,
+  };
+}
+
+/* Build the optional SEO/canonical fields for a draft payload. These field
+ * names match python-substack's draft schema (canonical_url,
+ * search_engine_title, search_engine_description). They're unofficial like
+ * the rest of this API — verify once against a live draft: set `canonical`
+ * in a hook, create the draft, then GET it and confirm canonical_url came
+ * back set. If it didn't, the field name changed — cross-check
+ * https://github.com/ma2za/python-substack. Absent fields are omitted so
+ * existing hooks post exactly as before. */
+function seoFields({ canonical, seoTitle, seoDescription }) {
+  const f = {};
+  if (canonical) f.canonical_url = canonical;
+  if (seoTitle) f.search_engine_title = seoTitle;
+  if (seoDescription) f.search_engine_description = seoDescription;
+  return f;
 }
 
 // ---------- commands ----------
@@ -219,7 +258,8 @@ async function cmdProbe() {
 }
 
 async function cmdDraft(file) {
-  const { title, subtitle, body } = parseHook(file);
+  const hook = parseHook(file);
+  const { title, subtitle, body } = hook;
   const id = await userId();
   const draft = await api(`${PUB}/api/v1/drafts`, {
     method: 'POST',
@@ -233,6 +273,7 @@ async function cmdDraft(file) {
       section_chosen: false,
       draft_section_id: null,
       write_comment_permissions: 'everyone',
+      ...seoFields(hook),
     },
   });
   console.log(`Draft ${draft.id}: ${title}`);
@@ -241,13 +282,15 @@ async function cmdDraft(file) {
 }
 
 async function cmdUpdate(draftId, file) {
-  const { title, subtitle, body } = parseHook(file);
+  const hook = parseHook(file);
+  const { title, subtitle, body } = hook;
   await api(`${PUB}/api/v1/drafts/${draftId}`, {
     method: 'PUT',
     body: {
       draft_title: title,
       draft_subtitle: subtitle,
       draft_body: JSON.stringify(mdToDoc(body)),
+      ...seoFields(hook),
     },
   });
   console.log(`Updated draft ${draftId}: ${title}`);
@@ -283,6 +326,10 @@ async function cmdGet(draftId) {
         is_published: d.is_published,
         post_date: d.post_date,
         type: d.type,
+        // Present when the full-text-repost canonical was accepted. If this
+        // stays null after setting `canonical` in the hook, the API field
+        // name changed — see seoFields() and cross-check python-substack.
+        canonical_url: d.canonical_url ?? null,
       },
       null,
       2,
