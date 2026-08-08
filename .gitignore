@@ -31,6 +31,9 @@ pnpm-debug.log*
 *.swp
 *.swo
 
+# Agent tooling — local indexes/metadata, machine-specific
+.serena/
+
 # Personal reference material — keep locally, never commit
 Linkedin Profile-self.pdf
 *.resume.pdf
