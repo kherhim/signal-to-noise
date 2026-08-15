@@ -19,6 +19,7 @@ with a correction, because the wrong version is part of the record.
 | Post 2 (right clock) | 352 in 5h, 855 in 24h, 27% out-of-network, no rescue needed |
 | Edition 1 article views | ~64 (subscribers largely joined without reading — normal) |
 | Comments on launch day | Zero. It did not matter. |
+| Post 3 (Fri, third on same theme, no author comment) | 158 impressions, **0% out-of-network** — the week's tuition fee |
 
 ### Lesson 1 — Schedule for the audience's clock, not yours
 
@@ -87,13 +88,36 @@ normal. No single post needs to be a hero — the system wins on cadence
 (headline → Featured → subscribe). Site traffic is deliberately the lagging
 metric: attention → owned audience → recurring per-essay traffic → search.
 
-### Standing weekly rhythm (proven shape)
+### Lesson 7 — Two servings of one idea per week, not three (learnt 15 Aug)
+
+Post 3 — the third post on the same essay in five days, fired on a Friday
+without its author comment — managed 158 impressions and 0% out-of-network.
+Three causes stacked: theme fatigue (the network had seen the curve twice),
+the Friday launch pad (the 24–48h accrual window dies into the weekend), and
+no first-hour author activity (now proven to be the difference between 0% and
+27% out-of-network on our own data).
+
+**Operating change from week 2:**
+- **Two native posts per essay in launch week** — the two strongest angles,
+  Mon and Wed. The pack still holds three; the third becomes a **reserve
+  asset**, fired weeks later on a news peg or in back-catalogue rotation,
+  when it reads as fresh rather than repeated.
+- **The author comment is non-negotiable and immediate** — visual or
+  question, posted within minutes of the post going live, never deferred.
+- **Friday changes job:** carousel or newsletter edition on the fortnights
+  one is due; otherwise nothing. A two-post week is a full week.
+
+### Standing weekly rhythm (revised 15 Aug — supersedes the launch-week shape)
 
 | Day | Action | Time |
 |---|---|---|
-| Mon | LinkedIn native post (pack idea 1) | 8am UK |
+| Mon | LinkedIn native post (pack's strongest angle) + author comment | 8am UK |
 | Tue | Substack Note + restack | 8am UK |
-| Wed | LinkedIn native post (idea 2) + author comment | 8am UK |
+| Wed | LinkedIn native post (second angle) + author comment | 8am UK |
 | Thu | Substack Note (question form) | 8am UK |
-| Fri | LinkedIn post 3 / carousel / newsletter edition (alt. fortnights) | 8am UK |
-| Mon | Six-number readout; the metric that matters: net new subscribers per piece | — |
+| Fri | Carousel or newsletter edition when due; otherwise rest | 8am UK |
+| Mon | Six-number readout + subscriber-list skim (who joined, not just how many) | — |
+
+Validation test: week 2 (metered-cognition pack) runs Mon/Wed only — Wednesday's
+post should hold Post-2-level numbers (~850+, >20% out-of-network) if the
+fatigue diagnosis is right.
