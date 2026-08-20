@@ -50,7 +50,7 @@ executive anxiety the corpus doesn't yet cover.
 
 | Idea | Angle | Trend it answers | Axes | Status |
 |---|---|---|---|---|
-| The ambidextrous budget | 56% of CFOs put cost optimisation in their top five; 47% simultaneously put growth capital there. That's not indecision — it's the job now. How one budget holds both without tearing. | Gartner 2026: efficiency overtook growth as the top enterprise focus | B E | idea |
+| The ambidextrous budget | 56% of CFOs put cost optimisation in their top five; 47% simultaneously put growth capital there. That's not indecision — it's the job now. How one budget holds both without tearing. | Gartner 2026: efficiency overtook growth as the top enterprise focus | B E | outlined (`_sources/staging-articles/the-ambidextrous-budget-OUTLINE.md`) |
 | Pricing cyber like a CFO | 47% of CEOs rank cyberattacks the #1 geopolitical threat, yet cyber spend is still budgeted like IT, not like insurance against a balance-sheet event. A CFO's frame: expected loss, tail risk, premium. | Conference Board 2026 | N E | idea |
 | Alignment is a capital-allocation problem | Large-company CEOs rank senior-team alignment among their top five stressors — harder than managing the board. Misalignment burns capital like a bad project; treat it as one. | Conference Board 2026 | B E | idea |
 | The transformation that never finishes | Finance transformation has topped the CFO agenda three years running — because it's now a standing item, not a project. Contrarian take: if transformation never ends, it's not transformation, it's operating. Stop running it as a programme. | Gartner/Forbes 2026 | B E L | idea |
