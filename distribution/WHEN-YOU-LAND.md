@@ -122,8 +122,10 @@ today with zero credentials. Switching it live is ~15 min on landing:
 2. `node scripts/autopilot.mjs` — dry-run the queue, read the preview.
 3. Tell me your cadence and I create the Routine.
 
-The one thing it can't automate is the LinkedIn newsletter (UI-only) — that stays
-a manual paste from `linkedin-newsletter/`.
+The LinkedIn newsletter stays a manual paste from `linkedin-newsletter/` (the
+autopilot doesn't touch it), but as of 20 Aug 2026 editions *can* be scheduled
+in-UI via the clock icon in the publish dialog — see the correction in
+LEARNING-LOG.md. Prefer live publish so you can reply in the first 90 minutes.
 
 ---
 

@@ -7,6 +7,47 @@ with a correction, because the wrong version is part of the record.
 
 ---
 
+## Week 2 — opens Monday 17 August 2026
+
+### Correction — LinkedIn newsletter editions CAN now be scheduled (20 Aug)
+
+Earlier notes (WHEN-YOU-LAND.md, and the implicit assumption in Lesson 5) said
+the newsletter was UI-only, manual-publish, "the one thing that can't be
+automated." No longer true: the edition publish dialog now carries the same
+clock icon as native posts, so an edition can be scheduled to a future instant.
+LinkedIn added it since the flight notes were written.
+
+Caveats unchanged and important:
+- A scheduled item **cannot be edited** — finish all edits (headings,
+  hyperlink, italics) before scheduling; to change it you delete and redo.
+- The value of an edition is the subscriber notification **plus** first-90-minute
+  comment replies. Scheduling only helps if you'll be online in that window
+  anyway — in which case publishing live keeps the edit freedom. Prefer live
+  publish; schedule only as a fallback when the slot is unreachable.
+- The clock lives on the feed-announcement composer ("Tell your network what
+  this edition is about…"), which ships alongside the edition.
+
+
+### Monday readout (the six numbers, first post-launch baseline)
+
+| # | Metric | 17 Aug | Note |
+|---|---|---|---|
+| 1 | Newsletter subscribers | **563** (+217 in 7d) | −37% vs prior window is invite-spike decay, not decline — the invite is largely spent; growth now has to come from the rhythm |
+| 2 | Substack subscribers | **8** | Unchanged since 10 Jul; the owned audience is consolidating on LinkedIn |
+| 3 | LinkedIn followers | **6,554** (+20 since launch) | Post impressions 3,800/7d (+129%) |
+| 4 | Site sessions (Cloudflare, 7d) | **43 visits / 58 page views** | 18 of 43 visits from China — likely bot noise inside "direct" |
+| 5 | Sessions by referrer | Direct 36 · LinkedIn 6 · Google 1 | LinkedIn is the only referrer that moves; site traffic is the lagging metric, as planned |
+| 6 | GSC (7d to 14 Aug) | **25 impressions · 2 clicks** · avg pos 31.2 | Top query "himanshu kher" — search is brand-name only so far |
+
+Context numbers: newsletter article views 35/7d (−19%); one edition published,
+Edition 2 due Fri 28 Aug.
+
+Week 2 plan: metered-cognition pack, two posts only (Mon/Wed, 3pm SGT = 8am UK),
+author comment within minutes. Wednesday is the validation test for the Lesson 7
+fatigue diagnosis (~850+ impressions, >20% out-of-network expected).
+
+---
+
 ## Week 1 — Launch week (10–14 August 2026)
 
 ### The numbers
