@@ -20,7 +20,7 @@ The essay deliberately left three threads dangling; each is a full piece.
 
 | Idea | Angle | Axes | Status |
 |---|---|---|---|
-| The cognitive supply chain | Second-sourcing models, abstraction layers, fallback paths — procurement discipline applied to thinking. The essay's own closing argument, promoted to a full piece. | B E | outlined (`_sources/staging-articles/the-cognitive-supply-chain-OUTLINE.md`) |
+| The cognitive supply chain | Second-sourcing models, abstraction layers, fallback paths — procurement discipline applied to thinking. The essay's own closing argument, promoted to a full piece. | B E | drafting (`_sources/staging-articles/the-cognitive-supply-chain.md`) |
 | The verification premium | The 40p-vs-£8 gap gets its own treatment: the economics of checking probabilistic output. The biggest AI winners collapse verification cost, not token cost. | B E | idea |
 | The broken rung | If entry-level cognition is metered, the apprenticeship ladder that produces senior judgement snaps. Who trains the CFOs of 2040 when nobody hires the analysts of 2026? | B E | idea |
 
