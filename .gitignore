@@ -33,6 +33,11 @@ pnpm-debug.log*
 
 # Agent tooling — local indexes/metadata, machine-specific
 .serena/
+.grok/
+.claude/settings.local.json
+
+# Watermarks-remover service — separate repo checkout, not site content
+watermarks-remover/
 
 # Personal reference material — keep locally, never commit
 Linkedin Profile-self.pdf
