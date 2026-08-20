@@ -42,6 +42,19 @@ The `pricing-the-future-ipos` playbook — re-postable on every headline.
 | The depreciation cliff | A CFO reads the hyperscalers' GPU depreciation schedules and asks whether the AI buildout's accounting survives three-year chip cycles. Re-post every earnings season. | N B | idea |
 | Buffett on moats in the age of metered cognition | Bridges the two strongest franchises: do moats survive when cognition is a commodity input anyone can rent? | E N | idea |
 
+## Trend-mapped candidates (web sweep, 20 Aug 2026)
+
+From surveys of C-suite priorities (Conference Board C-Suite Outlook, Gartner
+CFO priorities, PwC/ACA COO agendas). Ideas here answer a documented 2026
+executive anxiety the corpus doesn't yet cover.
+
+| Idea | Angle | Trend it answers | Axes | Status |
+|---|---|---|---|---|
+| The ambidextrous budget | 56% of CFOs put cost optimisation in their top five; 47% simultaneously put growth capital there. That's not indecision — it's the job now. How one budget holds both without tearing. | Gartner 2026: efficiency overtook growth as the top enterprise focus | B E | idea |
+| Pricing cyber like a CFO | 47% of CEOs rank cyberattacks the #1 geopolitical threat, yet cyber spend is still budgeted like IT, not like insurance against a balance-sheet event. A CFO's frame: expected loss, tail risk, premium. | Conference Board 2026 | N E | idea |
+| Alignment is a capital-allocation problem | Large-company CEOs rank senior-team alignment among their top five stressors — harder than managing the board. Misalignment burns capital like a bad project; treat it as one. | Conference Board 2026 | B E | idea |
+| The transformation that never finishes | Finance transformation has topped the CFO agenda three years running — because it's now a standing item, not a project. Contrarian take: if transformation never ends, it's not transformation, it's operating. Stop running it as a programme. | Gartner/Forbes 2026 | B E L | idea |
+
 ## Parked (deliberately not yet)
 
 | Idea | Why parked |
