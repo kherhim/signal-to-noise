@@ -102,6 +102,9 @@ Once cognition can be bought in units, the cost structure of the firm becomes,
 partly, a philosophical choice. You're deciding what you believe human minds are
 *for*.
 
+To everyone who joined after the first edition — welcome. You've arrived at the
+right moment: this one sets up everything that follows.
+
 **[Read the full essay at signal-to-noise.co →](https://signal-to-noise.co/insights/when-cognition-becomes-metered/?utm_source=linkedin&utm_medium=newsletter&utm_campaign=when-cognition-becomes-metered)**
 
 *If this is useful, subscribe — new essays land here every couple of weeks. And
