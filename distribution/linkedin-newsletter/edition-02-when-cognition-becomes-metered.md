@@ -28,9 +28,9 @@ That gap — between what a thing costs and what a trustworthy outcome costs —
 the whole subject of this piece.
 
 And it just got the cleanest demonstration imaginable. Earlier this month,
-OpenAI's CFO Sarah Friar published five lessons from building an AI-native
-finance function — a team with the closest thing on earth to an unmetered
-supply of cognition. Her final lesson? Measure "value per unit of
+OpenAI's CFO Sarah Friar published
+[five lessons from building an AI-native finance function](https://openai.com/index/building-an-ai-native-finance-function/)
+— a team with the closest thing on earth to an unmetered supply of cognition. Her final lesson? Measure "value per unit of
 intelligence": count what the work really cost, "including employee time,
 review, and rework", because "buying more seats or using more tokens doesn't
 tell you much". When the meter reads nearly nothing and the costs that remain
