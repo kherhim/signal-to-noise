@@ -27,6 +27,15 @@ token invoice.
 That gap — between what a thing costs and what a trustworthy outcome costs — is
 the whole subject of this piece.
 
+And it just got the cleanest demonstration imaginable. Earlier this month,
+OpenAI's CFO Sarah Friar published five lessons from building an AI-native
+finance function — a team with the closest thing on earth to an unmetered
+supply of cognition. Her final lesson? Measure "value per unit of
+intelligence": count what the work really cost, "including employee time,
+review, and rework", because "buying more seats or using more tokens doesn't
+tell you much". When the meter reads nearly nothing and the costs that remain
+are review and rework, you've learned where the cost was hiding all along.
+
 ## A third pool of capacity
 
 For most of the modern corporate era, a firm's productive capacity came in two
@@ -79,6 +88,12 @@ one. Second-sourcing. An abstraction layer so a model swap is a config change, n
 a rebuild. Fallback paths for the processes that can't tolerate an outage.
 Supply-chain discipline, applied to thinking itself. Very few firms have made that
 connection yet.
+
+It's also the one part of this argument you will never read on a vendor's blog.
+No supplier's CFO will advise you to second-source their product — and OpenAI's
+finance team is the only one on earth with no AI vendor risk, because they *are*
+the vendor. The silence on this section is worth noticing. It's where I'm going
+next.
 
 ---
 
