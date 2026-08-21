@@ -27,14 +27,15 @@ token invoice.
 That gap — between what a thing costs and what a trustworthy outcome costs — is
 the whole subject of this piece.
 
-And it just got the cleanest demonstration imaginable. Earlier this month,
-OpenAI's CFO Sarah Friar published
-[five lessons from building an AI-native finance function](https://openai.com/index/building-an-ai-native-finance-function/)
-— a team with the closest thing on earth to an unmetered supply of cognition. Her final lesson? Measure "value per unit of
-intelligence": count what the work really cost, "including employee time,
-review, and rework", because "buying more seats or using more tokens doesn't
-tell you much". When the meter reads nearly nothing and the costs that remain
-are review and rework, you've learned where the cost was hiding all along.
+Earlier this month, OpenAI CFO Sarah Friar offered perhaps the clearest
+possible proof. In
+[five lessons from building an AI-native finance function](https://openai.com/index/building-an-ai-native-finance-function/),
+she describes a team with something close to an unlimited supply of cognition.
+Her concluding point is to track "value per unit of intelligence": assess the
+genuine cost of work, "including employee time, review, and rework", since
+"buying more seats or using more tokens doesn't tell you much". Once
+intelligence is almost free, and review plus rework are the costs left on the
+meter, the real location of the hidden expense becomes clear.
 
 ## A third pool of capacity
 
@@ -89,11 +90,11 @@ a rebuild. Fallback paths for the processes that can't tolerate an outage.
 Supply-chain discipline, applied to thinking itself. Very few firms have made that
 connection yet.
 
-It's also the one part of this argument you will never read on a vendor's blog.
-No supplier's CFO will advise you to second-source their product — and OpenAI's
-finance team is the only one on earth with no AI vendor risk, because they *are*
-the vendor. The silence on this section is worth noticing. It's where I'm going
-next.
+You will not find this strand of the case in a supplier's blog. A vendor's CFO
+is hardly going to recommend buying the same product from a second source —
+meanwhile, OpenAI's finance team alone faces no AI-vendor risk, because it
+*is* the vendor. That absence is itself revealing — and it is the subject I
+will turn to next.
 
 ---
 
