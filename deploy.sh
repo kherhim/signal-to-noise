@@ -5,6 +5,9 @@
 
 set -euo pipefail
 
+# Pin the project: the active gcloud config may point elsewhere
+# (e.g. another project's work) and gcloud compute inherits it silently.
+export CLOUDSDK_CORE_PROJECT="signal2noise-prod"
 ZONE="us-central1-a"
 VM="s2n-web"
 STAGE="/tmp/s2n-dist"

@@ -162,3 +162,27 @@ no first-hour author activity (now proven to be the difference between 0% and
 Validation test: week 2 (metered-cognition pack) runs Mon/Wed only — Wednesday's
 post should hold Post-2-level numbers (~850+, >20% out-of-network) if the
 fatigue diagnosis is right.
+
+---
+
+## Policy change — Sat 23 August 2026: Substack demoted to passive
+
+The data decided it: Substack sat at 8 subscribers, unchanged since 10 July —
+all 8 also subscribe to the LinkedIn newsletter (634 at 22 Aug, +73/7d). Six
+weeks of Notes and restacks moved the needle zero.
+
+**New policy:**
+- **Killed:** the Tue/Thu Substack Notes + restack slots. That time moves to
+  LinkedIn comment replies, which demonstrably convert.
+- **Kept:** the 48h full-text mirror with `canonical:` for NEW essays only
+  (one `substack-post.mjs` command, --send-email included — 8 people chose
+  email, let them have it). Substack account stays as the owned email-capture
+  pipe and platform-risk hedge.
+- **Site subscribe flow flipped:** LinkedIn newsletter is now the primary CTA
+  site-wide (button on every article end); Substack embed demoted to the
+  email option on /subscribe only.
+- **Revisit trigger:** at ~1,000–1,500 LinkedIn subscribers, evaluate a real
+  owned-email strategy (invest in Substack properly or a proper ESP).
+
+Weekly rhythm table above amended accordingly: Tue/Thu slots are now rest or
+LinkedIn engagement.

@@ -1,17 +1,22 @@
 ---
-/* Substack subscribe embed — hkher.substack.com.
-   The iframe's inner colors (background, button) are configured on the
-   Substack side: Settings → Website → Embed signup form. Set them to
-   match the site palette (#0a0a0a canvas) or the widget renders white.
+/* Subscribe CTA — LinkedIn newsletter primary, Substack email secondary.
+   The LinkedIn newsletter is where the audience actually subscribes
+   (634 vs 8 on Substack, Aug 2026); Substack stays as the owned
+   email-capture path. The Substack iframe's inner colors are configured
+   on the Substack side: Settings → Website → Embed signup form.
 
-   framed (default true): renders the bordered article-end variant that
-   matches ShareLinks / Related insights. Pass framed={false} on pages
-   that provide their own header (e.g. /subscribe). */
+   framed (default true): the bordered article-end variant that matches
+   ShareLinks / Related insights — LinkedIn button + a link to /subscribe
+   for the email option (no iframe on article pages). Pass framed={false}
+   on pages that provide their own header (e.g. /subscribe); that variant
+   renders the LinkedIn button AND the Substack embed. */
 interface Props {
   framed?: boolean;
 }
 
 const { framed = true } = Astro.props;
+const LINKEDIN_NEWSLETTER =
+  'https://www.linkedin.com/newsletters/signal-to-noise-7490249039209271296/';
 ---
 
 <aside
@@ -22,19 +27,40 @@ const { framed = true } = Astro.props;
     <>
       <p class="text-sm uppercase tracking-widest text-muted mb-4">Subscribe</p>
       <p class="text-sm text-muted leading-relaxed mb-5 max-w-[52ch]">
-        New essays by email, via <a
-          href="https://hkher.substack.com"
-          rel="noopener"
-          class="text-accent hover:text-accent-hover transition-colors underline underline-offset-4 decoration-divider hover:decoration-accent"
-        >Substack</a>. No cadence, no noise — only when there's something worth saying.
+        New essays every couple of weeks, where you already read — the
+        Signal&nbsp;to&nbsp;Noise newsletter on LinkedIn.
       </p>
     </>
   )}
-  <iframe
-    src="https://hkher.substack.com/embed"
-    title="Subscribe to Signal to Noise on Substack"
-    loading="lazy"
-    scrolling="no"
-    class="w-full max-w-[480px] h-[150px] rounded-lg border border-divider/60"
-  ></iframe>
+  <a
+    href={LINKEDIN_NEWSLETTER}
+    rel="noopener"
+    target="_blank"
+    class="inline-block px-5 py-2.5 rounded-lg border border-accent text-accent hover:text-accent-hover hover:border-accent-hover transition-colors text-sm font-medium"
+  >Subscribe on LinkedIn →</a>
+  {framed ? (
+    <p class="text-sm text-muted mt-4">
+      Prefer email? <a
+        href="/subscribe"
+        class="text-accent hover:text-accent-hover transition-colors underline underline-offset-4 decoration-divider hover:decoration-accent"
+      >Get essays by email instead</a>.
+    </p>
+  ) : (
+    <>
+      <p class="text-sm text-muted mt-8 mb-4">
+        Or get essays by email, via <a
+          href="https://hkher.substack.com"
+          rel="noopener"
+          class="text-accent hover:text-accent-hover transition-colors underline underline-offset-4 decoration-divider hover:decoration-accent"
+        >Substack</a>:
+      </p>
+      <iframe
+        src="https://hkher.substack.com/embed"
+        title="Subscribe to Signal to Noise on Substack"
+        loading="lazy"
+        scrolling="no"
+        class="w-full max-w-[480px] h-[150px] rounded-lg border border-divider/60"
+      ></iframe>
+    </>
+  )}
 </aside>
