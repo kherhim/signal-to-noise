@@ -1,13 +1,14 @@
 ---
 const pathname = Astro.url.pathname;
-/* Subscribe is hidden on the narrowest screens — five links plus the brand
-   overflow a 375px viewport; mobile readers get the article-end form instead. */
+/* Below `sm` the five links + brand overflow a 375px viewport, so the inline
+   list collapses into a hamburger panel — which also restores Subscribe on
+   mobile (it now carries the LinkedIn-first CTA and shouldn't be hidden). */
 const links = [
   { href: '/insights', label: 'Insights' },
   { href: '/topics', label: 'Topics' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
-  { href: '/subscribe', label: 'Subscribe', desktopOnly: true },
+  { href: '/subscribe', label: 'Subscribe', accent: true },
 ];
 const isActive = (href: string) =>
   pathname === href || pathname === href + '/' || pathname.startsWith(href + '/');
@@ -21,9 +22,11 @@ const isActive = (href: string) =>
     >
       Home
     </a>
-    <ul class="flex items-center gap-4 sm:gap-8">
-      {links.map(({ href, label, desktopOnly }) => (
-        <li class:list={[desktopOnly && 'hidden sm:list-item']}>
+
+    <!-- Desktop: inline links, unchanged -->
+    <ul class="hidden sm:flex items-center gap-8">
+      {links.map(({ href, label }) => (
+        <li>
           <a
             href={href}
             class:list={[
@@ -36,5 +39,63 @@ const isActive = (href: string) =>
         </li>
       ))}
     </ul>
+
+    <!-- Mobile: hamburger -->
+    <button
+      id="nav-toggle"
+      type="button"
+      class="sm:hidden -mr-2 p-2 text-fg hover:text-accent transition-colors"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="nav-panel"
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <g class="nav-icon-open" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="2" y1="5" x2="18" y2="5" />
+          <line x1="2" y1="10" x2="18" y2="10" />
+          <line x1="2" y1="15" x2="18" y2="15" />
+        </g>
+        <g class="nav-icon-close hidden" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="4" y1="4" x2="16" y2="16" />
+          <line x1="16" y1="4" x2="4" y2="16" />
+        </g>
+      </svg>
+    </button>
   </nav>
+
+  <!-- Mobile panel -->
+  <div id="nav-panel" class="hidden sm:hidden border-t border-divider/60 bg-canvas/95 backdrop-blur-md">
+    <ul class="mx-auto max-w-[1100px] px-6 py-2">
+      {links.map(({ href, label, accent }) => (
+        <li class="border-b border-divider/40 last:border-b-0">
+          <a
+            href={href}
+            class:list={[
+              'block py-3.5 font-semibold tracking-tight transition-colors',
+              isActive(href)
+                ? 'text-accent'
+                : accent
+                  ? 'text-accent hover:text-accent-hover'
+                  : 'text-fg hover:text-accent',
+            ]}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
 </header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('nav-panel');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+    panel?.classList.toggle('hidden', open);
+    toggle.querySelector('.nav-icon-open')?.classList.toggle('hidden', !open);
+    toggle.querySelector('.nav-icon-close')?.classList.toggle('hidden', open);
+  });
+</script>
