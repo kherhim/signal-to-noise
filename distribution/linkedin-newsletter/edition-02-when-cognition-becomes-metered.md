@@ -93,8 +93,9 @@ connection yet.
 You will not find this strand of the case in a supplier's blog. A vendor's CFO
 is hardly going to recommend buying the same product from a second source —
 meanwhile, OpenAI's finance team alone faces no AI-vendor risk, because it
-*is* the vendor. That absence is itself revealing — and it is the subject I
-will turn to next.
+*is* the vendor. That absence is itself revealing — and it is the subject of
+the follow-up essay, already live:
+[The cognitive supply chain](https://signal-to-noise.co/insights/the-cognitive-supply-chain/?utm_source=linkedin&utm_medium=newsletter&utm_campaign=when-cognition-becomes-metered).
 
 ---
 
