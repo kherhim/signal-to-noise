@@ -20,6 +20,9 @@ interface Props {
   heroClear?: boolean;
   /* Reading pages: dims the star field so long-form text wins. */
   starsDim?: boolean;
+  /* LCP: preload the page's hero/cover image so the fetch starts with the
+     head instead of waiting for body parse. Post pages pass their cover. */
+  preloadImage?: string;
 }
 
 const {
@@ -30,6 +33,7 @@ const {
   stars = false,
   heroClear = false,
   starsDim = false,
+  preloadImage,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -50,6 +54,7 @@ const ogImageURL = new URL(ogImagePath, Astro.url);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} />}
 
     {/* JS-detection: gates the reveal layer so no-JS users see content. */}
     <script is:inline>document.documentElement.classList.add('js');</script>
