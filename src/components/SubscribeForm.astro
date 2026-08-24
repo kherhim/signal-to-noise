@@ -1,8 +1,10 @@
 ---
-/* Subscribe CTA — LinkedIn newsletter only (user decision, Aug 2026).
-   The Substack account still exists as the passive mirror/email pipe but is
-   deliberately not advertised on the site: 634 LinkedIn subscribers vs 8 on
-   Substack, and all 8 overlap.
+/* Subscribe CTA — LinkedIn newsletter primary. Article ends (framed) are
+   LinkedIn-only; /subscribe (framed={false}) also offers the Substack email
+   signup — Substack's own network still discovers essays and some readers
+   prefer email (a reader wrote in via Substack, Aug 2026). The iframe's
+   inner colors are configured on the Substack side: Settings → Website →
+   Embed signup form.
 
    framed (default true): the bordered article-end variant that matches
    ShareLinks / Related insights. Pass framed={false} on pages that provide
@@ -29,10 +31,46 @@ const LINKEDIN_NEWSLETTER =
       </p>
     </>
   )}
-  <a
-    href={LINKEDIN_NEWSLETTER}
-    rel="noopener"
-    target="_blank"
-    class="inline-block px-5 py-2.5 rounded-lg border border-accent text-accent hover:text-accent-hover hover:border-accent-hover transition-colors text-sm font-medium"
-  >Subscribe on LinkedIn →</a>
+  {framed ? (
+    <a
+      href={LINKEDIN_NEWSLETTER}
+      rel="noopener"
+      target="_blank"
+      class="inline-block px-5 py-2.5 rounded-lg border border-accent text-accent hover:text-accent-hover hover:border-accent-hover transition-colors text-sm font-medium"
+    >Subscribe on LinkedIn →</a>
+  ) : (
+    <div class="space-y-6 not-prose">
+      <div class="p-6 sm:p-8 rounded-lg border border-divider/60 bg-surface/40">
+        <p class="text-xs uppercase tracking-widest text-muted mb-2">On LinkedIn</p>
+        <p class="text-base text-fg leading-relaxed mb-5 max-w-[52ch]">
+          Every edition reaches you by notification and email, where you
+          already read. One click, no forms.
+        </p>
+        <a
+          href={LINKEDIN_NEWSLETTER}
+          rel="noopener"
+          target="_blank"
+          class="inline-block px-5 py-2.5 rounded-lg border border-accent text-accent hover:text-accent-hover hover:border-accent-hover transition-colors text-sm font-medium"
+        >Subscribe on LinkedIn →</a>
+      </div>
+      <div class="p-6 sm:p-8 rounded-lg border border-divider/60 bg-surface/40">
+        <p class="text-xs uppercase tracking-widest text-muted mb-2">By email</p>
+        <p class="text-base text-fg leading-relaxed mb-5 max-w-[52ch]">
+          Prefer your inbox? The same essays, delivered in full by
+          <a
+            href="https://hkher.substack.com"
+            rel="noopener"
+            class="text-accent hover:text-accent-hover transition-colors underline underline-offset-4 decoration-divider hover:decoration-accent"
+          > Substack</a>.
+        </p>
+        <iframe
+          src="https://hkher.substack.com/embed"
+          title="Subscribe to Signal to Noise on Substack"
+          loading="lazy"
+          scrolling="no"
+          class="w-full max-w-[480px] h-[150px] rounded-lg border border-divider/60"
+        ></iframe>
+      </div>
+    </div>
+  )}
 </aside>
