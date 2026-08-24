@@ -2,6 +2,7 @@
 title: "The cognitive supply chain"
 date: 2026-08-24
 excerpt: "Most firms have quietly acquired a critical supplier they don't manage — for the most important input they buy: thinking. Procurement solved this problem decades ago. It's time to apply the discipline to cognition."
+seoDescription: "AI vendor risk management for CFOs: second-sourcing models, abstraction layers, evaluation suites and fallback plans — supply-chain discipline applied to AI dependency."
 tags: ["cfo", "ai", "risk", "strategy", "procurement"]
 draft: false
 coverImage: /img/the-cognitive-supply-chain.webp

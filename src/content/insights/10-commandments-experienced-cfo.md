@@ -2,6 +2,7 @@
 title: "10 commandments for the experienced CFO"
 date: 2023-09-26
 excerpt: "It’s more than a year since I posted on LinkedIn about the 10 commandments for the newbie CFO. It got over 4,000 impressions (number of times the post was displayed on a screen)…"
+seoDescription: "Advice for experienced CFOs: ten rules for staying effective as a veteran finance leader, from capital discipline to building successors."
 tags: ["leadership", "strategy", "ai", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-commandments-experienced-cfo-himanshu-kher"

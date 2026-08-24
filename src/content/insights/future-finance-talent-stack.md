@@ -2,6 +2,7 @@
 title: "The future finance talent stack: Why the best finance teams will look less like finance teams"
 date: 2026-06-09
 excerpt: "The next great finance hire may not look like a traditional finance hire at all. Finance is shifting from a processing engine to a decision engine, and the talent stack has to follow…"
+seoDescription: "The future of finance teams: why the best finance functions will hire engineers, data scientists and storytellers — the new finance talent stack."
 tags: ["teams", "cfo", "leadership", "ai", "strategy"]
 draft: false
 coverImage: /img/future-finance-talent-stack.webp

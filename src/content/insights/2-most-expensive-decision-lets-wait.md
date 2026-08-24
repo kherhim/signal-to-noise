@@ -2,6 +2,7 @@
 title: "📌 2 — The most expensive decision? “let’s wait.”"
 date: 2025-12-08
 excerpt: "Indecision is invisible until it becomes a crisis."
+seoDescription: "The cost of delayed decisions: why 'let's wait' is often the most expensive choice a leadership team can make, and the question that exposes it."
 tags: ["leadership", "cfo", "risk"]
 series:
   id: leadership-lessons

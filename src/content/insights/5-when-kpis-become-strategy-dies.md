@@ -2,6 +2,7 @@
 title: "📌 5 — When KPIs become the strategy, the strategy dies"
 date: 2025-12-29
 excerpt: "KPIs are useful. But KPIs can also mislead."
+seoDescription: "When KPIs become the strategy: how metric fixation quietly kills the thing it measures, and the four failure modes leaders should watch for."
 tags: ["leadership", "strategy", "cfo", "teams"]
 series:
   id: leadership-lessons

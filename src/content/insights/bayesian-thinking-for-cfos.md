@@ -2,6 +2,7 @@
 title: "Bayesian thinking: Why CFOs need it more than they admit"
 date: 2026-07-28
 excerpt: "Finance is built on the premise that an answer is either right or wrong. The business it reports on has never worked that way — which is why the habit of updating cleanly is a CFO's real advantage."
+seoDescription: "Bayesian thinking for finance leaders: how CFOs can use probabilistic reasoning and updated priors for forecasting, risk and better decisions."
 tags: ["cfo", "risk", "fp-and-a", "ai", "strategy"]
 draft: false
 coverImage: /img/bayesian-thinking-for-cfos.webp

@@ -2,6 +2,7 @@
 title: "When culture eats your strategy"
 date: 2026-07-22
 excerpt: "'Culture eats strategy for breakfast' gets quoted but rarely designed for. Culture isn't the enemy of a good plan — it's the container the plan has to live in, and when the two don't fit, the container wins every time."
+seoDescription: "Why culture eats strategy: how organisational culture quietly defeats strategic plans, and what leaders can actually do about it."
 tags: ["culture", "strategy", "leadership", "execution", "cfo"]
 draft: false
 coverImage: /img/when-culture-eats-your-strategy.webp

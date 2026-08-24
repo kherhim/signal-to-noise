@@ -2,6 +2,7 @@
 title: "Buffett on the fortress balance sheet"
 date: 2026-07-02
 excerpt: "Most CFOs are trained to make the balance sheet efficient. Buffett spent his career arguing the opposite — that its first job is to be unkillable, and that the reward for building it that way is the freedom to act when no one else can…"
+seoDescription: "Warren Buffett's fortress balance sheet: why holding cash and avoiding leverage wins across cycles, and how CFOs can apply the principle."
 tags: ["cfo", "capital-markets", "buffett", "strategy", "leadership"]
 draft: false
 coverImage: /img/buffett-on-the-fortress-balance-sheet.webp

@@ -2,6 +2,7 @@
 title: "How CFOs should think about M&A : balancing risk and opportunity"
 date: 2024-09-23
 excerpt: "Mergers and acquisitions (M&A) are often seen as a fast track to growth, innovation, and market expansion. With what is possibly the beginning of interest rate cuts on both side…"
+seoDescription: "How CFOs should evaluate M&A: balancing risk and opportunity in acquisitions — valuation discipline, integration reality and walk-away points."
 tags: ["leadership", "strategy", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/how-cfos-should-think-ma-balancing-risk-opportunity-himanshu-kher-dn1ef"

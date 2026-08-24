@@ -2,6 +2,7 @@
 title: "From bean counting to bots"
 date: 2023-10-16
 excerpt: "CFOs can harness the capabilities of large language models (LLMs) like ChatGPT and Robotic Process Automation (RPA) to create value in several distinct ways. In essence, the com…"
+seoDescription: "AI automation in finance and accounting: how the finance function evolves from bean counting to bots, and which skills stay valuable."
 tags: ["strategy", "ai", "fp-and-a", "cfo", "teams"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/from-bean-counting-bots-himanshu-kher-ozf7e"

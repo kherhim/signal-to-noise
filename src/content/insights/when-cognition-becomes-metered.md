@@ -2,6 +2,7 @@
 title: "When cognition becomes metered"
 date: 2026-07-10
 excerpt: "A firm can now rent increments of thinking — bounded units of cognitive work, metered and priced like compute. That sounds like a pricing detail. It isn't. It changes what the cost structure of a firm is made of."
+seoDescription: "How AI token pricing changes corporate cost structure: metered cognition as a third pool of capacity beside headcount and software, and what CFOs should do about it."
 tags: ["cfo", "ai", "cost-structure", "strategy", "finance"]
 draft: false
 coverImage: /img/when-cognition-becomes-metered.webp
@@ -50,7 +51,7 @@ Here is the part of the CFO brief that gets the least airtime and deserves the m
 
 When capacity is people, you have levers: retention, contracts, culture. When it's a perpetual software licence, version 11 keeps behaving like version 11 for as long as you run it. Metered cognition offers neither comfort. The vendor can reprice it. They can deprecate the model your workflow was tuned to — this already happens on cycles of months, not years. They can change its behaviour with an update, mid-quarter, without asking. The characteristics of your capacity can shift without your consent, and there is no version you can pin and own.
 
-Layer the probabilistic output on top and the right mental model becomes obvious: this is a sole-supplier dependency for a critical input, and it should be governed like one. Second-sourcing, abstraction layers so a model swap is a configuration change rather than a rebuild, fallback paths for the processes that cannot tolerate an outage. Supply-chain discipline, applied to thinking itself. Very few firms have made that connection yet.
+Layer the probabilistic output on top and the right mental model becomes obvious: this is a sole-supplier dependency for a critical input, and it should be governed like one. Second-sourcing, abstraction layers so a model swap is a configuration change rather than a rebuild, fallback paths for the processes that cannot tolerate an outage. Supply-chain discipline, applied to thinking itself. Very few firms have made that connection yet — I've since taken it up in full in [The cognitive supply chain](/insights/the-cognitive-supply-chain/).
 
 ## Where finance ends up
 

@@ -2,6 +2,7 @@
 title: "What keeps a Fintech CFO up at night (hint: it's not just burn rate)"
 date: 2025-05-08
 excerpt: "Being a CFO in fintech sounds cool—until it’s 2:47am and you're wide awake, wondering if your fraud controls holds, your Series C runway will stretch, or your compliance stack i…"
+seoDescription: "Fintech CFO challenges beyond burn rate: regulatory risk, unit economics and funding cycles — what actually keeps finance leaders awake."
 tags: ["leadership", "strategy", "ai", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/what-keeps-fintech-cfo-up-night-hint-its-just-burn-rate-himanshu-kher-sya3c"

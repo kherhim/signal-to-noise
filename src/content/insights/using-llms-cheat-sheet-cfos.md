@@ -2,6 +2,7 @@
 title: "Using LLMs: A cheat sheet for CFOs"
 date: 2024-06-05
 excerpt: "The role of a Chief Financial Officer (CFO) is evolving and leveraging technology has become even more important to create value. After all, how good can a CFO be if they can't…"
+seoDescription: "A practical guide to using LLMs in finance: use cases, prompts and guardrails for CFOs and finance teams adopting ChatGPT, Claude and other AI tools."
 tags: ["strategy", "ai", "fp-and-a", "cfo", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/using-llms-cheat-sheet-cfos-himanshu-kher-bmqnf"

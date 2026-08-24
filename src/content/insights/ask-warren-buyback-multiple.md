@@ -2,6 +2,7 @@
 title: "Ask Warren: Should we buy back stock at this multiple?"
 date: 2026-06-25
 excerpt: "The question CFOs get asked at almost every Q4 board now: what are we doing about the buyback? Buffett's 2011 and 2016 letters give the hard answer most boardroom conversations skip…"
+seoDescription: "Share buybacks and valuation: applying Warren Buffett's intrinsic-value test to whether a company should repurchase stock at today's multiple."
 tags: ["cfo", "buffett", "ask-warren", "capital-markets"]
 draft: false
 coverImage: /img/ask-warren-buyback-multiple.webp

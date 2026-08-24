@@ -2,6 +2,7 @@
 title: "The 10 commandments for a newbie CFO"
 date: 2022-06-18
 excerpt: "1.      Thou shalt help the Board in setting (& execution of) of corporate strategy."
+seoDescription: "Advice for first-time CFOs: ten commandments for your first CFO role, from cash discipline to earning the board's trust."
 tags: ["leadership", "strategy", "cfo", "teams", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-commandments-newbie-cfo-himanshu-kher-fct"

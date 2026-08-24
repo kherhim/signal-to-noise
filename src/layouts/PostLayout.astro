@@ -10,6 +10,8 @@ interface Props {
   title: string;
   date: Date;
   excerpt: string;
+  /* Search-intent meta description; falls back to excerpt when absent. */
+  seoDescription?: string;
   tags?: string[];
   /* Optional cover image rendered above the header. */
   coverImage?: string;
@@ -29,6 +31,7 @@ const {
   title,
   date,
   excerpt,
+  seoDescription,
   tags = [],
   coverImage,
   coverImageAlt,
@@ -50,7 +53,7 @@ const formatted = date.toLocaleDateString('en-GB', {
 
 <BaseLayout
   title={`${title} — signal-to-noise.co`}
-  description={excerpt}
+  description={seoDescription ?? excerpt}
   ogImage={coverImage}
   ogType="article"
   starsDim

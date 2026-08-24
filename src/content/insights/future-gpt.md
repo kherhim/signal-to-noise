@@ -2,6 +2,7 @@
 title: "Future of GPT"
 date: 2024-01-22
 excerpt: "Generative Pretrained Transformers (GPT) are a breakthrough, in the field of intelligence. They have completely revolutionized our understanding of what machines can do with the…"
+seoDescription: "Where GPT and large language models go next: a CFO's view of AI model progress and what it means for business planning and finance work."
 tags: ["leadership", "ai", "fp-and-a", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/future-gpt-himanshu-kher-gaccf"

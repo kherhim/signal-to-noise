@@ -11,6 +11,11 @@ const insights = defineCollection({
     title: z.string(),
     date: z.coerce.date(),
     excerpt: z.string(),
+    // Optional search-intent meta description. When present it replaces the
+    // excerpt in <meta name="description"> / og:description only — the
+    // visible excerpt on cards and indexes is untouched. Write it the way a
+    // CFO would type the query, not the way the essay speaks.
+    seoDescription: z.string().optional(),
     tags: z.array(z.string()).optional(),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),

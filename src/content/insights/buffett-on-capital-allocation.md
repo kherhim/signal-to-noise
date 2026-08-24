@@ -2,6 +2,7 @@
 title: "Buffett on capital allocation"
 date: 2026-06-18
 excerpt: "For forty years Warren Buffett has been making the same quiet argument about the CFO function. Most CFOs still haven't fully internalised it — and the cost of not internalising it compounds…"
+seoDescription: "Warren Buffett's capital allocation principles for CFOs: retained earnings, buybacks, dividends and the hurdle every pound of capital must clear."
 tags: ["cfo", "capital-markets", "strategy", "buffett", "leadership"]
 draft: false
 featured: true

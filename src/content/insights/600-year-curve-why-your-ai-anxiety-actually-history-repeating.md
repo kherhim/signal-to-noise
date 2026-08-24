@@ -2,6 +2,7 @@
 title: "The 600-year curve: Why your \"AI anxiety\" is actually history repeating itself."
 date: 2026-05-12
 excerpt: "I want you to look at the graph for a second. Really look at it. Look hard."
+seoDescription: "AI anxiety in historical context: what 600 years of technology shocks, from the printing press to the spreadsheet, predict about AI and the future of knowledge work."
 tags: ["ai", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/600-year-curve-why-your-ai-anxiety-actually-history-repeating-kher-sthge"

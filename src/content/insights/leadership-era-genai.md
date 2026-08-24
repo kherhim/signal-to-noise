@@ -2,6 +2,7 @@
 title: "Leadership in an era of GenAI"
 date: 2024-02-01
 excerpt: "In continuation of my recent post on the Future of GPT, I have been thinking about the role of leadership in the swiftly evolving landscape of General Artificial Intelligence (G…"
+seoDescription: "Leadership in the age of generative AI: how executives should lead teams, judgement and culture when AI does more of the thinking."
 tags: ["leadership", "strategy", "ai", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/leadership-era-genai-himanshu-kher-eeg2f"
