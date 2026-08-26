@@ -217,3 +217,22 @@ Also this week: cognitive-supply-chain published on site Mon 24 (same day as
 post 1 — publish + feed post proved compatible), Substack mirror + email fired
 Wed 26 per the new passive policy, Edition 2 (with live link to the sequel)
 lands Fri 28. Subs/follower counts to be added in the Monday readout.
+
+---
+
+## Rhythm change — Wed 26 August 2026: the adaptive second-post rule
+
+Week 3's pair: P1 (scoreboard) 1,651 imps / 56% OON — all-time best. P2
+(value-accrual question) 260 imps / 9% OON at 6.5h — soft. Combined with
+week 1 (P2 was the week's best) and week 2 (Wednesday held), the pattern is
+NOT "second posts fail" but "the post after a breakout pays an algorithm tax."
+
+**New rule (from week 4):** Mon post always fires. **If Monday breaks out —
+>1,000 impressions or >40% OON by Tue night — skip Wednesday**; roll the
+angle to next Monday and spend Wednesday working the breakout's comments.
+Otherwise Wednesday fires as normal. Second angles must carry their own
+concrete numbers — never pure concept (abstract P2s underperform in every
+week's data).
+
+**Editions are exempt** — notification/email delivery bypasses the feed
+algorithm entirely; fortnightly cadence holds regardless of feed weeks.
