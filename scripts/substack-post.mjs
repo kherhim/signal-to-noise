@@ -35,7 +35,7 @@
  *   > blockquotes, - lists, --- rules)
  *
  * The optional `canonical` field supports the full-text-repost strategy
- * (see DISTRIBUTION-Plan.md §1): when the WHOLE essay is mirrored to
+ * (see docs/plans/DISTRIBUTION-Plan.md §1): when the WHOLE essay is mirrored to
  * Substack rather than a teaser, canonical tells Google the site is the
  * original so the higher-authority substack.com copy doesn't outrank it.
  * Verify it took effect once with `get <draftId>` (prints canonical_url).

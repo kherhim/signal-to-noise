@@ -4,10 +4,10 @@ Personal site + insights blog. Astro · Tailwind · MDX. Live on a GCE VM
 behind Cloudflare. Email + subscriptions via
 [hkher.substack.com](https://hkher.substack.com).
 
-- Original project brief & design intent: [`signal2noise.md`](./signal2noise.md)
-- Article conventions (linter-enforced): [`article-formatting.md`](./article-formatting.md)
-- SEO phases: [`SEO-Plan.md`](./SEO-Plan.md) · Buffett series plan: [`buffett.md`](./buffett.md)
-- Substack/LinkedIn distribution: [`DISTRIBUTION-Plan.md`](./DISTRIBUTION-Plan.md)
+- Original project brief & design intent: [`docs/specs/signal2noise.md`](./docs/specs/signal2noise.md)
+- Article conventions (linter-enforced): [`docs/specs/article-formatting.md`](./docs/specs/article-formatting.md)
+- SEO phases: [`docs/plans/SEO-Plan.md`](./docs/plans/SEO-Plan.md) · Buffett series plan: [`buffett.md`](./buffett.md)
+- Substack/LinkedIn distribution: [`docs/plans/DISTRIBUTION-Plan.md`](./docs/plans/DISTRIBUTION-Plan.md)
   (strategy) · [`distribution/`](./distribution/) (ready-to-post assets, newsletter,
   back-catalogue queue). The release routine below reflects this — full-text
   Substack, native LinkedIn posts, a LinkedIn newsletter. Execution (posting) is
@@ -49,7 +49,7 @@ the site always publishes first.
 > stop leaking reach — full-text on Substack instead of a teaser, native
 > LinkedIn posts instead of link posts, plus a LinkedIn newsletter. The
 > reasoning, the diagnosis, and the ready-to-post assets live in
-> [`DISTRIBUTION-Plan.md`](./DISTRIBUTION-Plan.md) and
+> [`docs/plans/DISTRIBUTION-Plan.md`](./docs/plans/DISTRIBUTION-Plan.md) and
 > [`distribution/`](./distribution/). The old teaser-based Substack flow is
 > preserved in git history (pre-`article-virality-strategy` branch) if needed.
 

@@ -25,9 +25,9 @@ Everything referenced below is under `distribution/`.
       `distribution/linkedin-newsletter/launch-checklist.md`. Name it
       *Signal to Noise*. Don't publish the first edition yet — just create it.
 - [ ] **Google Search Console** — verify the domain (DNS TXT method) and submit
-      `sitemap-index.xml`. See `SEO-Plan.md` §4.1. ~10 min.
+      `sitemap-index.xml`. See `docs/plans/SEO-Plan.md` §4.1. ~10 min.
 - [ ] **Analytics** — confirm Cloudflare Web Analytics is live (it's server-side,
-      already on per the README) or add Plausible. See `SEO-Plan.md` §4.2.
+      already on per the README) or add Plausible. See `docs/plans/SEO-Plan.md` §4.2.
 - [ ] **Refresh the Substack cookie** — this container didn't have your `.env`.
       Grab a fresh `SUBSTACK_SID` (DevTools → Application → Cookies →
       substack.com → `substack.sid`) into `.env` before the first Substack post.
@@ -100,7 +100,7 @@ The release routine in the README is already updated. In short:
 
 ## Step 5 — Measure (5 min every Monday)
 
-Track six numbers (`DISTRIBUTION-Plan.md` §5): Substack subscribers · LinkedIn
+Track six numbers (`docs/plans/DISTRIBUTION-Plan.md` §5): Substack subscribers · LinkedIn
 followers · newsletter subscribers · site sessions · sessions by referrer · GSC
 impressions/clicks. The one that matters is **net new subscribers per piece** —
 that's the number that compounds. Site traffic lags subscriber growth by a month

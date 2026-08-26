@@ -36,8 +36,6 @@ pnpm-debug.log*
 .grok/
 .claude/settings.local.json
 
-# Watermarks-remover service — separate repo checkout, not site content
-watermarks-remover/
 
 # Personal reference material — keep locally, never commit
 Linkedin Profile-self.pdf

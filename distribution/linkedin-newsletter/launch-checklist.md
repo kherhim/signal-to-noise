@@ -73,7 +73,7 @@ you keep dipping into the back catalogue to fill the gaps.
 
 ## Measurement
 
-Track weekly (add to the six-number dashboard in DISTRIBUTION-Plan.md §5):
+Track weekly (add to the six-number dashboard in docs/plans/DISTRIBUTION-Plan.md §5):
 - Newsletter subscriber count (grows with every edition's re-invite).
 - Per-edition views + the UTM-tagged clicks landing on the site.
 

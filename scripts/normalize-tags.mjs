@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-/* Normalise article tags toward a canonical taxonomy (SEO-Plan.md 2.5,
- * DISTRIBUTION-Plan.md 2.3).
+/* Normalise article tags toward a canonical taxonomy (docs/plans/SEO-Plan.md 2.5,
+ * docs/plans/DISTRIBUTION-Plan.md 2.3).
  *
  * The problem: the 57 articles carry ~20 tags, but four of them are on the
  * overwhelming majority — cfo (43), strategy (40), leadership (39),

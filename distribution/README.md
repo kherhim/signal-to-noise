@@ -1,7 +1,7 @@
 # distribution/
 
 Everything needed to execute the Substack + LinkedIn distribution strategy in
-[`../DISTRIBUTION-Plan.md`](../DISTRIBUTION-Plan.md). The plan is the *why*;
+[`../docs/plans/DISTRIBUTION-Plan.md`](../docs/plans/DISTRIBUTION-Plan.md). The plan is the *why*;
 this directory is the *what to paste*.
 
 By default nothing here posts automatically — publishing is yours to control.
