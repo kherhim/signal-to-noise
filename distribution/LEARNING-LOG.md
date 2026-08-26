@@ -186,3 +186,34 @@ weeks of Notes and restacks moved the needle zero.
 
 Weekly rhythm table above amended accordingly: Tue/Thu slots are now rest or
 LinkedIn engagement.
+
+---
+
+## Week 3 interim — Wed 26 August 2026: the news-peg thesis confirmed
+
+**Post 1 of the pricing-the-future pack (Mon 24 Aug, 3pm SGT) is the best
+post of the run on every measure:**
+
+| Metric | This post | Previous best (metered P2) |
+|---|---|---|
+| Impressions ~24h | ~1,600 | 855 |
+| Impressions ~40h | 1,651 | — |
+| Members reached | 1,149 | 538 |
+| Out-of-network | **56% (and rising: 50% → 56%)** | 27% |
+
+Lessons:
+1. **News-peg + scoreboard opener travels.** "The framework called it" credibility
+   posture (published May, SpaceX washout obeyed it) doubled reach and doubled
+   the OON share vs the best pure-idea post. Tier 1 of the back-catalogue
+   ranking is validated — prioritise news-peggable packs when a peg is live.
+2. **OON share RISING after day one** is the signal to watch, not raw
+   impressions — it means the algorithm kept widening the test audience.
+3. Engagement quality trailed reach early (2 likes at 2h, both 1st-degree) —
+   scoreboard posts convert slowly; don't panic-comment. One author comment,
+   then let the waves run. (Explicitly declined the second-wind self-comment;
+   right call.)
+
+Also this week: cognitive-supply-chain published on site Mon 24 (same day as
+post 1 — publish + feed post proved compatible), Substack mirror + email fired
+Wed 26 per the new passive policy, Edition 2 (with live link to the sequel)
+lands Fri 28. Subs/follower counts to be added in the Monday readout.
