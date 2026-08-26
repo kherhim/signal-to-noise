@@ -23,6 +23,8 @@ const ROOT = new URL('../src/content/insights/', import.meta.url).pathname;
 const PLACEHOLDER = String.fromCharCode(0xe000);
 
 const ALLOWLIST = new Set([
+  // Company proper nouns
+  'JPMorgan', 'Citigroup',
   // Org / role acronyms (both apostrophe variants)
   'CFO', 'CFOs', "CFO's", 'CFO’s',
   'CEO', 'CEOs', "CEO's", 'CEO’s',
