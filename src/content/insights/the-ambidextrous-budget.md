@@ -2,11 +2,11 @@
 title: "The ambidextrous budget"
 date: 2026-09-01
 excerpt: "Most CFOs now rank cutting costs and funding growth among their top priorities — simultaneously. That's not indecision; it's the new shape of the job. The problem is that almost every budget process is built for one hand only."
-seoDescription: "How CFOs run cost discipline and growth bets in one budget: separate envelopes, stage gates, a visible recycling link, and the performance-vs-options test."
+seoDescription: "In one budget, CFOs unite cost discipline with growth bets using separate envelopes, stage gates, a visible recycling link, and the performance-vs-options test."
 tags: ["cfo", "budgeting", "capital-allocation", "strategy", "finance"]
 draft: false
 coverImage: /img/the-ambidextrous-budget.webp
-coverImageAlt: "A minimalist cover on a near-black canvas: on the left, a complete, orderly grid of solid cream squares — the deterministic cost book, every square present. A thin line runs rightwards — the recycling link — along which a square softens into a rounded square and then a circle, a saved pound becoming an option. On the right, a loose constellation of circles: solid funded survivors of different sizes, fine-outlined first cheques, and two dashed circles marking bets killed on evidence. A fine rule runs along the bottom above the caption 'Budgeting, ambidextrous' in spaced capitals, with a small 'Fig. 04' mark top-left."
+coverImageAlt: "Against a near-black canvas, a minimalist cover places a complete, orderly matrix of solid cream squares at left: the deterministic cost book, with every square present. A thin rightward line — the recycling link — carries one square as it becomes rounded and then circular, converting a saved pound into an option. At right, a loose constellation holds solid funded survivors in varying sizes, fine-outlined first cheques, and two dashed circles for bets killed on evidence. A fine rule spans the bottom above the spaced-capital caption 'Budgeting, ambidextrous', with a small 'Fig. 04' mark at top-left."
 ---
 
 The CFO is the same; so is the Monday. At ten, she must unveil the cost programme: remove eight per cent from opex, item by item, without exceptions or sentiment. At two, she faces that identical executive team to make the case for the growth envelope, insisting that now is exactly the time to keep investing in the future.
