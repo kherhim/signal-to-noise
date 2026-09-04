@@ -24,6 +24,10 @@ const insights = defineCollection({
     // Optional cover image rendered above the article title.
     coverImage: z.string().optional(),
     coverImageAlt: z.string().optional(),
+    // Optional animated cover. When set, the essay page renders the matching
+    // inline-SVG component from src/components/covers/ instead of the
+    // coverImage; coverImage still serves OG previews and listings.
+    coverAnimation: z.enum(['metered', 'supply-chain']).optional(),
     // Series metadata. Set on the parent and every child of a multi-part
     // series. The parent omits `part`; children include their part number.
     series: z

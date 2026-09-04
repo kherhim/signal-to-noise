@@ -1,0 +1,179 @@
+---
+/* Animated cover for "When cognition becomes metered" (FIG. 01).
+   The still composition is rendered here at build time as inline SVG, in
+   the same 2400×1350 coordinate space as the shipped webp, so the page
+   paints the cover with no JavaScript and no image request. The <script>
+   below adds the motion with the Web Animations API and does nothing
+   under prefers-reduced-motion.
+
+   Geometry was traced from public/img/when-cognition-becomes-metered.webp:
+   26 grid columns and 15 rows on a 63-unit pitch, 50-unit squares, the
+   semicircle centred on its flat edge at x=755. Cell codes: 1 solid,
+   2 outline, 0 empty. */
+
+interface Props {
+  alt?: string;
+}
+const { alt = '' } = Astro.props;
+
+const X0 = 763, Y0 = 155, PITCH = 63, SZ = 50;
+const EDGE = 755; // flat edge of the semicircle; travellers depart from here
+const DENSE_COLS = 8; // columns 0–7 form the block and never move
+
+// Traced rows, 22 detected columns each. Columns 20 and 21 of the trace sit
+// at grid columns 23 and 25 (the far-right stragglers), so they are remapped.
+const TRACED = [
+  '1010101120020000010000',
+  '1101011010000000000000',
+  '1111100001000000100100',
+  '1111110022000100000000',
+  '1110000112201020000000',
+  '1011010100011000000000',
+  '1111111002210000010000',
+  '1111000001000002000000',
+  '1111111101000120000000',
+  '1111111110000000000000',
+  '1111010010010000000011',
+  '1111101102000010020000',
+  '1111111022100000021000',
+  '1111010000021001000000',
+  '1010110012120000000000',
+];
+const cells = TRACED.map((r) => {
+  const c = r.split('');
+  return [...c.slice(0, 20), '0', '0', '0', c[20], '0', c[21]];
+});
+
+// Small deterministic PRNG so the departure order is stable across builds.
+let seed = 41;
+const rand = () => {
+  seed = (seed + 0x6d2b79f5) >>> 0;
+  let t = seed;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+
+type Square = { x: number; y: number; outline: boolean; travels: boolean; order: number };
+const squares: Square[] = [];
+cells.forEach((row, r) =>
+  row.forEach((v, c) => {
+    if (v === '0') return;
+    squares.push({
+      x: X0 + c * PITCH,
+      y: Y0 + r * PITCH,
+      outline: v === '2',
+      travels: c >= DENSE_COLS,
+      order: rand(),
+    });
+  }),
+);
+const travellerCount = squares.filter((s) => s.travels).length;
+
+// Ruler: ticks every 36 units from 192 to 2208, a major every 288.
+const ticks: { x: number; major: boolean }[] = [];
+for (let x = 192; x <= 2208; x += 36) ticks.push({ x, major: (x - 192) % 288 === 0 });
+
+const mono = "var(--font-mono, 'JetBrains Mono', ui-monospace, Menlo, monospace)";
+---
+
+<svg
+  data-cover="metered"
+  data-edge={EDGE}
+  data-travellers={travellerCount}
+  viewBox="0 0 2400 1350"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label={alt}
+  class="block w-full h-auto"
+>
+  <rect x="0" y="0" width="2400" height="1350" fill="#121212" />
+
+  <text x="193" y="88" fill="#8a8a86" font-size="15" letter-spacing="15" style={`font-family:${mono}`}>FIG. 01</text>
+
+  <path d={`M${EDGE},168 A450,450 0 0 0 ${EDGE},1068 Z`} fill="#efece2" />
+
+  <g fill="#efece2" stroke="#efece2" stroke-width="2">
+    {squares.map((s) => (
+      <rect
+        x={s.x}
+        y={s.y}
+        width={SZ}
+        height={SZ}
+        fill-opacity={s.outline ? 0 : 1}
+        data-x={s.travels ? s.x : undefined}
+        data-o={s.travels ? s.order.toFixed(4) : undefined}
+        data-outline={s.travels && s.outline ? '' : undefined}
+      />
+    ))}
+  </g>
+
+  <g stroke="#d9d6cd" stroke-width="2" fill="none">
+    <line x1="192" y1="1181" x2="2208" y2="1181" />
+    {ticks.map((t) => (
+      <line x1={t.x} y1="1181" x2={t.x} y2={1181 + (t.major ? 21 : 10)} />
+    ))}
+  </g>
+  <rect data-cursor x="192" y="1170" width="4" height="36" fill="#efece2" opacity="0" />
+
+  <text x="920" y="1268" fill="#f5f3ec" font-size="20" letter-spacing="19" style={`font-family:${mono}`}>COGNITION, METERED</text>
+</svg>
+
+<script>
+  /* Motion: squares in the scatter region depart the semicircle's flat edge
+     on a staggered schedule, drift right to their resting place, and the
+     ones that rest as outlines thin mid-flight. A cursor on the ruler
+     steps forward with each departure. The last fifth of every loop is
+     the still cover, so the loop seam is the artwork itself. */
+  const svg = document.querySelector<SVGSVGElement>('svg[data-cover="metered"]');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (svg && !reduced) {
+    const PERIOD = 18000;
+    const REST_AT = 0.8;
+    const TRAVEL = 0.26;
+    const EDGE = Number(svg.dataset.edge);
+    const lastStart = (REST_AT - TRAVEL) * 0.96;
+
+    const rects = Array.from(svg.querySelectorAll<SVGRectElement>('rect[data-x]')).sort(
+      (a, b) => Number(a.dataset.o) - Number(b.dataset.o),
+    );
+    const n = Math.max(1, rects.length - 1);
+    const anims: Animation[] = [];
+
+    rects.forEach((rect, i) => {
+      const s = (i / n) * lastStart;
+      const dx = EDGE - Number(rect.dataset.x);
+      const restFill = 'outline' in rect.dataset ? 0 : 1;
+      anims.push(
+        rect.animate(
+          [
+            { offset: 0, transform: `translateX(${dx}px)`, opacity: 0, fillOpacity: 1 },
+            { offset: s, transform: `translateX(${dx}px)`, opacity: 0, fillOpacity: 1 },
+            { offset: s + 0.012, transform: `translateX(${dx * 0.985}px)`, opacity: 1, fillOpacity: 1, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' },
+            { offset: s + TRAVEL * 0.72, transform: `translateX(${dx * 0.12}px)`, opacity: 1, fillOpacity: restFill, easing: 'cubic-bezier(0.3, 0, 0.1, 1)' },
+            { offset: s + TRAVEL, transform: 'translateX(0px)', opacity: 1, fillOpacity: restFill },
+            { offset: 1, transform: 'translateX(0px)', opacity: 1, fillOpacity: restFill },
+          ],
+          { duration: PERIOD, iterations: Infinity },
+        ),
+      );
+    });
+
+    const cursor = svg.querySelector<SVGRectElement>('rect[data-cursor]');
+    if (cursor) {
+      const span = 2208 - 192 - 4;
+      const steps: Keyframe[] = [{ offset: 0, transform: 'translateX(0px)', opacity: 0 }];
+      rects.forEach((_, i) => {
+        const s = (i / n) * lastStart;
+        steps.push({ offset: Math.max(0.0001, s), transform: `translateX(${(i / n) * span}px)`, opacity: 1, easing: 'steps(1, end)' });
+      });
+      steps.push({ offset: lastStart + 0.001, transform: `translateX(${span}px)`, opacity: 1 });
+      steps.push({ offset: REST_AT - 0.02, transform: `translateX(${span}px)`, opacity: 0 });
+      steps.push({ offset: 1, transform: `translateX(${span}px)`, opacity: 0 });
+      anims.push(cursor.animate(steps, { duration: PERIOD, iterations: Infinity }));
+    }
+
+    anims.forEach((a) => { a.startTime = 0; });
+  }
+</script>

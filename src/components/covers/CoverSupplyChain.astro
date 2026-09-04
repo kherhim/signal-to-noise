@@ -1,0 +1,201 @@
+---
+/* Animated cover for "The cognitive supply chain" (FIG. 02).
+   The still composition is rendered here at build time as inline SVG, in
+   the same 2400×1350 coordinate space as the shipped webp. The <script>
+   below adds the motion with the Web Animations API and does nothing
+   under prefers-reduced-motion.
+
+   Geometry was traced from public/img/the-cognitive-supply-chain.webp:
+   supplier circle centred (640, 610) r 190; an 8×6 grid of 45-unit
+   squares on a 112×118 pitch from (1290, 300); the absent second source
+   as a dashed circle at (640, 1104) r 120. Cell codes: 1 solid,
+   2 outline, 0 empty. */
+
+interface Props {
+  alt?: string;
+}
+const { alt = '' } = Astro.props;
+
+const SRC = { x: 828, y: 610 }; // right edge of the supplier, where every hairline starts
+const COL0 = 1290, ROW0 = 300, PX = 112, PY = 118, SZ = 45;
+const CELLS = ['10111011', '22020112', '01211211', '20111222', '22112211', '01111121'];
+
+let seed = 7;
+const rand = () => {
+  seed = (seed + 0x6d2b79f5) >>> 0;
+  let t = seed;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+
+type Node = { cx: number; cy: number; solid: boolean; order: number; jitter: number };
+const nodes: Node[] = [];
+CELLS.forEach((row, r) =>
+  row.split('').forEach((v, c) => {
+    if (v === '0') return;
+    nodes.push({
+      cx: COL0 + c * PX + SZ / 2,
+      cy: ROW0 + r * PY + SZ / 2,
+      solid: v === '1',
+      order: rand(),
+      jitter: rand(),
+    });
+  }),
+);
+
+const mono = "var(--font-mono, 'JetBrains Mono', ui-monospace, Menlo, monospace)";
+---
+
+<svg
+  data-cover="supply-chain"
+  data-src-x={SRC.x}
+  data-src-y={SRC.y}
+  viewBox="0 0 2400 1350"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label={alt}
+  class="block w-full h-auto"
+>
+  <rect x="0" y="0" width="2400" height="1350" fill="#0a0a0a" />
+
+  <text x="162" y="150" fill="#8a8a86" font-size="30" letter-spacing="4" style={`font-family:${mono}`}>FIG. 02</text>
+
+  <g stroke="#5a5a58" stroke-width="1.4" fill="none">
+    {nodes.map((n, i) => (
+      <line data-i={i} x1={SRC.x} y1={SRC.y} x2={n.cx} y2={n.cy} />
+    ))}
+  </g>
+
+  <g fill="#dbd8cd" stroke="#86847d" stroke-width="2.4">
+    {nodes.map((n, i) => (
+      <rect
+        data-i={i}
+        data-solid={n.solid ? '' : undefined}
+        data-o={n.order.toFixed(4)}
+        data-j={n.jitter.toFixed(4)}
+        x={n.cx - SZ / 2}
+        y={n.cy - SZ / 2}
+        width={SZ}
+        height={SZ}
+        fill-opacity={n.solid ? 1 : 0}
+      />
+    ))}
+  </g>
+
+  <g fill="#efece2">
+    {nodes.map((n, i) => (
+      <circle data-i={i} data-dx={n.cx - SRC.x} data-dy={n.cy - SRC.y} cx={SRC.x} cy={SRC.y} r="6" opacity="0" />
+    ))}
+  </g>
+
+  <circle data-supplier cx="640" cy="610" r="190" fill="#efece2" />
+  <circle cx="640" cy="1104" r="120" fill="none" stroke="#757575" stroke-width="3" stroke-dasharray="18 14" />
+
+  <line x1="160" y1="1237" x2="2239" y2="1237" stroke="#86847d" stroke-width="2" />
+  <text x="160" y="1302" fill="#dbd8cd" font-size="40" letter-spacing="9" style={`font-family:${mono}`}>THINKING, SINGLE-SOURCED</text>
+</svg>
+
+<script>
+  /* Motion, in three phases of an 18 s loop:
+     A (0 → 0.56): a pulse runs from the supplier along each hairline to its
+       square, at slightly different speeds; the square brightens on arrival.
+     B (0.60 → 0.78): the supplier dims, hairlines fade, every square it
+       feeds flickers together, then all recover.
+     C (0.80 → 1): rest, the still cover. */
+  const svg = document.querySelector<SVGSVGElement>('svg[data-cover="supply-chain"]');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (svg && !reduced) {
+    const PERIOD = 18000;
+    const PULSE = 0.16;
+    const opts: KeyframeAnimationOptions = { duration: PERIOD, iterations: Infinity };
+    const anims: Animation[] = [];
+
+    const rects = Array.from(svg.querySelectorAll<SVGRectElement>('rect[data-i]')).sort(
+      (a, b) => Number(a.dataset.o) - Number(b.dataset.o),
+    );
+    const n = Math.max(1, rects.length - 1);
+
+    rects.forEach((rect, i) => {
+      const idx = rect.dataset.i;
+      const line = svg.querySelector<SVGLineElement>(`line[data-i="${idx}"]`);
+      const dot = svg.querySelector<SVGCircleElement>(`circle[data-i="${idx}"]`);
+      if (!line || !dot) return;
+
+      const jitter = Number(rect.dataset.j);
+      const s = (i / n) * (0.56 - PULSE);
+      const d = PULSE * (0.8 + jitter * 0.5);
+      const dx = Number(dot.dataset.dx), dy = Number(dot.dataset.dy);
+      anims.push(
+        dot.animate(
+          [
+            { offset: 0, transform: 'translate(0px, 0px)', opacity: 0 },
+            { offset: s, transform: 'translate(0px, 0px)', opacity: 0 },
+            { offset: s + 0.01, transform: `translate(${dx * 0.02}px, ${dy * 0.02}px)`, opacity: 0.9, easing: 'cubic-bezier(0.4, 0, 0.6, 1)' },
+            { offset: s + d, transform: `translate(${dx}px, ${dy}px)`, opacity: 0.9 },
+            { offset: s + d + 0.015, transform: `translate(${dx}px, ${dy}px)`, opacity: 0 },
+            { offset: 1, transform: `translate(${dx}px, ${dy}px)`, opacity: 0 },
+          ],
+          opts,
+        ),
+      );
+
+      const solid = 'solid' in rect.dataset;
+      const restFill = solid ? 1 : 0;
+      const arrive = s + d;
+      const j = jitter * 0.03;
+      anims.push(
+        rect.animate(
+          [
+            { offset: 0, fillOpacity: restFill, strokeOpacity: 1 },
+            { offset: Math.max(0, arrive - 0.001), fillOpacity: restFill, strokeOpacity: 1 },
+            { offset: arrive, fillOpacity: solid ? 1 : 0.35, strokeOpacity: 1, easing: 'ease-out' },
+            { offset: arrive + 0.03, fillOpacity: restFill, strokeOpacity: 1 },
+            { offset: 0.6 + j, fillOpacity: restFill, strokeOpacity: 1, easing: 'steps(1, end)' },
+            { offset: 0.62 + j, fillOpacity: 0, strokeOpacity: 0.45, easing: 'steps(1, end)' },
+            { offset: 0.635 + j, fillOpacity: restFill, strokeOpacity: 1, easing: 'steps(1, end)' },
+            { offset: 0.645 + j, fillOpacity: 0, strokeOpacity: 0.45, easing: 'steps(1, end)' },
+            { offset: 0.73 + j, fillOpacity: 0, strokeOpacity: 0.45, easing: 'steps(1, end)' },
+            { offset: 0.75 + j, fillOpacity: restFill, strokeOpacity: 1 },
+            { offset: 1, fillOpacity: restFill, strokeOpacity: 1 },
+          ],
+          opts,
+        ),
+      );
+
+      anims.push(
+        line.animate(
+          [
+            { offset: 0, strokeOpacity: 1 },
+            { offset: 0.6, strokeOpacity: 1 },
+            { offset: 0.63, strokeOpacity: 0.25, easing: 'ease-in-out' },
+            { offset: 0.73, strokeOpacity: 0.25 },
+            { offset: 0.78, strokeOpacity: 1 },
+            { offset: 1, strokeOpacity: 1 },
+          ],
+          opts,
+        ),
+      );
+    });
+
+    const supplier = svg.querySelector<SVGCircleElement>('circle[data-supplier]');
+    if (supplier) {
+      anims.push(
+        supplier.animate(
+          [
+            { offset: 0, opacity: 1 },
+            { offset: 0.6, opacity: 1, easing: 'ease-in-out' },
+            { offset: 0.63, opacity: 0.32 },
+            { offset: 0.72, opacity: 0.32, easing: 'ease-in-out' },
+            { offset: 0.78, opacity: 1 },
+            { offset: 1, opacity: 1 },
+          ],
+          opts,
+        ),
+      );
+    }
+
+    anims.forEach((a) => { a.startTime = 0; });
+  }
+</script>

@@ -7,6 +7,7 @@ tags: ["cfo", "ai", "cost-structure", "strategy", "finance"]
 draft: false
 coverImage: /img/when-cognition-becomes-metered.webp
 coverImageAlt: "A minimalist cover on a near-black canvas: a solid cream semicircle on the left dissolves rightward into a grid of small squares that thin out and scatter — some solid, some outlined — like capacity breaking into billable units. A fine ruler scale runs beneath, labelled 'Cognition, metered' in spaced white capitals, with a small 'Fig. 01' mark top-left."
+coverAnimation: metered
 ---
 
 A firm can now rent increments of thinking.

@@ -3,6 +3,8 @@ import BaseLayout from './BaseLayout.astro';
 import Prose from '../components/Prose.astro';
 import ShareLinks from '../components/ShareLinks.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
+import CoverMetered from '../components/covers/CoverMetered.astro';
+import CoverSupplyChain from '../components/covers/CoverSupplyChain.astro';
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
@@ -16,6 +18,8 @@ interface Props {
   /* Optional cover image rendered above the header. */
   coverImage?: string;
   coverImageAlt?: string;
+  /* Optional animated cover; replaces the <img> on the essay page only. */
+  coverAnimation?: 'metered' | 'supply-chain';
   /* Series support — set when this post is part of a multi-part series.
      Kicker text shows above the title (linked to parent for children).
      Parts list renders at the article end for the parent only. */
@@ -35,6 +39,7 @@ const {
   tags = [],
   coverImage,
   coverImageAlt,
+  coverAnimation,
   seriesKicker,
   seriesKickerHref,
   seriesParts,
@@ -57,10 +62,20 @@ const formatted = date.toLocaleDateString('en-GB', {
   ogImage={coverImage}
   ogType="article"
   starsDim
-  preloadImage={coverImage}
+  preloadImage={coverAnimation ? undefined : coverImage}
 >
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
-    {coverImage && (
+    {coverAnimation ? (
+      <figure class="mb-10">
+        <div class="rounded-lg border border-divider/60 overflow-hidden">
+          {coverAnimation === 'metered' ? (
+            <CoverMetered alt={coverImageAlt} />
+          ) : (
+            <CoverSupplyChain alt={coverImageAlt} />
+          )}
+        </div>
+      </figure>
+    ) : coverImage && (
       <figure class="mb-10">
         <img
           src={coverImage}
