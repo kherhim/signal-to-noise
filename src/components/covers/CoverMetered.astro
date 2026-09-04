@@ -125,10 +125,13 @@ const mono = "var(--font-mono, 'JetBrains Mono', ui-monospace, Menlo, monospace)
      ones that rest as outlines thin mid-flight. A cursor on the ruler
      steps forward with each departure. The last fifth of every loop is
      the still cover, so the loop seam is the artwork itself. */
+  // Bound on astro:page-load so it runs on first load and after every
+  // ClientRouter view transition (the house pattern, see Hero.astro).
+  function setup() {
   const svg = document.querySelector<SVGSVGElement>('svg[data-cover="metered"]');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (svg && !reduced) {
+  if (!svg || reduced) return;
     const PERIOD = 18000;
     const REST_AT = 0.8;
     const TRAVEL = 0.26;
@@ -176,4 +179,5 @@ const mono = "var(--font-mono, 'JetBrains Mono', ui-monospace, Menlo, monospace)
 
     anims.forEach((a) => { a.startTime = 0; });
   }
+  document.addEventListener('astro:page-load', setup);
 </script>

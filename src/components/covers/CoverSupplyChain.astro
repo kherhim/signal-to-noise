@@ -103,10 +103,13 @@ const mono = "var(--font-mono, 'JetBrains Mono', ui-monospace, Menlo, monospace)
      B (0.60 → 0.78): the supplier dims, hairlines fade, every square it
        feeds flickers together, then all recover.
      C (0.80 → 1): rest, the still cover. */
+  // Bound on astro:page-load so it runs on first load and after every
+  // ClientRouter view transition (the house pattern, see Hero.astro).
+  function setup() {
   const svg = document.querySelector<SVGSVGElement>('svg[data-cover="supply-chain"]');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (svg && !reduced) {
+  if (!svg || reduced) return;
     const PERIOD = 18000;
     const PULSE = 0.16;
     const opts: KeyframeAnimationOptions = { duration: PERIOD, iterations: Infinity };
@@ -198,4 +201,5 @@ const mono = "var(--font-mono, 'JetBrains Mono', ui-monospace, Menlo, monospace)
 
     anims.forEach((a) => { a.startTime = 0; });
   }
+  document.addEventListener('astro:page-load', setup);
 </script>
