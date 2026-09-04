@@ -236,3 +236,38 @@ week's data).
 
 **Editions are exempt** — notification/email delivery bypasses the feed
 algorithm entirely; fortnightly cadence holds regardless of feed weeks.
+
+---
+
+## Edition 2 data — Sun 31 August 2026 (edition fired Fri 28 Aug)
+
+**"When cognition becomes metered" — the edition format now has a real
+baseline.** Numbers at day 3:
+
+| Metric | Edition 2 | Edition 1 (launch) |
+|---|---|---|
+| Article views | **224** | ~64 |
+| Email sends | 503 | — |
+| Email open rate | 29% (~146 opens) | — |
+| Feed-card impressions | 292 (87% in-network) | negligible |
+| Members reached (feed) | 189 | — |
+| Reactions | 8 (~2.8% of impressions) | — |
+| Total subscribers (31 Aug) | **680** | 482 at day 4 |
+
+Reads:
+1. **Article views 3.5× Edition 1.** Launch-week subscribers joined without
+   reading; a fortnight later they open. The edition engine works as designed —
+   224 readers delivered without touching the feed algorithm.
+2. **Subscribers 482 → 680 (+41%) in ~2.5 weeks** with no further invite blast
+   — the base compounds between editions. Email sends (503) lagging total subs
+   (680) is expected: LinkedIn emails only those subscribed at send time with
+   email notifications on; the gap is also a rough floor on growth since Friday.
+3. **29% open rate** sits below LinkedIn's advertised 40–50% band but well above
+   feed reach: email alone put the essay in front of ~146 people, half of what
+   the feed card managed in impressions and far more than it managed in reads.
+4. **13% OON on the feed card confirms the exemption logic** — editions are a
+   subscriber channel, not a discovery channel. Judge them on article views,
+   opens and subscriber delta; never on impressions.
+
+Fold into the Mon 1 Sep week-3 readout alongside follower count and site
+analytics.
