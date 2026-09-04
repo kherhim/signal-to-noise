@@ -1,4 +1,4 @@
-/* FIG. 02 · BELIEF, REVISED
+/* FIG. 03 · BELIEF, REVISED
    Three bell curves over a ticked baseline: a wide faint outline at left
    (the prior), a dashed curve at right (the evidence), and between them a
    tall narrow filled curve (the posterior), its peak pulled towards the
@@ -40,7 +40,7 @@ function bell(b: Bell, closed: boolean): string {
 
 const cover: Cover = {
   slug: 'bayesian-thinking-for-cfos',
-  fig: '02',
+  fig: '03',
   caption: 'BELIEF, REVISED',
 
   still(alt) {
@@ -75,7 +75,7 @@ const cover: Cover = {
       line({ x1: b.x, y1: b.top, x2: b.x, y2: BASE, stroke, 'stroke-width': 2, 'stroke-dasharray': '8 8', ...extra });
 
     return svg(cover.slug, alt, [
-      text('FIG. 02', { x: 191, y: 121, size: 29, spacing: 9.6, fill: CREAM_DIM }),
+      text('FIG. 03', { x: 191, y: 121, size: 29, spacing: 9.6, fill: CREAM_DIM }),
       g(squares),
       // prior: wide, faint
       path({ d: bell(PRIOR, false), fill: 'none', stroke: ASH_DIM, 'stroke-width': 2.5 }),
