@@ -6,7 +6,7 @@ seoDescription: "Bayesian thinking for finance leaders: how CFOs can use probabi
 tags: ["cfo", "risk", "fp-and-a", "ai", "strategy"]
 draft: false
 coverImage: /img/bayesian-thinking-for-cfos.webp
-coverImageAlt: "Three bell curves rise above a ticked cream baseline: a wide, faint outline-drawn curve at left, a dashed curve at right, and between them a tall, narrow, softly filled curve whose peak is pulled towards the dashed one. Small ash squares scatter above, densest over the dashed curve. Marked FIG. 02 and captioned 'BELIEF, REVISED'."
+coverImageAlt: "Three bell curves rise above a ticked cream baseline: a wide, faint outline-drawn curve at left, a dashed curve at right, and between them a tall, narrow, softly filled curve whose peak is pulled towards the dashed one. Small ash squares scatter above, densest over the dashed curve. Marked FIG. 03 and captioned 'BELIEF, REVISED'."
 coverAnimation: bayesian-thinking-for-cfos
 ---
 
