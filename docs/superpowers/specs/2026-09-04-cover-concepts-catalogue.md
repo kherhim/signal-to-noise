@@ -1,5 +1,7 @@
 # Cover concepts catalogue — abstract, animated (2026-09-04)
 
+STATUS: all built and deployed 2026-09-04 (commit 0b75b93); figure numbers assigned 05–49 by essay date, once-upon-a-balance-sheet recaptioned 'STORY, THREADED'.
+
 Proposals for moving every remaining essay cover to the cream-on-near-black "FIG." fabric, animated. Generated from a full read of each essay; see `docs/superpowers/specs/2026-09-04-animated-covers-design.md` for the shipped pattern. Ordered newest essay first.
 
 ### the-ambidextrous-budget  (2026-09-01)

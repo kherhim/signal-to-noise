@@ -1,7 +1,7 @@
 # Animated essay covers — design
 
 **Date:** 2026-09-04
-**Status:** approved by user (prototype reviewed side by side)
+**Status:** shipped 2026-09-04 for all 49 covers (see 2026-09-04-cover-concepts-catalogue.md); superseded the per-cover Astro component with one module per cover in src/covers/ plus AnimatedCover.astro and scripts/render-cover.mjs
 
 ## Goal
 
