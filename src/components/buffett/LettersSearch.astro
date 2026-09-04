@@ -1,0 +1,123 @@
+---
+/* Client-side search over all the letters. The corpus, chunked into
+   paragraphs by scripts/buffett/build-chunks.mjs, lives at
+   /buffett/chunks.json and is fetched on the first focus of the input,
+   never before. Ranking is simple and fast: every query term must appear
+   in a chunk (as a word prefix); chunks are scored by how many times the
+   terms occur, with whole-word hits weighted above prefix hits. Results
+   show an excerpt of at most 60 words around the first match, with the
+   letter's year, kind and a link to the original where one exists. */
+import { letters, kindLabel, dateLabel } from '../../lib/buffett';
+
+const meta = Object.fromEntries(letters.map((l) => [l.id, { kind: kindLabel(l), date: dateLabel(l), source: l.source }]));
+---
+
+<section class="buffett-search" data-letters-search aria-labelledby="letters-search-heading">
+  <h2 id="letters-search-heading" class="text-sm uppercase tracking-widest text-accent mb-4">Search the letters</h2>
+  <label class="block">
+    <span class="sr-only">Search the letters</span>
+    <input type="search" data-search-input placeholder="float, repurchase, mistake, moat…" autocomplete="off"
+      class="w-full rounded-lg border border-divider/60 bg-transparent px-4 py-3 text-fg placeholder:text-muted focus:outline-none focus:border-accent/60" />
+  </label>
+  <p class="mt-2 text-xs text-muted" data-search-status>All letters from 1959 to 2025. The results are brief extracts; complete letters are at berkshirehathaway.com.</p>
+  <ol class="mt-6 grid gap-6" data-search-results></ol>
+  <script type="application/json" data-search-meta set:html={JSON.stringify(meta)}></script>
+</section>
+
+<script>
+  type Meta = Record<string, { kind: string; date: string; source: string | null }>;
+  type Chunk = { l: string; y: number; k: string; t: string; w?: string[] };
+
+  let corpus: Chunk[] | null = null;
+  let loading: Promise<Chunk[]> | null = null;
+
+  function load(status: HTMLElement): Promise<Chunk[]> {
+    if (corpus) return Promise.resolve(corpus);
+    if (!loading) {
+      status.textContent = 'Letters loading…';
+      loading = fetch('/buffett/chunks.json')
+        .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json() as Promise<Chunk[]>; })
+        .then((rows) => {
+          for (const c of rows) c.w = c.t.toLowerCase().split(/[^a-z0-9']+/).filter(Boolean);
+          corpus = rows;
+          return rows;
+        })
+        .catch((e) => { status.textContent = 'The letters did not load. Please try once more.'; loading = null; throw e; });
+    }
+    return loading;
+  }
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
+  const terms = (q: string) => q.toLowerCase().split(/[^a-z0-9']+/).filter((t) => t.length > 1);
+
+  function score(c: Chunk, ts: string[]): number {
+    let total = 0;
+    for (const t of ts) {
+      let s = 0;
+      for (const w of c.w!) {
+        if (w === t) s += 3;
+        else if (w.startsWith(t)) s += 1;
+      }
+      if (!s) return 0;
+      total += s;
+    }
+    return total;
+  }
+
+  function excerpt(text: string, ts: string[]): string {
+    const words = text.split(' ');
+    const hit = (w: string) => { const x = w.toLowerCase().replace(/^\W+|\W+$/g, ''); return ts.some((t) => x.startsWith(t)); };
+    let at = words.findIndex(hit);
+    if (at < 0) at = 0;
+    const start = Math.max(0, at - 24);
+    const slice = words.slice(start, start + 60);
+    const marked = slice.map((w) => (hit(w) ? `<mark class="bg-transparent text-fg font-semibold">${esc(w)}</mark>` : esc(w)));
+    return (start > 0 ? '… ' : '') + marked.join(' ') + (start + 60 < words.length ? ' …' : '');
+  }
+
+  function setup() {
+    const root = document.querySelector<HTMLElement>('[data-letters-search]');
+    if (!root) return;
+    const input = root.querySelector<HTMLInputElement>('[data-search-input]');
+    const status = root.querySelector<HTMLElement>('[data-search-status]');
+    const list = root.querySelector<HTMLOListElement>('[data-search-results]');
+    const meta: Meta = JSON.parse(root.querySelector('[data-search-meta]')?.textContent ?? '{}');
+    if (!input || !status || !list) return;
+    const idle = status.textContent ?? '';
+
+    let timer = 0;
+    async function run() {
+      const ts = terms(input!.value);
+      if (!ts.length) { list!.innerHTML = ''; status!.textContent = idle; return; }
+      let rows: Chunk[];
+      try { rows = await load(status!); } catch { return; }
+      const hits = rows.map((c) => ({ c, s: score(c, ts) })).filter((h) => h.s > 0).sort((a, b) => b.s - a.s || a.c.y - b.c.y);
+      // Buffett reused whole paragraphs across years; keep the first
+      // appearance of a passage rather than listing it three times.
+      const seen = new Set<string>();
+      const distinct = hits.filter(({ c }) => {
+        const key = c.w!.slice(0, 14).join(' ');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      const top = distinct.slice(0, 20);
+      status!.textContent = top.length
+        ? `${distinct.length} passage${distinct.length === 1 ? '' : 's'} in the letters, with the ${top.length} most relevant shown.`
+        : 'No letters match that. Try a more general word.';
+      list!.innerHTML = top.map(({ c }) => {
+        const m = meta[c.l] ?? { kind: 'Letter', date: String(c.y), source: null };
+        const link = m.source ? ` · <a href="${m.source}" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-fg">source ↗</a>` : '';
+        return `<li class="grid gap-2">
+          <p class="text-xs uppercase tracking-widest text-muted">${esc(m.kind)}, ${esc(m.date)}${link}</p>
+          <p class="text-fg/90 leading-relaxed">${excerpt(c.t, ts)}</p>
+        </li>`;
+      }).join('');
+    }
+
+    input.addEventListener('focus', () => { load(status); }, { once: true });
+    input.addEventListener('input', () => { clearTimeout(timer); timer = window.setTimeout(run, 160); });
+  }
+
+  document.addEventListener('astro:page-load', setup);
+</script>

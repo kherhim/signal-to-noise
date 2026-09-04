@@ -1,0 +1,125 @@
+{
+  "topic": "leverage",
+  "title": "Buffett on leverage and debt",
+  "lede": "Buffett has said the same thing about debt for sixty years: it makes good results arrive faster and bad ones arrive fatally. The letters trace one steady position, from a self-imposed borrowing limit in the partnership years to a pledged cash floor at Berkshire, and the price he knowingly pays in returns for the ability to act when others cannot.",
+  "related": [
+    "buffett-on-the-fortress-balance-sheet",
+    "buffett-on-capital-allocation",
+    "9-resilience-optionality-toughness",
+    "importance-treasurers-finance"
+  ],
+  "entries": [
+    {
+      "id": "1964-01-18_partnership",
+      "year": 1964,
+      "excerpt": "I definitely feel some borrowed money is warranted against a portfolio of workouts, but feel it is a very dangerous practice against generals.",
+      "note": "Earliest statement: borrowing is tolerable only against positions with a timetable, never against ordinary undervalued shares.",
+      "corrected": true
+    },
+    {
+      "id": "1967-01-25_partnership",
+      "year": 1967,
+      "excerpt": "All this talk about the long pull has caused one partner to observe that “even five minutes is a long time if one's head is being held under water.’ This is the reason, of course, that we use borrowed money very sparingly in our operation.",
+      "note": "Time only heals if you survive the interval; bank borrowings ran well under ten per cent of net worth.",
+      "corrected": false
+    },
+    {
+      "id": "1979_berkshire",
+      "year": 1979,
+      "excerpt": "We have achieved this result while utilizing a low amount of leverage (both financial leverage measured by debt to equity, and operating leverage measured by premium volume to capital funds of our insurance business), and also without significant issuance or repurchase of shares.",
+      "note": "The 1970s record was built on the starting capital, with both financial and insurance leverage kept low.",
+      "corrected": false
+    },
+    {
+      "id": "1983_berkshire",
+      "year": 1983,
+      "excerpt": "We rarely use much debt and, when we do, we attempt to structure it on a long-term fixed rate basis. We will reject interesting opportunities rather than over-leverage our balance sheet.",
+      "note": "Now written into the owner principles; he concedes in the same breath that it has penalised results.",
+      "corrected": false
+    },
+    {
+      "id": "1987_berkshire",
+      "year": 1987,
+      "excerpt": "…we wish that to be certain. Thus we adhere to policies - both in regard to debt and all other matters - that will allow us to achieve acceptable long-term results under extraordinarily adverse conditions, rather than optimal results under a normal range of conditions.",
+      "note": "Likely is not enough; policy is set for the worst case, and he borrows before the need arises.",
+      "corrected": false
+    },
+    {
+      "id": "1989_berkshire",
+      "year": 1989,
+      "excerpt": "A small chance of distress or disgrace cannot, in our view, be offset by a large chance of extra returns. If your actions are sensible, you are certain to get good results; in most such cases, leverage just moves things along faster.",
+      "note": "Listed among his first twenty-five years of mistakes, then defended: he would refuse 99:1 odds on higher leverage.",
+      "corrected": false
+    },
+    {
+      "id": "1990_berkshire",
+      "year": 1990,
+      "excerpt": "But another certain consequence would be a deadly - and unnecessary - accident if the car hit even the tiniest pothole or sliver of ice. The roads of business are riddled with potholes; a plan that requires dodging them all is a plan for disaster.",
+      "note": "Answering the LBO-era claim that heavy debt focuses managers, likened to a dagger mounted on the steering wheel.",
+      "corrected": false
+    },
+    {
+      "id": "2005_berkshire",
+      "year": 2005,
+      "excerpt": "Any other approach is dangerous. Over the years, a number of very smart people have learned the hard way that a long string of impressive numbers multiplied by a single zero always equals zero.",
+      "note": "The arithmetic of ruin stated plainly: net worth, earnings and liquidity must survive any single event.",
+      "corrected": false
+    },
+    {
+      "id": "2008_berkshire",
+      "year": 2008,
+      "excerpt": "We never want to count on the kindness of strangers in order to meet tomorrow’s obligations. When forced to choose, I will not trade even a night’s sleep for the chance of extra profits.",
+      "note": "Written mid-crisis, having sold holdings he liked rather than let cash fall; a pledge to shareholders and rating agencies.",
+      "corrected": false
+    },
+    {
+      "id": "2009_berkshire",
+      "year": 2009,
+      "excerpt": "When the financial system went into cardiac arrest in September 2008, Berkshire was a supplier of liquidity and capital to the system, not a supplicant.",
+      "note": "The payoff for the idle cash: fifteen billion dollars deployed while others queued for government help.",
+      "corrected": false
+    },
+    {
+      "id": "2010_berkshire",
+      "year": 2010,
+      "excerpt": "Having loads of liquidity, though, lets us sleep well. Moreover, during the episodes of financial chaos that occasionally erupt in our economy, we will be equipped both financially and emotionally to play offense while others scramble for survival.",
+      "note": "The cost is named as minor and accepted; a ten billion dollar cash floor is pledged in the same letter.",
+      "corrected": false
+    },
+    {
+      "id": "2012_berkshire",
+      "year": 2012,
+      "excerpt": "Charlie and I believe in operating with many redundant layers of liquidity, and we avoid any sort of obligation that could drain our cash in a material way. That reduces our returns in 99 years out of 100. But we will survive in the 100th while many others fail.",
+      "note": "The trade-off quantified as a frequency: lower returns almost always, survival in the year that matters.",
+      "corrected": false
+    },
+    {
+      "id": "2014_berkshire",
+      "year": 2014,
+      "excerpt": "Financial staying power requires a company to maintain three strengths under all circumstances: (1) a large and reliable stream of earnings; (2) massive liquid assets and (3) no significant near-term cash requirements.",
+      "note": "A checklist any CFO can apply; he singles out the assumption that maturities can always be refinanced.",
+      "corrected": false
+    },
+    {
+      "id": "2017_berkshire",
+      "year": 2017,
+      "excerpt": "Our aversion to leverage has dampened our returns over the years. But Charlie and I sleep well. Both of us believe it is insane to risk what you have and need in order to obtain what you don’t need.",
+      "note": "Fifty years on, the partnership-era view restated unchanged, against a backdrop of cheap debt fuelling deals.",
+      "corrected": false
+    },
+    {
+      "id": "2021_berkshire",
+      "year": 2021,
+      "excerpt": "Charlie and I have pledged that Berkshire (along with our subsidiaries other than BNSF and BHE) will always hold more than $30 billion of cash and equivalents. We want your company to be financially impregnable and never dependent on the kindness of strangers (or even that of friends).",
+      "note": "The cash floor has tripled since 2010; even friends are now excluded as a funding source.",
+      "corrected": false
+    },
+    {
+      "id": "2023_berkshire",
+      "year": 2023,
+      "excerpt": "During the 2008 panic, Berkshire generated cash from operations and did not rely in any manner on commercial paper, bank lines or debt markets. We did not predict the time of an economic paralysis but we were always prepared for one.",
+      "note": "Late summary of the whole position: preparedness replaces prediction, and the cash pile is deliberately above conventional need.",
+      "corrected": false
+    }
+  ]
+}

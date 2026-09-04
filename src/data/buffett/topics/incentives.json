@@ -1,0 +1,125 @@
+{
+  "topic": "incentives",
+  "title": "Buffett on incentives and managers",
+  "lede": "Buffett’s view on pay was fixed early: reward a manager for what that manager controls, charge for the capital used, and never hand out options that pay for retained earnings or a rising market. Across fifty-odd years the letters move from partners eating their own cooking to a rule for boards, and a warning about the institutional imperative.",
+  "related": [
+    "3-culture-incentives-posters",
+    "5-when-kpis-become-strategy-dies",
+    "buffett-on-capital-allocation",
+    "when-culture-eats-your-strategy"
+  ],
+  "entries": [
+    {
+      "id": "1963-01-18_partnership",
+      "year": 1963,
+      "excerpt": "Bill Scott who has fit into our operation splendidly has an interest (with his wife) of $167,400.00, a very large portion of his net worth. So we are all eating our own cooking.",
+      "note": "Partnership days: the analyst has most of his net worth in the fund, alongside Buffett’s family.",
+      "corrected": true
+    },
+    {
+      "id": "1983_berkshire",
+      "year": 1983,
+      "excerpt": "In line with this owner-orientation, our directors are all major shareholders of Berkshire Hathaway. In the case of at least four of the five, over 50% of family net worth is represented by holdings of Berkshire. We eat our own cooking.",
+      "note": "The owner-orientation is stated as a principle: directors hold most of their family wealth in Berkshire.",
+      "corrected": false
+    },
+    {
+      "id": "1984_berkshire",
+      "year": 1984,
+      "excerpt": "Most managers have very little incentive to make the intelligent-but-with-some-chance-of-looking-like-an-idiot decision. Their personal gain/loss ratio is all too obvious: if an unconventional decision works out well, they get a pat on the back and, if it works out poorly, they get a pink slip.",
+      "note": "The asymmetry that makes hired managers fail conventionally; contrasted with owners who cannot be sacked.",
+      "corrected": false
+    },
+    {
+      "id": "1985_berkshire",
+      "year": 1985,
+      "excerpt": "No owner has ever escaped the burden of capital costs, whereas a holder of a fixed-price option bears no capital costs at all. An owner must weigh upside potential against downside risk; an option holder has no downside.",
+      "note": "The 1985 essay on options: why the “same boat” rhetoric fails once capital has a cost.",
+      "corrected": false
+    },
+    {
+      "id": "1988_berkshire",
+      "year": 1988,
+      "excerpt": "But the management failings that Charlie and I have seen make us thankful that we are linked with the managers of our three permanent holdings. They love their businesses, they think like owners, and they exude integrity and ability.",
+      "note": "What he keeps managers for: love of the business, an owner’s outlook, and integrity before skill.",
+      "corrected": false
+    },
+    {
+      "id": "1989_berkshire",
+      "year": 1989,
+      "excerpt": "I thought then that decent, intelligent, and experienced managers would automatically make rational business decisions. But I learned over time that isn't so. Instead, rationality frequently wilts when the institutional imperative comes into play.",
+      "note": "Names the institutional imperative, twenty-five years in: rational managers imitate peers and resist change.",
+      "corrected": false
+    },
+    {
+      "id": "1991_berkshire",
+      "year": 1991,
+      "excerpt": "A number of key managers are paid an annual salary of $7,800, to which is added a designated percentage of the profits of the company after these are reduced by a charge for capital employed. These managers therefore truly stand in the shoes of owners.",
+      "note": "H. H. Brown’s plan: tiny salary, share of profit after a capital charge. Sticks as well as carrots.",
+      "corrected": false
+    },
+    {
+      "id": "1992_berkshire",
+      "year": 1992,
+      "excerpt": "If options aren't a form of compensation, what are they? If compensation isn't an expense, what is it? And, if expenses shouldn't go into the calculation of earnings, where in the world should they go?",
+      "note": "The three questions on option accounting; the expense argument that took a decade to win.",
+      "corrected": false
+    },
+    {
+      "id": "1994_berkshire",
+      "year": 1994,
+      "excerpt": "In setting compensation, we like to hold out the promise of large carrots, but make sure their delivery is tied directly to results in the area that a manager controls.",
+      "note": "The Scott Fetzer arrangement, agreed in five minutes in 1986 and never altered, now stated as policy.",
+      "corrected": false
+    },
+    {
+      "id": "1996_berkshire",
+      "year": 1996,
+      "excerpt": "Goals should be (1) tailored to the economics of the specific operating business; (2) simple in character so that the degree to which they are being realized can be easily measured; and (3) directly related to the daily activities of plan participants.",
+      "note": "The GEICO plan distilled into three design principles for any bonus scheme.",
+      "corrected": false
+    },
+    {
+      "id": "2001_berkshire",
+      "year": 2001,
+      "excerpt": "But Charlie and I can promise that your economic result from Berkshire will parallel ours during the period of your ownership: We will not take cash compensation, restricted stock or option grants that would make our results superior to yours.",
+      "note": "Post-Enron: the promise that his own pay will never outrun shareholders’ results.",
+      "corrected": false
+    },
+    {
+      "id": "2002_berkshire",
+      "year": 2002,
+      "excerpt": "Directors should not serve on compensation committees unless they are themselves capable of negotiating on behalf of owners. They should explain both how they think about pay and how they measure performance. Dealing with shareholders’ money, moreover, they should behave as they would were it their own.",
+      "note": "Turns to boards: what a compensation committee must be able to do before it sets pay.",
+      "corrected": false
+    },
+    {
+      "id": "2005_berkshire",
+      "year": 2005,
+      "excerpt": "Though CEOs invariably preach internally that capital comes at a cost, they somehow forget to tell shareholders that fixed-price options give them capital that is free.",
+      "note": "The Fred Futile parable: fixed-price options pay for retained earnings, not performance.",
+      "corrected": false
+    },
+    {
+      "id": "2006_berkshire",
+      "year": 2006,
+      "excerpt": "We issue no lottery tickets that carry payoffs unrelated to business performance. If a CEO bats .300, he gets paid for being a .300 hitter, even if circumstances outside of his control cause Berkshire to perform poorly.",
+      "note": "Twenty years on, the .350-hitter rule restated for around forty subsidiary CEOs.",
+      "corrected": false
+    },
+    {
+      "id": "2010_berkshire",
+      "year": 2010,
+      "excerpt": "Our compensation programs, our annual meeting and even our annual reports are all designed with an eye to reinforcing the Berkshire culture, and making it one that will repel and expel managers of a different bent.",
+      "note": "Pay design as culture: the system is built to keep owner-minded managers and shed the rest.",
+      "corrected": false
+    },
+    {
+      "id": "2017_berkshire",
+      "year": 2017,
+      "excerpt": "Every actor on Protégé’s side was highly incentivized: Both the fund-of-funds managers and the hedge-fund managers they selected significantly shared in gains, even those achieved simply because the market generally moves upwards.",
+      "note": "The hedge-fund bet: incentives that pay for a rising market, the objection of 1985 applied to fees.",
+      "corrected": false
+    }
+  ]
+}

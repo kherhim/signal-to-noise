@@ -1,0 +1,125 @@
+{
+  "topic": "intrinsic-value",
+  "title": "Buffett on intrinsic value",
+  "lede": "Intrinsic value is the number Buffett says counts, yet cannot pin down. Over six decades the letters define it as discounted future cash, explain why book value is only a proxy he eventually abandoned, concede that he and Munger would give different answers, and show how the estimate sets the price he will pay, even for Berkshire's own shares.",
+  "related": [
+    "ask-warren-buyback-multiple",
+    "buffett-on-capital-allocation",
+    "pricing-the-future-spacex-anthropic-openai-ipos",
+    "bayesian-thinking-for-cfos"
+  ],
+  "entries": [
+    {
+      "id": "1959-02-11_partnership",
+      "year": 1959,
+      "excerpt": "…widespread public belief in the inevitability of profits from investment in stocks will lead to eventual trouble. Should this occur, prices, but not intrinsic values in my opinion, of even undervalued securities can be expected to be substantially affected",
+      "note": "Partnership era: price and value already separate quantities; a crash moves the first, not the second.",
+      "corrected": true
+    },
+    {
+      "id": "1979_berkshire",
+      "year": 1979,
+      "excerpt": "It probably also is fair to say that the quoted book value in 1964 somewhat overstated the intrinsic value of the enterprise, since the assets owned at that time on either a going concern basis or a liquidating value basis were not worth 100 cents on the dollar.",
+      "note": "He concedes the 1964 book value flattered the business: the proxy can overstate as well as understate.",
+      "corrected": false
+    },
+    {
+      "id": "1983_berkshire",
+      "year": 1983,
+      "excerpt": "Intrinsic business value is an economic concept, estimating future cash output discounted to present value. Book value tells you what has been put in; intrinsic business value estimates what can be taken out.",
+      "note": "The definition, given in the same letter that explains why book value is only a proxy for it.",
+      "corrected": false
+    },
+    {
+      "id": "1985_berkshire",
+      "year": 1985,
+      "excerpt": "If the financial experience of new owners of Berkshire is merely to match the future financial experience of the company, any premium of market value over intrinsic business value that they pay must be maintained.",
+      "note": "Turned on Berkshire's own shares, which had just moved from a discount to an occasional premium.",
+      "corrected": false
+    },
+    {
+      "id": "1987_berkshire",
+      "year": 1987,
+      "excerpt": "Indeed, if you aren't certain that you understand and can value your business far better than Mr. Market, you don't belong in the game.",
+      "note": "Graham's Mr. Market allegory, set down in early 1988 after the October crash; valuation skill is the entry ticket.",
+      "corrected": false
+    },
+    {
+      "id": "1989_berkshire",
+      "year": 1989,
+      "excerpt": "With perfect foresight, this number can be calculated by taking all future cash flows of a business - in and out - and discounting them at prevailing interest rates. So valued, all businesses, from manufacturers of buggy whips to operators of cellular phones, become economic equals.",
+      "note": "The discounted-cash-flow formalisation: one yardstick for every industry, which is how unlike businesses become comparable.",
+      "corrected": false
+    },
+    {
+      "id": "1990_berkshire",
+      "year": 1990,
+      "excerpt": "Berkshire's intrinsic value continues to exceed book value by a substantial margin. We can't tell you the exact differential because intrinsic value is necessarily an estimate; Charlie and I might, in fact, differ by 10% in our appraisals.",
+      "note": "The estimate is personal: he puts a number on how far he and Munger might disagree.",
+      "corrected": false
+    },
+    {
+      "id": "1992_berkshire",
+      "year": 1992,
+      "excerpt": "If we calculate the value of a common stock to be only slightly higher than its price, we're not interested in buying. We believe this margin-of-safety principle, so strongly emphasized by Ben Graham, to be the cornerstone of investment success.",
+      "note": "Margin of safety as the operating rule linking estimate to price, with Graham credited as its source.",
+      "corrected": false
+    },
+    {
+      "id": "1994_berkshire",
+      "year": 1994,
+      "excerpt": "Anyone calculating intrinsic value necessarily comes up with a highly subjective figure that will change both as estimates of future cash flows are revised and as interest rates move.",
+      "note": "Interest rates enter the definition explicitly; the same business is worth less when rates rise.",
+      "corrected": false
+    },
+    {
+      "id": "1995_berkshire",
+      "year": 1995,
+      "excerpt": "Therefore, the offering we propose will not diminish the per-share intrinsic value of our existing stock. Let me also put our thoughts about valuation more baldly: Berkshire is selling at a price at which Charlie and I would not consider buying it.",
+      "note": "Issuing the B shares, he tells prospective buyers plainly that the stock is not cheap by his own yardstick.",
+      "corrected": false
+    },
+    {
+      "id": "1999_berkshire",
+      "year": 1999,
+      "excerpt": "Charlie and I admit that we feel confident in estimating intrinsic value for only a portion of traded equities and then only when we employ a range of values, rather than some pseudo-precise figure.",
+      "note": "Written as buybacks became fashionable: a range rather than a point estimate, and only for businesses he can read.",
+      "corrected": false
+    },
+    {
+      "id": "2005_berkshire",
+      "year": 2005,
+      "excerpt": "I say “estimate” because calculations of intrinsic value, though all-important, are necessarily imprecise and often seriously wrong. The more uncertain the future of a business, the more possibility there is that the calculation will be wildly off-base.",
+      "note": "The caveat prefaces a letter organised into four groups so readers can estimate Berkshire themselves.",
+      "corrected": false
+    },
+    {
+      "id": "2010_berkshire",
+      "year": 2010,
+      "excerpt": "The challenge, of course, is the calculation of intrinsic value. Present that task to Charlie and me separately, and you will get two different answers. Precision just isn’t possible.",
+      "note": "The disagreement made explicit at last, twenty years after the ten per cent admission.",
+      "corrected": false
+    },
+    {
+      "id": "2011_berkshire",
+      "year": 2011,
+      "excerpt": "We have no way to pinpoint intrinsic value. But we do have a useful, though considerably understated, proxy for it: per-share book value. This yardstick is meaningless at most companies. At Berkshire, however, book value very roughly tracks business values.",
+      "note": "Book value defended as scorecard only because the gap to intrinsic value stays roughly stable at Berkshire.",
+      "corrected": false
+    },
+    {
+      "id": "2016_berkshire",
+      "year": 2016,
+      "excerpt": "By our estimate, a 120%-of-book price is a significant discount to Berkshire’s intrinsic value, a spread that is appropriate because calculations of intrinsic value can’t be precise.",
+      "note": "The 120%-of-book buyback ceiling explained: the gap below intrinsic value is sized to the estimate's error.",
+      "corrected": false
+    },
+    {
+      "id": "2018_berkshire",
+      "year": 2018,
+      "excerpt": "The math of such purchases is simple: Each transaction makes per-share intrinsic value go up, while per-share book value goes down. That combination causes the book-value scorecard to become increasingly out of touch with economic reality.",
+      "note": "Book value dropped as the headline metric after nearly three decades; buybacks above book had made the proxy misleading.",
+      "corrected": false
+    }
+  ]
+}

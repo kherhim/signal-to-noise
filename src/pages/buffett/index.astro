@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BuffettLine from '../../components/buffett/BuffettLine.astro';
+import LettersSearch from '../../components/buffett/LettersSearch.astro';
+import Attribution from '../../components/buffett/Attribution.astro';
+import { letters, topics, YEAR_MIN, YEAR_MAX } from '../../lib/buffett';
+
+const annual = letters.filter((l) => l.kind === 'annual').length;
+// Topic pages are held back until their drafted notes have been reviewed.
+const showTopics = process.env.BUFFETT_TOPICS === '1' && topics.length > 0;
+const partnership = letters.filter((l) => l.kind === 'partnership').length;
+---
+
+<BaseLayout
+  title="Buffett — signal-to-noise.co"
+  description={`Sixty-six years of Warren Buffett's letters, seen through a CFO's lens: one line from every letter, ten themes followed from ${YEAR_MIN} to ${YEAR_MAX}, and a search through them all.`}
+  ogImage="/og/buffett.jpg"
+  starsDim
+>
+  <section class="mx-auto max-w-[960px] px-6 py-16 sm:py-24">
+    <header class="mb-12 max-w-[720px]" data-reveal>
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Buffett</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">
+        A CFO's reading of the letters
+      </h1>
+      <p class="text-lg text-muted leading-relaxed">
+        {letters.length} letters: {partnership} written to the partners of Buffett Partnership Ltd. and {annual} for Berkshire Hathaway shareholders, from {YEAR_MIN} to {YEAR_MAX}. One line selected from each, ten questions finance leaders return to, and a search of every page he wrote.
+      </p>
+    </header>
+
+    <BuffettLine />
+
+    <section class="mt-20" aria-labelledby="topics-heading">
+      <h2 id="topics-heading" class="text-sm uppercase tracking-widest text-accent mb-6">Buffett on…</h2>
+      {showTopics ? (
+        <ul class="flex flex-wrap gap-3">
+          {topics.map((t) => (
+            <li>
+              <a href={`/buffett/on/${t.topic}/`}
+                class="inline-block rounded-full border border-divider/60 px-4 py-2 text-sm text-fg hover:border-accent/60 transition-colors">
+                {t.title.replace(/^Buffett on /, '')}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="text-muted">Ten topic pages are being prepared, one for each question finance leaders repeatedly consider.</p>
+      )}
+    </section>
+
+    <div class="mt-20 max-w-[720px]">
+      <LettersSearch />
+    </div>
+
+    <div class="mt-20 max-w-[720px]">
+      <Attribution />
+    </div>
+  </section>
+</BaseLayout>

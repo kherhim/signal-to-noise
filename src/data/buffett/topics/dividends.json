@@ -1,0 +1,118 @@
+{
+  "topic": "dividends",
+  "title": "Buffett on dividends",
+  "lede": "Berkshire has paid one dividend in sixty years, and Buffett spent decades explaining why. The letters set out a single test for keeping a dollar rather than paying it out, apply it to Berkshire's own record on a rolling basis, and admit the other side: a business that cannot reinvest well should hand the money back.",
+  "related": [
+    "buffett-on-capital-allocation",
+    "ask-warren-buyback-multiple",
+    "buffett-on-the-fortress-balance-sheet",
+    "high-wire-acts-high-finance-cfos-circus-growth-vs-cash"
+  ],
+  "entries": [
+    {
+      "id": "1980_berkshire",
+      "year": 1980,
+      "excerpt": "But, while our reported operating earnings reflect only the dividends received from such companies, our economic well-being is determined by their earnings, not their dividends.",
+      "note": "The seed of the argument: a dollar an investee retains is still owned, whether or not accounting shows it.",
+      "corrected": false
+    },
+    {
+      "id": "1981_berkshire",
+      "year": 1981,
+      "excerpt": "When prices continuously rise, the “bad” business must retain every nickel that it can.  Not because it is attractive as a repository for equity capital, but precisely because it is so unattractive, the low-return business must follow a high retention policy.",
+      "note": "Inflation inverts the rule: the poor business retains from necessity, not because retention creates value.",
+      "corrected": false
+    },
+    {
+      "id": "1983_berkshire",
+      "year": 1983,
+      "excerpt": "We test the wisdom of retaining earnings by assessing whether retention, over time, delivers shareholders at least $1 of market value for each $1 retained.  To date, this test has been met.  We will continue to apply it on a five-year rolling basis.",
+      "note": "The test becomes a stated owner principle, with a measurement window attached.",
+      "corrected": false
+    },
+    {
+      "id": "1984_berkshire",
+      "year": 1984,
+      "excerpt": "In such cases, shareholders would be far better off if earnings were retained only to expand the high-return business, with the balance paid in dividends or used to repurchase stock (an action that increases the owners’ interest in the exceptional business while sparing them participation in subpar businesses).",
+      "note": "The exception spelt out: retain for the core that earns, pay out what the rest cannot use.",
+      "corrected": false
+    },
+    {
+      "id": "1985_berkshire",
+      "year": 1985,
+      "excerpt": "In dividend policy also, the option holders’ interests are best served by a policy that may ill serve the owner.  Think back to the savings account example.  The trustee, holding his option, would benefit from a no-dividend policy.",
+      "note": "Why managers hoard: fixed-price options gain from retention whatever return is earned on it.",
+      "corrected": false
+    },
+    {
+      "id": "1986_berkshire",
+      "year": 1986,
+      "excerpt": "Obviously, the future results of a business earning 23% annually and retaining it all are far more affected by today’s capital allocations than are the results of a business earning 10% and distributing half of that to shareholders.",
+      "note": "Retaining everything raises the stakes: every allocation error compounds at the full rate.",
+      "corrected": false
+    },
+    {
+      "id": "1994_berkshire",
+      "year": 1994,
+      "excerpt": "Almost by definition, a really good business generates far more money (at least after its early years) than it can use internally.  The company could, of course, distribute the money to shareholders by way of dividends or share repurchases.",
+      "note": "The honest default for a mature business is payout; the temptation is to shop for acquisitions instead.",
+      "corrected": false
+    },
+    {
+      "id": "2005_berkshire",
+      "year": 2005,
+      "excerpt": "CEOs understand this math and know that every dime paid out in dividends reduces the value of all outstanding options. I’ve never, however, seen this manager-owner conflict referenced in proxy materials that request approval of a fixed-priced option plan.",
+      "note": "Twenty years on, the options conflict restated and its absence from proxy statements noted.",
+      "corrected": false
+    },
+    {
+      "id": "2010_berkshire",
+      "year": 2010,
+      "excerpt": "We, as well as many other businesses, are likely to retain earnings over the next decade that will equal, or even exceed, the capital we presently employ. Some companies will turn these retained dollars into fifty-cent pieces, others into two-dollar bills.",
+      "note": "Retention now a valuation input: what management will do with the money decides intrinsic value.",
+      "corrected": false
+    },
+    {
+      "id": "2012_berkshire",
+      "year": 2012,
+      "excerpt": "First, dividends impose a specific cash-out policy upon all shareholders. If, say, 40% of earnings is the policy, those who wish 30% or 50% will be thwarted. Our 600,000 shareholders cover the waterfront in their desires for cash.",
+      "note": "The fullest defence of paying nothing: shareholders who want cash can sell shares on their own terms.",
+      "corrected": false
+    },
+    {
+      "id": "2014_berkshire",
+      "year": 2014,
+      "excerpt": "Our directors recommended a “no” vote but the company did not otherwise attempt to influence shareholders. Nevertheless, 98% of the shares voting said, in effect, “Don’t send us a dividend but instead reinvest all of the earnings.”",
+      "note": "Owners asked directly at fifty years; small holders endorsed the no-dividend policy 47 to 1.",
+      "corrected": false
+    },
+    {
+      "id": "2018_berkshire",
+      "year": 2018,
+      "excerpt": "Had we instead followed a 100% payout policy, we would still be working with the $22 million with which we began fiscal 1965.",
+      "note": "Retention has become the explanation for the equity base itself, not just for individual allocations.",
+      "corrected": false
+    },
+    {
+      "id": "2019_berkshire",
+      "year": 2019,
+      "excerpt": "BHE has never paid Berkshire Hathaway a dividend since our purchase and has, as the years have passed, retained $28 billion of earnings. That pattern is an outlier in the world of utilities, whose companies customarily pay big dividends – sometimes reaching, or even exceeding, 80% of earnings.",
+      "note": "The rule applied inside the group: a subsidiary with reinvestment runway keeps everything, unlike its industry.",
+      "corrected": false
+    },
+    {
+      "id": "2024_berkshire",
+      "year": 2024,
+      "excerpt": "Berkshire shareholders during the same 1965-2024 period received only one cash dividend. On January 3, 1967, we disbursed our sole payment – $101,755 or 10¢ per A share. (I can’t remember why I suggested this action to Berkshire’s board of directors. Now it seems like a bad dream.)",
+      "note": "The never-paid claim finally qualified, and the retention record tied to the tax Berkshire now pays.",
+      "corrected": false
+    },
+    {
+      "id": "2025_abel",
+      "year": 2025,
+      "excerpt": "Our approach to cash dividends continues to be that Berkshire will not pay dividends so long as more than one dollar of market value for shareholders is reasonably likely to be created by each dollar of retained earnings. On an annual basis, the Board reviews our policy.",
+      "note": "Greg Abel's first letter keeps the dollar-for-dollar test, now reviewed by the board yearly.",
+      "corrected": false
+    }
+  ]
+}

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "prebuild": "node scripts/lint-titles.mjs && node scripts/make-og-images.mjs",
+    "prebuild": "node scripts/lint-titles.mjs && node scripts/buffett/verify-excerpts.mjs && node scripts/make-og-images.mjs",
+    "buffett:data": "node scripts/buffett/build-letters.mjs && node scripts/buffett/build-chunks.mjs && node scripts/buffett/verify-excerpts.mjs",
     "build": "astro build",
     "lint:titles": "node scripts/lint-titles.mjs",
     "og": "node scripts/make-og-images.mjs",
@@ -19,7 +20,6 @@
     "@astrojs/sitemap": "^3.7.3",
     "@tailwindcss/vite": "4.1.18",
     "astro": "^6.4.2",
-    "minisearch": "^7.2.0",
     "sharp": "^0.34.5",
     "tailwindcss": "4.1.18"
   },

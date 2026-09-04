@@ -1,7 +1,7 @@
 # Buffett tab — design
 
 **Date:** 2026-09-04
-**Status:** approved by user (topics confirmed)
+**Status:** landing (line + search) shipped 2026-09-04; topic pages built, held behind BUFFETT_TOPICS=1 until the drafted ledes/notes pass the owner's edit and the string gate. Search uses a plain chunk file and own ranking rather than MiniSearch (index was 9 MB).
 
 ## Goal
 

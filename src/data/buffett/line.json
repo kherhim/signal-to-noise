@@ -1,0 +1,690 @@
+[
+ {
+  "id": "1959-02-11_partnership",
+  "year": 1959,
+  "kind": "partnership",
+  "quote": "I make no attempt to forecast the general market - my efforts are devoted to finding undervalued securities.",
+  "note": "Forecasting the market is not the job; finding value is.",
+  "corrected": true
+ },
+ {
+  "id": "1960-02-20_partnership",
+  "year": 1960,
+  "kind": "partnership",
+  "quote": "I would rather sustain the penalties resulting from over-conservatism than face the consequences of error, perhaps with permanent capital loss, resulting from the adoption of a \"New Era\" philosophy where trees really do grow to the sky.",
+  "note": "Over-conservatism costs less than permanent loss from new-era thinking.",
+  "corrected": true
+ },
+ {
+  "id": "1961-01-30_partnership",
+  "year": 1961,
+  "kind": "partnership",
+  "quote": "…there is nothing to be gained by getting enthused or depressed about the sequence in which they occur.",
+  "note": "Good and bad years arrive in random order; judge against par.",
+  "corrected": false
+ },
+ {
+  "id": "1961-07-22_partnership",
+  "year": 1961,
+  "kind": "partnership",
+  "quote": "One factor that has caused some reluctance on my part to write semi-annual letters is fear that partners may begin to think in terms of short term performance which can be most misleading.",
+  "note": "More frequent reporting risks short-term thinking; he measures over five years.",
+  "corrected": true
+ },
+ {
+  "id": "1962-01-24_partnership",
+  "year": 1962,
+  "kind": "partnership",
+  "quote": "You will not be right simply because a large number of people momentarily agree with you.",
+  "note": "Consensus is not conservatism; only facts and reasoning make you right.",
+  "corrected": false
+ },
+ {
+  "id": "1962-07-06_partnership",
+  "year": 1962,
+  "kind": "partnership",
+  "quote": "Short periods of measurement exaggerate chance fluctuations in performance.",
+  "note": "A bear-market half-year; he still refuses to overweight six-month results.",
+  "corrected": false
+ },
+ {
+  "id": "1962-12-24_partnership",
+  "year": 1962,
+  "kind": "partnership",
+  "quote": "If your estimate for the current year is the same as the actual tax paid for the preceding year, you cannot be penalized for underestimating.",
+  "note": "Tax housekeeping: the safe-harbour rule for quarterly estimates.",
+  "corrected": false
+ },
+ {
+  "id": "1963-01-18_partnership",
+  "year": 1963,
+  "kind": "partnership",
+  "quote": "By buying assets at a bargain price, we don't need to pull any rabbits out of a hat to get extremely good percentage gains.",
+  "note": "Dempster year: purchase price, not the exit, is the cornerstone.",
+  "corrected": false
+ },
+ {
+  "id": "1963-07-10_partnership",
+  "year": 1963,
+  "kind": "partnership",
+  "quote": "My net worth is the market value of holdings less the tax payable upon sale.",
+  "note": "Deferred tax is a real liability; decide on after-tax compounding.",
+  "corrected": false
+ },
+ {
+  "id": "1963-11-06_partnership",
+  "year": 1963,
+  "kind": "partnership",
+  "quote": "Don't sign the partnership agreement unless you fully understand the concepts set forth and are in accord with them-- mentally and viscerally.",
+  "note": "Ground Rules re-sent yearly; alignment must be felt, not just read.",
+  "corrected": false
+ },
+ {
+  "id": "1963-12-26_partnership",
+  "year": 1963,
+  "kind": "partnership",
+  "quote": "You are liable on your quarterly estimates for your proportionate share of partnership income.",
+  "note": "Year-end tax note; partners own their share of the liability.",
+  "corrected": false
+ },
+ {
+  "id": "1964-01-18_partnership",
+  "year": 1964,
+  "kind": "partnership",
+  "quote": "It is obvious that a variation of merely a few percentage points has an enormous effect on the success of a compounding (investment) program.",
+  "note": "Joys of Compounding: small rate differences dominate over decades.",
+  "corrected": false
+ },
+ {
+  "id": "1964-07-08_partnership",
+  "year": 1964,
+  "kind": "partnership",
+  "quote": "However, I do say that all investment managements (including self-management) should be subjected to objective tests, and that the standards should be selected a priori rather than conveniently chosen retrospectively.",
+  "note": "Measure the money managers as hard as they measure companies.",
+  "corrected": false
+ },
+ {
+  "id": "1965-01-18_partnership",
+  "year": 1965,
+  "kind": "partnership",
+  "quote": "Truly conservative actions arise from intelligent hypotheses, correct facts and sound reasoning.",
+  "note": "Conventional is not conservative; reasoning from facts is.",
+  "corrected": false
+ },
+ {
+  "id": "1965-07-09_partnership",
+  "year": 1965,
+  "kind": "partnership",
+  "quote": "It will be our policy, however, to endeavor to swim strongly, with or against the tide.",
+  "note": "The duck-on-a-pond letter: results must beat the tide.",
+  "corrected": true
+ },
+ {
+  "id": "1965-11-01_partnership",
+  "year": 1965,
+  "kind": "partnership",
+  "quote": "If you have different views — fine, yours may be better — but you shouldn't be in the partnership.",
+  "note": "Ground Rule 7 (40% concentration) added; disagree and leave.",
+  "corrected": false
+ },
+ {
+  "id": "1966-01-20_partnership",
+  "year": 1966,
+  "kind": "partnership",
+  "quote": "The optimum portfolio depends on the various expectations of choices available and the degree of variance in performance which is tolerable.",
+  "note": "Concentration defended: diversify only as far as tolerable variance requires.",
+  "corrected": false
+ },
+ {
+  "id": "1966-07-12_partnership",
+  "year": 1966,
+  "kind": "partnership",
+  "quote": "In other words, we tend to concentrate on what should happen, not when it should happen.",
+  "note": "Market Forecasting section: analysis decides whether, the market decides when.",
+  "corrected": false
+ },
+ {
+  "id": "1966-11-01_partnership",
+  "year": 1966,
+  "kind": "partnership",
+  "quote": "Similarly, a dramatic change in the availability (not so much the cost) of money for financing business purchases has some effect on the value of businesses.",
+  "note": "Credit availability, not just its cost, moves business values.",
+  "corrected": false
+ },
+ {
+  "id": "1967-01-25_partnership",
+  "year": 1967,
+  "kind": "partnership",
+  "quote": "The results of the first ten years have absolutely no chance of being duplicated or even remotely approximated during the next decade.",
+  "note": "Tenth anniversary: size and scarce ideas cap future returns.",
+  "corrected": false
+ },
+ {
+  "id": "1967-07-12_partnership",
+  "year": 1967,
+  "kind": "partnership",
+  "quote": "The tide continues to be far more important than the swimmers.",
+  "note": "Easy Dow year; most managers beat it, so credit the tide.",
+  "corrected": false
+ },
+ {
+  "id": "1967-10-09_partnership",
+  "year": 1967,
+  "kind": "partnership",
+  "quote": "I have also seen the penalties incurred by those who evaluate conditions as they were - not as they are.",
+  "note": "Goal cut to 9% or Dow plus five; conditions have changed.",
+  "corrected": false
+ },
+ {
+  "id": "1967-11-01_partnership",
+  "year": 1967,
+  "kind": "partnership",
+  "quote": "We normally enter each year with a few eggs relatively close to hatching; the nest is virtually empty at the moment.",
+  "note": "$36m parked in controls and Treasuries; no ideas in the pipeline.",
+  "corrected": true
+ },
+ {
+  "id": "1968-01-24_partnership",
+  "year": 1968,
+  "kind": "partnership",
+  "quote": "It looks to me like greatly intensified speculation with concomitant risks - but many of the advocates insist otherwise.",
+  "note": "1967: peers gained 100%+; he reads it as speculation, not skill.",
+  "corrected": false
+ },
+ {
+  "id": "1968-07-11_partnership",
+  "year": 1968,
+  "kind": "partnership",
+  "quote": "We live in an investment world, populated not by those who must be logically persuaded to believe, but by the hopeful, credulous and greedy, grasping for an excuse to believe.",
+  "note": "Chain-letter conglomerates and 'bold, imaginative accounting' worry him.",
+  "corrected": false
+ },
+ {
+  "id": "1968-11-01_partnership",
+  "year": 1968,
+  "kind": "partnership",
+  "quote": "The dominant factors in such a controlling interest valuation (which is a business valuation - not a stock market one) are asset values and earning power.",
+  "note": "Berkshire marked at $31 while trading higher; business value rules.",
+  "corrected": false
+ },
+ {
+  "id": "1969-01-22_partnership",
+  "year": 1969,
+  "kind": "partnership",
+  "quote": "It is possible for an old, overweight ball player, whose legs and batting eye are gone, to tag a fast ball on the nose for a pinch-hit home run, but you don't change your line-up because of it.",
+  "note": "Record +58.8% treated as a freak; ideas at all-time low.",
+  "corrected": false
+ },
+ {
+  "id": "1969-05-29_partnership",
+  "year": 1969,
+  "kind": "partnership",
+  "quote": "However, I just don't see anything available that gives any reasonable hope of delivering such a good year and I have no desire to grope around, hoping to \"get lucky\" with other people's money.",
+  "note": "Retirement announced; no ideas, so he returns the capital.",
+  "corrected": false
+ },
+ {
+  "id": "1970-04-03_berkshire",
+  "year": 1970,
+  "kind": "annual",
+  "quote": "Four years ago your management committed itself to the development of more substantial and more consistent earning power than appeared possible if capital continued to be invested exclusively in the textile industry.",
+  "note": "Capital redeployed away from textiles; the founding rationale.",
+  "corrected": false
+ },
+ {
+  "id": "1971-03-15_berkshire",
+  "year": 1971,
+  "kind": "annual",
+  "quote": "This will mean much less volume but, hopefully, underwriting profits.",
+  "note": "Volume sacrificed for profit, stated plainly.",
+  "corrected": false
+ },
+ {
+  "id": "1972-03-13_berkshire",
+  "year": 1972,
+  "kind": "annual",
+  "quote": "We set no volume goals in our insurance business generally—and certainly not in reinsurance—as virtually any volume can be achieved if profitability standards are ignored.",
+  "note": "Growth targets invite unprofitable growth.",
+  "corrected": false
+ },
+ {
+  "id": "1973_berkshire_pdf",
+  "year": 1973,
+  "kind": "annual",
+  "quote": "Management’s objective is to achieve a return on capital over the long term which averages somewhat higher than that of American industry generally — while utilizing sound accounting and debt policies.",
+  "note": "The corporate objective, with accounting and debt caveats attached.",
+  "corrected": false
+ },
+ {
+  "id": "1973-03-16_berkshire",
+  "year": 1973,
+  "kind": "annual",
+  "quote": "Over-all, we probably would have retained better prospects for the next five years if profits had not risen so dramatically this year.",
+  "note": "Record margins attract competition; good years carry a cost.",
+  "corrected": false
+ },
+ {
+  "id": "1974_berkshire",
+  "year": 1974,
+  "kind": "annual",
+  "quote": "It also has been apparent that many insurance organizations, major as well as minor, have been guilty of significant underreserving of losses, which inevitably produces faulty information as to the true cost of the product being sold.",
+  "note": "Under-reserving corrupts cost information and hence pricing.",
+  "corrected": false
+ },
+ {
+  "id": "1975_berkshire",
+  "year": 1975,
+  "kind": "annual",
+  "quote": "We consider such market fluctuation of minor importance as our liquidity and general financial strength make it highly improbable that bonds will have to be sold at times other than those of our choice.",
+  "note": "Financial strength means never being a forced seller.",
+  "corrected": false
+ },
+ {
+  "id": "1976_berkshire_pdf",
+  "year": 1976,
+  "kind": "annual",
+  "quote": "Thus present rates, which are adequate for today, will not be adequate tomorrow.",
+  "note": "Inflation makes today's adequate pricing tomorrow's loss.",
+  "corrected": true
+ },
+ {
+  "id": "1977_berkshire",
+  "year": 1977,
+  "kind": "annual",
+  "quote": "One of the lessons your management has learned - and, unfortunately, sometimes re-learned - is the importance of being in businesses where tailwinds prevail rather than headwinds.",
+  "note": "Industry economics outweigh managerial effort.",
+  "corrected": false
+ },
+ {
+  "id": "1978_berkshire",
+  "year": 1978,
+  "kind": "annual",
+  "quote": "The textile industry illustrates in textbook style how producers of relatively undifferentiated goods in capital intensive businesses must earn inadequate returns except under conditions of tight supply or real shortage.",
+  "note": "Commodity economics set the ceiling on returns.",
+  "corrected": false
+ },
+ {
+  "id": "1979_berkshire",
+  "year": 1979,
+  "kind": "annual",
+  "quote": "The primary test of managerial economic performance is the achievement of a high earnings rate on equity capital employed (without undue leverage, accounting gimmickry, etc.) and not the achievement of consistent gains in earnings per share.",
+  "note": "Yardstick chosen because EPS rises even on dormant capital.",
+  "corrected": false
+ },
+ {
+  "id": "1980_berkshire",
+  "year": 1980,
+  "kind": "annual",
+  "quote": "Rather, the value of those retained earnings is determined by the use to which they are put and the subsequent level of earnings produced by that usage.",
+  "note": "Retained earnings are worth what their reinvestment earns.",
+  "corrected": false
+ },
+ {
+  "id": "1981_berkshire",
+  "year": 1981,
+  "kind": "annual",
+  "quote": "Our acquisition decisions will be aimed at maximizing real economic benefits, not at maximizing either managerial domain or reported numbers for accounting purposes.",
+  "note": "Economic substance over empire and reported figures.",
+  "corrected": false
+ },
+ {
+  "id": "1982_berkshire",
+  "year": 1982,
+  "kind": "annual",
+  "quote": "Our share issuances follow a simple basic rule: we will not issue shares unless we receive as much intrinsic business value as we give.",
+  "note": "Equity is a currency; never spend it below value.",
+  "corrected": false
+ },
+ {
+  "id": "1983_berkshire",
+  "year": 1983,
+  "kind": "annual",
+  "quote": "We do not measure the economic significance or performance of Berkshire by its size; we measure by per-share progress.",
+  "note": "The scorecard rule from the first owner's manual.",
+  "corrected": false
+ },
+ {
+  "id": "1984_berkshire",
+  "year": 1984,
+  "kind": "annual",
+  "quote": "When companies with outstanding businesses and comfortable financial positions find their shares selling far below intrinsic value in the marketplace, no alternative action can benefit shareholders as surely as repurchases.",
+  "note": "Buybacks justified only by price against value.",
+  "corrected": false
+ },
+ {
+  "id": "1985_berkshire",
+  "year": 1985,
+  "kind": "annual",
+  "quote": "Many of our competitors, both domestic and foreign, were stepping up to the same kind of expenditures and, once enough companies did so, their reduced costs became the baseline for reduced prices industrywide.",
+  "note": "Capex in commodity businesses ends up with customers.",
+  "corrected": false
+ },
+ {
+  "id": "1986_berkshire",
+  "year": 1986,
+  "kind": "annual",
+  "quote": "In answer, we confess our cynicism: we believe these numbers are frequently used by marketers of businesses and securities in attempts to justify the unjustifiable (and thereby to sell what should be the unsalable).",
+  "note": "Cash-flow figures that omit capex mislead.",
+  "corrected": false
+ },
+ {
+  "id": "1987_berkshire",
+  "year": 1987,
+  "kind": "annual",
+  "quote": "Experience, however, indicates that the best business returns are usually achieved by companies that are doing something quite similar today to what they were doing five or ten years ago.",
+  "note": "Stability, not upheaval, produces exceptional returns.",
+  "corrected": false
+ },
+ {
+  "id": "1988_berkshire",
+  "year": 1988,
+  "kind": "annual",
+  "quote": "The limitations of the existing set, however, need not be inhibiting: CEOs are free to treat GAAP statements as a beginning rather than an end to their obligation to inform owners and creditors - and indeed they should.",
+  "note": "GAAP is the floor of disclosure, not the ceiling.",
+  "corrected": false
+ },
+ {
+  "id": "1989_berkshire",
+  "year": 1989,
+  "kind": "annual",
+  "quote": "Instead, rationality frequently wilts when the institutional imperative comes into play.",
+  "note": "The unseen force behind irrational capital decisions.",
+  "corrected": false
+ },
+ {
+  "id": "1990_berkshire",
+  "year": 1990,
+  "kind": "annual",
+  "quote": "When assets are twenty times equity - a common ratio in this industry - mistakes that involve only a small portion of assets can destroy a major portion of equity.",
+  "note": "Leverage turns small errors into capital losses.",
+  "corrected": false
+ },
+ {
+  "id": "1991_berkshire",
+  "year": 1991,
+  "kind": "annual",
+  "quote": "In contrast, \"a business\" earns exceptional profits only if it is the low-cost operator or if supply of its product or service is tight.",
+  "note": "Franchise versus business: pricing power decides margins.",
+  "corrected": false
+ },
+ {
+  "id": "1992_berkshire",
+  "year": 1992,
+  "kind": "annual",
+  "quote": "Leaving the question of price aside, the best business to own is one that over an extended period can employ large amounts of incremental capital at very high rates of return.",
+  "note": "The reinvestment test that separates great businesses from capital sinks.",
+  "corrected": false
+ },
+ {
+  "id": "1993_berkshire",
+  "year": 1993,
+  "kind": "annual",
+  "quote": "In stating this opinion, we define risk, using dictionary terms, as \"the possibility of loss or injury.\"",
+  "note": "Risk is loss of capital, not volatility.",
+  "corrected": false
+ },
+ {
+  "id": "1994_berkshire",
+  "year": 1994,
+  "kind": "annual",
+  "quote": "We will continue to ignore political and economic forecasts, which are an expensive distraction for many investors and businessmen.",
+  "note": "Macro forecasting adds cost, not insight.",
+  "corrected": false
+ },
+ {
+  "id": "1995_berkshire",
+  "year": 1995,
+  "kind": "annual",
+  "quote": "Our practice of making this comparison - acquisitions against passive investments - is a discipline that managers focused simply on expansion seldom use.",
+  "note": "Every acquisition must beat the passive alternative.",
+  "corrected": false
+ },
+ {
+  "id": "1996_berkshire",
+  "year": 1996,
+  "kind": "annual",
+  "quote": "An insurance business has value if its cost of float over time is less than the cost the company would otherwise incur to obtain funds.",
+  "note": "Float valued against the cost of alternative funding.",
+  "corrected": false
+ },
+ {
+  "id": "1997_berkshire",
+  "year": 1997,
+  "kind": "annual",
+  "quote": "Because loss costs must be estimated, insurers have enormous latitude in figuring their underwriting results, and that makes it very difficult for investors to calculate a company's true cost of float.",
+  "note": "Estimates give management latitude; reported results follow.",
+  "corrected": false
+ },
+ {
+  "id": "1998_berkshire",
+  "year": 1998,
+  "kind": "annual",
+  "quote": "But when operations don’t produce the result hoped for, these CEOs resort to unadmirable accounting stratagems.",
+  "note": "Earnings management begins where operations fall short.",
+  "corrected": false
+ },
+ {
+  "id": "1999_berkshire",
+  "year": 1999,
+  "kind": "annual",
+  "quote": "Now, repurchases are all the rage, but are all too often made for an unstated and, in our view, ignoble reason: to pump or support the stock price.",
+  "note": "Buybacks above intrinsic value penalise continuing owners.",
+  "corrected": false
+ },
+ {
+  "id": "2000_berkshire",
+  "year": 2000,
+  "kind": "annual",
+  "quote": "Just insert the correct numbers, and you can rank the attractiveness of all possible uses of capital throughout the universe.",
+  "note": "Aesop's bird-in-hand recast as the one formula for ranking capital uses.",
+  "corrected": false
+ },
+ {
+  "id": "2001_berkshire",
+  "year": 2001,
+  "kind": "annual",
+  "quote": "When companies or investment professionals use terms such as “EBITDA” and “pro forma,” they want you to unthinkingly accept concepts that are dangerously flawed.",
+  "note": "Bad terminology as the enemy of good thinking; the EBITDA warning begins.",
+  "corrected": false
+ },
+ {
+  "id": "2002_berkshire",
+  "year": 2002,
+  "kind": "annual",
+  "quote": "Managers that always promise to “make the numbers” will at some point be tempted to make up the numbers.",
+  "note": "Post-Enron: guidance culture corrodes accounting; audit committees must extract the truth.",
+  "corrected": false
+ },
+ {
+  "id": "2003_berkshire",
+  "year": 2003,
+  "kind": "annual",
+  "quote": "It’s a painful condition to be in – but not as painful as doing something stupid.",
+  "note": "On underutilised capital: idle cash beats a bad acquisition.",
+  "corrected": false
+ },
+ {
+  "id": "2004_berkshire",
+  "year": 2004,
+  "kind": "annual",
+  "quote": "Investors should remember that excitement and expenses are their enemies.",
+  "note": "Why owners lag the businesses they own: costs, fads and timing.",
+  "corrected": false
+ },
+ {
+  "id": "2005_berkshire",
+  "year": 2005,
+  "kind": "annual",
+  "quote": "If he had not been traumatized by this loss, Sir Isaac might well have gone on to discover the Fourth Law of Motion: For investors as a whole, returns decrease as motion increases.",
+  "note": "The Gotrocks parable: frictional costs to helpers eat the family's return.",
+  "corrected": false
+ },
+ {
+  "id": "2006_berkshire",
+  "year": 2006,
+  "kind": "annual",
+  "quote": "When we use incentives – and these can be large – they are always tied to the operating results for which a given CEO has authority.",
+  "note": "Incentive design: pay for what the manager controls, never for lottery tickets.",
+  "corrected": false
+ },
+ {
+  "id": "2007_berkshire",
+  "year": 2007,
+  "kind": "annual",
+  "quote": "A truly great business must have an enduring “moat” that protects excellent returns on invested capital.",
+  "note": "The great, good and gruesome: return on capital defines the business tier.",
+  "corrected": false
+ },
+ {
+  "id": "2008_berkshire",
+  "year": 2008,
+  "kind": "annual",
+  "quote": "We never want to count on the kindness of strangers in order to meet tomorrow’s obligations.",
+  "note": "The crisis year: ample cash pledged to owners, rating agencies and himself.",
+  "corrected": false
+ },
+ {
+  "id": "2009_berkshire",
+  "year": 2009,
+  "kind": "annual",
+  "quote": "When it’s raining gold, reach for a bucket, not a thimble.",
+  "note": "His regret at buying too little cheap credit during the panic.",
+  "corrected": false
+ },
+ {
+  "id": "2010_berkshire",
+  "year": 2010,
+  "kind": "annual",
+  "quote": "History tells us that leverage all too often produces zeroes, even when it is employed by very smart people.",
+  "note": "Any string of gains multiplied by a single zero; credit as oxygen.",
+  "corrected": false
+ },
+ {
+  "id": "2011_berkshire",
+  "year": 2011,
+  "kind": "annual",
+  "quote": "The first law of capital allocation – whether the money is slated for acquisitions or share repurchases – is that what is smart at one price is dumb at another.",
+  "note": "First formal buyback programme; the two conditions for repurchasing stated.",
+  "corrected": false
+ },
+ {
+  "id": "2012_berkshire",
+  "year": 2012,
+  "kind": "annual",
+  "quote": "The usual cause of failure is that they start with the answer they want and then work backwards to find a supporting rationale.",
+  "note": "Moat-widening capex misfires when managers reason backwards from a wanted answer.",
+  "corrected": false
+ },
+ {
+  "id": "2013_berkshire",
+  "year": 2013,
+  "kind": "annual",
+  "quote": "Focus on the future productivity of the asset you are considering.",
+  "note": "The farm and the retail property: value what an asset will produce.",
+  "corrected": false
+ },
+ {
+  "id": "2014_berkshire",
+  "year": 2014,
+  "kind": "annual",
+  "quote": "Cash, though, is to a business as oxygen is to an individual: never thought about when it is present, the only thing in mind when it is absent.",
+  "note": "Fiftieth-anniversary letter: three strengths of financial staying power.",
+  "corrected": false
+ },
+ {
+  "id": "2015_berkshire",
+  "year": 2015,
+  "kind": "annual",
+  "quote": "When CEOs or investment bankers tout pre-depreciation figures such as EBITDA as a valuation guide, watch their noses lengthen while they speak.",
+  "note": "Depreciation is a real cost; railroad capex proves it.",
+  "corrected": false
+ },
+ {
+  "id": "2016_berkshire",
+  "year": 2016,
+  "kind": "annual",
+  "quote": "It is puzzling, therefore, that corporate repurchase announcements almost never refer to a price above which repurchases will be eschewed.",
+  "note": "Buybacks need a price ceiling, as any outside acquisition would.",
+  "corrected": false
+ },
+ {
+  "id": "2017_berkshire",
+  "year": 2017,
+  "kind": "annual",
+  "quote": "Once a CEO hungers for a deal, he or she will never lack for forecasts that justify the purchase.",
+  "note": "Deal fever, cheap debt and synergies; Berkshire evaluates acquisitions all-equity.",
+  "corrected": false
+ },
+ {
+  "id": "2018_berkshire",
+  "year": 2018,
+  "kind": "annual",
+  "quote": "At rare and unpredictable intervals, however, credit vanishes and debt becomes financially fatal.",
+  "note": "Why Berkshire uses debt sparingly despite the returns it forgoes.",
+  "corrected": false
+ },
+ {
+  "id": "2019_berkshire",
+  "year": 2019,
+  "kind": "annual",
+  "quote": "Reinvestment in productive operational assets will forever remain our top priority.",
+  "note": "The power of retained earnings; capex has outrun depreciation two to one.",
+  "corrected": false
+ },
+ {
+  "id": "2020_berkshire",
+  "year": 2020,
+  "kind": "annual",
+  "quote": "I was wrong, however, in judging the average amount of future earnings and, consequently, wrong in my calculation of the proper price to pay for the business.",
+  "note": "The $11 billion Precision Castparts write-down owned as an overpayment.",
+  "corrected": false
+ },
+ {
+  "id": "2021_berkshire",
+  "year": 2021,
+  "kind": "annual",
+  "quote": "Charlie and I are not stock-pickers; we are business-pickers.",
+  "note": "Holdings judged on long-term business performance, not market timing.",
+  "corrected": false
+ },
+ {
+  "id": "2022_berkshire",
+  "year": 2022,
+  "kind": "annual",
+  "quote": "It requires no talent to manipulate numbers: Only a deep desire to deceive is required.",
+  "note": "Operating earnings can be gamed too; beating expectations is not triumph.",
+  "corrected": false
+ },
+ {
+  "id": "2023_berkshire",
+  "year": 2023,
+  "kind": "annual",
+  "quote": "One investment rule at Berkshire has not and will not change: Never risk permanent loss of capital.",
+  "note": "After Charlie: modest aspirations, extreme fiscal conservatism.",
+  "corrected": false
+ },
+ {
+  "id": "2024_berkshire",
+  "year": 2024,
+  "kind": "annual",
+  "quote": "The cardinal sin is delaying the correction of mistakes or what Charlie Munger called “thumb-sucking.”",
+  "note": "Munger's thumb-sucking; sixteen admitted mistakes across five letters.",
+  "corrected": false
+ },
+ {
+  "id": "2025_thanksgiving_buffett",
+  "year": 2025,
+  "kind": "thanksgiving",
+  "quote": "Berkshire will always be managed in a manner that will make its existence an asset to the United States and eschew activities that would lead it to become a supplicant.",
+  "note": "Farewell note: never a supplicant; the fortress outlives its builder.",
+  "corrected": false
+ },
+ {
+  "id": "2025_abel",
+  "year": 2025,
+  "kind": "abel",
+  "quote": "Our balance sheet is a strategic asset to be deployed at the right time.",
+  "note": "Abel's first letter: $370 billion of liquidity framed as dry powder.",
+  "corrected": false
+ }
+]

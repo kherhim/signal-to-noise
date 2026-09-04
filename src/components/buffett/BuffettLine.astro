@@ -1,0 +1,184 @@
+---
+/* The Buffett line: one dot per letter, placed by the date it was written
+   and raised by its length in words, joined by a hairline in date order.
+   The letters grew from a few hundred words to the partners in 1959 to
+   twenty or thirty thousand to Berkshire's shareholders, and the line
+   carries that. Cream dots are Berkshire letters, ash dots the partnership
+   letters, dashed outlines the two non-Buffett items.
+
+   The still is server-rendered; the script draws the line on load and
+   wires the dots to the panel beneath, which shows the letter's chosen
+   line. Coordinates: viewBox 2400×1000, ruler at y 820. */
+import { letters, lineById, xForYear, YEAR_MIN, YEAR_MAX, RULER_X0, RULER_X1, kindLabel, dateLabel } from '../../lib/buffett';
+
+const RULER_Y = 820;
+const TOP = 170;
+const DOT_R = 20;
+const MAX_WORDS = 30000;
+
+const xForDate = (year: number, date: string | null): number => {
+  let frac = 0.16; // annual letters land in late February
+  if (date) {
+    const d = new Date(date);
+    if (!Number.isNaN(d.getTime())) {
+      const start = Date.UTC(d.getUTCFullYear(), 0, 1);
+      frac = (d.getTime() - start) / (366 * 86400000);
+    }
+  }
+  return xForYear(year + Math.min(0.97, frac));
+};
+const yForWords = (w: number): number => RULER_Y - 60 - (Math.min(w, MAX_WORDS) / MAX_WORDS) * (RULER_Y - 60 - TOP);
+
+const dots = letters.map((l) => ({ l, x: xForDate(l.year, l.date), y: yForWords(l.words) }));
+const pathD = dots.map((d, i) => `${i ? 'L' : 'M'}${d.x.toFixed(1)},${d.y.toFixed(1)}`).join(' ');
+
+const ticks: { x: number; year: number; major: boolean }[] = [];
+for (let y = YEAR_MIN; y <= YEAR_MAX; y++) ticks.push({ x: xForYear(y), year: y, major: y % 10 === 0 });
+const gridlines = [10000, 20000, 30000].map((w) => ({ w, y: yForWords(w), label: `${w / 1000}K` }));
+
+const panelData = dots.map(({ l }) => ({
+  id: l.id,
+  year: l.year,
+  kind: kindLabel(l),
+  date: dateLabel(l),
+  words: l.words,
+  quote: lineById[l.id]?.quote ?? null,
+  note: lineById[l.id]?.note ?? null,
+  source: l.source,
+}));
+const latest = panelData[panelData.length - 1];
+const fmtWords = (n: number) => n.toLocaleString('en-GB');
+---
+
+<figure class="buffett-line" data-buffett-line>
+  <div class="rounded-lg border border-divider/60 overflow-hidden bg-[#111111]">
+    <svg viewBox="0 0 2400 1000" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label={`The Buffett line: ${letters.length} letters from ${YEAR_MIN} to ${YEAR_MAX}, one dot each, placed by date and raised by length, joined in date order.`}
+      class="block w-full h-auto">
+      <rect x="0" y="0" width="2400" height="1000" fill="#111111" />
+      <text x="160" y="110" font-size="30" letter-spacing="4" fill="#8a8a86" font-family="'JetBrains Mono', Menlo, monospace">THE BUFFETT LINE</text>
+      <text x="2240" y="110" font-size="22" letter-spacing="3" fill="#5a5a58" font-family="'JetBrains Mono', Menlo, monospace" text-anchor="end">LENGTH OF EACH LETTER, WORDS</text>
+
+      <g stroke="#2b2b29" stroke-width="2">
+        {gridlines.map((g) => <line x1={RULER_X0} y1={g.y} x2={RULER_X1} y2={g.y} />)}
+      </g>
+      <g font-size="22" letter-spacing="2" fill="#5a5a58" font-family="'JetBrains Mono', Menlo, monospace" text-anchor="end">
+        {gridlines.map((g) => <text x={RULER_X0 - 24} y={g.y + 8}>{g.label}</text>)}
+      </g>
+
+      <g stroke="#d9d6cd" stroke-width="2" fill="none">
+        <line x1={RULER_X0} y1={RULER_Y} x2={RULER_X1} y2={RULER_Y} />
+        {ticks.map((t) => (
+          <line x1={t.x} y1={RULER_Y} x2={t.x} y2={RULER_Y + (t.major ? 24 : 10)} />
+        ))}
+      </g>
+      <g font-size="26" letter-spacing="3" fill="#8a8a86" font-family="'JetBrains Mono', Menlo, monospace" text-anchor="middle">
+        {ticks.filter((t) => t.major).map((t) => (
+          <text x={t.x} y={RULER_Y + 70}>{t.year}</text>
+        ))}
+      </g>
+
+      <path data-line d={pathD} fill="none" stroke="#6a6a68" stroke-width="2.5" stroke-linejoin="round" />
+
+      <g data-dots>
+        {dots.map(({ l, x, y }) => {
+          const odd = l.kind === 'abel' || l.kind === 'thanksgiving';
+          const fill = l.kind === 'partnership' ? '#8a8a86' : '#efece2';
+          return (
+            <g data-dot={l.id} tabindex="0" role="button" aria-label={`${kindLabel(l)}, ${dateLabel(l)}`}
+              style={`transform-box: view-box; transform-origin: ${x.toFixed(1)}px ${y.toFixed(1)}px; cursor: pointer; outline: none`}>
+              <circle cx={x} cy={y} r={DOT_R + 22} fill="transparent" />
+              <circle data-ring cx={x} cy={y} r={DOT_R + 12} fill="none" stroke="#efece2" stroke-width="2.5" opacity="0" />
+              {odd
+                ? <circle cx={x} cy={y} r={DOT_R} fill="#111111" stroke="#efece2" stroke-width="3" stroke-dasharray="7 6" />
+                : <circle cx={x} cy={y} r={DOT_R} fill={fill} stroke="#111111" stroke-width="3" />}
+            </g>
+          );
+        })}
+      </g>
+    </svg>
+  </div>
+
+  <figcaption class="mt-5 grid gap-1 min-h-[7.5rem]" data-panel aria-live="polite">
+    <p class="text-xs uppercase tracking-widest text-muted" data-panel-kind>{latest.kind}, {latest.date} · {fmtWords(latest.words)} words</p>
+    <blockquote class="text-lg sm:text-xl leading-relaxed text-fg" data-panel-quote>
+      {latest.quote ?? 'Select a dot to see one line from that letter.'}
+    </blockquote>
+    <p class="text-sm text-muted" data-panel-note hidden></p>
+    <p class="text-sm" data-panel-source>
+      {latest.source && <a href={latest.source} target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-fg">See the letter at berkshirehathaway.com ↗</a>}
+    </p>
+  </figcaption>
+
+  <script type="application/json" data-panel-data set:html={JSON.stringify(panelData)}></script>
+</figure>
+
+<script>
+  /* Draw-in on load, then rest. Dots respond to hover, focus and tap by
+     filling the panel beneath the figure. Bound on astro:page-load so it
+     survives ClientRouter view transitions. */
+  type Panel = { id: string; year: number; kind: string; date: string; words: number; quote: string | null; note: string | null; source: string | null };
+
+  function setup() {
+    const fig = document.querySelector<HTMLElement>('[data-buffett-line]');
+    if (!fig) return;
+    const data: Panel[] = JSON.parse(fig.querySelector('[data-panel-data]')?.textContent ?? '[]');
+    const byId = new Map(data.map((d) => [d.id, d]));
+    const dots = Array.from(fig.querySelectorAll<SVGGElement>('[data-dot]'));
+    const line = fig.querySelector<SVGPathElement>('[data-line]');
+
+    const kindEl = fig.querySelector<HTMLElement>('[data-panel-kind]');
+    const quoteEl = fig.querySelector<HTMLElement>('[data-panel-quote]');
+    const noteEl = fig.querySelector<HTMLElement>('[data-panel-note]');
+    const sourceEl = fig.querySelector<HTMLElement>('[data-panel-source]');
+    let active: SVGGElement | null = null;
+
+    function show(dot: SVGGElement) {
+      const d = byId.get(dot.dataset.dot ?? '');
+      if (!d || !kindEl || !quoteEl || !noteEl || !sourceEl) return;
+      kindEl.textContent = `${d.kind}, ${d.date} · ${d.words.toLocaleString('en-GB')} words`;
+      quoteEl.textContent = d.quote ?? 'A line has not yet been selected for this letter.';
+      noteEl.textContent = ''; // notes await the owner's edit pass
+      sourceEl.innerHTML = d.source
+        ? `<a href="${d.source}" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-fg">See the letter at berkshirehathaway.com ↗</a>`
+        : '';
+      if (active) active.querySelector<SVGCircleElement>('[data-ring]')?.setAttribute('opacity', '0');
+      dot.querySelector<SVGCircleElement>('[data-ring]')?.setAttribute('opacity', '1');
+      active = dot;
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener('mouseenter', () => show(dot));
+      dot.addEventListener('focus', () => show(dot));
+      dot.addEventListener('click', () => show(dot));
+      dot.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(dot); } });
+    });
+    const last = dots[dots.length - 1];
+    if (last) last.querySelector<SVGCircleElement>('[data-ring]')?.setAttribute('opacity', '1');
+    active = last ?? null;
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // The line draws once across the decades; each dot lands as the line reaches it.
+    const DRAW = 4200;
+    if (line) {
+      const len = line.getTotalLength();
+      line.setAttribute('stroke-dasharray', String(len));
+      const a = line.animate(
+        [{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
+        { duration: DRAW, easing: 'linear', fill: 'forwards' },
+      );
+      a.onfinish = () => { line.removeAttribute('stroke-dasharray'); a.cancel(); };
+    }
+    const n = dots.length;
+    dots.forEach((dot, i) => {
+      const at = 120 + (i / Math.max(1, n - 1)) * (DRAW - 240);
+      dot.animate(
+        [{ transform: 'scale(0)' }, { transform: 'scale(1.4)', offset: 0.6 }, { transform: 'scale(1)' }],
+        { duration: 480, delay: at, fill: 'backwards', easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' },
+      );
+    });
+  }
+
+  document.addEventListener('astro:page-load', setup);
+</script>

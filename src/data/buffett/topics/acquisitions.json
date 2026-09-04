@@ -1,0 +1,125 @@
+{
+  "topic": "acquisitions",
+  "title": "Buffett on acquisitions",
+  "lede": "Buffett has spent five decades explaining why most acquisitions enrich the seller, the bankers and the buying CEO's ego, but not the buyer's owners. The premium, the itch to do a deal, forecasts that never fail, and paying with undervalued stock recur across the letters, alongside his own unsparing post-mortems on Waumbec, Dexter and Precision Castparts.",
+  "related": [
+    "how-cfos-should-think-ma-balancing-risk-opportunity",
+    "buffett-on-capital-allocation",
+    "ask-warren-buyback-multiple",
+    "2-most-expensive-decision-lets-wait"
+  ],
+  "entries": [
+    {
+      "id": "1977_berkshire",
+      "year": 1977,
+      "excerpt": "Our experience has been that pro-rata portions of truly outstanding businesses sometimes sell in the securities markets at very large discounts from the prices they would command in negotiated transactions involving entire companies.",
+      "note": "The founding comparison: whole-company prices carry a premium that the stock market often does not.",
+      "corrected": false
+    },
+    {
+      "id": "1981_berkshire",
+      "year": 1981,
+      "excerpt": "In other words, investors can always buy toads at the going price for toads.  If investors instead bankroll princesses who wish to pay double for the right to kiss the toad, those kisses had better pack some real dynamite.  We’ve observed many kisses but very few miracles.",
+      "note": "The premium framed as a bet on managerial magic; three unspoken motives for overpaying set out.",
+      "corrected": false
+    },
+    {
+      "id": "1982_berkshire",
+      "year": 1982,
+      "excerpt": "The acquirer who nevertheless barges ahead ends up using an undervalued (market value) currency to pay for a fully valued (negotiated value) property.  In effect, the acquirer must give up $2 of value to receive $1 of value.",
+      "note": "Turns to the currency: issuing undervalued shares makes even a fairly priced target a bad buy.",
+      "corrected": false
+    },
+    {
+      "id": "1983_berkshire",
+      "year": 1983,
+      "excerpt": "Because it can’t go anywhere else, the silliness ends up in the Goodwill account.  Considering the lack of managerial discipline that created the account, under such circumstances it might better be labeled \"No-Will\".",
+      "note": "Overpayment does not vanish; the accounts capitalise it as goodwill and amortise the embarrassment for decades.",
+      "corrected": false
+    },
+    {
+      "id": "1985_berkshire",
+      "year": 1985,
+      "excerpt": "We also made a major acquisition, Waumbec Mills, with the expectation of important synergy (a term widely used in business to explain an acquisition that otherwise makes no sense).  But in the end nothing worked and I should be faulted for not quitting sooner.",
+      "note": "First self-verdict: his own textile deal, justified by synergy, judged a failure he prolonged.",
+      "corrected": false
+    },
+    {
+      "id": "1989_berkshire",
+      "year": 1989,
+      "excerpt": "It's far better to buy a wonderful company at a fair price than a fair company at a wonderful price. Charlie understood this early; I was a slow learner.",
+      "note": "What he looks for shifts from bargain price to business quality, after reviewing his bargain-purchase errors.",
+      "corrected": false
+    },
+    {
+      "id": "1992_berkshire",
+      "year": 1992,
+      "excerpt": "In my early days as a manager I, too, dated a few toads. They were cheap dates - I've never been much of a sport - but my results matched those of acquirers who courted higher-priced toads.  I kissed and they croaked.",
+      "note": "Applies the toad critique to himself: cheap acquisitions of poor businesses failed just as dear ones do.",
+      "corrected": false
+    },
+    {
+      "id": "1994_berkshire",
+      "year": 1994,
+      "excerpt": "The sad fact is that most major acquisitions display an egregious imbalance:  They are a bonanza for the shareholders of the acquiree; they increase the income and status of the acquirer's management; and they are a honey pot for the investment bankers and other professionals on both sides.",
+      "note": "The fullest statement of who wins in a deal; the buyer's owners are the omitted party.",
+      "corrected": false
+    },
+    {
+      "id": "1995_berkshire",
+      "year": 1995,
+      "excerpt": "Even so, we do have a few advantages, perhaps the greatest being that we don't have a strategic plan.  Thus we feel no need to proceed in an ordained direction (a course leading almost invariably to silly purchase prices) but can instead simply decide what makes sense for our owners.",
+      "note": "His discipline: no mandated direction, every deal weighed against passive alternatives, seller projections ignored.",
+      "corrected": false
+    },
+    {
+      "id": "1997_berkshire",
+      "year": 1997,
+      "excerpt": "…you will find that our shareholders are slightly worse off than they would have been had I not done the transactions. Though it hurts me to say it, when I've issued stock, I've cost you money.",
+      "note": "Audits his own record: every stock-funded deal, in aggregate, left Berkshire owners poorer.",
+      "corrected": false
+    },
+    {
+      "id": "2000_berkshire",
+      "year": 2000,
+      "excerpt": "Agonizing over errors is a mistake. But acknowledging and analyzing them can be useful, though that practice is rare in corporate boardrooms. There, Charlie and I have almost never witnessed a candid post-mortem of a failed decision, particularly one involving an acquisition.",
+      "note": "Judging deals after the fact: the Washington Post's three-year review held up as the rare exception.",
+      "corrected": false
+    },
+    {
+      "id": "2007_berkshire",
+      "year": 2007,
+      "excerpt": "What I had assessed as durable competitive advantage vanished within a few years. But that’s just the beginning: By using Berkshire stock, I compounded this error hugely. That move made the cost to Berkshire shareholders not $400 million, but rather $3.5 billion.",
+      "note": "Dexter Shoe: a wrong call on the moat, made ruinous by paying in shares rather than cash.",
+      "corrected": false
+    },
+    {
+      "id": "2009_berkshire",
+      "year": 2009,
+      "excerpt": "In more than fifty years of board memberships, however, never have I heard the investment bankers (or management!) discuss the true value of what is being given. When a deal involved the issuance of the acquirer’s stock, they simply used market value to measure the cost.",
+      "note": "Written as BNSF forced him to issue stock; proposes a second adviser paid to argue against the deal.",
+      "corrected": false
+    },
+    {
+      "id": "2014_berkshire",
+      "year": 2014,
+      "excerpt": "Too often CEOs seem blind to an elementary reality: The intrinsic value of the shares you give in an acquisition must not be greater than the intrinsic value of the business you receive.",
+      "note": "Fifty-year summation: customary premiums and EPS accretion dismissed; intrinsic value given versus received is the only test.",
+      "corrected": false
+    },
+    {
+      "id": "2017_berkshire",
+      "year": 2017,
+      "excerpt": "The ample availability of extraordinarily cheap debt in 2017 further fueled purchase activity. After all, even a high-priced deal will usually boost per-share earnings if it is debt-financed.",
+      "note": "A new enabler named: cheap debt flatters EPS, so Berkshire evaluates every deal on an all-equity basis.",
+      "corrected": false
+    },
+    {
+      "id": "2020_berkshire",
+      "year": 2020,
+      "excerpt": "The final component in our GAAP figure – that ugly $11 billion write-down – is almost entirely the quantification of a mistake I made in 2016. That year, Berkshire purchased Precision Castparts (“PCC”), and I paid too much for the company.",
+      "note": "The last self-verdict: a fine business, an honest seller, and still an overpayment through optimism.",
+      "corrected": false
+    }
+  ]
+}

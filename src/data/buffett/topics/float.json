@@ -1,0 +1,124 @@
+{
+  "topic": "float",
+  "title": "Buffett on float",
+  "lede": "Float is the money an insurer holds between collecting premiums and paying claims: it belongs to others, but Berkshire gets to invest it. Buffett explains the idea to shareholders from first principles, measures its cost by the underwriting result, and shows how funds that cost nothing, or less than nothing, financed the businesses and securities Berkshire owns today.",
+  "related": [
+    "buffett-on-the-fortress-balance-sheet",
+    "buffett-on-capital-allocation",
+    "importance-treasurers-finance"
+  ],
+  "entries": [
+    {
+      "id": "1980_berkshire",
+      "year": 1980,
+      "excerpt": "For the source of funds to purchase and hold those bonds is a pool of money derived from policyholders and claimants (with changing faces) - money which, in effect, is temporarily on deposit with the insurer.",
+      "note": "Six years before he uses the word, the concept: policyholders' money on temporary deposit, financing the portfolio.",
+      "corrected": false
+    },
+    {
+      "id": "1986_berkshire",
+      "year": 1986,
+      "excerpt": "When the investment income that an insurer earns from holding on to policyholders’ funds (\"the float\") is taken into account, a combined ratio in the 107-112 range typically produces an overall break-even result, exclusive of earnings on the funds provided by shareholders.",
+      "note": "First naming of float, and the arithmetic: investment income lets an underwriting loss still break even.",
+      "corrected": false
+    },
+    {
+      "id": "1990_berkshire",
+      "year": 1990,
+      "excerpt": "Analysts and managers customarily look to the combined ratio - and it's true that this yardstick usually is a good indicator of where a company ranks in profitability. We believe a better measure, however, to be a comparison of underwriting loss to float developed.",
+      "note": "Replaces the industry yardstick with his own: underwriting loss divided by float, the cost of funds.",
+      "corrected": false
+    },
+    {
+      "id": "1993_berkshire",
+      "year": 1993,
+      "excerpt": "A company writing at the same combined ratio now as in the 1980's today has a far less attractive business than it did then.",
+      "note": "Float is worth only what it earns at the risk-free rate; falling rates make the same underwriting a worse business.",
+      "corrected": false
+    },
+    {
+      "id": "1994_berkshire",
+      "year": 1994,
+      "excerpt": "Float is money we hold but don't own. In an insurance operation, float arises because most policies require that premiums be prepaid and, more importantly, because it usually takes time for an insurer to hear about and resolve loss claims.",
+      "note": "The first-principles definition for shareholders: prepaid premiums plus the lag before claims are settled.",
+      "corrected": false
+    },
+    {
+      "id": "1995_berkshire",
+      "year": 1995,
+      "excerpt": "Since our float has cost us virtually nothing over the years, it has in effect served as equity. Of course, it differs from true equity in that it doesn't belong to us.",
+      "note": "The leverage argument: liabilities that cost nothing lift returns on assets without issuing a single share.",
+      "corrected": false
+    },
+    {
+      "id": "1996_berkshire",
+      "year": 1996,
+      "excerpt": "An insurance business has value if its cost of float over time is less than the cost the company would otherwise incur to obtain funds. But the business is an albatross if the cost of its float is higher than market rates for money.",
+      "note": "The test that decides whether an insurer creates value: cost of float against the market rate for money.",
+      "corrected": false
+    },
+    {
+      "id": "1998_berkshire",
+      "year": 1998,
+      "excerpt": "Impressive as the growth in our float has been — 25.4% compounded annually — what really counts is the cost of this item. If that becomes too high, growth in float becomes a curse rather than a blessing.",
+      "note": "Growth in float is worthless, even harmful, unless the underwriting that produces it stays cheap.",
+      "corrected": false
+    },
+    {
+      "id": "2001_berkshire",
+      "year": 2001,
+      "excerpt": "Some years back, float costing, say, 4% was tolerable because government bonds yielded twice as much, and stocks prospectively offered still loftier returns. Today, fat returns are nowhere to be found (at least we can’t find them) and short-term funds earn less than 2%.",
+      "note": "Low interest rates change the maths: float that once paid its way now needs an underwriting profit.",
+      "corrected": false
+    },
+    {
+      "id": "2004_berkshire",
+      "year": 2004,
+      "excerpt": "Since Berkshire purchased National Indemnity (“NICO”) in 1967, property-casualty insurance has been our core business and the propellant of our growth. Insurance has provided a fountain of funds with which we’ve acquired the securities and businesses that now give us an ever-widening variety of earnings streams.",
+      "note": "Float as the propellant: the securities and operating businesses were bought with insurance money.",
+      "corrected": false
+    },
+    {
+      "id": "2005_berkshire",
+      "year": 2005,
+      "excerpt": "When an insurer earns an underwriting profit – as has been the case at Berkshire in about half of the 39 years we have been in the insurance business – float is better than free. In such years, we are actually paid for holding other people’s money.",
+      "note": "The standard set for the next two decades: an underwriting profit turns a cheap liability into a paid one.",
+      "corrected": false
+    },
+    {
+      "id": "2010_berkshire",
+      "year": 2010,
+      "excerpt": "If we accomplish that, our float will be better than cost-free. We will benefit just as we would if some party deposited $66 billion with us, paid us a fee for holding its money and then let us invest its funds for our own benefit.",
+      "note": "The deposit analogy: a depositor who pays a fee and lets you invest the money.",
+      "corrected": false
+    },
+    {
+      "id": "2014_berkshire",
+      "year": 2014,
+      "excerpt": "Owing $1 that in effect will never leave the premises – because new business is almost certain to deliver a substitute – is worlds different from owing $1 that will go out the door tomorrow and not be replaced.",
+      "note": "Why book value understates it: float is a revolving fund, not a liability due tomorrow.",
+      "corrected": false
+    },
+    {
+      "id": "2017_berkshire",
+      "year": 2017,
+      "excerpt": "Unlike bank deposits or life insurance policies containing surrender options, p/c float can’t be withdrawn. This means that p/c companies can’t experience massive “runs” in times of widespread financial stress, a characteristic of prime importance to Berkshire that we factor into our investment decisions.",
+      "note": "The structural reason the fortress holds: no surrender rights means no run, so the money can sit in equities.",
+      "corrected": false
+    },
+    {
+      "id": "2018_berkshire",
+      "year": 2018,
+      "excerpt": "So far, those funds, though they are recorded as a huge net liability on our balance sheet, have been of more utility to us than an equivalent amount of equity. That’s because they have usually been accompanied by underwriting earnings.",
+      "note": "Fifty years on: a liability on the balance sheet that has served Berkshire better than equity.",
+      "corrected": false
+    },
+    {
+      "id": "2024_berkshire",
+      "year": 2024,
+      "excerpt": "Over the past two decades, our insurance business has generated $32 billion of after-tax profits from underwriting, about 3.3 cents per dollar of sales after income tax. Meanwhile, our float has grown from $46 billion to $171 billion.",
+      "note": "The final tally: two decades of underwriting profit while float nearly quadrupled.",
+      "corrected": false
+    }
+  ]
+}

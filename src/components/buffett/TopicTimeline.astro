@@ -1,0 +1,58 @@
+---
+/* Small figure for a "Buffett on…" page: the years he addressed the topic
+   as cream dots on the shared ruler; every other letter as a faint ash
+   tick above the ruler, so the density of attention reads at a glance. */
+import { letters, xForYear, YEAR_MIN, YEAR_MAX, RULER_X0, RULER_X1 } from '../../lib/buffett';
+import type { TopicEntry } from '../../lib/buffett';
+
+interface Props { entries: TopicEntry[]; label: string }
+const { entries, label } = Astro.props;
+
+const RULER_Y = 220;
+const addressed = new Set(entries.map((e) => e.id));
+const ticks: { x: number; year: number; major: boolean }[] = [];
+for (let y = YEAR_MIN; y <= YEAR_MAX; y++) ticks.push({ x: xForYear(y), year: y, major: y % 10 === 0 });
+---
+
+<figure class="rounded-lg border border-divider/60 overflow-hidden bg-[#111111]" data-topic-timeline>
+  <svg viewBox="0 0 2400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={label} class="block w-full h-auto">
+    <rect x="0" y="0" width="2400" height="330" fill="#111111" />
+    <g stroke="#d9d6cd" stroke-width="2" fill="none">
+      <line x1={RULER_X0} y1={RULER_Y} x2={RULER_X1} y2={RULER_Y} />
+      {ticks.map((t) => <line x1={t.x} y1={RULER_Y} x2={t.x} y2={RULER_Y + (t.major ? 22 : 9)} />)}
+    </g>
+    <g font-size="24" letter-spacing="3" fill="#8a8a86" font-family="'JetBrains Mono', Menlo, monospace" text-anchor="middle">
+      {ticks.filter((t) => t.major).map((t) => <text x={t.x} y={RULER_Y + 62}>{t.year}</text>)}
+    </g>
+    <g stroke="#3a3a38" stroke-width="2">
+      {letters.filter((l) => !addressed.has(l.id)).map((l) => {
+        const x = xForYear(l.year);
+        return <line x1={x} y1={RULER_Y - 30} x2={x} y2={RULER_Y - 8} />;
+      })}
+    </g>
+    <g fill="#efece2">
+      {entries.map((e) => {
+        const x = xForYear(e.year);
+        return (
+          <g data-year-dot style={`transform-box: view-box; transform-origin: ${x.toFixed(1)}px ${RULER_Y - 60}px`}>
+            <line x1={x} y1={RULER_Y - 8} x2={x} y2={RULER_Y - 44} stroke="#efece2" stroke-width="2" />
+            <circle cx={x} cy={RULER_Y - 60} r="16" />
+          </g>
+        );
+      })}
+    </g>
+  </svg>
+</figure>
+
+<script>
+  function setup() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll<SVGGElement>('[data-topic-timeline] [data-year-dot]').forEach((g, i) => {
+      g.animate(
+        [{ transform: 'scale(0)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }],
+        { duration: 420, delay: 150 + i * 90, fill: 'backwards', easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' },
+      );
+    });
+  }
+  document.addEventListener('astro:page-load', setup);
+</script>

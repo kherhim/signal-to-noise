@@ -1,0 +1,125 @@
+{
+  "topic": "accounting",
+  "title": "Buffett on accounting and reported earnings",
+  "lede": "Buffett treats the audited number as the start of the work, not the end of it. Across five decades he separates earnings that describe a business from earnings that merely satisfy a rule: goodwill amortisation, option grants, restructuring charges, EBITDA and, latterly, the unrealised stock swings that GAAP now forces through Berkshire's own bottom line.",
+  "related": [
+    "buffett-on-capital-allocation",
+    "ask-warren-buyback-multiple",
+    "5-when-kpis-become-strategy-dies",
+    "buffett-on-the-fortress-balance-sheet"
+  ],
+  "entries": [
+    {
+      "id": "1979_berkshire",
+      "year": 1979,
+      "excerpt": "The primary test of managerial economic performance is the achievement of a high earnings rate on equity capital employed (without undue leverage, accounting gimmickry, etc.) and not the achievement of consistent gains in earnings per share.",
+      "note": "The early yardstick: return on equity, not EPS growth, which retained capital inflates automatically.",
+      "corrected": false
+    },
+    {
+      "id": "1982_berkshire",
+      "year": 1982,
+      "excerpt": "Conversely, if GEICO had earned an additional $100 million - and retained it all - our reported earnings would have been unchanged.  Clearly “accounting” earnings can seriously misrepresent economic reality.",
+      "note": "Reported figures now shown to move independently of the economics; the case for a separate economic measure.",
+      "corrected": false
+    },
+    {
+      "id": "1983_berkshire",
+      "year": 1983,
+      "excerpt": "One reality is that the amortization charges that have been deducted as costs in the earnings statement each year since acquisition of See’s were not true economic costs.",
+      "note": "The goodwill appendix: a mandated charge can be a fiction while the asset behind it grows.",
+      "corrected": false
+    },
+    {
+      "id": "1986_berkshire",
+      "year": 1986,
+      "excerpt": "Why, then, are \"cash flow\" numbers so popular today? In answer, we confess our cynicism: we believe these numbers are frequently used by marketers of businesses and securities in attempts to justify the unjustifiable (and thereby to sell what should be the unsalable).",
+      "note": "The owner-earnings appendix turns to the sell side: adding back charges without deducting reinvestment flatters the number.",
+      "corrected": false
+    },
+    {
+      "id": "1988_berkshire",
+      "year": 1988,
+      "excerpt": "Even honest and well-intentioned managements sometimes stretch GAAP a bit in order to present figures they think will more appropriately describe their performance.  Both the smoothing of earnings and the “big bath” quarter are “white lie” techniques employed by otherwise upright managements.",
+      "note": "Attention shifts from the rules to the people applying them; the big-bath quarter named as routine practice.",
+      "corrected": false
+    },
+    {
+      "id": "1990_berkshire",
+      "year": 1990,
+      "excerpt": "In reality, however, earnings can be as pliable as putty when a charlatan heads the company reporting them. Eventually truth will surface, but in the meantime a lot of money can change hands. Indeed, some important American fortunes have been created by the monetization of accounting mirages.",
+      "note": "An auditor's certificate confers no precision; the letter appends Graham's 1936 satire to prove the point.",
+      "corrected": false
+    },
+    {
+      "id": "1992_berkshire",
+      "year": 1992,
+      "excerpt": "Moreover, it is both silly and cynical to say that an important item of cost should not be recognized simply because it can't be quantified with pinpoint precision.",
+      "note": "Stock options: a cost incurred without cash leaving is still a cost, and imprecision is no excuse.",
+      "corrected": false
+    },
+    {
+      "id": "1998_berkshire",
+      "year": 1998,
+      "excerpt": "The distortion du jour is the “restructuring charge,” an accounting entry that can, of course, be legitimate but that too often is a device for manipulating earnings.",
+      "note": "The one-off charge enters the argument: years of cost dumped into a quarter already written off.",
+      "corrected": false
+    },
+    {
+      "id": "2000_berkshire",
+      "year": 2000,
+      "excerpt": "The financial consequences of these boners are regularly dumped into massive restructuring charges or write-offs that are casually waved off as “nonrecurring.” Managements just love these. Indeed, in recent years it has seemed that no earnings statement is complete without them.",
+      "note": "Nonrecurring items reframed as the burial ground for acquisition mistakes nobody will examine.",
+      "corrected": false
+    },
+    {
+      "id": "2002_berkshire",
+      "year": 2002,
+      "excerpt": "Trumpeting EBITDA (earnings before interest, taxes, depreciation and amortization) is a particularly pernicious practice. Doing so implies that depreciation is not truly an expense, given that it is a “non-cash” charge. That’s nonsense.",
+      "note": "EBITDA named outright; depreciation is cash already spent, paid before the asset earned anything.",
+      "corrected": false
+    },
+    {
+      "id": "2013_berkshire",
+      "year": 2013,
+      "excerpt": "Every dime of depreciation expense we report, however, is a real cost. And that’s true at almost all other companies as well. When Wall Streeters tout EBITDA as a valuation guide, button your wallet.",
+      "note": "Draws the line between amortisation of purchased intangibles, often unreal, and depreciation, always real.",
+      "corrected": false
+    },
+    {
+      "id": "2015_berkshire",
+      "year": 2015,
+      "excerpt": "Indeed, the depreciation charge we record in our railroad business falls far short of the capital outlays needed to merely keep the railroad running properly, a mismatch that leads to GAAP earnings that are higher than true economic earnings.",
+      "note": "The argument cuts both ways: at BNSF the rules overstate profit rather than understate it.",
+      "corrected": false
+    },
+    {
+      "id": "2016_berkshire",
+      "year": 2016,
+      "excerpt": "But, to tell owners year after year, “Don’t count this,” when management is simply making business adjustments that are necessary, is misleading. And too many analysts and journalists fall for this baloney.",
+      "note": "Berkshire restructures every year and never asks readers to ignore the cost; adjusted earnings culture rebuked.",
+      "corrected": false
+    },
+    {
+      "id": "2017_berkshire",
+      "year": 2017,
+      "excerpt": "The new rule says that the net change in unrealized investment gains and losses in stocks we hold must be included in all net income figures we report to you. That requirement will produce some truly wild and capricious swings in our GAAP bottom-line.",
+      "note": "The complaint turns inward: a new standard will make Berkshire's own headline number useless for analysis.",
+      "corrected": false
+    },
+    {
+      "id": "2019_berkshire",
+      "year": 2019,
+      "excerpt": "Now, Berkshire must enshrine in each quarter’s bottom line – a key item of news for many investors, analysts and commentators – every up and down movement of the stocks it owns, however capricious those fluctuations may be.",
+      "note": "Two years in: GAAP earnings up 1,900 per cent on market moves while operating earnings barely changed.",
+      "corrected": false
+    },
+    {
+      "id": "2023_berkshire",
+      "year": 2023,
+      "excerpt": "So sanctified, this worse-than-useless “net income” figure quickly gets transmitted throughout the world via the internet and media. All parties believe they have done their job – and, legally, they have.",
+      "note": "Standard-setter, regulator and auditor all sign off; the figure is still unfit for valuing the business.",
+      "corrected": false
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TopicTimeline from '../../../components/buffett/TopicTimeline.astro';
+import Attribution from '../../../components/buffett/Attribution.astro';
+import { topics, lettersById, kindLabel, dateLabel } from '../../../lib/buffett';
+
+/* The topic pages carry ledes and notes drafted for the site owner's edit
+   pass. They build only when BUFFETT_TOPICS=1 is set, so the landing page
+   can ship ahead of the review. */
+export async function getStaticPaths() {
+  if (process.env.BUFFETT_TOPICS !== '1') return [];
+  return topics.map((topic) => ({ params: { topic: topic.topic }, props: { topic } }));
+}
+
+const { topic } = Astro.props;
+const posts = await getCollection('insights', ({ data }) => !data.draft);
+const related = topic.related
+  .map((slug) => posts.find((p) => p.id === slug))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+const first = topic.entries[0]?.year;
+const last = topic.entries[topic.entries.length - 1]?.year;
+---
+
+<BaseLayout
+  title={`${topic.title} — signal-to-noise.co`}
+  description={topic.lede}
+  ogImage="/og/buffett.jpg"
+  ogType="article"
+  starsDim
+>
+  <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
+    <header class="mb-12" data-reveal>
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">
+        <a href="/buffett/" class="hover:underline underline-offset-4">Buffett</a>
+      </p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">{topic.title}</h1>
+      <p class="text-lg text-muted leading-relaxed">{topic.lede}</p>
+    </header>
+
+    <TopicTimeline entries={topic.entries} label={`Years in which Buffett wrote about this: ${topic.entries.length} letters from ${first} to ${last}.`} />
+
+    <ol class="mt-16 grid gap-12">
+      {topic.entries.map((e) => {
+        const l = lettersById[e.id];
+        return (
+          <li class="grid gap-3" data-reveal>
+            <p class="text-xs uppercase tracking-widest text-muted">
+              <span class="text-fg font-mono">{e.year}</span> · {l ? kindLabel(l) : 'Letter'}{l ? `, ${dateLabel(l)}` : ''}
+              {l?.source && <> · <a href={l.source} target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-fg">source ↗</a></>}
+            </p>
+            <blockquote class="text-lg sm:text-xl leading-relaxed text-fg border-l-2 border-divider pl-5">“{e.excerpt}”</blockquote>
+            <p class="text-sm text-muted">{e.note}</p>
+          </li>
+        );
+      })}
+    </ol>
+
+    {related.length > 0 && (
+      <section class="mt-20" aria-labelledby="related-heading">
+        <h2 id="related-heading" class="text-sm uppercase tracking-widest text-accent mb-6">On this site</h2>
+        <ul class="grid gap-4">
+          {related.map((p) => (
+            <li>
+              <a href={`/insights/${p.id}/`} class="text-fg hover:underline underline-offset-4">{p.data.title}</a>
+              <p class="text-sm text-muted mt-1">{p.data.excerpt}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <div class="mt-20"><Attribution /></div>
+  </article>
+</BaseLayout>
