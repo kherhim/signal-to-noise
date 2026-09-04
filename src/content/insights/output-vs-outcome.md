@@ -6,7 +6,8 @@ tags: ["teams", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/output-vs-outcome-himanshu-kher-dn8bf"
 coverImage: /img/output-vs-outcome.webp
-coverImageAlt: "Black-and-white illustration: a set of balance scales. The left pan is overflowing with paperwork, clocks, code and checklists — sheer volume of output. The right pan holds a single tree growing from rooted ground, with a small team beneath it celebrating, representing outcome."
+coverImageAlt: "Against a near-black background, a ten-by-ten grid of small ash squares fills the left half, with only three squares lit in cream. From those three, thin fine lines run towards the right and converge on a single filled cream circle at centre-right, while the rest of the grid is placed dark. The lower rule reads 'EFFORT, CONNECTED'."
+coverAnimation: output-vs-outcome
 ---
 
 In a recent post, I wrote personal reflections on the distinction between correlation and causation. This post is a few more personal thoughts on another related topic - outputs and outcomes. It is born out of frustration of having interacted with teams that 'produce' reports, 'complete' projects, and more generally spend Herculean effort on doing 'things' - yet the desired outcome is missing in action. I am hoping I am not alone in observing this.

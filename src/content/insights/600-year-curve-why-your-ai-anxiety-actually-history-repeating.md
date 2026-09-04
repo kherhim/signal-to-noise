@@ -7,7 +7,8 @@ tags: ["ai", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/600-year-curve-why-your-ai-anxiety-actually-history-repeating-kher-sthge"
 coverImage: /img/600-year-curve.webp
-coverImageAlt: "The Explosion of Knowledge: 1450 to 2026 — log-scale chart of millions of books over time, marked at the Gutenberg Press (1450), the Industrial Revolution (~1800), and the AI Era (2026)."
+coverImageAlt: "Against a near-black background, a ticked baseline spans six centuries and one cream line climbs across it, nearly flat at first, then steepening twice towards the top right. Solid circles mark its start and end, an outline-drawn circle the bend between, each with a fine line dropped to the baseline. The lower rule reads 'BOTTLENECK, BROKEN'."
+coverAnimation: 600-year-curve-why-your-ai-anxiety-actually-history-repeating
 ---
 
 I want you to look at the graph for a second. Really look at it. Look hard.

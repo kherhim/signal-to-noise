@@ -6,7 +6,8 @@ tags: ["leadership", "cfo", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/every-cfo-greedy-just-what-theyre-real-question-himanshu-kher-ywb7e"
 coverImage: /img/every-cfo-greedy-just-what-theyre-real-question.webp
-coverImageAlt: "Black-and-white editorial illustration: two suited figures stand back-to-back. The left figure clutches a stack of reports and a stopwatch in front of a crumbling industrial skyline with falling bar charts. The right figure waters a young sapling with deep roots that grow into an upward bar chart against a thriving city skyline."
+coverImageAlt: "Against a near-black background, a ruler ticked in years crosses the lower half. From one origin at its left, a steep ash line ends at the first tick in a dashed circle, while a cream line, flat at first, steepens away to a solid circle top right. The lower rule reads 'GREED, LONG-TERM'."
+coverAnimation: every-cfo-greedy-just-what-theyre-real-question
 ---
 
 I've been thinking about this a lot lately, and I've come to believe there are really only two types of financial leadership — and the difference between them isn't talent or intelligence. It's time horizon.

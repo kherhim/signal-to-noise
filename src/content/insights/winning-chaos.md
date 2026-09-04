@@ -6,7 +6,8 @@ tags: ["leadership", "strategy", "ai", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/winning-chaos-himanshu-kher-mdvpf"
 coverImage: /img/winning-chaos.webp
-coverImageAlt: "Black-and-white editorial illustration: a single figure stands atop a wide stone platform raised above a sea of crashing icons — government domes, broken charts, exclamation triangles, alarm bells, globes — calmly watching an upward arc of glowing dots rise toward the horizon."
+coverImageAlt: "Against a near-black background, a field of small ash squares scattered unevenly across the lower two-thirds, with no grid. Through them a single cream line climbs in short straight segments from at lower left to a filled cream circle at at upper right; a faint horizontal fine line marks where the line began. The lower rule reads 'DEFENCE, ABANDONED'."
+coverAnimation: winning-chaos
 ---
 
 ## Forget the playbook – it’s time to reinvent

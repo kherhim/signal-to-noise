@@ -6,7 +6,8 @@ tags: ["strategy", "fp-and-a", "cfo", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-commandments-fpa-storytelling-part-2-himanshu-kher-qivff"
 coverImage: /img/10-commandments-fpa-storytelling-part-2.webp
-coverImageAlt: "Black-and-white editorial illustration: a woman in a suit presents a rising line chart to a boardroom of seated executives in a glass-walled office; on the left, a vortex of data, papers and digital fragments swirls into the wall, with icons for revenue, ROI and insight floating beside the chart."
+coverImageAlt: "Against a near-black background, a monochrome waterfall chart. A tall filled cream column is positioned at the left; four floating pale step-bars descend towards the right, each joined to the next by a thin ash connector; a shorter filled cream column lands at the right. A ruler-ticked baseline extends beneath them. The lower rule reads 'DELTA, BRIDGED'."
+coverAnimation: 10-commandments-fpa-storytelling-part-2
 ---
 
 Two months ago, I posted [an article](/insights/10-commandments-fpa-storytelling) on what I thought were the 10 commandments of FP&A story telling. It was born out of the some of my past frustrations of working with FP&A professionals, and a small attempt in making FP&A at my current company better. Following the post, two well-wishers suggested a deep-dive on the commandments with examples. Thank you for the challenge.

@@ -6,7 +6,8 @@ seoDescription: "In one budget, CFOs unite cost discipline with growth bets usin
 tags: ["cfo", "budgeting", "capital-allocation", "strategy", "finance"]
 draft: false
 coverImage: /img/the-ambidextrous-budget.webp
-coverImageAlt: "Against a near-black canvas, a minimalist cover places a complete, orderly matrix of solid cream squares at left: the deterministic cost book, with every square present. A thin rightward line — the recycling link — carries one square as it becomes rounded and then circular, converting a saved pound into an option. At right, a loose constellation holds solid funded survivors in varying sizes, fine-outlined first cheques, and two dashed circles for bets killed on evidence. A fine rule spans the bottom above the spaced-capital caption 'Budgeting, ambidextrous', with a small 'Fig. 04' mark at top-left."
+coverImageAlt: "A complete eight-by-eight grid of filled cream squares is positioned at left. A thin fine line extends towards the right from it carrying one square through three stages, square, rounded square, circle, towards a loose constellation at right of solid circles, fine-outline-drawn circles and two dashed circles. The lower rule reads 'BUDGETING, AMBIDEXTROUS'."
+coverAnimation: the-ambidextrous-budget
 ---
 
 The CFO is the same; so is the Monday. At ten, she must unveil the cost programme: remove eight per cent from opex, item by item, without exceptions or sentiment. At two, she faces that identical executive team to make the case for the growth envelope, insisting that now is exactly the time to keep investing in the future.

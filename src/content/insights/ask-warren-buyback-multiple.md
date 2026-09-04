@@ -6,7 +6,8 @@ seoDescription: "Share buybacks and valuation: applying Warren Buffett's intrins
 tags: ["cfo", "buffett", "ask-warren", "capital-markets"]
 draft: false
 coverImage: /img/ask-warren-buyback-multiple.webp
-coverImageAlt: "A minimalist cover on a near-black canvas: a vertical price bar rising toward a bright horizontal ceiling line labelled 'intrinsic value', with the zone above the line shaded as a do-not-buy region. A small 'Ask Warren' kicker sits above the headline 'Should we buy back stock at this multiple?' in white sentence-case type."
+coverImageAlt: "Against a near-black background, a ticked scale extends up the left edge, a cream fine line ceiling crosses at two-thirds height, and the zone above it is hatched in pale ash diagonals. From the baseline a filled cream column climbs to a tick below the ceiling. The lower rule reads 'PRICE, CONDITIONAL'."
+coverAnimation: ask-warren-buyback-multiple
 ---
 
 The question CFOs are asked at almost every Q4 board meeting now is some version of: *what are we doing about the buyback?* Authorisations are open, balance sheets are full, the AI capex cycle is forcing every dollar of free cash flow into a conscious choice, and activists are watching. The pressure is to do something — announce, accelerate, expand, or at minimum reaffirm.

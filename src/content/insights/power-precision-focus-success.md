@@ -6,7 +6,8 @@ tags: ["leadership", "strategy", "cfo", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/power-precision-focus-success-himanshu-kher-ob7fc"
 coverImage: /img/power-precision-focus-success.webp
-coverImageAlt: "Black-and-white illustration: a man in a suit looks through a long brass telescope on a tripod, its focused beam highlighting a single platform reading 'Operating Margin 18%', while a fog of unfocused distractions — market noise, ad-hoc requests, low value work, data overload, unfocused reporting, spreadsheet fire drills — fades into the background."
+coverImageAlt: "Against a near-black background, one large filled cream circle is placed right of centre, dominating the frame. Across the left two-thirds, nine tiny ash dots wait on an even three-by-three grid, the faint ghosts of fronts given up. The lower rule reads 'EFFORT, CONCENTRATED'."
+coverAnimation: power-precision-focus-success
 ---
 
 As a CFO, my perspective on business strategy has always been grounded in the principle of focus. In a competitive marketplace, companies often face the temptation to diversify their efforts across numerous fronts. However, there's immense value in doing a few things exceptionally well rather than spreading resources thin to achieve mediocrity in many areas. Here's why:

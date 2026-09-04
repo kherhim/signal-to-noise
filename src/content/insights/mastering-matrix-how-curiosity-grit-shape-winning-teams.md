@@ -6,7 +6,8 @@ tags: ["leadership", "strategy", "ai", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/mastering-matrix-how-curiosity-grit-shape-winning-teams-himanshu-kher-q9osf"
 coverImage: /img/curiosity-vs-grit.webp
-coverImageAlt: "A 2x2 matrix on a black canvas, Curiosity on the y-axis and Grit on the x-axis. Quadrants labeled: high-curiosity/low-grit Ideators needing direction; high-curiosity/high-grit Visionaries with determination; low-curiosity/low-grit Seekers of motivation; low-curiosity/high-grit Executors with a mission."
+coverImageAlt: "Against a near-black background, two ash fine lines cross in the centre, short ticks along each axis, making four quadrants. One circle is placed in each: at upper right filled cream and largest, top-left outline-drawn, bottom-right outline-drawn and smaller, at lower left dashed. Nothing names the axes. The lower rule reads 'TRAITS, DURABLE'."
+coverAnimation: mastering-matrix-how-curiosity-grit-shape-winning-teams
 ---
 
 * * *

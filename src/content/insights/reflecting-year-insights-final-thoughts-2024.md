@@ -6,7 +6,8 @@ tags: ["leadership", "strategy", "ai", "fp-and-a", "cfo", "teams", "risk", "refl
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/reflecting-year-insights-final-thoughts-2024-himanshu-kher-o8aef"
 coverImage: /img/reflecting-year-insights-final-thoughts-2024.webp
-coverImageAlt: "Black-and-white photograph-style image: a man sits at his desk in a high-rise office at dusk, gazing out at a city skyline. A grid of memory-style smaller photos covers the back wall. A glowing dashboard with strategy, risk, team and idea icons sits on the desk beside his notebook."
+coverImageAlt: "Against a near-black background, a large outline-drawn cream ring is placed centred. Twelve small filled cream circles are spaced evenly around its rim like the hours of a clock. From each, a pale ash fine line extends inward to one filled cream circle in the centre, larger than any on the rim. The lower rule reads 'INSIGHT, COMPOUNDED'."
+coverAnimation: reflecting-year-insights-final-thoughts-2024
 ---
 
 As we approach the close of 2024, I find myself revisiting the series of articles I’ve shared here on LinkedIn over the past twelve months. When I began posting about a year ago, my intent was simple: to engage more openly with the finance and business community, to exchange insights, and to foster a dialogue around the challenges and opportunities reshaping our world. What I didn’t fully anticipate was how this process of writing and reflecting—on everything from macroeconomic shifts to the transformative power of AI, from the nuances of leadership to the human values underpinning our decisions—would also deepen my own perspective and practice.

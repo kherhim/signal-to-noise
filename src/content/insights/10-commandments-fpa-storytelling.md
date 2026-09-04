@@ -6,7 +6,8 @@ tags: ["strategy", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-commandments-fpa-storytelling-himanshu-kher-ti9df"
 coverImage: /img/10-commandments-fpa-storytelling.webp
-coverImageAlt: "Black-and-white editorial illustration: silhouettes of five business figures behind a podium watch a pair of tall stone tablets carved with ten numbered icons (chart, target, magnifier, speech bubble, people) representing the FP&A storytelling commandments, surrounded by swirls of dashboard fragments and reports."
+coverImageAlt: "Against a near-black background, one filled cream circle is placed in the centre, slightly above the midline, surrounded by the pale ash ghost of a twelve-by-twelve grid of tiny squares. The cells nearest the circle have gone entirely; the rings grow only faintly more present towards the edge. The lower rule reads 'STORY, DISTILLED'."
+coverAnimation: 10-commandments-fpa-storytelling
 ---
 
 In November 2023, I had posted an [article](/insights/enhancing-financial-data-storytelling-cfos-cheat-sheet) about a storytelling cheat sheet for CFOs. This artcile is a continuation of that post, but targetted towards juniour FP&A professionals working hard to make a difference. It is a distillation of past experiences in consulting, and working in Finance over a decade.

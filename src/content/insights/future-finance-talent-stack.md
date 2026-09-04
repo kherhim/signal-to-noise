@@ -6,7 +6,8 @@ seoDescription: "The future of finance teams: why the best finance functions wil
 tags: ["teams", "cfo", "leadership", "ai", "strategy"]
 draft: false
 coverImage: /img/future-finance-talent-stack.webp
-coverImageAlt: "Black-and-white editorial illustration: a silhouetted man in a suit, seen from behind, places the top block onto a five-tier pyramid of capability layers in front of a night-time city skyline. From top to bottom the tiers read Future finance leadership, Technology data and AI fluency, Analytics and storytelling, Core accounting and control, and Foundation of integrity, curiosity and collaboration, each with small icons and rows of silhouetted team members. A CFO nameplate and coffee mug sit on a desk in the lower-left foreground."
+coverImageAlt: "Against a near-black background, at left, a pale ash outline of a pyramid of fifteen small squares is positioned empty. At right the same fifteen shapes sit filled cream in a wide flat lattice, nine squares, four turned on their corners and two circles, joined by short fine lines. The lower rule reads 'FINANCE, HYBRIDISED'."
+coverAnimation: future-finance-talent-stack
 ---
 
 The next great finance hire may not look like a traditional finance hire at all.

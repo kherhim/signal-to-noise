@@ -6,7 +6,8 @@ seoDescription: "Why culture eats strategy: how organisational culture quietly d
 tags: ["culture", "strategy", "leadership", "execution", "cfo"]
 draft: false
 coverImage: /img/when-culture-eats-your-strategy.webp
-coverImageAlt: "A minimalist black-and-white cover on a near-black canvas: an ordered grid of cells erodes at one edge into scattered, breaking fragments — a container losing its shape."
+coverImageAlt: "An ordered grid of outline-drawn cream cells fills the left of the frame. Towards the right the cells loosen, tilt a few degrees and drift outward, breaking into single ash-grey edges and specks that thin into the black. The lower rule reads 'EXCEPTIONS, TOLERATED'."
+coverAnimation: when-culture-eats-your-strategy
 ---
 
 ## The slogan leaders quote but rarely design for

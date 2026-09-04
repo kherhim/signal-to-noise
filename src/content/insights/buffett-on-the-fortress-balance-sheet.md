@@ -6,7 +6,7 @@ seoDescription: "Warren Buffett's fortress balance sheet: why holding cash and a
 tags: ["cfo", "capital-markets", "buffett", "strategy", "leadership"]
 draft: false
 coverImage: /img/buffett-on-the-fortress-balance-sheet.webp
-coverImageAlt: "A minimalist cover on a near-black canvas: one tall solid cream column stands at centre-left while five thinner ash columns around it lean at different angles, two of them snapped into offset upper segments. A hairline waterline crosses the lower third with a faint tide beneath it. A rule runs along the bottom, captioned 'LIQUIDITY, STANDING'."
+coverImageAlt: "Against a near-black background, one tall filled cream column is positioned at centre-left while five thinner ash columns around it lean at different angles, two of them snapped into offset upper segments. A fine line waterline crosses the lower third with a faint tide beneath it. The lower rule reads 'LIQUIDITY, STANDING'."
 coverAnimation: buffett-on-the-fortress-balance-sheet
 ---
 

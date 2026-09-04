@@ -108,12 +108,13 @@ const cover: Cover = {
           { offset: at + 0.1, transform: `rotate(${ut}deg) translateY(0px)`, opacity: 1 },
         ])));
       }
-      const rects = q<SVGRectElement>(col, ':scope > rect');
-      rects.forEach((r) => {
+      // Every segment starts cream and fades to its resting grey as it fails.
+      q<SVGRectElement>(col, 'rect').forEach((r) => {
+        const rest = r.getAttribute('fill') ?? ASH;
         anims.push(loop(r, hold([
           { offset: 0, fill: CREAM_DIM },
           { offset: at, fill: CREAM_DIM, easing: EASE_IN_OUT },
-          { offset: at + 0.12, fill: ASH },
+          { offset: at + 0.12, fill: rest },
         ])));
       });
     });

@@ -7,7 +7,8 @@ tags: ["strategy", "ai", "fp-and-a", "cfo", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/using-llms-cheat-sheet-cfos-himanshu-kher-bmqnf"
 coverImage: /img/using-llms-cheat-sheet-cfos.webp
-coverImageAlt: "Black-and-white illustration: a CFO at a laptop works alongside a silhouetted 'LLM Assistant' figure; panels of vendor invoices, market data and forecast tabs on the left flow into the LLM and out as a finance dashboard on the right — executive summary, financial highlights (revenue, gross margin, OpEx, net profit), key insights, risks & considerations, recommended actions; tagline 'From noise to clarity. Better decisions. Stronger business.'"
+coverImageAlt: "Against a near-black background, at the left edge a single column of four filled cream squares is positioned over a ruler one tick wide, while to its right a wide field of identical squares, four rows tall, extends to the margin over a ruler ticked across its full width. The lower rule reads 'CAPACITY, UNCOUPLED'."
+coverAnimation: using-llms-cheat-sheet-cfos
 ---
 
 The role of a Chief Financial Officer (CFO) is evolving and leveraging technology has become even more important to create value. After all, how good can a CFO be if they can't become a CVO ([Chief Value Officer](https://www.accaglobal.com/gb/en/professional-insights/global-profession/value-officer.html?trk=article-ssr-frontend-pulse_little-text-block)). Among the most transformative technologies are Large Language Models (LLMs), such as ChatGPT, LaMDA and Gemini (soon Grok!). These AI tools are a game changer in how CFOs manage data, enhance decision-making, and streamline operations. This article explores a few practical ways CFOs can use LLMs to increase their impact and improve efficiency of their teams.

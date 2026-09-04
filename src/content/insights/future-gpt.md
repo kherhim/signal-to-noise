@@ -7,7 +7,8 @@ tags: ["leadership", "ai", "fp-and-a", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/future-gpt-himanshu-kher-gaccf"
 coverImage: /img/future-gpt.webp
-coverImageAlt: "Black-and-white illustration titled 'From chat to co-pilot. Less noise. More signal. Better decisions.' A CFO sits before a wall of 'Tomorrow: integrated copilots' panels covering scenario analysis, narrative summary, risk flags, recommendations, next best actions, and integrated copilots across ERP/EPM, CRM, BI, and procurement; a smaller 'Today: chat' GPT-4o pane sits on the upper-left for contrast."
+coverImageAlt: "Against a near-black background, three filled cream circles climb a diagonal from at lower left, each larger than the last, while a fourth and largest is placed at upper right as a dashed cream outline with nothing inside it. A thin ash line links all four centres. The lower rule reads 'CAPABILITY, PROJECTED'."
+coverAnimation: future-gpt
 ---
 
 ### Introduction

@@ -6,7 +6,8 @@ tags: ["leadership", "strategy", "cfo", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/output-outcome-systems-approach-friday-focus-from-cfo-himanshu-kher-nwbbf"
 coverImage: /img/output-outcome-systems-approach-friday-focus-from-cfo.webp
-coverImageAlt: "Black-and-white editorial illustration: a CFO in a suit gestures from the centre. Left: a vortex of paperwork, gears and old ledgers swirls into a wall (the old output-focused work). Centre: silhouetted figures shake hands beneath a dashboard with a smiling-face rating. Right: a connected ring of gears, people-icons, lightbulb and growth chart representing a systems-thinking approach."
+coverImageAlt: "Against a near-black background, a large outline-drawn ash ring encloses a filled cream circle and, above it, a short row of five small cream squares whose head square feeds the circle by a single thin fine line. One small solid marker rests at the top of the ring. The lower rule reads 'SUCCESS, REPEATABLE'."
+coverAnimation: output-outcome-systems-approach-friday-focus-from-cfo
 ---
 
 I often find myself reflecting on how companies, teams, and even individuals measure success. In my opinion there are three distinct approaches : output focus, outcome focus, and systems focus. Each approach represents a unique lens to view performance, with its own strengths, risks, and applications.

@@ -6,7 +6,8 @@ tags: ["leadership", "strategy", "cfo"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/having-view-vs-way-himanshu-kher-ebj8c"
 coverImage: /img/having-view-vs-way.webp
-coverImageAlt: "Black-and-white sketched illustration: a figure stands at a fork between two whiteboards. The left board is full of question marks, scribbled arrows and tangled thought bubbles (a view without a way). The right board shows a clean staircase rising past task lists, gears and team icons toward a flag at the top (a clear path to execution)."
+coverImageAlt: "Against a near-black background, a small filled cream circle is placed at lower left and a large filled cream circle at upper right. Between them a staircase of small cream squares climbs the diagonal, riser by tread, until the last square touches the large circle; a pale ash fine line traces the diagonal beneath. The lower rule reads 'CONVICTION, ROUTED'."
+coverAnimation: having-view-vs-way
 ---
 
 ### 1\. Having a view

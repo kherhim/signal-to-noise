@@ -6,7 +6,8 @@ tags: ["leadership", "strategy", "ai", "fp-and-a", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/crowdsourcing-financial-decisions-when-more-cooks-may-himanshu-kher-tq9ef"
 coverImage: /img/crowdsourcing-financial-decisions-when-more-cooks-may.webp
-coverImageAlt: "Black-and-white sketched illustration: a calm CFO holds a clean 'Financial Performance Overview' card on the right while on the left many hands point at a chaotic 'Financial Performance Dashboard' covered in scribbled and conflicting suggestions — Grow faster, Focus on margin, Invest now, Acquire?, Hold steady?, Cut costs, Return cash?, Increase prices, No growth first."
+coverImageAlt: "Against a near-black background, forty small ash squares scatter widely above a ticked ruler scale, thickest around a dashed vertical fine line that marks one point on it. A filled cream circle rests on the scale touching that line, while a larger outline-drawn circle is placed well to its left. The lower rule reads 'JUDGEMENT, POOLED'."
+coverAnimation: crowdsourcing-financial-decisions-when-more-cooks-may
 ---
 
 ### Introduction

@@ -6,7 +6,8 @@ tags: ["leadership", "ai", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/you-dont-sacrifice-what-want-becomes-himanshu-kher-7ll4f"
 coverImage: /img/you-dont-sacrifice-what-want-becomes.webp
-coverImageAlt: "Black-and-white illustration: a lone figure stands at a fork in the road at night. To the left, a flat city street with shop fronts and a streetlamp. To the right, a winding path climbs a steep mountain toward a glowing star at the summit."
+coverImageAlt: "Against a near-black background, a filled cream circle is placed high on the right: the goal. From the lower left a short staircase of eight small squares climbs towards it; the lower five are cream outlines, spent, the top three still solid. A faint fine line links the top square to the circle. The lower rule reads 'SACRIFICE, CHOSEN'."
+coverAnimation: you-dont-sacrifice-what-want-becomes
 ---
 
 ### Introduction

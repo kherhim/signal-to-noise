@@ -6,7 +6,8 @@ seoDescription: "SpaceX, Anthropic and OpenAI IPO analysis: capital intensity, g
 tags: ["ipo", "ai", "capital-markets", "strategy"]
 draft: false
 coverImage: /img/pricing-the-future-ipos.webp
-coverImageAlt: "Editorial illustration on a black field: Earth with a satellite constellation orbiting in the lower-left, a wireframe AI head rendered in polygonal blue mesh on the right, a green candlestick chart rising in the background, market index tickers (NASDAQ, S&P 500, NDAQ) at upper-right, and an 'IPO Upcoming' panel listing SpaceX, Anthropic, and OpenAI with $X, $AI, $OAI tickers on the right margin."
+coverImageAlt: "Against a near-black background, a three-by-three matrix of ash fine lines, three rows for the companies and three columns for the lenses. Each cell holds a cream dot ringed by concentric outline-drawn circles, two to four rings to a cell, the third column drawn heaviest. The lower rule reads 'PLATFORMS, PRICED'."
+coverAnimation: pricing-the-future-spacex-anthropic-openai-ipos
 ---
 
 SpaceX, Anthropic and OpenAI sit at the sharp end of both the AI and capital markets story, and their prospective IPOs will define a cycle as much as they finance their own ambitions. From a CFO's lens, these offerings are less about hype and more about how public capital, governance and risk will reshape three very different—but tightly interlinked—business models.

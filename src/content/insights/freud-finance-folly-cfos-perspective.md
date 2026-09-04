@@ -6,7 +6,8 @@ tags: ["leadership", "strategy", "fp-and-a", "cfo", "teams", "risk", "reflection
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/freud-finance-folly-cfos-perspective-himanshu-kher-vbzuf"
 coverImage: /img/freud-finance-folly-cfos-perspective.webp
-coverImageAlt: "Black-and-white editorial illustration: a CFO in a suit faces a tall mirror that reflects him as 'CFO — steward, strategist, decision-maker, accountable'; behind him a Rorschach inkblot is labelled with bias words (greed, fear, uncertainty, control, ego), and at his feet a tangle of shadow text reads overconfidence, loss aversion, herd mentality, anchoring, status-quo bias, fear of failure, fear of missing out, control illusion; a chaise lounge and a capital-allocation distribution chart frame the scene."
+coverImageAlt: "Against a near-black background, a fine grey fine line crosses the upper third like a waterline. Above it floats a small outline-drawn cream circle, the decision as stated; beneath it a far larger solid ash circle, the motive, its crown almost touching the line. The lower rule reads 'MOTIVE, SUBMERGED'."
+coverAnimation: freud-finance-folly-cfos-perspective
 ---
 
 ### Introduction

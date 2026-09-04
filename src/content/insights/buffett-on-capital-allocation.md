@@ -7,7 +7,8 @@ tags: ["cfo", "capital-markets", "strategy", "buffett", "leadership"]
 draft: false
 featured: true
 coverImage: /img/buffett-on-capital-allocation.webp
-coverImageAlt: "A minimalist cover on a near-black canvas: a single luminous dollar sign at the top from which five thin lines fan downward to five small nodes — operating earnings, bolt-on acquisitions, investee growth, share buybacks, and a large acquisition — illustrating Buffett's five paths for every retained dollar. The title 'Buffett on capital allocation' sits in white sentence-case type to the left."
+coverImageAlt: "Against a near-black background, a single filled cream circle is placed at the top centre and five fine lines fan down from it to five circles across the base. Three are filled cream and as large as the source or larger, one is a small thin outline, one is dashed. The lower rule reads 'DOLLAR, RETAINED'."
+coverAnimation: buffett-on-capital-allocation
 ---
 
 For forty years, Warren Buffett has been making the same quiet argument about the CFO function, and most CFOs still haven't fully internalised it.

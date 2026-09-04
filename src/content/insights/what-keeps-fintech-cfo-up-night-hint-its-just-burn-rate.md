@@ -7,7 +7,8 @@ tags: ["leadership", "strategy", "ai", "cfo", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/what-keeps-fintech-cfo-up-night-hint-its-just-burn-rate-himanshu-kher-sya3c"
 coverImage: /img/what-keeps-fintech-cfo-up-night-hint-its-just-burn-rate.webp
-coverImageAlt: "Black-and-white nocturnal illustration: a man in pyjamas sits sleepless on the edge of his bed, looking out a high-rise window at a glowing financial chart on the city skyline. Around him: a hooded hacker silhouette on a pixelated wall (left), a cloud of gears and data fragments above (centre), and a ghostly boardroom meeting (right)."
+coverImageAlt: "Against a near-black background, a filled cream circle is placed in the centre, ringed by five concentric outline-drawn circles at widening intervals, each thinner and greyer than the last until the outermost is barely visible. Small ash squares sit on the outer rings where the edge is exposed. The lower rule reads 'SURFACE, WIDENED'."
+coverAnimation: what-keeps-fintech-cfo-up-night-hint-its-just-burn-rate
 ---
 
 Being a CFO in fintech sounds cool—until it’s 2:47am and you're wide awake, wondering if your fraud controls holds, your Series C runway will stretch, or your compliance stack is six months behind where it should be.

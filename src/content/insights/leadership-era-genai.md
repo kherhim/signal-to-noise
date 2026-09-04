@@ -7,7 +7,8 @@ tags: ["leadership", "strategy", "ai", "teams", "risk"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/leadership-era-genai-himanshu-kher-eeg2f"
 coverImage: /img/leadership-era-genai.webp
-coverImageAlt: "Black-and-white editorial illustration titled 'Leading in the age of GenAI: Orchestrate. Empower. Elevate.' A central CFO labelled 'Leader as Orchestrator' (vision, judgment, empathy, discernment, courage) gestures between a row of silhouetted team members on the left and a network of glowing nodes converging on a 'GenAI' hub on the right; surrounding panels list Policy & Governance, Ethics & Responsibility, Strategy & Value, AI Capabilities and Human Capital, with outcomes Better Decisions, Operational Excellence, Risk Resilience, Long-term Value, Trust & Reputation."
+coverImageAlt: "Against a near-black background, a dense fan of thin ash lines enters from the left edge and converges on a single filled cream circle just right of centre; from the circle one cream fine line leaves, level, and extends to the right edge. The lower rule reads 'JUDGEMENT, AUGMENTED'."
+coverAnimation: leadership-era-genai
 ---
 
 ### Introduction
