@@ -1,0 +1,44 @@
+---
+/* Renders an animated essay cover from src/covers/<kind>.ts.
+
+   The still composition is built as an SVG string at build time, so the
+   page paints the cover with no JavaScript and no image request. The
+   client script below finds the cover by its data-cover attribute,
+   dynamically imports the matching module (Vite splits one chunk per
+   cover) and calls motion(). It is bound on astro:page-load so it runs on
+   first load and after every ClientRouter view transition, and it does
+   nothing under prefers-reduced-motion. */
+import type { Cover } from '../covers/_lib.ts';
+
+interface Props {
+  kind: string;
+  alt?: string;
+}
+const { kind, alt = '' } = Astro.props;
+
+const modules = import.meta.glob<{ default: Cover }>(['../covers/*.ts', '!../covers/_lib.ts'], { eager: true });
+const mod = modules[`../covers/${kind}.ts`];
+if (!mod) {
+  throw new Error(`AnimatedCover: no module src/covers/${kind}.ts (coverAnimation: ${kind})`);
+}
+const markup = mod.default.still(alt);
+---
+
+<div class="rounded-lg border border-divider/60 overflow-hidden" set:html={markup}></div>
+
+<script>
+  import type { Cover } from '../covers/_lib.ts';
+
+  const loaders = import.meta.glob<{ default: Cover }>(['../covers/*.ts', '!../covers/_lib.ts']);
+
+  async function setup() {
+    const svg = document.querySelector<SVGSVGElement>('svg[data-cover]');
+    if (!svg || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const load = loaders[`../covers/${svg.dataset.cover}.ts`];
+    if (!load) return;
+    const mod = await load();
+    mod.default.motion(svg);
+  }
+
+  document.addEventListener('astro:page-load', setup);
+</script>

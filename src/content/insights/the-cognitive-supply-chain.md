@@ -7,7 +7,7 @@ tags: ["cfo", "ai", "risk", "strategy", "procurement"]
 draft: false
 coverImage: /img/the-cognitive-supply-chain.webp
 coverImageAlt: "A minimalist cover on a near-black canvas: a single solid cream circle on the left — a sole supplier — fans dozens of hairline dependency lines into a grid of small squares, some solid, some outlined, a few missing. Beneath the circle sits an empty dashed circle: the second source that does not exist. A fine rule runs along the bottom labelled 'Thinking, single-sourced' in spaced white capitals, with a small 'Fig. 02' mark top-left."
-coverAnimation: supply-chain
+coverAnimation: the-cognitive-supply-chain
 ---
 
 The message lands on a Tuesday. The model underpinning your contract-review workflow is due for retirement; you have ninety days. Its successor, the vendor says, performs better across most benchmarks — likely enough, but that reveals nothing about whether it handles the four particular tasks on which your workflow relies. No one in your organisation selected this. No one in your organisation was consulted.
