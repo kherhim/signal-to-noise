@@ -29,14 +29,15 @@ execution list (one-time setup, then a day-by-day first month).
 Scripts in `../scripts/`: `repurpose.mjs` (scaffold a pack), `normalize-tags.mjs`
 (dry-run tag cleanup — not applied; editorial call), `autopilot.mjs` (hands-off
 poster), `buffer-queue.mjs` (LinkedIn-via-Buffer layer), `substack-post.mjs`
-(Substack, with `canonical` support).
+(Substack full-text mirror; note Substack has no canonical-URL feature — see root README §2).
 
 ## The daily loop (once set up)
 
 1. **Site** publishes (day 0, existing `publish.sh` flow).
-2. **Substack** full-text repost 48h later (`scripts/substack-post.mjs`, with the
-   `canonical:` field — see README §2). Restack it same day.
-3. **LinkedIn newsletter** edition ~day 7 (links the canonical freely).
+2. **Substack** full-text repost 48h later (`scripts/substack-post.mjs` — the
+   48h head start is the only duplicate-content mitigation; Substack cannot set
+   a canonical URL, see README §2). Restack it same day.
+3. **LinkedIn newsletter** edition ~day 7 (links the site page freely).
 4. **LinkedIn feed** native posts across the fortnight (no body link).
 5. **Substack Notes** most days — pull-quotes, reactions, restacks of peers.
 

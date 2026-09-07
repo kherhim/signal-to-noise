@@ -60,21 +60,23 @@ Recommendations discovery reach — which keys on on-platform read-through and
 restacks, so post the **full text**, not a teaser. The site subscribe form is
 the embedded Substack form on `/subscribe` + article footers.
 
-1. Wait 24–48h after the site version is live, so Google indexes the canonical
+1. Wait 24–48h after the site version is live, so Google indexes the site copy
    first. Then write `_sources/substack-hooks/<slug>.md`: frontmatter
-   `title:` (exact article title) + `subtitle:` (≤140 chars) +
-   `canonical: https://signal-to-noise.co/insights/<slug>/`, then the **whole
+   `title:` (exact article title) + `subtitle:` (≤140 chars), then the **whole
    essay body**, opened with:
 
    `*Originally published at [signal-to-noise.co](https://signal-to-noise.co/insights/<slug>/)*`
 
-   The `canonical` field points Google back at the site so the
-   higher-authority substack.com copy doesn't outrank the original — the
-   mitigation that makes full-text mirroring safe. Series posts: children still
-   open with `*Part N of X in the series* [Series name](parent canonical URL)`.
+   **Substack has no canonical-URL feature** (verified 7 Sep 2026: the editor's
+   SEO Options offer only SEO title, SEO description and the post slug, and the
+   draft API silently drops a `canonical_url` field). A full-text mirror is
+   therefore an un-canonicalised duplicate; the 24–48h head start for the site
+   copy plus the "Originally published" backlink are the only mitigations.
+   Series posts: children still open with
+   `*Part N of X in the series* [Series name](parent site URL)`.
 2. `node scripts/substack-post.mjs draft _sources/substack-hooks/<slug>.md`
-3. `node scripts/substack-post.mjs get <draftId>` — confirm `canonical_url` came
-   back set (first time only; verifies the API accepted the field).
+3. `node scripts/substack-post.mjs get <draftId>` — sanity-check title and
+   state before publishing.
 4. `node scripts/substack-post.mjs publish <draftId> --send-email` — email
    delivery is OFF by default; pass `--send-email` so subscribers get the post.
 5. Append `<slug> <draftId>` to `_sources/substack-hooks/draft-ids.txt`.
