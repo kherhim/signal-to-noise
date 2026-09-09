@@ -33,3 +33,11 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/co.signal-to-noise.metri
 launchctl kickstart gui/$(id -u)/co.signal-to-noise.metrics                                 # run now
 launchctl bootout gui/$(id -u)/co.signal-to-noise.metrics                                   # remove
 ```
+
+## Substack mirror (daily, hands-off)
+
+launchd agent `co.signal-to-noise.substack-mirror` runs `scripts/substack-mirror.mjs --live --max 1`
+every day at 09:15 local. It mirrors any essay that is live on the site for ≥48h and not
+yet on Substack, emailing subscribers. Dry run: `node scripts/substack-mirror.mjs`.
+Stop it: `touch distribution/autopilot/PAUSE`. Logs: `~/Library/Logs/signal2noise-substack-mirror*.log`.
+Fails loudly (exit 1, logged) if `SUBSTACK_SID` has rotated — re-grab per `substack-post.mjs` header.

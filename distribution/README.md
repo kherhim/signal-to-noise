@@ -34,9 +34,15 @@ poster), `buffer-queue.mjs` (LinkedIn-via-Buffer layer), `substack-post.mjs`
 ## The daily loop (once set up)
 
 1. **Site** publishes (day 0, existing `publish.sh` flow).
-2. **Substack** full-text repost 48h later (`scripts/substack-post.mjs` — the
-   48h head start is the only duplicate-content mitigation; Substack cannot set
-   a canonical URL, see README §2). Restack it same day.
+2. **Substack** full-text repost 48h later — AUTOMATED since 9 Sep 2026:
+   `scripts/substack-mirror.mjs` runs daily at 09:15 (launchd
+   `co.signal-to-noise.substack-mirror`, plist in `infra/`), finds essays live on
+   the site ≥48h that are not yet on Substack, and publishes + emails them (max 1
+   per run; kill switch `distribution/autopilot/PAUSE`; ledger
+   `distribution/substack-mirror-ledger.json`). The 48h head start is the only
+   duplicate-content mitigation; Substack cannot set a canonical URL (README §2).
+   A hand-written `_sources/substack-hooks/<slug>.md` is honoured for title and
+   subtitle if present; otherwise title + excerpt are used.
 3. **LinkedIn newsletter** edition ~day 7 (links the site page freely).
 4. **LinkedIn feed** native posts across the fortnight (no body link).
 5. **Substack Notes** most days — pull-quotes, reactions, restacks of peers.
