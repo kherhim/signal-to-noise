@@ -1483,7 +1483,7 @@ export function makeCover({ slug, finalPath }) {
   const motionPx = checkMotionDeclared(src);
   if (motionPx < 60) throw new Error(`cover motionPx ${motionPx} < 60 (would not read at 700 px)`);
   const caption = src.match(/caption:\s*['"]([^'"]+)['"]/)?.[1] ?? '';
-  if (!/^[A-Z][A-Z ]+, [A-Z][A-Z ]+$/.test(caption)) throw new Error(`caption "${caption}" is not NOUN, ADJECTIVE`);
+  if (!/^[A-Z][A-Z -]+, [A-Z][A-Z -]+$/.test(caption)) throw new Error(`caption "${caption}" is not NOUN, ADJECTIVE`); // hyphens allowed: 'FAITH, CLEAR-EYED' is house style
   run('node', ['scripts/render-cover.mjs', slug]);
   const webp = path.join(ROOT, 'public', 'img', `${slug}.webp`);
   if (!fs.existsSync(webp)) throw new Error('render-cover produced no webp');
