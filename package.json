@@ -12,7 +12,8 @@
     "lint:titles": "node scripts/lint-titles.mjs",
     "og": "node scripts/make-og-images.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:line": "node --test scripts/line/test/*.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.1",
