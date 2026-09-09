@@ -271,3 +271,23 @@ Reads:
 
 Fold into the Mon 1 Sep week-3 readout alongside follower count and site
 analytics.
+
+---
+
+## Week 3/4 readout — Mon 7 September 2026 (DRAFT, numbers arriving)
+
+| # | Metric | 7 Sep | Prior | Note |
+|---|---|---|---|---|
+| 1 | Newsletter subscribers | **708** | 680 (31 Aug) · 563 (17 Aug) | +28 in 7d, slowest weekly delta since launch; no edition in the window, so this is the between-edition floor. Edition 3 (Fri 11 Sep) is the growth event |
+| 2 | Substack subscribers | _TBC_ | 8 | |
+| 3 | LinkedIn followers | _TBC_ | 6,554 (17 Aug) | |
+| 4 | Value-accrual post, final 24h | _TBC_ | — | |
+| 5 | Supply-chain P1 (1 Sep) | _TBC_ | — | |
+| 6 | Cloudflare percent cached | _TBC_ | — | LCP fix shipped 24 Aug; this is the first read on the Cache Rule |
+
+**Supply-chain P2 ("Four disciplines"), fired Mon 7 Sep 1:45pm UK.** ~7h
+snapshot: 263 impressions, 172 members reached, **35% OON** on day one (week-2
+posts started ~17% and climbed to 27% over a week). One substantive pushback
+comment ("flexibility adds more complexity than value"); replied with the
+tiering position and a question back in the commenter's architecture lane.
+Tue-night rule: >1,000 imps or >40% OON ⇒ skip Wed, work the thread.

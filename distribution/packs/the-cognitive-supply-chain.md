@@ -30,7 +30,7 @@ The full essay, including how the four disciplines carry across, is on my site; 
 
 ---
 
-## P2 — "Four disciplines" — slot: Mon 8 Sep, 8am UK (user now on BST)
+## P2 — "Four disciplines" — ✅ FIRED Mon 7 Sep 1:45pm UK (author comment + cover attached)
 
 **Hook:** Your AI vendor cannot be prevented from changing its model. What you can do is know what has changed before your customers notice.
 
@@ -48,7 +48,9 @@ Resilience does consume margin; the cost concern is legitimate. Procurement hand
 
 The full essay is on my site; link on my profile.
 
-**Author comment (attach Fig. 02 cover image):** The essay cover shows a single supplier, dozens of dependencies and no second source. Which tier-one process in your business fits that picture?
+**Author comment (fired, Fig. 02 cover attached):** The essay cover shows a single supplier, dozens of dependencies and no second source. Which tier-one process in your business fits that picture?
+
+**Snapshot ~7h (Mon 7 Sep, 8:20pm UK):** 263 impressions, 172 members reached, 35% out-of-network / 65% in-network, 2 comments (one substantive: the "flexibility adds complexity" pushback; reply posted ~8:30pm UK with the tiering position + a question back). Tue-night rule: >1,000 imps or >40% OON ⇒ skip Wed.
 
 ---
 
