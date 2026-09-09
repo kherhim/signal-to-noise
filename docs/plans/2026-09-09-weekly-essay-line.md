@@ -594,7 +594,11 @@ export function loadNeverList() {
   } catch { return ['Axi']; }
 }
 export function neverListHits(text, list = loadNeverList()) {
-  return list.filter((w) => new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text));
+  // Lookaround boundaries, not \b: entries like "Acme Inc." end in punctuation and \b would never match.
+  return list.filter((w) => {
+    const esc = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return new RegExp(`(?<!\\w)${esc}(?!\\w)`, 'i').test(text);
+  });
 }
 
 export const loadLedger = () => { try { return JSON.parse(fs.readFileSync(LEDGER, 'utf8')); } catch { return { published: [] }; } };
