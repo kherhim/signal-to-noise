@@ -14,7 +14,7 @@
 - Never mention Axi, the owner's employer, colleagues or clients; never a company on `_sources/NEVER-LIST.md`; never a number or quote from memory (spec §1 rules A, B, D).
 - Every shipping string goes through Layer B (Codex) then plagiarism, British English, and Layer A last, in that order (spec §5).
 - Monday brief: silence means go. Tuesday final: silence means hold; only the word `publish` ships (spec §2).
-- Automation mail always sets `Reply-To: essay-line@signal-to-noise.co`; replies are matched on `In-Reply-To` (spec §6).
+- Automation mail always sets `Reply-To: essay-line@signal-to-noise.co`; replies are matched on the subject token `[S2N <token>]` because Zoho IMAP cannot search `In-Reply-To` (found in Task 2); `In-Reply-To` is checked only when present (spec §6).
 - Scanner runs score-only until `calibration_until` in `distribution/line/config.json` (initially `2026-10-07`).
 - Kill switch: `distribution/autopilot/PAUSE` halts every job. `state.json.hold === true` parks one essay.
 - Credentials only from `.env` (`SUBSTACK_SID`, `ZOHO_*`, `OWNER_EMAIL`, `ESSAY_LINE_REPLY_TO`, `CLOUDFLARE_*`); never printed, never committed.
@@ -203,7 +203,7 @@ git commit -m "Essay line: env, state and test scaffolding"
 
 **Interfaces:**
 - Consumes: `ENV`, `need`, `log` from `env.mjs`.
-- Produces: `sendMail({ subject, text, attachments? }) → { messageId }` (always to `OWNER_EMAIL`, Reply-To alias); `findReply({ messageId }) → null | { verdict, text, date, from }`; `parseReply(rawEml) → { text, headers }`; `classify(text) → 'no'|'hold'|'publish'|'ok'|'text'`.
+- Produces: `sendMail({ subject, text, attachments? }) → { messageId }` (always to `OWNER_EMAIL`, Reply-To alias); `findReply({ messageId, token = null, subjectNeedle = null }) → null | { verdict, text, date, from }` (matches on subject token); `parseReply(rawEml) → { text, headers }`; `classify(text) → 'no'|'hold'|'publish'|'ok'|'text'`.
 
 - [ ] **Step 1: Write the fixture and failing test**
 

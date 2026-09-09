@@ -202,8 +202,10 @@ never the mailbox address:** Gmail has the mailbox address configured as a
 send-as alias, so a Gmail reply to it never leaves Google (verified 9 Sep,
 test 1 vanished; test 2 via the alias arrived in 40 s). Reads the Zoho inbox
 over IMAP (`imappro.zoho.eu:993`, IMAP Access enabled 9 Sep) only for messages
-whose `In-Reply-To` matches a Message-ID the automation sent; all other mail is
-never read or stored. Recognised replies: `no`, `hold`, `publish`; anything
+whose subject carries the automation's token (`[S2N <token>]`, which Gmail
+preserves in a reply); Zoho's IMAP cannot search the `In-Reply-To` header
+(verified 9 Sep), so that header is checked only when present. All other mail
+is never read or stored. Recognised replies: `no`, `hold`, `publish`; anything
 else is correction text, taken from the plain-text part above the quoted
 original. Credentials in `.env` (all set 9 Sep): `ZOHO_USER`,
 `ZOHO_APP_PASSWORD` (app password "essay-line"), `ZOHO_SMTP_HOST`,
