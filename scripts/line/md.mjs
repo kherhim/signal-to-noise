@@ -1,27 +1,52 @@
 export const SHIPPING_FIELDS = ['title', 'excerpt', 'seoDescription', 'coverImageAlt'];
 
-export function splitFrontmatter(md) {
-  const m = md.match(/^---\n([\s\S]*?)\n---\n\n?([\s\S]*)$/);
-  if (!m) return { meta: {}, body: md.trim(), order: [] };
-  const meta = {}, order = [];
-  for (const line of m[1].split('\n')) {
-    const kv = line.match(/^(\w+):\s*(.*)$/);
-    if (!kv) continue;
-    let v = kv[2].trim();
-    if (v.startsWith('[')) v = JSON.parse(v);
-    else if (v === 'true' || v === 'false') v = v === 'true';
-    else v = v.replace(/^"(.*)"$/, '$1');
-    meta[kv[1]] = v; order.push(kv[1]);
-  }
-  return { meta, body: m[2].replace(/\n$/, ''), order };
+const TOP_LEVEL_KV = /^(\w+):\s*(.+)$/;
+
+function parseValue(v) {
+  v = v.trim();
+  if (v.startsWith('[')) return JSON.parse(v);
+  if (v === 'true' || v === 'false') return v === 'true';
+  const q = v.match(/^"(.*)"$/);
+  if (q) return q[1].replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+  return v;
 }
 
-export function joinFrontmatter(meta, body, order = Object.keys(meta)) {
-  const fm = order.filter((k) => k in meta).map((k) => {
-    const v = meta[k];
-    if (Array.isArray(v)) return `${k}: [${v.map((x) => JSON.stringify(x)).join(', ')}]`;
-    if (typeof v === 'boolean' || /^\d{4}-\d{2}-\d{2}$/.test(String(v)) || k.startsWith('cover') && k !== 'coverImageAlt') return `${k}: ${v}`;
-    return `${k}: "${String(v).replace(/"/g, '\\"')}"`;
+export function splitFrontmatter(md) {
+  const m = md.match(/^---\n([\s\S]*?)\n---\n\n?([\s\S]*)$/);
+  if (!m) return { meta: {}, body: md.trim(), raw: [] };
+  const raw = m[1].split('\n');
+  const meta = {};
+  for (const line of raw) {
+    const kv = line.match(TOP_LEVEL_KV);
+    if (!kv) continue;
+    meta[kv[1]] = parseValue(kv[2]);
+  }
+  return { meta, body: m[2].replace(/\n$/, ''), raw };
+}
+
+export function serialiseValue(value, originalLine) {
+  if (Array.isArray(value)) return `[${value.map((x) => JSON.stringify(x)).join(', ')}]`;
+  if (typeof value === 'boolean') return String(value);
+  const wasQuoted = originalLine !== undefined && /^"(.*)"$/.test(originalLine.trim());
+  if (wasQuoted) return `"${String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+  if (originalLine !== undefined) return String(value);
+  // No original line to model: default to quoting strings, leaving booleans/arrays as handled above.
+  return `"${String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+}
+
+export function joinFrontmatter(meta, body, raw = []) {
+  const seen = new Set();
+  const lines = raw.map((line) => {
+    const kv = line.match(TOP_LEVEL_KV);
+    if (!kv) return line;
+    const key = kv[1];
+    if (!(key in meta)) return line;
+    seen.add(key);
+    return `${key}: ${serialiseValue(meta[key], kv[2])}`;
   });
-  return `---\n${fm.join('\n')}\n---\n\n${body}\n`;
+  for (const key of Object.keys(meta)) {
+    if (seen.has(key)) continue;
+    lines.push(`${key}: ${serialiseValue(meta[key])}`);
+  }
+  return `---\n${lines.join('\n')}\n---\n\n${body}\n`;
 }

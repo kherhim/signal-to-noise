@@ -15,18 +15,31 @@ export function buildPrompt(text, kind = 'body') {
   ].join('\n');
 }
 
-export function layerBText(text, { kind = 'body' } = {}) {
-  const out = path.join(os.tmpdir(), `layerb-${Date.now()}.md`);
-  const r = spawnSync('codex', codexArgs(out), { input: buildPrompt(text, kind), encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
-  if (r.status !== 0 || !fs.existsSync(out)) throw new Error(`codex failed (${r.status}): ${(r.stderr || r.stdout).slice(0, 300)}`);
-  const result = fs.readFileSync(out, 'utf8').replace(/^<<<\n?|\n?>>>$/g, '').trim();
-  fs.unlinkSync(out);
-  if (!result || result.length < text.length * 0.6) throw new Error('codex output implausibly short');
+export function checkOutput(raw, prompt) {
+  const result = raw.replace(/^<<<\n?|\n?>>>$/g, '').trim();
+  const echoNeedle = prompt.split('\n')[0].slice(0, 60);
+  if (result.includes('<<<') || result.includes('>>>') || (echoNeedle && result.includes(echoNeedle))) {
+    throw new Error('codex output contains markers or echoes the prompt');
+  }
   return result;
 }
 
+export function layerBText(text, { kind = 'body' } = {}) {
+  const out = path.join(os.tmpdir(), `layerb-${Date.now()}.md`);
+  try {
+    const prompt = buildPrompt(text, kind);
+    const r = spawnSync('codex', codexArgs(out), { input: prompt, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
+    if (r.status !== 0 || !fs.existsSync(out)) throw new Error(`codex failed (${r.status}): ${(r.stderr || r.stdout).slice(0, 300)}`);
+    const result = checkOutput(fs.readFileSync(out, 'utf8'), prompt);
+    if (!result || result.length < text.length * 0.6) throw new Error('codex output implausibly short');
+    return result;
+  } finally {
+    if (fs.existsSync(out)) fs.unlinkSync(out);
+  }
+}
+
 export function layerBEssay(inPath, outPath) {
-  const { meta, body, order } = splitFrontmatter(fs.readFileSync(inPath, 'utf8'));
+  const { meta, body, raw } = splitFrontmatter(fs.readFileSync(inPath, 'utf8'));
   const newBody = layerBText(body, { kind: 'body' });
   let changed = newBody !== body ? 1 : 0;
   for (const k of SHIPPING_FIELDS) {
@@ -35,7 +48,7 @@ export function layerBEssay(inPath, outPath) {
       if (v !== meta[k]) { meta[k] = v; changed++; }
     }
   }
-  fs.writeFileSync(outPath, joinFrontmatter(meta, newBody, order));
+  fs.writeFileSync(outPath, joinFrontmatter(meta, newBody, raw));
   log('layerb', `${path.basename(inPath)} → ${path.basename(outPath)}, ${changed} strings changed`);
   return { changed };
 }
