@@ -19,3 +19,17 @@ day (activity page → "View analytics" href) so the pull is a straight navigati
 
 Free-plan limits: Cloudflare Cache Analytics is paid-only; percent cached comes
 from HTTP Traffic cached/total, which bot bursts distort — read the per-day column.
+
+## Weekly schedule (installed 9 Sep 2026)
+
+launchd agent `co.signal-to-noise.metrics` runs the script every **Monday 07:30 local**
+with `--linkedin`, logging to `~/Library/Logs/signal2noise-metrics.log`. A missed run
+(machine asleep) fires at next wake; a powered-off Monday is skipped. Snapshot JSONs
+land in this folder untracked — commit them with the Monday readout.
+
+```
+# copy in repo: infra/co.signal-to-noise.metrics.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/co.signal-to-noise.metrics.plist   # install
+launchctl kickstart gui/$(id -u)/co.signal-to-noise.metrics                                 # run now
+launchctl bootout gui/$(id -u)/co.signal-to-noise.metrics                                   # remove
+```
