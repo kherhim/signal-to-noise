@@ -1,0 +1,8 @@
+{
+  "calibration_until": "2026-10-07",
+  "preempt": false,
+  "thresholds": { "log": 0, "native_post": 50, "preempt": 70, "fast_piece": 85, "min_fit_to_preempt": 8 },
+  "weights": { "corpus_fit": 0.35, "magnitude": 0.25, "velocity": 0.20, "number": 0.20 },
+  "brief_hour_local": 7, "veto_hour_local": 19, "final_hour_local": 18, "publish_hour_uk": 8,
+  "min_age_hours_substack": 48
+}
