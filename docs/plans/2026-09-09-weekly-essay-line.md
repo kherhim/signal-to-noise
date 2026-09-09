@@ -2067,6 +2067,11 @@ test('final-sent polls for a reply; publishes only when approved and after the s
   assert.equal(nextAction({ ...st, approved: true }, at('2026-09-16T07:30:00Z'), cfg), 'publish');
 });
 
+test('a failed deploy or push retries publish on the next wake', () => {
+  assert.equal(nextAction({ stage: 'deploy-failed', approved: true }, at('2026-09-16T09:00:00Z'), cfg), 'publish');
+  assert.equal(nextAction({ stage: 'push-failed', approved: true }, at('2026-09-16T09:00:00Z'), cfg), 'publish');
+});
+
 test('hold, killed and published do nothing', () => {
   assert.equal(nextAction({ stage: 'approved', hold: true }, at('2026-09-14T20:00:00Z'), cfg), null);
   assert.equal(nextAction({ stage: 'approved', killed: true }, at('2026-09-14T20:00:00Z'), cfg), null);
@@ -2108,6 +2113,7 @@ export function nextAction(st, now, cfg) {
     case 'final-sent':
       if (st.approved) return now >= new Date(st.publish_not_before) ? 'publish' : null;
       return 'check-final';
+    case 'deploying': case 'deploy-failed': case 'push-failed': return 'publish'; // publish() resumes from its saved state
     default: return null;
   }
 }
@@ -2189,7 +2195,7 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
 
 - [ ] **Step 4: Run tests and a dry tick**
 
-Run: `node --test scripts/line/test/runner.test.mjs` — Expected: `# pass 4`.
+Run: `node --test scripts/line/test/runner.test.mjs` — Expected: `# pass 5`.
 Run: `node scripts/line/runner.mjs --dry --now 2026-09-14T07:00:00` — Expected: log lines showing what would run for the state files present (brief would email; an in-flight essay reports its would-be action).
 
 - [ ] **Step 5: Commit**
