@@ -28,7 +28,8 @@ coverImage: /img/<slug>.webp
 coverImageAlt: ""                (leave empty; the cover stage fills it)
 coverAnimation: <slug>
 ---
-then the body. Internal links to other essays use absolute
-`https://signal-to-noise.co/insights/<slug>/` URLs.
+then the body. Internal links to other essays use the site's relative form
+`/insights/<slug>/` (never the full domain), per
+docs/specs/article-formatting.md.
 
 Write both files into the directory given in Input and nothing else.

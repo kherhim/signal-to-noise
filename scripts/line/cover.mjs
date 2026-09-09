@@ -6,6 +6,9 @@ import { runSkill } from './claude.mjs';
 import { essayDir } from './state.mjs';
 import { splitFrontmatter } from './md.mjs';
 import { loadConfig } from './queue.mjs';
+import { snapshotTree, unexpectedWrites } from './writes.mjs';
+
+export { unexpectedWrites };
 
 const COVERS = path.join(ROOT, 'src', 'covers');
 
@@ -32,32 +35,10 @@ export function validateModule(src) {
   return { motionPx, caption };
 }
 
-const porcelainPath = (line) => line.slice(3);
-
-export function unexpectedWrites(before, after, allowed) {
-  const beforeSet = new Set(before.map(porcelainPath));
-  const allowedSet = new Set(allowed);
-  const seen = new Set();
-  const result = [];
-  for (const line of after) {
-    const p = porcelainPath(line);
-    if (beforeSet.has(p) || allowedSet.has(p) || seen.has(p)) continue;
-    seen.add(p);
-    result.push(p);
-  }
-  return result;
-}
-
 function run(cmd, args) {
   const r = spawnSync(cmd, args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
   if (r.status !== 0) throw new Error(`${cmd} ${args.join(' ')} failed: ${(r.stderr || r.stdout).slice(0, 400)}`);
   return r.stdout;
-}
-
-function gitPorcelain() {
-  const r = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
-  if (r.status !== 0) throw new Error(`git status failed: ${(r.stderr || r.stdout).slice(0, 400)}`);
-  return r.stdout.split('\n').filter(Boolean);
 }
 
 function cleanupCover(modulePath, altPath) {
@@ -79,9 +60,9 @@ export function makeCover({ slug, finalPath }) {
   const altPath = path.join(essayDir(slug), 'cover-alt.txt');
   const input = `slug: ${slug}\nfig: ${fig}\ntitle: ${meta.title}\nexcerpt: ${meta.excerpt}\n\nEssay:\n\n${body}`;
 
-  const before = gitPorcelain();
+  const before = snapshotTree();
   const out = runSkill({ skill: 'cover', input, tools: ['Read', 'Write', 'Glob'], maxTurns: 40, model: cfg.models?.cover ?? null });
-  const after = gitPorcelain();
+  const after = snapshotTree();
 
   const allowed = [path.relative(ROOT, modulePath), path.relative(ROOT, altPath)];
   const unexpected = unexpectedWrites(before, after, allowed);

@@ -2,9 +2,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, log } from './env.mjs';
 import { runSkill } from './claude.mjs';
-import { essayDir, loadState, saveState, addCost } from './state.mjs';
+import { essayDir, saveState, addCost } from './state.mjs';
 import { loadNeverList, neverListHits, loadConfig } from './queue.mjs';
 import { splitFrontmatter } from './md.mjs';
+import { snapshotTree, unexpectedWrites } from './writes.mjs';
 
 const INSIGHTS = path.join(ROOT, 'src', 'content', 'insights');
 export const REQUIRED = ['title', 'date', 'excerpt', 'seoDescription', 'tags', 'draft', 'coverImage', 'coverImageAlt', 'coverAnimation'];
@@ -23,8 +24,13 @@ export function nextWednesday(from = new Date()) {
   const d = new Date(from); d.setDate(d.getDate() + ((3 - d.getDay() + 7) % 7 || 7)); return d.toISOString().slice(0, 10);
 }
 
+// Site spec (docs/specs/article-formatting.md) requires internal links in the
+// relative form `/insights/<slug>/`, never the full domain.
+const SITE_LINK_RE = /\]\(https:\/\/(?:www\.)?signal-to-noise\.co(\/insights\/[^)]+)\)/g;
+export const normaliseInternalLinks = (md) => md.replace(SITE_LINK_RE, (_, p) => `](${p})`);
+
 export function runDraft(slug) {
-  const dir = essayDir(slug), st = loadState(slug);
+  const dir = essayDir(slug);
   const brief = fs.readFileSync(path.join(dir, 'brief.md'), 'utf8');
   const never = loadNeverList();
   const input = [
@@ -33,16 +39,30 @@ export function runDraft(slug) {
     `Brief:\n${brief}`, `Exemplars of the voice:\n${exemplars(4)}`,
   ].join('\n\n');
   const cfg = loadConfig();
+  const before = snapshotTree();
   const out = runSkill({ skill: 'write-essay', input, tools: ['WebSearch', 'WebFetch', 'Read', 'Write'], maxTurns: 60, model: cfg.models?.write ?? null });
+  const after = snapshotTree();
+  // The essay directory is gitignored, so ANY porcelain change means the
+  // skill wrote somewhere it shouldn't have.
+  const unexpected = unexpectedWrites(before, after, []);
+  if (unexpected.length) throw new Error(`write-essay skill touched unexpected files: ${unexpected.join(', ')}`);
   const outlinePath = path.join(dir, 'OUTLINE.md'), draftPath = path.join(dir, 'draft.md');
   if (!fs.existsSync(outlinePath) || !fs.existsSync(draftPath)) throw new Error('write-essay skill did not produce OUTLINE.md and draft.md');
+  const outline = fs.readFileSync(outlinePath, 'utf8');
   const md = fs.readFileSync(draftPath, 'utf8');
   const missing = validateFrontmatter(md);
   if (missing.length) throw new Error(`draft frontmatter missing: ${missing.join(', ')}`);
+  const outlineHits = neverListHits(outline, never);
+  if (outlineHits.length) throw new Error(`OUTLINE.md mentions never-list: ${outlineHits.join(', ')}`);
   const hits = neverListHits(md, never);
-  if (hits.length) throw new Error(`draft mentions never-list: ${hits.join(', ')}`);
+  if (hits.length) throw new Error(`draft.md mentions never-list: ${hits.join(', ')}`);
   const words = splitFrontmatter(md).body.split(/\s+/).length;
   if (words < 1100 || words > 2100) throw new Error(`draft is ${words} words, outside 1,100–2,100`);
+  const linkHits = md.match(SITE_LINK_RE) ?? [];
+  if (linkHits.length) {
+    fs.writeFileSync(draftPath, normaliseInternalLinks(md));
+    log('draft', `${slug} normalised ${linkHits.length} internal link(s) to relative form`);
+  }
   addCost(slug, out.cost_usd);
   saveState(slug, { stage: 'drafted', words });
   log('draft', `${slug} drafted, ${words} words, $${out.cost_usd.toFixed(3)}`);
