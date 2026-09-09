@@ -1295,7 +1295,7 @@ import path from 'node:path';
 import { log } from './env.mjs';
 import { layerBEssay, layerBText } from './layerb.mjs';
 import { checkPlagiarism } from './plagiarism.mjs';
-import { scanBrE, applySpellingFixes } from './bre.mjs';
+import { scanBrE, applySpellingFixes, scanAmbiguous } from './bre.mjs';
 import { inspectFile, cleanFile } from './layera.mjs';
 import { splitFrontmatter, joinFrontmatter, SHIPPING_FIELDS } from './md.mjs';
 
@@ -1315,7 +1315,7 @@ export function runGate({ inPath, outPath, reportPath, skipLayerB = false }) {
   md = joinFrontmatter(meta, body, raw);
   fs.writeFileSync(outPath, md);
   const flagsAfter = scanBrE(md);
-  checks.bre = { flags: flagsBefore, fixed: fixed.fixed, remaining: flagsAfter };
+  checks.bre = { flags: flagsBefore, fixed: fixed.fixed, remaining: flagsAfter, warnings: scanAmbiguous(md) };
   // 4. Layer A last
   const before = inspectFile(outPath);
   if (before.suspicious) cleanFile(outPath);
@@ -1339,7 +1339,8 @@ function renderReport({ inPath, outPath, checks, verdict, fails }) {
   L.push('## 2. Plagiarism and provenance', `Verdict: ${checks.plagiarism.verdict}`, ...checks.plagiarism.sentences.map((s) => `- ${s.hit ? '❌ HIT' : '✅ clean'} — "${s.text.slice(0, 90)}…"${s.hit ? ` (${s.url})` : ''}`),
     ...checks.plagiarism.citations.map((c) => `- ${c.verified ? '✅' : '❌'} quote "${c.quote.slice(0, 60)}…" — ${c.url || 'no url'}${c.note ? ` — ${c.note}` : ''}`), '');
   L.push('## 3. British English', `Flagged ${checks.bre.flags.length}, fixed ${checks.bre.fixed.length}, unresolved ${checks.bre.remaining.length}`,
-    ...checks.bre.flags.map((f) => `- line ${f.line}: ${f.word}${f.fix ? ` → ${f.fix}` : ' (needs a decision)'}`), '');
+    ...checks.bre.flags.map((f) => `- line ${f.line}: ${f.word} → ${f.fix}`),
+    ...(checks.bre.warnings.length ? ['Ambiguous (not auto-fixed, check by eye):', ...checks.bre.warnings.map((w) => `- line ${w.line}: ${w.word} — ${w.note}`)] : []), '');
   L.push('## 4. Layer A (invisible Unicode)', `Before: ${checks.layera.before.suspicious ? 'SUSPICIOUS' : 'clean'} · After: ${checks.layera.after.suspicious ? 'SUSPICIOUS' : 'clean'}`, '');
   return L.join('\n');
 }
