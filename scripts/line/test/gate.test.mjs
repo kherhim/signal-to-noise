@@ -29,7 +29,7 @@ test('renderReport renders a pass verdict for a skipLayerB run with no checks.la
     layera: { before: { suspicious: false }, after: { suspicious: false } },
   };
   const report = renderReport({ inPath: 'x.md', outPath: 'y.md', checks, verdict: 'pass', fails: [] });
-  assert.doesNotThrow(() => report);
+  assert.match(report, /## Verdict:/, 'every report states a verdict, whatever the checks contained');
   assert.ok(report.includes('## Verdict: PASS'));
 });
 

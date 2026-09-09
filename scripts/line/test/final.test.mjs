@@ -5,7 +5,7 @@ import path from 'node:path';
 import os from 'node:os';
 
 process.env.LINE_STAGING = fs.mkdtempSync(path.join(os.tmpdir(), 'line-final-'));
-const { saveState, essayDir } = await import('../state.mjs');
+const { saveState, loadState, essayDir } = await import('../state.mjs');
 const {
   finalEmailText, nextPublishSlot, finalSendAllowed, buildFinal, assembleFinal, localDay, withFinalAssembly, hashFiles,
   protectedPaths, applyCorrections,
@@ -94,10 +94,18 @@ const GATED = ['---', 'title: "The colour of money"', 'date: 2026-01-01', 'excer
   'coverImage: "/img/s.webp"', 'coverImageAlt: "placeholder"', 'coverAnimation: "s"', 'tags: ["cfo"]', 'draft: false',
   '---', '', 'Body of the essay.', ''].join('\n');
 
+// The alt as it stands in a built final.md: gated, so deliberately NOT equal to
+// the raw string in cover-alt.txt. A write-back that compares final.md against
+// cover-alt.txt rather than against the alt as it was before the skill ran
+// would overwrite the raw alt with Layer B's own output on every round.
+const GATED_ALT = 'A chart of the colour of money. (rewritten)';
+const withAlt = (alt) => GATED.replace('coverImageAlt: "placeholder"', `coverImageAlt: "${alt}"`);
+
 function seed(slug, { alt = 'A chart of the color of money.', state = {} } = {}) {
   const dir = essayDir(slug);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'gated.md'), GATED);
+  fs.writeFileSync(path.join(dir, 'final.md'), withAlt(GATED_ALT));
   fs.writeFileSync(path.join(dir, 'cover-alt.txt'), alt + '\n');
   fs.writeFileSync(path.join(dir, 'gate-report.md'), '# Gate report\n\n## 4. Layer A (invisible Unicode)\nBefore: clean · After: clean\n');
   saveState(slug, { stage: 'covered', title: 'T', ...state });
@@ -106,6 +114,7 @@ function seed(slug, { alt = 'A chart of the color of money.', state = {} } = {})
 
 const cleanA = { suspicious: false, report: null, kind: 'text' };
 const finalDeps = (over = {}) => ({
+  serviceUp: () => true,
   layerBText: (t) => `${t} (rewritten)`,
   inspectFile: () => cleanA,
   cleanFile: () => ({ changed: false, report: null }),
@@ -123,6 +132,18 @@ test('buildFinal runs the alt through Layer B, then BrE, then the never-list, an
   assert.match(md, /^coverImageAlt: "A chart of the colour of money\. \(rewritten\)"$/m, 'Layer B then the BrE fix');
   assert.match(md, /^date: 2026-09-16$/m, 're-stamped from publish_not_before');
   assert.match(md, /^title: "The colour of money"$/m);
+});
+
+// Layer A is the last step of the assembly and cannot be skipped, so an assembly
+// that starts with the service down would pay Codex for the alt rewrite and then
+// die at the end. Same precheck the gate already makes.
+test('buildFinal refuses to start when the watermarks service is down, before any spend', () => {
+  const slug = 'm1-service-down';
+  seed(slug);
+  assert.throws(
+    () => buildFinal(slug, { deps: finalDeps({ serviceUp: () => false, layerBText: () => { throw new Error('must not spend'); } }) }),
+    /watermarks service not running/,
+  );
 });
 
 test('buildFinal falls back to the next publish slot when the state carries no date', () => {
@@ -255,4 +276,74 @@ test('applyCorrections re-gates normally when nothing protected moved', () => {
     deps: { snapshotTree: () => [], runSkill: () => ({ cost_usd: 0.01 }), runGate: () => ({ verdict: 'pass' }) },
   });
   assert.deepEqual(r, { changed: true, verdict: 'pass' });
+});
+
+// --- P2: an alt the owner corrects must survive the rebuild ---
+
+const correctionDeps = (dir, { edit = () => {}, verdict = 'pass' } = {}) => ({
+  snapshotTree: () => [],
+  runSkill: () => { edit(path.join(dir, 'final.md')); return { cost_usd: 0 }; },
+  runGate: () => ({ verdict }),
+});
+
+test('applyCorrections carries an alt the skill changed back into cover-alt.txt', () => {
+  const slug = 'p2-alt-changed';
+  const dir = seed(slug);
+  const edited = 'A ledger, redrawn in three colours.';
+  applyCorrections(slug, 'the alt should describe the ledger', {
+    deps: correctionDeps(dir, { edit: (p) => fs.writeFileSync(p, withAlt(edited)) }),
+  });
+  assert.equal(fs.readFileSync(path.join(dir, 'cover-alt.txt'), 'utf8').trim(), edited,
+    'buildFinal re-reads cover-alt.txt, so the correction has to land there or it is lost');
+});
+
+test('applyCorrections leaves cover-alt.txt untouched when the skill did not change the alt', () => {
+  const slug = 'p2-alt-same';
+  const dir = seed(slug);
+  const before = fs.readFileSync(path.join(dir, 'cover-alt.txt'));
+  applyCorrections(slug, 'tighten the third paragraph', {
+    deps: correctionDeps(dir, { edit: (p) => fs.appendFileSync(p, '\nOne more paragraph.\n') }),
+  });
+  assert.deepEqual(fs.readFileSync(path.join(dir, 'cover-alt.txt')), before,
+    'the gated alt is never written back over the raw one');
+});
+
+test('applyCorrections ignores an alt the skill emptied or deleted', () => {
+  const slug = 'p2-alt-empty';
+  const dir = seed(slug);
+  const before = fs.readFileSync(path.join(dir, 'cover-alt.txt'));
+  applyCorrections(slug, 'drop the alt', {
+    deps: correctionDeps(dir, { edit: (p) => fs.writeFileSync(p, withAlt('')) }),
+  });
+  assert.deepEqual(fs.readFileSync(path.join(dir, 'cover-alt.txt')), before, 'an empty alt is a mistake, not a correction');
+});
+
+// --- P3: a failed corrections round must leave something to recover from ---
+
+test('applyCorrections saves the corrected text as corrected.md, whatever the gate says', () => {
+  const slug = 'p3-corrected-copy';
+  const dir = seed(slug);
+  applyCorrections(slug, 'add the closing line', {
+    deps: correctionDeps(dir, { edit: (p) => fs.appendFileSync(p, '\nA closing line.\n'), verdict: 'fail' }),
+  });
+  const corrected = fs.readFileSync(path.join(dir, 'corrected.md'), 'utf8');
+  assert.match(corrected, /A closing line\./, 'the corrected text is the only copy of the owner\'s edits');
+  assert.match(corrected, /^title: "The colour of money"$/m);
+});
+
+test('applyCorrections records gate_fail_origin so the recovery path is unambiguous', () => {
+  const slug = 'p3-origin-fail';
+  const dir = seed(slug);
+  const r = applyCorrections(slug, 'add a never-listed name', {
+    deps: correctionDeps(dir, { verdict: 'fail' }),
+  });
+  assert.equal(r.verdict, 'fail');
+  assert.equal(loadState(slug).gate_fail_origin, 'corrections');
+});
+
+test('applyCorrections clears gate_fail_origin when the corrections round passes', () => {
+  const slug = 'p3-origin-clear';
+  const dir = seed(slug, { state: { gate_fail_origin: 'corrections' } });
+  applyCorrections(slug, 'tighten the third paragraph', { deps: correctionDeps(dir) });
+  assert.equal(loadState(slug).gate_fail_origin, null, 'a stale marker would send the owner down the wrong recovery');
 });

@@ -75,6 +75,18 @@ export function nextAction(st, now, cfg) {
 
 function notify(deps, subject, text) { try { deps.sendMail({ subject, text }); } catch (e) { log('runner', `notify failed: ${e.message}`); } }
 
+// A gate fail parks the essay, and a parked essay in `gated` has no next action
+// whatever `hold` says — so the mail that reports the fail has to say which text
+// goes back in front of the gate. The two cases differ: the original gate is
+// recovered by re-gating draft.md, a corrections round by putting corrected.md
+// (the owner's edits, the only copy of them) back over draft.md first. The long
+// form is in distribution/line/README.md under "Recovery".
+export function gateFailRecovery(origin, slug) {
+  return origin === 'corrections'
+    ? `Recovery: copy ${slug}/corrected.md over ${slug}/draft.md, then clear \`hold\` and set \`stage: "drafted"\` in ${slug}/state.json — the corrected text is re-gated in full.`
+    : `Recovery: fix the cause, then clear \`hold\` and set \`stage: "drafted"\` in ${slug}/state.json — draft.md is re-gated.`;
+}
+
 // A reply the runner has already acted on must never be acted on twice: the
 // owner clearing `hold` by hand would otherwise be undone by the same old mail.
 const freshReply = (r, seen) => (r && r.key && r.key === seen ? null : r);
@@ -123,8 +135,11 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
         // A failed gate is a stop, not a step: park it so no later wake walks
         // an essay that failed plagiarism, BrE, the never-list or Layer A
         // onward to a cover and a final email.
-        deps.saveState(slug, { stage: 'gated', gate_verdict: r.verdict, ...(r.verdict === 'fail' ? { hold: true } : {}) });
-        if (r.verdict === 'fail') notify(deps, `Held at gate: ${st.title}`, r.report);
+        deps.saveState(slug, {
+          stage: 'gated', gate_verdict: r.verdict,
+          ...(r.verdict === 'fail' ? { hold: true, gate_fail_origin: 'draft' } : { gate_fail_origin: null }),
+        });
+        if (r.verdict === 'fail') notify(deps, `Held at gate: ${st.title}`, `${gateFailRecovery('draft', slug)}\n\n${r.report}`);
         break;
       }
       case 'cover': {
@@ -166,7 +181,11 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
           // The key is recorded only once the corrections have landed: if the skill
           // throws, the reply stays unconsumed and the retry cap governs it.
           if (c.verdict === 'pass') { deps.saveState(slug, { stage: 'covered', final_reply_seen: seen }); } // → send-final again on next wake (sendFinal rebuilds final.md from the re-gated file)
-          else { deps.saveState(slug, { stage: 'gated', gate_verdict: 'fail', hold: true, final_reply_seen: seen }); notify(deps, `Held at gate after corrections: ${st.title}`, deps.readFile(path.join(dir, 'gate-report.md'), 'utf8')); }
+          else {
+            deps.saveState(slug, { stage: 'gated', gate_verdict: 'fail', hold: true, final_reply_seen: seen });
+            notify(deps, `Held at gate after corrections: ${st.title}`,
+              `${gateFailRecovery('corrections', slug)}\n\n${deps.readFile(path.join(dir, 'gate-report.md'), 'utf8')}`);
+          }
         }
         break;
       }

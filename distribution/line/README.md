@@ -67,18 +67,43 @@ but the wait.
   once). Clear `hold` by hand once the cause is fixed — **and for a gate fail,
   also set `stage` back to `drafted`**, because a `gated` essay with
   `gate_verdict: 'fail'` has no next action whatever `hold` says, so clearing
-  `hold` alone leaves it sitting there. That is the recovery after a watermarks
-  outage too: start the service, set `stage: "drafted"`, clear `hold`.
+  `hold` alone leaves it sitting there. Which file goes back in front of the
+  gate depends on how it failed: see **Recovery** below.
 - `stage: brief-sending` means the send crashed part-way: the owner may or may
   not have the email. The runner deliberately does nothing with it — check the
   inbox, then set the stage to `briefed` (with the message id) or delete the
   directory and let Monday come round again.
 
+## Recovery
+
+A gate fail parks the essay in `stage: gated` with `gate_verdict: "fail"`, and
+that combination has no next action whatever `hold` says. Clearing `hold` alone
+never restarts it: the stage has to go back to `drafted`, and the gate always
+re-reads `draft.md`. `state.json` `gate_fail_origin` records which of the two
+cases you are in, and the mail that parks the essay repeats the one line.
+
+- **Original gate fail** (`gate_fail_origin: "draft"` — the Monday-to-Tuesday
+  gate, or a watermarks outage). Fix the cause (start the service, edit
+  `draft.md`), then in `<slug>/state.json` clear `hold` and set
+  `stage: "drafted"`. `draft.md` is re-gated from the top.
+- **Corrections-round fail** (`gate_fail_origin: "corrections"` — the owner
+  replied with corrections and the re-gate failed). The corrected text is saved
+  as `<slug>/corrected.md`; `draft.md` is still the pre-corrections text, so
+  recovering the first way silently throws the owner's edits away. Instead: copy
+  `corrected.md` over `draft.md`, then clear `hold` and set `stage: "drafted"`.
+  The corrected text is then re-gated in full.
+
+Both routes go `drafted → gate → cover → send-final`, so the cover skill runs
+again and rewrites `<slug>/cover-alt.txt`. An alt the owner corrected in the
+same round does not survive the recovery — re-state it in the next corrections
+reply, or edit `cover-alt.txt` by hand after the cover step.
+
 ## Where state and logs live
 
 - Per-essay state: `_sources/staging-articles/<slug>/state.json` plus
-  `brief.md`, `OUTLINE.md`, `draft.md`, `gate-report.md`, `final.md`
-  (gitignored, local-only).
+  `brief.md`, `OUTLINE.md`, `draft.md`, `gate-report.md`, `final.md`,
+  `cover-alt.txt`, and `corrected.md` after a corrections round (gitignored,
+  local-only).
 - Peg board: `distribution/line/peg-board.json` and `.md`.
 - Script log: `~/Library/Logs/signal2noise-essay-line.log`.
 - launchd stdout/stderr: `~/Library/Logs/signal2noise-essay-line-launchd.log`.

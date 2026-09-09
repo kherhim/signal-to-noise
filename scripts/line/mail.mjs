@@ -85,14 +85,24 @@ export function buildSearchNeedle({ token = null, subjectNeedle = null } = {}) {
 // copy, not a reply. A From that matches but DOES carry In-Reply-To is a real
 // reply (e.g. an owner replying via Gmail send-as with the site address as From).
 export function isOwnCopy(headers, zohoUser) {
-  return (headers.from ?? '').includes(zohoUser) && !headers['in-reply-to'];
+  return extractAddress(headers.from) === String(zohoUser ?? '').trim().toLowerCase() && !headers['in-reply-to'];
 }
 
 // The bare address out of a From header: "The Owner <a@b.co>" → "a@b.co".
+//
+// A display name is free text. It may hold angle brackets, an @ and a comment,
+// and a hostile sender puts the address it wants to be mistaken for in exactly
+// there: `"Owner <owner@x.com>" <attacker@evil.net>` is a perfectly legal From
+// whose address is the attacker's. So the RFC 5322 quoted strings (with \"
+// escapes) and comments go first, and the address is the LAST angle group of
+// what survives. With no angle group at all the whole remainder is returned:
+// a malformed multi-token header is ambiguous, and returning it whole makes the
+// exact compare in senderAllowed reject it rather than pick a token to trust.
 export function extractAddress(from) {
-  const f = String(from ?? '').trim().replace(/\s*\([^)]*\)\s*$/, ''); // drop a trailing (comment)
-  const angle = f.match(/<([^>]*)>/);
-  return (angle ? angle[1] : f).trim().toLowerCase();
+  let f = String(from ?? '').replace(/"(?:\\.|[^"\\])*"/g, ' '); // quoted display names
+  for (let prev = null; prev !== f;) { prev = f; f = f.replace(/\([^()]*\)/g, ' '); } // comments, innermost out
+  const groups = [...f.matchAll(/<([^<>]*)>/g)];
+  return (groups.length ? groups[groups.length - 1][1] : f).trim().toLowerCase();
 }
 
 // Only two addresses may ever instruct the line: the owner, and the site address
@@ -108,12 +118,16 @@ export function senderAllowed(from, { owner, self } = {}) {
 }
 
 // A vacation responder or a mailer daemon must never be read as consent (or as
-// corrections). RFC 3834's Auto-Submitted, plus the two de-facto headers Zoho,
-// Gmail and Exchange responders set.
+// corrections). RFC 3834's Auto-Submitted, the machine values of Precedence
+// (which is how older responders and list software announce themselves), the
+// Exchange suppression header, and the two de-facto headers Zoho and Gmail set.
+const AUTO_PRECEDENCE = new Set(['auto_reply', 'auto-reply', 'bulk', 'junk']);
+
 export function isAutoReply(headers = {}) {
   const auto = headers['auto-submitted'];
   if (auto && String(auto).trim().toLowerCase() !== 'no') return true;
-  return 'x-autoreply' in headers || 'x-autorespond' in headers;
+  if (AUTO_PRECEDENCE.has(String(headers.precedence ?? '').trim().toLowerCase())) return true;
+  return 'x-autoreply' in headers || 'x-autorespond' in headers || 'x-auto-response-suppress' in headers;
 }
 
 export function findReply({ messageId, token = null, subjectNeedle = null }) {

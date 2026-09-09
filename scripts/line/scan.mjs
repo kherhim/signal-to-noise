@@ -47,10 +47,16 @@ export function renderBoard(board) {
 
 export const PROPOSALS_HEADING = '## Scanner proposals';
 export const IDEAS_MD = path.join(ROOT, 'distribution', 'ARTICLE-IDEAS.md');
-const TABLE_HEAD = '| Idea | Angle | Axes | Status |\n|---|---|---|---|';
-const proposalRow = (i) => `| ${i.proposed_title} | ${i.headline} — ${i.url} | scanner | idea |`;
+const TABLE_HEAD_ROW = '| Idea | Angle | Axes | Status |';
+const TABLE_HEAD = `${TABLE_HEAD_ROW}\n|---|---|---|---|`;
+// A headline is scraped from the wild and a proposed title is model output.
+// A literal pipe in either would split the row into phantom columns and corrupt
+// the rendered table, so it is escaped the way GitHub-flavoured markdown wants.
+const escapePipes = (s) => String(s ?? '').replace(/\|/g, '\\|');
+const proposalRow = (i) => `| ${escapePipes(i.proposed_title)} | ${escapePipes(i.headline)} — ${i.url} | scanner | idea |`;
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const alreadyListed = (md, title) => new RegExp(`^\\|\\s*${escapeRe(title.trim())}\\s*\\|`, 'mi').test(md);
+// Compared against the escaped form, because that is how the row was written.
+const alreadyListed = (md, title) => new RegExp(`^\\|\\s*${escapeRe(escapePipes(title).trim())}\\s*\\|`, 'mi').test(md);
 
 // A peg the scanner scored at preempt level but that maps to nothing in the
 // queue is an essay idea nobody has written down. The board is overwritten every
@@ -75,7 +81,10 @@ export function mergeProposals(ideasMd, items, threshold) {
   const start = ideasMd.indexOf(PROPOSALS_HEADING) + PROPOSALS_HEADING.length;
   const next = ideasMd.slice(start).search(/\n## /);
   const cut = next === -1 ? ideasMd.length : start + next;
-  return `${ideasMd.slice(0, cut).replace(/\s+$/, '')}\n${rows.join('\n')}\n${ideasMd.slice(cut)}`;
+  // A section someone left headerless (a hand-written heading, prose and no
+  // table) would otherwise collect orphan rows that render as plain text.
+  const head = ideasMd.slice(start, cut).includes(TABLE_HEAD_ROW) ? '' : `\n${TABLE_HEAD}`;
+  return `${ideasMd.slice(0, cut).replace(/\s+$/, '')}${head}\n${rows.join('\n')}\n${ideasMd.slice(cut)}`;
 }
 
 export async function scan({ dry = false } = {}) {

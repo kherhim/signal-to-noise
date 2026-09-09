@@ -51,6 +51,16 @@ test('isOwnCopy flags the automation\'s own sent copy but not a real reply from 
   assert.equal(isOwnCopy({ from: 'a@gmail.com' }, 'himanshu@signal-to-noise.co'), false);
 });
 
+test('isOwnCopy compares the extracted address exactly, so a display name cannot claim to be us', () => {
+  assert.equal(isOwnCopy({ from: '"himanshu@signal-to-noise.co" <attacker@evil.net>' }, 'himanshu@signal-to-noise.co'), false,
+    'a spoofed display name is not our own sent copy');
+  assert.equal(isOwnCopy({ from: 'himanshu@signal-to-noise.co.evil.net' }, 'himanshu@signal-to-noise.co'), false,
+    'a suffixed lookalike domain is not our own sent copy');
+  assert.equal(isOwnCopy({ from: 'Signal to Noise <HIMANSHU@Signal-To-Noise.CO>' }, 'himanshu@signal-to-noise.co'), true,
+    'the comparison is case-insensitive');
+  assert.equal(isOwnCopy({}, 'himanshu@signal-to-noise.co'), false, 'a missing From is not our own copy');
+});
+
 const addrs = { owner: 'owner@example.com', self: 'himanshu@signal-to-noise.co' };
 
 test('senderAllowed admits only the owner or the site address, case-insensitively', () => {
@@ -75,6 +85,41 @@ test('extractAddress pulls the bare address out of the From formats Zoho and Gma
   assert.equal(extractAddress(null), '');
 });
 
+// A display name is free text: it may contain angle brackets, an @ and a comment,
+// and a hostile sender will put the address it wants to impersonate there. The
+// address is the LAST angle group once quoted strings and comments are gone.
+test('extractAddress ignores angle brackets and addresses hidden inside a quoted display name', () => {
+  assert.equal(extractAddress('"Owner <owner@x.com>" <attacker@evil.net>'), 'attacker@evil.net');
+  assert.equal(extractAddress('"owner@example.com" <attacker@evil.net>'), 'attacker@evil.net');
+  assert.equal(extractAddress('"He said \\"hi\\" <owner@x.com>" <attacker@evil.net>'), 'attacker@evil.net',
+    'an escaped quote inside the display name does not end the quoted string early');
+  assert.equal(extractAddress('(owner@x.com) <attacker@evil.net>'), 'attacker@evil.net');
+  assert.equal(extractAddress('<owner@x.com> <attacker@evil.net>'), 'attacker@evil.net',
+    'when brackets are stacked the last group is the address');
+  assert.equal(extractAddress('"Signal to Noise" <himanshu@signal-to-noise.co>'), 'himanshu@signal-to-noise.co');
+  assert.equal(extractAddress('himanshu.kher@gmail.com'), 'himanshu.kher@gmail.com');
+});
+
+test('extractAddress refuses to guess at malformed multi-token From headers', () => {
+  assert.equal(extractAddress('attacker@evil.net owner@example.com'), 'attacker@evil.net owner@example.com',
+    'two bare addresses are ambiguous, so neither is extracted and the exact compare rejects both');
+});
+
+const gmailAddrs = { owner: 'himanshu.kher@gmail.com', self: 'himanshu@signal-to-noise.co' };
+
+test('senderAllowed is not fooled by an address planted in the display name', () => {
+  assert.equal(senderAllowed('"Owner <owner@x.com>" <attacker@evil.net>', { owner: 'owner@x.com', self: 'himanshu@signal-to-noise.co' }), false);
+  assert.equal(senderAllowed('"himanshu.kher@gmail.com" <attacker@evil.net>', gmailAddrs), false);
+  assert.equal(senderAllowed('attacker@evil.net owner@example.com', addrs), false);
+});
+
+test('senderAllowed admits the real owner and the site address in every form Zoho and Gmail send', () => {
+  assert.equal(senderAllowed('"Signal to Noise" <himanshu@signal-to-noise.co>', gmailAddrs), true, 'via self');
+  assert.equal(senderAllowed('himanshu.kher@gmail.com', gmailAddrs), true, 'via owner');
+  assert.equal(senderAllowed('"Signal To Noise" <HIMANSHU@SIGNAL-TO-NOISE.CO>', gmailAddrs), true, 'uppercase, via self');
+  assert.equal(senderAllowed('Himanshu Kher <Himanshu.Kher@Gmail.COM>', gmailAddrs), true, 'uppercase, via owner');
+});
+
 test('isAutoReply spots the standard vacation-responder headers', () => {
   assert.equal(isAutoReply({ 'auto-submitted': 'auto-replied' }), true);
   assert.equal(isAutoReply({ 'auto-submitted': 'auto-generated' }), true);
@@ -82,9 +127,21 @@ test('isAutoReply spots the standard vacation-responder headers', () => {
   assert.equal(isAutoReply({ 'x-autorespond': 'Out of office' }), true);
 });
 
+test('isAutoReply spots a machine Precedence and the Exchange suppression header', () => {
+  assert.equal(isAutoReply({ precedence: 'auto_reply' }), true);
+  assert.equal(isAutoReply({ precedence: 'auto-reply' }), true);
+  assert.equal(isAutoReply({ precedence: 'bulk' }), true);
+  assert.equal(isAutoReply({ precedence: 'junk' }), true);
+  assert.equal(isAutoReply({ precedence: ' BULK ' }), true, 'case and padding do not matter');
+  assert.equal(isAutoReply({ 'x-auto-response-suppress': 'All' }), true);
+  assert.equal(isAutoReply({ 'x-auto-response-suppress': '' }), true, 'the header\'s presence is the signal');
+});
+
 test('isAutoReply lets an ordinary reply through, including auto-submitted: no', () => {
   assert.equal(isAutoReply({}), false);
   assert.equal(isAutoReply({ 'auto-submitted': 'no' }), false);
   assert.equal(isAutoReply({ 'auto-submitted': ' No ' }), false);
   assert.equal(isAutoReply({ from: 'a@b.c', subject: 'Re: x' }), false);
+  assert.equal(isAutoReply({ precedence: 'list' }), false, 'a plain list copy is not a responder');
+  assert.equal(isAutoReply({ precedence: 'normal' }), false);
 });

@@ -76,6 +76,44 @@ test('mergeProposals dedupes by title — against the backlog and within one boa
   assert.equal(twice.match(/\| One idea \|/gi).length, 1, 'case-insensitive within a single board too');
 });
 
+// A headline is scraped from the wild and a proposed title is model output; a
+// literal pipe in either would split the row into phantom columns and silently
+// corrupt every row below it in the rendered backlog.
+test('mergeProposals escapes a pipe in the title and the headline so the table survives', () => {
+  const out = mergeProposals(IDEAS, [
+    { proposed_title: 'Cost | benefit', headline: 'Bank posts £2bn | analysts split', url: 'https://x/1', score: 90 },
+  ], 70);
+  assert.match(out, /^\| Cost \\\| benefit \| Bank posts £2bn \\\| analysts split — https:\/\/x\/1 \| scanner \| idea \|$/m);
+  const row = out.split('\n').find((l) => l.includes('Cost'));
+  assert.equal(row.split(/(?<!\\)\|/).length - 1, 5, 'four columns and the two end pipes, not seven');
+});
+
+test('mergeProposals dedupes a pipe-bearing title against the row it already wrote', () => {
+  const item = { proposed_title: 'Cost | benefit', headline: 'h', url: 'https://x/1', score: 90 };
+  const first = mergeProposals(IDEAS, [item], 70);
+  assert.equal(mergeProposals(first, [{ ...item, headline: 'different' }], 70), first,
+    'the escaped row must still be recognised as already listed');
+});
+
+test('mergeProposals inserts the table header when the section exists without one', () => {
+  const headless = `${IDEAS}\n${PROPOSALS_HEADING}\n\nSome prose and no table at all.\n\n## Later section\n\nKeep me.\n`;
+  const out = mergeProposals(headless, [{ proposed_title: 'Newer proposal', headline: 'h2', url: 'https://x/2', score: 90 }], 70);
+  assert.match(out, /\| Idea \| Angle \| Axes \| Status \|\n\|---\|---\|---\|---\|\n\| Newer proposal \|/,
+    'the row is never orphaned under a headerless section');
+  assert.ok(out.indexOf('Some prose and no table at all.') < out.lastIndexOf('| Idea | Angle | Axes | Status |'),
+    'the inserted header sits below the prose the section already had');
+  assert.ok(out.indexOf('| Newer proposal |') < out.indexOf('## Later section'));
+  assert.match(out, /Keep me\.\n$/);
+});
+
+test('mergeProposals adds no second header when the section already has one', () => {
+  const first = mergeProposals(IDEAS, [{ proposed_title: 'One idea', headline: 'a', url: 'https://x/a', score: 90 }], 70);
+  const again = mergeProposals(first, [{ proposed_title: 'Two idea', headline: 'b', url: 'https://x/b', score: 90 }], 70);
+  assert.equal(again.match(/\| Idea \| Angle \| Axes \| Status \|/g).length, 2,
+    'one header in the Sequels table, one in the proposals table — the round trip adds none');
+  assert.ok(again.indexOf('| One idea |') < again.indexOf('| Two idea |'));
+});
+
 test('mergeProposals appends into an existing section and leaves later sections alone', () => {
   const withSection = `${IDEAS}\n${PROPOSALS_HEADING}\n\n| Idea | Angle | Axes | Status |\n|---|---|---|---|\n| Older proposal | h — u | scanner | idea |\n\n## Later section\n\nKeep me.\n`;
   const out = mergeProposals(withSection, [{ proposed_title: 'Newer proposal', headline: 'h2', url: 'https://x/2', score: 90 }], 70);

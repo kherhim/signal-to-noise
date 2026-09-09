@@ -283,6 +283,20 @@ test('a gate fail parks the essay as well as recording the verdict', () => {
   assert.equal(st.hold, true, 'a failed gate parks the essay rather than leaving it to be re-run');
   assert.equal(st.cost_usd, 0.5, 'the plagiarism spend is recorded even on a fail');
   assert.equal(mail.length, 1);
+  assert.equal(st.gate_fail_origin, 'draft', 'the recovery is draft.md, not a corrected copy');
+  assert.match(mail[0].text, /clear `hold`/, 'the mail that parks the essay carries its own recovery');
+  assert.match(mail[0].text, /draft\.md/);
+  assert.doesNotMatch(mail[0].text, /corrected\.md/, 'this is the original gate, not a corrections round');
+  assert.match(mail[0].text, /## Verdict: FAIL/, 'the report still travels with it');
+});
+
+test('a gate fail after a corrections recovery re-stamps the origin as draft', () => {
+  const slug = 'gate-fail-origin-reset';
+  saveState(slug, { stage: 'drafted', title: 'T', gate_fail_origin: 'corrections' });
+  advance(slug, at('2026-09-15T02:00:00Z'), {
+    deps: { paused: () => false, runGate: () => ({ verdict: 'fail', report: '## Verdict: FAIL' }), sendMail: () => {} },
+  });
+  assert.equal(loadState(slug).gate_fail_origin, 'draft', 'a stale origin would send the owner to the wrong file');
 });
 
 test('a gate pass neither parks nor holds, and still records the spend', () => {
@@ -376,6 +390,9 @@ test('check-final: corrections that fail the gate park the essay and notify once
   assert.equal(st.final_reply_seen, 'c2');
   assert.equal(mail.length, 1);
   assert.match(mail[0].subject, /Held at gate after corrections/);
+  assert.match(mail[0].text, /corrected\.md/, 'the corrected text is what has to be put back, not draft.md');
+  assert.match(mail[0].text, /clear `hold`/);
+  assert.match(mail[0].text, /## Verdict: FAIL/, 'the report still travels with it');
 });
 
 test('a dry tick collects every essay\'s would-be action, not just the first', async () => {

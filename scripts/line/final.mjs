@@ -3,11 +3,11 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { ROOT, log } from './env.mjs';
 import { sendMail, findReply } from './mail.mjs';
-import { runGate } from './gate.mjs';
+import { runGate, serviceDownError } from './gate.mjs';
 import { runSkill } from './claude.mjs';
 import { layerBText } from './layerb.mjs';
 import { applySpellingFixes } from './bre.mjs';
-import { inspectFile, cleanFile } from './layera.mjs';
+import { inspectFile, cleanFile, serviceUp } from './layera.mjs';
 import { essayDir, loadState, saveState, addCost, STAGING } from './state.mjs';
 import { splitFrontmatter, joinFrontmatter } from './md.mjs';
 import { loadConfig, loadNeverList, neverListHits, NEVER } from './queue.mjs';
@@ -71,7 +71,7 @@ export function hashFiles(paths) {
 
 // Everything that could reach the network, a paid model or the watermarks
 // service, in one place so the assembly can be tested offline.
-export const FINAL_DEPS = { layerBText, applySpellingFixes, inspectFile, cleanFile, loadNeverList, neverListHits };
+export const FINAL_DEPS = { serviceUp, layerBText, applySpellingFixes, inspectFile, cleanFile, loadNeverList, neverListHits };
 
 // The alt text is a shipping string like any other, and until now it was the one
 // string that reached the page ungated. It goes through Layer B, then British
@@ -80,6 +80,10 @@ export const FINAL_DEPS = { layerBText, applySpellingFixes, inspectFile, cleanFi
 // clean, exactly as the four-check order requires.
 export function buildFinal(slug, { deps: injected = {} } = {}) {
   const deps = { ...FINAL_DEPS, ...injected };
+  // Layer A closes the assembly and cannot be skipped, so starting with the
+  // service down would pay Codex for the alt rewrite and then die at the end.
+  // Same precheck the gate makes, for the same reason.
+  if (!deps.serviceUp()) throw new Error(serviceDownError());
   const dir = essayDir(slug);
   const st = loadState(slug);
   const cfg = loadConfig();
@@ -186,12 +190,25 @@ export function protectedDiff(before, after) {
 
 export const CORRECTION_DEPS = { runSkill, runGate, snapshotTree };
 
+// The alt as it stands in a built final.md, or null if the file or the key is
+// not there. Read before and after the skill so that only a change the SKILL
+// made is carried back — final.md holds the gated alt and cover-alt.txt the raw
+// one, so they differ on every round and comparing them would write Layer B's
+// own output back over the source string.
+export function altOf(finalPath) {
+  try {
+    const v = splitFrontmatter(fs.readFileSync(finalPath, 'utf8')).meta.coverImageAlt;
+    return typeof v === 'string' ? v.trim() : null;
+  } catch { return null; }
+}
+
 export function applyCorrections(slug, text, { deps: injected = {} } = {}) {
   const deps = { ...CORRECTION_DEPS, ...injected };
   const dir = essayDir(slug), finalPath = path.join(dir, 'final.md');
   const cfg = loadConfig();
   const before = deps.snapshotTree();
   const guardedBefore = hashFiles(protectedPaths(slug));
+  const altBefore = altOf(finalPath);
   const out = deps.runSkill({ skill: 'corrections', input: `File: ${finalPath}\n\nCorrections:\n${text}`, tools: ['Read', 'Edit'], maxTurns: 20, model: cfg.models?.write ?? null });
   const after = deps.snapshotTree();
   // The essay directory is gitignored, so ANY porcelain change means the
@@ -201,9 +218,30 @@ export function applyCorrections(slug, text, { deps: injected = {} } = {}) {
   const touched = protectedDiff(guardedBefore, hashFiles(protectedPaths(slug)));
   if (touched.length) throw new Error(`corrections skill touched protected files: ${touched.join(', ')}`);
   addCost(slug, out.cost_usd);
+
+  // An alt correction would otherwise be thrown away: buildFinal always re-reads
+  // cover-alt.txt, so an alt the skill fixed in final.md is overwritten by the
+  // stale source string on the very next assembly.
+  const altAfter = altOf(finalPath);
+  if (altAfter && altBefore !== null && altAfter !== altBefore) {
+    fs.writeFileSync(path.join(dir, 'cover-alt.txt'), `${altAfter}\n`);
+    log('final', `${slug} cover alt corrected: "${altAfter}"`);
+  }
+
+  // The corrected text is the only copy of the owner's edits, and a failed
+  // re-gate leaves final.md about to be rebuilt from the pre-corrections gated
+  // file. Keep it, so the recovery in distribution/line/README.md has something
+  // to put back.
+  fs.copyFileSync(finalPath, path.join(dir, 'corrected.md'));
+
   // Re-gate the corrected file in full (Layer B on everything is the safe default; cost is one Codex pass).
   const gated = path.join(dir, 'gated.md');
   const r = deps.runGate({ inPath: finalPath, outPath: gated, reportPath: path.join(dir, 'gate-report.md') });
-  saveState(slug, { corrections: [...(loadState(slug).corrections ?? []), { text, at: new Date().toISOString(), gate: r.verdict }] });
+  saveState(slug, {
+    corrections: [...(loadState(slug).corrections ?? []), { text, at: new Date().toISOString(), gate: r.verdict }],
+    // Which text the owner has to put back to recover: 'corrections' means
+    // corrected.md, not draft.md. Cleared on a pass so it can never go stale.
+    gate_fail_origin: r.verdict === 'pass' ? null : 'corrections',
+  });
   return { changed: true, verdict: r.verdict };
 }
