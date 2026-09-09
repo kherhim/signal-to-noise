@@ -299,6 +299,15 @@ breakout — no Wednesday post (none was drafted), work the existing thread.
 P2 beat P1 on every measure and its 40% OON is the best supply-chain angle,
 but the essay as a whole runs well below pricing week (pricing P1 has kept
 climbing: 2,071 impressions as of today, from 1,651 at the week-3 close).
+**P2 at ~54h (Wed 9 Sep, ~8pm UK):** 560 impressions (+53 in 13h — the
+tail is flattening), 4 reactions, 4 comments. Fourth comment from Mark Vincent
+(transformation advisor) reframes the tiering step: which five processes get
+the full discipline "is a governance question dressed as a technical one",
+answered by the most vocal owner rather than the most exposed; rank by how long
+a silent failure would take to surface, not by volume. Replied same evening.
+That reframing is a candidate hook for a follow-up piece (time-to-detection as
+the tiering criterion).
+
 Pattern across the month: the two news-pegged posts (pricing P1, value-accrual)
 are the two strongest by reach; the abstract-supplier angles convert reach
 poorly. Edition 2 announcement post: 357 impressions; Edition 2 itself now
