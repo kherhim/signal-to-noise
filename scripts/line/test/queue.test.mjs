@@ -14,3 +14,9 @@ test('neverListHits is case-insensitive and whole-word', () => {
   assert.deepEqual(neverListHits('We spoke to AXI about taxis.', ['Axi']), ['Axi']);
   assert.deepEqual(neverListHits('Taxis only.', ['Axi']), []);
 });
+
+test('neverListHits matches entries with trailing punctuation and multi-word names', () => {
+  assert.deepEqual(neverListHits('Acme Inc. reported earnings today.', ['Acme Inc.']), ['Acme Inc.']);
+  assert.deepEqual(neverListHits('We met Big Bank plc at lunch.', ['Big Bank plc']), ['Big Bank plc']);
+  assert.deepEqual(neverListHits('Taxis and maxims.', ['Axi']), []);
+});
