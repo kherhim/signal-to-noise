@@ -19,3 +19,19 @@ test('verdictFrom fails on any hit or unverified citation', () => {
   assert.equal(verdictFrom({ sentences: [{ hit: true }], citations: [] }), 'fail');
   assert.equal(verdictFrom({ sentences: [], citations: [{ verified: false }] }), 'fail');
 });
+
+test('extractQuotes accepts curly quotes and never spans lines on an unpaired straight quote', () => {
+  const body = 'He said “cash is king” ([src](https://a.b/c)).\nAn inch mark 12" here.\n\nMuch later "another quote that is long enough" ([s](https://d.e/f)).';
+  assert.deepEqual(extractQuotes(body), [
+    { quote: 'cash is king', url: 'https://a.b/c' },
+    { quote: 'another quote that is long enough', url: 'https://d.e/f' },
+  ]);
+});
+test('extractQuotes joins multi-line blockquotes', () => {
+  const body = '> Price is what you pay.\n> Value is what you get.\n>\n> — Buffett, [2008 letter](https://berkshire/2008)';
+  assert.deepEqual(extractQuotes(body), [{ quote: 'Price is what you pay. Value is what you get.', url: 'https://berkshire/2008' }]);
+});
+test('pickSentences keeps snake_case words intact and strips italics', () => {
+  const s = pickSentences('The signal_to_noise ratio was _quietly_ the point of the whole exercise here.', 1);
+  assert.equal(s[0], 'The signal_to_noise ratio was quietly the point of the whole exercise here.');
+});

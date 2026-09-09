@@ -13,15 +13,18 @@ const SCHEMA = {
 
 export function pickSentences(body, n = 8) {
   const prose = body.split('\n').filter((l) => l.trim() && !/^(#|>|-|\d+\.|!\[|\|)/.test(l.trim())).join(' ');
-  return prose.replace(/\*\*?|_/g, '').split(/(?<=[.!?])\s+/)
-    .map((s) => s.trim()).filter((s) => s.length > 0 && !s.includes(']('))
+  return prose.replace(/\*\*?|(?<![\w])_(?=\S)|(?<=\S)_(?![\w])/g, '').split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim()).filter((s) => s.length >= 5 && !s.includes(']('))
     .sort((a, b) => b.length - a.length).slice(0, n);
 }
 
 export function extractQuotes(body) {
   const out = [];
-  for (const m of body.matchAll(/"([^"]{12,})"(?:\s*\(\[[^\]]*\]\((https?:[^)]+)\))?/g)) out.push({ quote: m[1], url: m[2] ?? null });
-  for (const m of body.matchAll(/^> ([^\n>][^\n]+)\n(?:>\s*\n)?(?:> — [^\n]*?\[[^\]]*\]\((https?:[^)]+)\))?/gm)) out.push({ quote: m[1].trim(), url: m[2] ?? null });
+  for (const m of body.matchAll(/["“]([^"”\n]{12,})["”](?:\s*\(\[[^\]]*\]\((https?:[^)]+)\))?/g)) out.push({ quote: m[1], url: m[2] ?? null });
+  for (const m of body.matchAll(/^((?:> (?!—)[^\n>][^\n]*\n)+)(?:>\s*\n)?(?:> — [^\n]*?\[[^\]]*\]\((https?:[^)]+)\))?/gm)) {
+    const quote = m[1].split('\n').filter(Boolean).map((l) => l.replace(/^> /, '').trim()).join(' ');
+    out.push({ quote, url: m[2] ?? null });
+  }
   return out;
 }
 
