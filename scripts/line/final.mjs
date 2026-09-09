@@ -37,16 +37,30 @@ export function buildFinal(slug) {
   return finalPath;
 }
 
+// Pure: is it safe to (re)send the final email right now? Blocks a resend
+// while a previous send is still in flight or may have crashed mid-send,
+// unless it has been longer than retryAfterMinutes since it started.
+export function finalSendAllowed(state, now, retryAfterMinutes = 60) {
+  if (state.stage !== 'final-sending') return true;
+  const startedAt = new Date(state.final_sending_at).getTime();
+  const elapsedMinutes = (now.getTime() - startedAt) / 60000;
+  return elapsedMinutes >= retryAfterMinutes;
+}
+
 export function sendFinal(slug) {
   const dir = essayDir(slug), st = loadState(slug);
+  if (!finalSendAllowed(st, new Date())) throw new Error('final send in progress; not resending');
   const finalPath = buildFinal(slug);
   const report = fs.readFileSync(path.join(dir, 'gate-report.md'), 'utf8');
   const webp = path.join(ROOT, 'public', 'img', `${slug}.webp`);
   const attachments = fs.existsSync(webp) ? [{ name: `${slug}.webp`, type: 'image/webp', data: fs.readFileSync(webp) }] : [];
-  const { messageId, token } = sendMail({ subject: `Final for approval: ${st.title}`, text: finalEmailText({ title: st.title, final: fs.readFileSync(finalPath, 'utf8'), report }), attachments });
+  const token = Math.random().toString(36).slice(2, 8);
+  const final_sending_at = new Date().toISOString();
+  saveState(slug, { stage: 'final-sending', final_token: token, final_sending_at });
+  const { messageId } = sendMail({ subject: `Final for approval: ${st.title}`, text: finalEmailText({ title: st.title, final: fs.readFileSync(finalPath, 'utf8'), report }), attachments, token });
   const cfg = loadConfig();
   const pub = nextPublishSlot(new Date(), cfg.publish_hour_uk);
-  saveState(slug, { stage: 'final-sent', final_message_id: messageId, final_token: token, final_sent_at: new Date().toISOString(), publish_not_before: pub.toISOString(), approved: false });
+  saveState(slug, { stage: 'final-sent', final_message_id: messageId, final_sent_at: new Date().toISOString(), publish_not_before: pub.toISOString(), approved: false });
   log('final', `${slug} final sent`);
   return { messageId };
 }
@@ -59,9 +73,9 @@ export function readFinalReply(slug) {
 
 export function applyCorrections(slug, text) {
   const dir = essayDir(slug), finalPath = path.join(dir, 'final.md');
-  const input = `File to edit: ${finalPath}\n\nOwner's corrections (apply exactly these, change nothing else, keep frontmatter keys):\n\n${text}`;
+  const cfg = loadConfig();
   const before = snapshotTree();
-  const out = runSkill({ skill: 'write-essay', input: `CORRECTIONS MODE. ${input}`, tools: ['Read', 'Edit'], maxTurns: 20 });
+  const out = runSkill({ skill: 'corrections', input: `File: ${finalPath}\n\nCorrections:\n${text}`, tools: ['Read', 'Edit'], maxTurns: 20, model: cfg.models?.write ?? null });
   const after = snapshotTree();
   // The essay directory is gitignored, so ANY porcelain change means the
   // skill wrote somewhere it shouldn't have.

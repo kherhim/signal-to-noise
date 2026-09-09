@@ -3,7 +3,7 @@ import path from 'node:path';
 import { ROOT, nowIso } from './env.mjs';
 
 export const STAGING = process.env.LINE_STAGING ?? path.join(ROOT, '_sources', 'staging-articles');
-export const STAGES = ['new', 'briefed', 'approved', 'drafted', 'gated', 'covered', 'final-sent', 'published'];
+export const STAGES = ['new', 'briefed', 'approved', 'drafted', 'gated', 'covered', 'final-sending', 'final-sent', 'published'];
 
 export const essayDir = (slug) => path.join(STAGING, slug);
 const stateFile = (slug) => path.join(essayDir(slug), 'state.json');
