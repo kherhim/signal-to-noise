@@ -1522,7 +1522,7 @@ git commit -m "Essay line: cover stage (skill → module → render, motion floo
 
 **Interfaces:**
 - Consumes: `loadConfig`, `loadQueue`, `loadLedger`, `neverListHits`, `runSkill`, `sendMail`, `saveState`, peg-board.json.
-- Produces: `pickTopic({ queue, ledger, board, cfg, today }) → { title, family, source: 'peg'|'queue', peg|null }`, `slugify(title)`, `runBrief({ dry }) → { slug, brief, messageId }`.
+- Produces: `pickTopic({ queue, ledger, board, cfg, today }) → { title, family, source: 'peg'|'queue', peg|null }`, `slugify(title)`, `inFlight(essays) → boolean` (ignores published, killed and held), `vetoDeadline(now, vetoHour, minLeadHours = 4) → Date` (rolls to the next day when the lead time is short), `slugTaken(slug, { published, staged }) → boolean`, `runBrief({ dry }) → { slug, brief, messageId }`.
 
 - [ ] **Step 1: Write the skill**
 
