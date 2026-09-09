@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { parseReply, classify, buildMime, buildSearchNeedle, findReply } from '../mail.mjs';
+import { parseReply, classify, buildMime, buildSearchNeedle, findReply, isOwnCopy } from '../mail.mjs';
 
 const raw = fs.readFileSync(new URL('./fixtures/reply-ok.eml', import.meta.url), 'utf8');
 const rawWrapped = fs.readFileSync(new URL('./fixtures/reply-ok-wrapped.eml', import.meta.url), 'utf8');
@@ -43,4 +43,10 @@ test('buildSearchNeedle derives [S2N <token>] or passes subjectNeedle through ve
 
 test('findReply throws when neither token nor subjectNeedle is given, with no network call', () => {
   assert.throws(() => findReply({}), /findReply needs token or subjectNeedle/);
+});
+
+test('isOwnCopy flags the automation\'s own sent copy but not a real reply from the same address', () => {
+  assert.equal(isOwnCopy({ from: 'Signal to Noise <himanshu@signal-to-noise.co>' }, 'himanshu@signal-to-noise.co'), true);
+  assert.equal(isOwnCopy({ from: 'Signal to Noise <himanshu@signal-to-noise.co>', 'in-reply-to': '<x>' }, 'himanshu@signal-to-noise.co'), false);
+  assert.equal(isOwnCopy({ from: 'a@gmail.com' }, 'himanshu@signal-to-noise.co'), false);
 });

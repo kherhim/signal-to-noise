@@ -20,9 +20,15 @@ export const ENV = loadEnv();
 export const nowIso = () => new Date().toISOString();
 export const paused = () => fs.existsSync(PAUSE);
 
+// Pure so it can be unit-tested without touching the filesystem or env vars.
+export function shouldWriteLog(env) {
+  return !(env.NODE_TEST_CONTEXT || env.LINE_NO_FILE_LOG === '1');
+}
+
 export function log(job, msg) {
   const line = `${nowIso().replace('T', ' ').slice(0, 19)}Z  ${job.padEnd(9)}  ${msg}`;
   console.log(line);
+  if (!shouldWriteLog(process.env)) return;
   try {
     fs.mkdirSync(path.dirname(LOG_FILE), { recursive: true });
     fs.appendFileSync(LOG_FILE, line + '\n');

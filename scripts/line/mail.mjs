@@ -80,6 +80,14 @@ export function buildSearchNeedle({ token = null, subjectNeedle = null } = {}) {
   return subjectNeedle ?? (token ? `[S2N ${token}]` : null);
 }
 
+// The automation's own sent copies never land in INBOX (they go to Sent), so a
+// message From the site address that carries no In-Reply-To is our own outbound
+// copy, not a reply. A From that matches but DOES carry In-Reply-To is a real
+// reply (e.g. an owner replying via Gmail send-as with the site address as From).
+export function isOwnCopy(headers, zohoUser) {
+  return (headers.from ?? '').includes(zohoUser) && !headers['in-reply-to'];
+}
+
 export function findReply({ messageId, token = null, subjectNeedle = null }) {
   const needle = buildSearchNeedle({ token, subjectNeedle });
   if (!needle) throw new Error('findReply needs token or subjectNeedle');
@@ -91,7 +99,7 @@ export function findReply({ messageId, token = null, subjectNeedle = null }) {
   const newest = Math.max(...ids);
   const raw = curl(['--url', `${url};MAILINDEX=${newest}`, '--user', auth]);
   const { headers, text } = parseReply(raw);
-  if ((headers.from ?? '').includes(zohoUser)) return null;
+  if (isOwnCopy(headers, zohoUser)) return null;
   if (messageId && headers['in-reply-to'] && headers['in-reply-to'] !== messageId) return null;
   const reply = { verdict: classify(text), text, date: headers.date ?? null, from: headers.from ?? null };
   return { ...reply, key: replyKey(reply) };
