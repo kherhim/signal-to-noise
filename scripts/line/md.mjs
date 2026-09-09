@@ -1,4 +1,11 @@
-export const SHIPPING_FIELDS = ['title', 'excerpt', 'seoDescription', 'coverImageAlt'];
+// Frontmatter strings Layer B (Codex) may rewrite. `title` is deliberately
+// absent: the owner approved that exact title in the brief and again in the
+// final email, so a statistical rewrite would ship a headline they never saw.
+export const SHIPPING_FIELDS = ['excerpt', 'seoDescription', 'coverImageAlt'];
+
+// Frontmatter strings the British-English pass covers. The title IS a shipping
+// string and must be spelt British; a spelling fix is not a rewrite.
+export const BRE_FIELDS = ['title', ...SHIPPING_FIELDS];
 
 const TOP_LEVEL_KV = /^(\w+):\s*(.+)$/;
 

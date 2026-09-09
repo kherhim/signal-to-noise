@@ -1,10 +1,10 @@
-import { spawnSync } from 'node:child_process';
 import { ROOT } from './env.mjs';
+import { runChild, TIMEOUTS } from './proc.mjs';
 
 const porcelainPath = (line) => line.slice(3);
 
 export function snapshotTree() {
-  const r = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
+  const r = runChild('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }, { timeoutMin: TIMEOUTS.git, label: 'git status' });
   if (r.status !== 0) throw new Error(`git status failed: ${(r.stderr || r.stdout).slice(0, 400)}`);
   return r.stdout.split('\n').filter(Boolean);
 }

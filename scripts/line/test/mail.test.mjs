@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { parseReply, classify, buildMime, buildSearchNeedle, findReply, isOwnCopy } from '../mail.mjs';
+import { parseReply, classify, buildMime, buildSearchNeedle, findReply, isOwnCopy, senderAllowed, isAutoReply, extractAddress } from '../mail.mjs';
 
 const raw = fs.readFileSync(new URL('./fixtures/reply-ok.eml', import.meta.url), 'utf8');
 const rawWrapped = fs.readFileSync(new URL('./fixtures/reply-ok-wrapped.eml', import.meta.url), 'utf8');
@@ -49,4 +49,42 @@ test('isOwnCopy flags the automation\'s own sent copy but not a real reply from 
   assert.equal(isOwnCopy({ from: 'Signal to Noise <himanshu@signal-to-noise.co>' }, 'himanshu@signal-to-noise.co'), true);
   assert.equal(isOwnCopy({ from: 'Signal to Noise <himanshu@signal-to-noise.co>', 'in-reply-to': '<x>' }, 'himanshu@signal-to-noise.co'), false);
   assert.equal(isOwnCopy({ from: 'a@gmail.com' }, 'himanshu@signal-to-noise.co'), false);
+});
+
+const addrs = { owner: 'owner@example.com', self: 'himanshu@signal-to-noise.co' };
+
+test('senderAllowed admits only the owner or the site address, case-insensitively', () => {
+  assert.equal(senderAllowed('The Owner <Owner@Example.com>', addrs), true);
+  assert.equal(senderAllowed('Signal to Noise <HIMANSHU@SIGNAL-TO-NOISE.CO>', addrs), true);
+  assert.equal(senderAllowed('owner@example.com', addrs), true);
+});
+
+test('senderAllowed rejects a stranger, a missing From, a lookalike domain and a spoofed display name', () => {
+  assert.equal(senderAllowed('spammer@example.net', addrs), false);
+  assert.equal(senderAllowed(null, addrs), false);
+  assert.equal(senderAllowed('', addrs), false);
+  assert.equal(senderAllowed('owner@example.com.evil.net', addrs), false, 'a suffixed lookalike domain is not the owner');
+  assert.equal(senderAllowed('notowner@example.com', addrs), false, 'a prefixed lookalike local part is not the owner');
+  assert.equal(senderAllowed('"owner@example.com" <attacker@evil.net>', addrs), false, 'the display name is not the address');
+});
+
+test('extractAddress pulls the bare address out of the From formats Zoho and Gmail send', () => {
+  assert.equal(extractAddress('The Owner <Owner@Example.com>'), 'owner@example.com');
+  assert.equal(extractAddress('owner@example.com'), 'owner@example.com');
+  assert.equal(extractAddress('owner@example.com (The Owner)'), 'owner@example.com');
+  assert.equal(extractAddress(null), '');
+});
+
+test('isAutoReply spots the standard vacation-responder headers', () => {
+  assert.equal(isAutoReply({ 'auto-submitted': 'auto-replied' }), true);
+  assert.equal(isAutoReply({ 'auto-submitted': 'auto-generated' }), true);
+  assert.equal(isAutoReply({ 'x-autoreply': 'yes' }), true);
+  assert.equal(isAutoReply({ 'x-autorespond': 'Out of office' }), true);
+});
+
+test('isAutoReply lets an ordinary reply through, including auto-submitted: no', () => {
+  assert.equal(isAutoReply({}), false);
+  assert.equal(isAutoReply({ 'auto-submitted': 'no' }), false);
+  assert.equal(isAutoReply({ 'auto-submitted': ' No ' }), false);
+  assert.equal(isAutoReply({ from: 'a@b.c', subject: 'Re: x' }), false);
 });

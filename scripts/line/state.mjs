@@ -3,7 +3,13 @@ import path from 'node:path';
 import { ROOT, nowIso } from './env.mjs';
 
 export const STAGING = process.env.LINE_STAGING ?? path.join(ROOT, '_sources', 'staging-articles');
-export const STAGES = ['new', 'briefed', 'approved', 'drafted', 'gated', 'covered', 'final-sending', 'final-sent', 'published'];
+// Every stage the line can actually persist, in the order it moves through them.
+// The `-sending` stages are the crash windows around an email send; the three
+// after `deploying` are where a failed publish parks until the next wake.
+export const STAGES = [
+  'new', 'brief-sending', 'briefed', 'approved', 'drafted', 'gated', 'covered',
+  'final-sending', 'final-sent', 'deploying', 'deploy-failed', 'push-failed', 'published',
+];
 
 export const essayDir = (slug) => path.join(STAGING, slug);
 const stateFile = (slug) => path.join(essayDir(slug), 'state.json');

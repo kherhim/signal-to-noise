@@ -56,6 +56,9 @@ export function runBrief({ dry = false } = {}) {
   const topic = pickTopic({ queue: loadQueue(), ledger: loadLedger(), board, cfg });
   const slug = slugify(topic.title);
   if (slugTaken(slug, { published: listPublishedSlugs(), staged })) throw new Error(`slug already taken: ${slug}`);
+  // A dry run spends nothing and writes nothing: the decision to be inspected is
+  // which topic was picked, and that is already made.
+  if (dry) { log('brief', `DRY would brief ${slug} (${topic.title}) — no skill call, no email`); return { slug, title: topic.title, brief: null, messageId: null }; }
   const never = loadNeverList();
   const input = `Working title: ${topic.title}\nFamily: ${topic.family}\n${topic.peg ? `Peg: ${topic.peg.headline} — ${topic.peg.url} (score ${topic.peg.score})` : 'Peg: none (evergreen)'}\nNever-list: ${never.join(', ')}\nIdeas file context:\n${fs.readFileSync(path.join(ROOT, 'distribution', 'ARTICLE-IDEAS.md'), 'utf8')}`;
   const out = runSkill({ skill: 'brief', input, tools: ['WebSearch', 'WebFetch'], maxTurns: 40, model: cfg.models?.brief ?? null });
@@ -65,7 +68,11 @@ export function runBrief({ dry = false } = {}) {
   fs.mkdirSync(essayDir(slug), { recursive: true });
   fs.writeFileSync(path.join(essayDir(slug), 'brief.md'), brief + '\n');
   const vetoAt = vetoDeadline(new Date(), cfg.veto_hour_local);
-  if (dry) { log('brief', `DRY would email brief for ${slug}`); return { slug, brief, messageId: null }; }
+  // Persist the intent to send BEFORE sending. A crash inside sendMail would
+  // otherwise leave no state at all: the next wake would see no essay in flight,
+  // pick the same topic and pay for a second brief — and the owner might get two
+  // emails for one essay. `brief-sending` needs a human, and says so.
+  saveState(slug, { stage: 'brief-sending', brief_sending_at: new Date().toISOString(), title: topic.title, family: topic.family, source: topic.source, cost_usd: out.cost_usd });
   const { messageId, token } = sendMail({ subject: `Brief: ${topic.title}`, text: `${brief}\n\nReply "no" to kill, "hold" to park, or nothing to proceed. Veto closes ${vetoAt.toLocaleString('en-GB')}.` });
   saveState(slug, { stage: 'briefed', title: topic.title, family: topic.family, source: topic.source, peg: topic.peg ?? null, brief_message_id: messageId, brief_token: token, brief_sent_at: new Date().toISOString(), veto_deadline: vetoAt.toISOString(), cost_usd: out.cost_usd });
   if (topic.source === 'queue') markQueue(topic.title, 'briefed');
@@ -75,5 +82,5 @@ export function runBrief({ dry = false } = {}) {
 
 if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1]))) {
   const r = runBrief({ dry: process.argv.includes('--dry') });
-  if (r) console.log(r.brief);
+  if (r?.brief) console.log(r.brief);
 }

@@ -45,6 +45,39 @@ export function renderBoard(board) {
   return `# Peg board — ${board.date}\n\n| Story | Score | Action | Maps to | Link |\n|---|---|---|---|---|\n${rows.join('\n')}\n`;
 }
 
+export const PROPOSALS_HEADING = '## Scanner proposals';
+export const IDEAS_MD = path.join(ROOT, 'distribution', 'ARTICLE-IDEAS.md');
+const TABLE_HEAD = '| Idea | Angle | Axes | Status |\n|---|---|---|---|';
+const proposalRow = (i) => `| ${i.proposed_title} | ${i.headline} — ${i.url} | scanner | idea |`;
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const alreadyListed = (md, title) => new RegExp(`^\\|\\s*${escapeRe(title.trim())}\\s*\\|`, 'mi').test(md);
+
+// A peg the scanner scored at preempt level but that maps to nothing in the
+// queue is an essay idea nobody has written down. The board is overwritten every
+// morning, so without this the idea is gone by tomorrow. Pure, so it can be
+// tested without touching the backlog.
+export function mergeProposals(ideasMd, items, threshold) {
+  const rows = [];
+  const seen = new Set();
+  for (const i of items ?? []) {
+    const title = String(i.proposed_title ?? '').trim();
+    if (!title || Number(i.score) < threshold) continue;
+    const key = title.toLowerCase();
+    if (seen.has(key) || alreadyListed(ideasMd, title)) continue;
+    seen.add(key);
+    rows.push(proposalRow(i));
+  }
+  if (!rows.length) return ideasMd;
+  if (!ideasMd.includes(PROPOSALS_HEADING)) {
+    return `${ideasMd.replace(/\s+$/, '')}\n\n${PROPOSALS_HEADING}\n\nTitles the scanner proposed that no queue item covers. Unreviewed — prune as ruthlessly as the rest.\n\n${TABLE_HEAD}\n${rows.join('\n')}\n`;
+  }
+  // Append at the end of the existing section, never past the next heading.
+  const start = ideasMd.indexOf(PROPOSALS_HEADING) + PROPOSALS_HEADING.length;
+  const next = ideasMd.slice(start).search(/\n## /);
+  const cut = next === -1 ? ideasMd.length : start + next;
+  return `${ideasMd.slice(0, cut).replace(/\s+$/, '')}\n${rows.join('\n')}\n${ideasMd.slice(cut)}`;
+}
+
 export async function scan({ dry = false } = {}) {
   if (paused()) { log('scan', 'PAUSE present'); return null; }
   const cfg = loadConfig();
@@ -80,6 +113,13 @@ export async function scan({ dry = false } = {}) {
   const board = { date: new Date().toISOString().slice(0, 10), cost_usd: out.cost_usd, items };
   fs.writeFileSync(BOARD_JSON, JSON.stringify(board, null, 2) + '\n');
   fs.writeFileSync(BOARD_MD, renderBoard(board));
+  try {
+    const before = fs.readFileSync(IDEAS_MD, 'utf8');
+    const after = mergeProposals(before, items, cfg.thresholds.preempt);
+    if (after !== before) { fs.writeFileSync(IDEAS_MD, after); log('scan', 'new proposals appended to ARTICLE-IDEAS.md'); }
+  } catch (err) {
+    log('scan', `could not merge proposals into ARTICLE-IDEAS.md: ${err.message}`); // never fail a scan over the backlog file
+  }
   log('scan', `${items.length} items, top ${topScore(items)}, $${out.cost_usd.toFixed(3)}`);
   return board;
 }

@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
 import { log } from './env.mjs';
 import { splitFrontmatter, joinFrontmatter, SHIPPING_FIELDS } from './md.mjs';
+import { runChild, TIMEOUTS } from './proc.mjs';
 
 export const codexArgs = (outFile) => ['exec', '--sandbox', 'read-only', '--skip-git-repo-check', '--ephemeral', '-o', outFile];
 
@@ -28,7 +28,7 @@ export function layerBText(text, { kind = 'body' } = {}) {
   const out = path.join(os.tmpdir(), `layerb-${Date.now()}.md`);
   try {
     const prompt = buildPrompt(text, kind);
-    const r = spawnSync('codex', codexArgs(out), { input: prompt, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
+    const r = runChild('codex', codexArgs(out), { input: prompt, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }, { timeoutMin: TIMEOUTS.codex, label: 'codex' });
     if (r.status !== 0 || !fs.existsSync(out)) throw new Error(`codex failed (${r.status}): ${(r.stderr || r.stdout).slice(0, 300)}`);
     const result = checkOutput(fs.readFileSync(out, 'utf8'), prompt);
     if (!result || result.length < text.length * 0.6) throw new Error('codex output implausibly short');

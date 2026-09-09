@@ -9,7 +9,7 @@ process.env.LINE_STAGING = fs.mkdtempSync(path.join(os.tmpdir(), 'line-runner-')
 const { loadState, saveState } = await import('../state.mjs');
 const { nextAction, advance, tick, isoWeek } = await import('../runner.mjs');
 
-const cfg = { veto_hour_local: 19, final_hour_local: 18, publish_hour_uk: 8 };
+const cfg = { veto_hour_local: 19, publish_hour_uk: 8 };
 const at = (s) => new Date(s);
 const day = (d) => d.toISOString().slice(0, 10);
 
@@ -243,6 +243,139 @@ test('two failures at publish then a success clears last_error', () => {
   const okDeps = { paused: () => false, publish: () => ({ url: 'https://x', commit: 'abc' }), sendMail: () => {} };
   advance(slug, at('2026-09-16T08:10:00Z'), { deps: okDeps });
   assert.equal(loadState(slug).last_error, null, 'a clean publish clears the streak');
+});
+
+// --- I6: a brief half-sent needs a human, and still counts as this week's ---
+
+test('brief-sending is a dead end for the runner: it needs a human, not a retry', () => {
+  assert.equal(nextAction({ stage: 'brief-sending', brief_sending_at: '2026-09-14T06:00:00.000Z' }, at('2026-09-14T09:00:00Z'), cfg), null);
+});
+
+test('a brief that crashed mid-send still counts as this ISO week\'s brief', async () => {
+  const now = new Date(2026, 8, 14, 9, 0); // Monday 09:00
+  const briefs = [];
+  const half = { slug: 'half', stage: 'brief-sending', brief_sending_at: new Date(2026, 8, 14, 6, 30).toISOString() };
+  await tick({
+    now,
+    deps: {
+      paused: () => false, scan: () => {}, boardDate: () => day(now), sendMail: () => {},
+      runBrief: () => { briefs.push(1); }, listEssays: () => [half], loadState: () => half,
+    },
+  });
+  assert.equal(briefs.length, 0, 'a half-sent brief must not trigger a second, paid brief');
+});
+
+// --- I9: a failed gate parks the essay; an unanswered final expires ---
+
+test('a gate fail parks the essay as well as recording the verdict', () => {
+  const slug = 'gate-fail-hold';
+  saveState(slug, { stage: 'drafted', title: 'T' });
+  const mail = [];
+  advance(slug, at('2026-09-15T02:00:00Z'), {
+    deps: {
+      paused: () => false,
+      runGate: () => ({ verdict: 'fail', report: '## Verdict: FAIL', checks: { plagiarism: { cost_usd: 0.5 } } }),
+      sendMail: (m) => { mail.push(m); },
+    },
+  });
+  const st = loadState(slug);
+  assert.equal(st.gate_verdict, 'fail');
+  assert.equal(st.hold, true, 'a failed gate parks the essay rather than leaving it to be re-run');
+  assert.equal(st.cost_usd, 0.5, 'the plagiarism spend is recorded even on a fail');
+  assert.equal(mail.length, 1);
+});
+
+test('a gate pass neither parks nor holds, and still records the spend', () => {
+  const slug = 'gate-pass-cost';
+  saveState(slug, { stage: 'drafted', title: 'T' });
+  advance(slug, at('2026-09-15T02:00:00Z'), {
+    deps: { paused: () => false, runGate: () => ({ verdict: 'pass', checks: { plagiarism: { cost_usd: 0.25 } } }), sendMail: () => {} },
+  });
+  const st = loadState(slug);
+  assert.equal(st.hold, false);
+  assert.equal(st.gate_verdict, 'pass');
+  assert.equal(st.cost_usd, 0.25);
+});
+
+test('a gate result with no checks does not blow up the cost accounting', () => {
+  const slug = 'gate-no-checks';
+  saveState(slug, { stage: 'drafted', title: 'T' });
+  advance(slug, at('2026-09-15T02:00:00Z'), { deps: { paused: () => false, runGate: () => ({ verdict: 'pass' }), sendMail: () => {} } });
+  assert.equal(loadState(slug).cost_usd, 0);
+});
+
+test('a final unanswered for more than 7 days is parked, and the owner is told once', () => {
+  const slug = 'final-stale';
+  saveState(slug, { stage: 'final-sent', approved: false, title: 'T', final_sent_at: '2026-09-15T18:00:00.000Z', publish_not_before: '2026-09-16T07:00:00.000Z' });
+  const mail = [];
+  const deps = { paused: () => false, readFinalReply: () => null, sendMail: (m) => { mail.push(m); } };
+
+  advance(slug, at('2026-09-20T18:00:00Z'), { deps });
+  assert.equal(loadState(slug).hold, false, 'five days is not stale');
+
+  assert.equal(advance(slug, at('2026-09-23T18:00:00Z'), { deps }), 'expire-final');
+  const st = loadState(slug);
+  assert.equal(st.hold, true);
+  assert.ok(st.final_expired_at);
+  assert.equal(mail.length, 1);
+  assert.match(mail[0].text, /final unanswered for 7 days; parked/);
+
+  saveState(slug, { hold: false }); // the owner clears it by hand
+  advance(slug, at('2026-09-24T18:00:00Z'), { deps });
+  assert.equal(mail.length, 1, 'the expiry notice is sent once, not on every wake');
+  assert.equal(loadState(slug).hold, false);
+});
+
+test('an approved essay waiting for its publish slot is never expired', () => {
+  const slug = 'final-approved-wait';
+  saveState(slug, { stage: 'final-sent', approved: true, title: 'T', final_sent_at: '2026-09-15T18:00:00.000Z', publish_not_before: '2026-09-30T07:00:00.000Z' });
+  advance(slug, at('2026-09-25T18:00:00Z'), { deps: { paused: () => false, sendMail: () => {} } });
+  assert.equal(loadState(slug).hold, false);
+});
+
+// --- I14: corrections on a text reply ---
+
+test('check-final: corrections that pass the gate send a fresh final', () => {
+  const slug = 'corr-pass';
+  saveState(slug, { stage: 'final-sent', approved: false, title: 'T', publish_not_before: '2026-09-16T07:00:00.000Z' });
+  const applied = [];
+  const mail = [];
+  advance(slug, at('2026-09-15T20:00:00Z'), {
+    deps: {
+      paused: () => false,
+      readFinalReply: () => ({ verdict: 'text', text: 'Cut the third paragraph.', date: 'D', from: 'F', key: 'c1' }),
+      applyCorrections: (s, t) => { applied.push([s, t]); return { changed: true, verdict: 'pass' }; },
+      sendMail: (m) => { mail.push(m); },
+    },
+  });
+  const st = loadState(slug);
+  assert.deepEqual(applied, [[slug, 'Cut the third paragraph.']]);
+  assert.equal(st.stage, 'covered', 'a passing re-gate goes back to send-final on the next wake');
+  assert.equal(st.final_reply_seen, 'c1');
+  assert.equal(st.hold, false);
+  assert.equal(mail.length, 0, 'nothing to shout about: a fresh final follows');
+});
+
+test('check-final: corrections that fail the gate park the essay and notify once', () => {
+  const slug = 'corr-fail';
+  saveState(slug, { stage: 'final-sent', approved: false, title: 'T', publish_not_before: '2026-09-16T07:00:00.000Z' });
+  const mail = [];
+  advance(slug, at('2026-09-15T20:00:00Z'), {
+    deps: {
+      paused: () => false,
+      readFinalReply: () => ({ verdict: 'text', text: 'Add the Q3 figure.', date: 'D', from: 'F', key: 'c2' }),
+      applyCorrections: () => ({ changed: true, verdict: 'fail' }),
+      readFile: () => '## Verdict: FAIL\nFailing: never-list: Axi',
+      sendMail: (m) => { mail.push(m); },
+    },
+  });
+  const st = loadState(slug);
+  assert.equal(st.stage, 'gated');
+  assert.equal(st.gate_verdict, 'fail');
+  assert.equal(st.hold, true);
+  assert.equal(st.final_reply_seen, 'c2');
+  assert.equal(mail.length, 1);
+  assert.match(mail[0].subject, /Held at gate after corrections/);
 });
 
 test('a dry tick collects every essay\'s would-be action, not just the first', async () => {

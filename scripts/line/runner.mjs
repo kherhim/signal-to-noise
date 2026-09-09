@@ -40,9 +40,25 @@ export const DEFAULT_DEPS = {
   readFile: fs.readFileSync,
 };
 
+const DAY_MS = 86400000;
+export const FINAL_EXPIRY_DAYS = 7;
+
+// A final sent and never answered is not a failure the runner can retry: it is a
+// question the owner has not answered. After a week, stop waiting, park it and
+// say so — once. `final_expired_at` is the "said so" marker, so an owner who
+// clears `hold` by hand is not immediately re-parked and re-emailed.
+export function finalExpired(st, now, days = FINAL_EXPIRY_DAYS) {
+  if (st.stage !== 'final-sent' || st.approved || st.hold || st.killed) return false;
+  if (!st.final_sent_at || st.final_expired_at) return false;
+  return (now.getTime() - new Date(st.final_sent_at).getTime()) / DAY_MS > days;
+}
+
 export function nextAction(st, now, cfg) {
   if (st.hold || st.killed) return null;
   switch (st.stage) {
+    // A brief whose send crashed half-way needs a human: the owner may or may
+    // not have the email. Retrying would either re-spend or double-send.
+    case 'brief-sending': return null;
     case 'briefed': return now >= new Date(st.veto_deadline) ? 'check-veto' : null;
     case 'approved': return 'draft';
     case 'drafted': return 'gate';
@@ -68,6 +84,14 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
   if (deps.paused()) { log('runner', 'PAUSE present'); return 'paused'; }
   const cfg = loadConfig();
   const st = deps.loadState(slug);
+  if (finalExpired(st, now)) {
+    if (dry) { log('runner', `DRY ${slug}: would expire an unanswered final`); return 'expire-final'; }
+    deps.saveState(slug, { hold: true, final_expired_at: now.toISOString() });
+    notify(deps, `Parked: ${st.title ?? slug}`,
+      `final unanswered for 7 days; parked. Reply "publish" is the only thing that ships, and nothing arrived.\n\nClear hold in ${slug}/state.json to put it back in front of you.`);
+    log('runner', `${slug} parked: final unanswered for ${FINAL_EXPIRY_DAYS} days`);
+    return 'expire-final';
+  }
   const action = nextAction(st, now, cfg);
   if (!action) return 'idle';
   if (dry) { log('runner', `DRY ${slug}: would ${action}`); return action; }
@@ -95,7 +119,11 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
       case 'draft': deps.runDraft(slug); break;
       case 'gate': {
         const r = deps.runGate({ inPath: path.join(dir, 'draft.md'), outPath: path.join(dir, 'gated.md'), reportPath: path.join(dir, 'gate-report.md') });
-        deps.saveState(slug, { stage: 'gated', gate_verdict: r.verdict });
+        deps.addCost(slug, r.checks?.plagiarism?.cost_usd ?? 0); // the paid check runs whatever the verdict
+        // A failed gate is a stop, not a step: park it so no later wake walks
+        // an essay that failed plagiarism, BrE, the never-list or Layer A
+        // onward to a cover and a final email.
+        deps.saveState(slug, { stage: 'gated', gate_verdict: r.verdict, ...(r.verdict === 'fail' ? { hold: true } : {}) });
         if (r.verdict === 'fail') notify(deps, `Held at gate: ${st.title}`, r.report);
         break;
       }
@@ -138,7 +166,7 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
           // The key is recorded only once the corrections have landed: if the skill
           // throws, the reply stays unconsumed and the retry cap governs it.
           if (c.verdict === 'pass') { deps.saveState(slug, { stage: 'covered', final_reply_seen: seen }); } // → send-final again on next wake (sendFinal rebuilds final.md from the re-gated file)
-          else { deps.saveState(slug, { stage: 'gated', gate_verdict: 'fail', final_reply_seen: seen }); notify(deps, `Held at gate after corrections: ${st.title}`, deps.readFile(path.join(dir, 'gate-report.md'), 'utf8')); }
+          else { deps.saveState(slug, { stage: 'gated', gate_verdict: 'fail', hold: true, final_reply_seen: seen }); notify(deps, `Held at gate after corrections: ${st.title}`, deps.readFile(path.join(dir, 'gate-report.md'), 'utf8')); }
         }
         break;
       }
@@ -184,10 +212,16 @@ export async function tick({ now = new Date(), dry = false, deps: injected = {} 
   }
   if (day === 1 && hour >= cfg.brief_hour_local && hour < 12) {
     const week = isoWeek(now);
-    const briefedThisWeek = deps.listEssays().some((e) => e.brief_sent_at && isoWeek(new Date(e.brief_sent_at)) === week);
+    // A brief whose send crashed still used this week's slot: keying on
+    // brief_sending_at as well as brief_sent_at stops a catch-up wake paying
+    // for a second brief on the same Monday.
+    const briefedThisWeek = deps.listEssays().some((e) => {
+      const at = e.brief_sent_at ?? e.brief_sending_at;
+      return at && isoWeek(new Date(at)) === week;
+    });
     if (briefedThisWeek) log('runner', `brief already sent in ${week}`);
-    // runBrief's own { dry } only skips the email send — it still calls the paid brief
-    // skill and writes brief.md before that check, so a --dry tick must not call it at all.
+    // runBrief's own { dry } stops before the paid skill call, but a dry tick
+    // reports rather than acts, so it doesn't call it at all.
     else if (dry) log('runner', 'DRY: would run the Monday brief');
     else { try { deps.runBrief(); } catch (e) { log('runner', `brief failed: ${e.message}`); notify(deps, 'Essay line: brief failed', e.message); } }
   }

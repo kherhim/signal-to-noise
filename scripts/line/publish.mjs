@@ -3,8 +3,9 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { ROOT, log } from './env.mjs';
 import { essayDir, loadState, saveState } from './state.mjs';
-import { appendLedger, markQueue } from './queue.mjs';
+import { markQueue, loadLedger, LEDGER } from './queue.mjs';
 import { splitFrontmatter } from './md.mjs';
+import { runChild, TIMEOUTS } from './proc.mjs';
 
 const SITE = 'https://signal-to-noise.co';
 const REGISTRY = path.join(ROOT, 'distribution', 'metrics', 'linkedin-posts.json');
@@ -12,13 +13,28 @@ const REGISTRY = path.join(ROOT, 'distribution', 'metrics', 'linkedin-posts.json
 export const registryEntry = ({ slug, title, date }) => ({ label: `${title} (native post, pending)`, posted: '', activity: '', essay: slug, added: date });
 export const commitMessage = ({ title, slug, report }) => `Essay: ${title} (${slug})\n\nGate: ${report.match(/## Verdict: (\w+)/)?.[1] ?? 'UNKNOWN'} — ${report.split('\n').find((l) => /clean|Failing/.test(l)) ?? ''}\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_013AZhm8pRXAJx7bVRSNhEFa`;
 
+// Publish is resumable: a failed deploy or push re-enters at `start` on a later
+// wake, so both bookkeeping appends have to be idempotent by essay/slug or a
+// retry silently doubles the row. Pure, so they can be tested without files.
+export function upsertRegistry(reg, entry) {
+  const posts = reg.posts ?? [];
+  if (posts.some((p) => p.essay === entry.essay)) return { ...reg, posts };
+  return { ...reg, posts: [...posts, entry] };
+}
+
+export function upsertLedger(ledger, entry) {
+  const published = ledger.published ?? [];
+  if (published.some((p) => p.slug === entry.slug)) return { ...ledger, published };
+  return { ...ledger, published: [...published, entry] };
+}
+
 // Masks anything shaped like a token/secret/hash before it can land in a thrown error message or the log.
 export function redact(text) {
   return text.replace(/[A-Za-z0-9_-]{32,}/g, '[redacted]');
 }
 
 function sh(cmd, args, opts = {}) {
-  const r = spawnSync(cmd, args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, ...opts });
+  const r = runChild(cmd, args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, ...opts }, { timeoutMin: TIMEOUTS.publish, label: `${cmd} ${args[0] ?? ''}`.trim() });
   if (r.status !== 0) throw new Error(redact(`${cmd} ${args.join(' ')} failed (${r.status}): ${(r.stderr || r.stdout).slice(-600)}`));
   return r.stdout;
 }
@@ -104,10 +120,10 @@ export function publish(slug, { dry = false } = {}) {
     fs.copyFileSync(finalPath, dest); // overwrite allowed: a leftover from a failed attempt is expected
     sh('node', ['scripts/make-og-images.mjs']);
     sh('npm', ['run', 'build']);
-    const reg = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
-    reg.posts.push(registryEntry({ slug, title: meta.title, date: String(meta.date) }));
+    const reg = upsertRegistry(JSON.parse(fs.readFileSync(REGISTRY, 'utf8')), registryEntry({ slug, title: meta.title, date: String(meta.date) }));
     fs.writeFileSync(REGISTRY, JSON.stringify(reg, null, 2) + '\n');
-    appendLedger({ slug, title: meta.title, family: st.family, date: String(meta.date), url, cost_usd: st.cost_usd });
+    const ledger = upsertLedger(loadLedger(), { slug, title: meta.title, family: st.family, date: String(meta.date), url, cost_usd: st.cost_usd });
+    fs.writeFileSync(LEDGER, JSON.stringify(ledger, null, 2) + '\n');
     markQueue(st.title, `published ${meta.date}`);
     sh('git', ['add', ...addPaths(slug)]);
     sh('git', ['commit', '-q', '-m', commitMessage({ title: meta.title, slug, report: fs.readFileSync(path.join(dir, 'gate-report.md'), 'utf8') })]);

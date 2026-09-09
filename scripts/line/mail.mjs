@@ -88,6 +88,34 @@ export function isOwnCopy(headers, zohoUser) {
   return (headers.from ?? '').includes(zohoUser) && !headers['in-reply-to'];
 }
 
+// The bare address out of a From header: "The Owner <a@b.co>" → "a@b.co".
+export function extractAddress(from) {
+  const f = String(from ?? '').trim().replace(/\s*\([^)]*\)\s*$/, ''); // drop a trailing (comment)
+  const angle = f.match(/<([^>]*)>/);
+  return (angle ? angle[1] : f).trim().toLowerCase();
+}
+
+// Only two addresses may ever instruct the line: the owner, and the site address
+// the owner sends as. Anything else in INBOX carrying the subject token — a
+// forward, a list copy, a spoofed reply — is data, never a decision. The
+// comparison is on the extracted address and is exact: a substring test would
+// admit "owner@example.com.evil.net" and a display name spelling out the
+// owner's address, and this is the boundary that decides what ships.
+export function senderAllowed(from, { owner, self } = {}) {
+  const addr = extractAddress(from);
+  if (!addr) return false;
+  return [owner, self].filter(Boolean).some((a) => addr === String(a).trim().toLowerCase());
+}
+
+// A vacation responder or a mailer daemon must never be read as consent (or as
+// corrections). RFC 3834's Auto-Submitted, plus the two de-facto headers Zoho,
+// Gmail and Exchange responders set.
+export function isAutoReply(headers = {}) {
+  const auto = headers['auto-submitted'];
+  if (auto && String(auto).trim().toLowerCase() !== 'no') return true;
+  return 'x-autoreply' in headers || 'x-autorespond' in headers;
+}
+
 export function findReply({ messageId, token = null, subjectNeedle = null }) {
   const needle = buildSearchNeedle({ token, subjectNeedle });
   if (!needle) throw new Error('findReply needs token or subjectNeedle');
@@ -100,6 +128,9 @@ export function findReply({ messageId, token = null, subjectNeedle = null }) {
   const raw = curl(['--url', `${url};MAILINDEX=${newest}`, '--user', auth]);
   const { headers, text } = parseReply(raw);
   if (isOwnCopy(headers, zohoUser)) return null;
+  if (!senderAllowed(headers.from, { owner: need('OWNER_EMAIL'), self: zohoUser })) { log('mail', 'reply ignored: sender not the owner'); return null; }
+  if (isAutoReply(headers)) { log('mail', 'reply ignored: auto-responder headers'); return null; }
+  if (!text.trim()) { log('mail', 'reply ignored: empty body'); return null; }
   if (messageId && headers['in-reply-to'] && headers['in-reply-to'] !== messageId) return null;
   const reply = { verdict: classify(text), text, date: headers.date ?? null, from: headers.from ?? null };
   return { ...reply, key: replyKey(reply) };

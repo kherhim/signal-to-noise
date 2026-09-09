@@ -16,3 +16,10 @@ test('state round-trips and lists essays', () => {
   assert.equal(STAGES[0], 'new');
   assert.equal(STAGES.at(-1), 'published');
 });
+
+test('STAGES lists every stage the line can actually persist, in order', () => {
+  assert.deepEqual(STAGES, [
+    'new', 'brief-sending', 'briefed', 'approved', 'drafted', 'gated', 'covered',
+    'final-sending', 'final-sent', 'deploying', 'deploy-failed', 'push-failed', 'published',
+  ]);
+});

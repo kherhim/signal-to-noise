@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
 import { ROOT, log } from './env.mjs';
 import { runSkill } from './claude.mjs';
+import { runChild, TIMEOUTS } from './proc.mjs';
 import { essayDir } from './state.mjs';
 import { splitFrontmatter } from './md.mjs';
 import { loadConfig } from './queue.mjs';
@@ -36,7 +36,7 @@ export function validateModule(src) {
 }
 
 function run(cmd, args) {
-  const r = spawnSync(cmd, args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
+  const r = runChild(cmd, args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }, { timeoutMin: TIMEOUTS.cover, label: `${cmd} ${args[0] ?? ''}`.trim() });
   if (r.status !== 0) throw new Error(`${cmd} ${args.join(' ')} failed: ${(r.stderr || r.stdout).slice(0, 400)}`);
   return r.stdout;
 }

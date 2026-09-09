@@ -42,6 +42,10 @@ test('inFlight ignores published, killed and held essays', () => {
   assert.equal(inFlight([{ stage: 'drafted' }]), true);
 });
 
+test('inFlight counts a half-sent brief: brief-sending blocks a second brief', () => {
+  assert.equal(inFlight([{ stage: 'brief-sending' }]), true);
+});
+
 test('vetoDeadline rolls to the next day when the lead time is too short', () => {
   const at = (h, m = 0) => { const d = new Date(2026, 8, 14, h, m, 0, 0); return d; };
   assert.equal(vetoDeadline(at(7), 19).getTime(), at(19).getTime());

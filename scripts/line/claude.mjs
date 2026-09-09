@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
 import { ROOT, log } from './env.mjs';
+import { runChild, TIMEOUTS } from './proc.mjs';
 
 export const SKILLS = path.join(ROOT, '.claude', 'skills', 'essay-line');
 
@@ -35,7 +35,7 @@ export function runSkill({ skill, input, tools = [], schema = null, maxTurns = 3
   const skillMd = fs.readFileSync(path.join(SKILLS, skill, 'SKILL.md'), 'utf8');
   const prompt = composePrompt(skillMd, input);
   const started = Date.now();
-  const r = spawnSync('claude', buildArgs({ prompt, tools, schema, maxTurns, model }), { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const r = runChild('claude', buildArgs({ prompt, tools, schema, maxTurns, model }), { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }, { timeoutMin: TIMEOUTS.claude, label: `claude ${skill}` });
   if (r.status !== 0) throw new Error(`claude ${skill} exited ${r.status}: ${(r.stderr || r.stdout).slice(0, 400)}`);
   const out = parseOutput(r.stdout, Boolean(schema));
   log('claude', `${skill} done in ${Math.round((Date.now() - started) / 1000)}s, $${out.cost_usd.toFixed(3)}`);

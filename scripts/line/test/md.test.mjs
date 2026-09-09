@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { splitFrontmatter, joinFrontmatter } from '../md.mjs';
+import { splitFrontmatter, joinFrontmatter, SHIPPING_FIELDS, BRE_FIELDS } from '../md.mjs';
+
+test('the approved title is never handed to Codex, but is still spelt British', () => {
+  assert.deepEqual(SHIPPING_FIELDS, ['excerpt', 'seoDescription', 'coverImageAlt']);
+  assert.ok(!SHIPPING_FIELDS.includes('title'), 'the owner approved that exact title; Layer B must not rewrite it');
+  assert.ok(BRE_FIELDS.includes('title'), 'a spelling fix is not a rewrite: the title still gets the BrE pass');
+  assert.ok(SHIPPING_FIELDS.every((f) => BRE_FIELDS.includes(f)));
+});
 
 test('frontmatter round-trips including quoted values and arrays', () => {
   const src = `---\ntitle: "A: b"\ndate: 2026-09-16\ntags: ["cfo", "ai"]\ndraft: false\n---\n\nBody **x**.\n`;
