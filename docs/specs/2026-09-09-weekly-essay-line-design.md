@@ -195,11 +195,19 @@ and cover return 200; write the ledger; add a placeholder to
 `distribution/metrics/linkedin-posts.json`. The Substack mirror picks the essay
 up on its own once live for 48 h.
 
-**Mail module:** sends from himanshu@signal-to-noise.co (Zoho SMTP) to the
-owner's personal Gmail. Reads the Zoho inbox only for replies whose subject
-carries the automation's token; all other mail is never read or stored.
-Recognised replies: `no`, `hold`, `publish`; anything else is correction text.
-Needs `ZOHO_APP_PASSWORD` in `.env` (owner creates it once).
+**Mail module:** sends from himanshu@signal-to-noise.co (Zoho SMTP,
+`smtppro.zoho.eu:465`) to the owner's personal Gmail, with
+`Reply-To: essay-line@signal-to-noise.co`. **The reply-to must be the alias,
+never the mailbox address:** Gmail has the mailbox address configured as a
+send-as alias, so a Gmail reply to it never leaves Google (verified 9 Sep,
+test 1 vanished; test 2 via the alias arrived in 40 s). Reads the Zoho inbox
+over IMAP (`imappro.zoho.eu:993`, IMAP Access enabled 9 Sep) only for messages
+whose `In-Reply-To` matches a Message-ID the automation sent; all other mail is
+never read or stored. Recognised replies: `no`, `hold`, `publish`; anything
+else is correction text, taken from the plain-text part above the quoted
+original. Credentials in `.env` (all set 9 Sep): `ZOHO_USER`,
+`ZOHO_APP_PASSWORD` (app password "essay-line"), `ZOHO_SMTP_HOST`,
+`ZOHO_IMAP_HOST`, `OWNER_EMAIL`, `ESSAY_LINE_REPLY_TO`. Round trip verified.
 
 **Monday session:** say "Monday" in Claude Code → the `monday` skill shows the
 health line, the readout, the peg board, then walks the LinkedIn edition and
@@ -221,7 +229,7 @@ pass, a handful of searches. Token use logged per stage in `state.json`.
 
 Build order, each step usable alone before the next:
 
-1. Mail module — send + read-reply, tested with a real round trip.
+1. Mail module — send + read-reply. Round trip already verified by hand with curl on 9 Sep; the module wraps that.
 2. Scanner + peg board — live from day one in score-only mode.
 3. Gate as a standalone command — run on the staged two-banks essay.
 4. Cover stage — run on the same essay; compare with its human-made cover.
