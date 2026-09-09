@@ -1824,7 +1824,7 @@ git commit -m "Essay line: draft stage (outline + essay via write-essay skill)"
 
 **Interfaces:**
 - Consumes: `sendMail`, `findReply`, `runGate`, `layerBText`, `essayDir`, `loadState`, `saveState`.
-- Produces: `buildFinal(slug) → finalPath` (gated markdown + cover alt merged), `sendFinal(slug) → { messageId }`, `applyCorrections(slug, text) → { changed }` (headless Claude edits `final.md` per the correction text, then re-gate with `skipLayerB=false` on changed strings only — implemented as full re-gate for simplicity), `readFinalReply(slug) → null | { verdict, text }`.
+- Produces: `buildFinal(slug) → finalPath` (gated markdown + cover alt merged), `nextPublishSlot(now, hourUk) → Date` (today if Wednesday before the hour, else next Wednesday), `sendFinal(slug) → { messageId }` (stores `final_message_id` and `final_token`; `readFinalReply` passes both to `findReply`), `applyCorrections(slug, text) → { changed }` (headless Claude edits `final.md` per the correction text, then re-gate with `skipLayerB=false` on changed strings only — implemented as full re-gate for simplicity), `readFinalReply(slug) → null | { verdict, text }`.
 
 - [ ] **Step 1: Write the failing test**
 
