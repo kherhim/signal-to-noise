@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { pickSentences, extractQuotes, verdictFrom } from '../plagiarism.mjs';
+import { pickSentences, extractQuotes, verdictFrom, stripMarkup } from '../plagiarism.mjs';
 
 test('pickSentences returns the n longest prose sentences without links or headings', () => {
   const body = '## H\n\nShort. This is a considerably longer sentence with distinctive wording about budgets. Another long sentence that mentions [a link](http://x) inside it.\n\n> quoted line\n';
@@ -34,4 +34,12 @@ test('extractQuotes joins multi-line blockquotes', () => {
 test('pickSentences keeps snake_case words intact and strips italics', () => {
   const s = pickSentences('The signal_to_noise ratio was _quietly_ the point of the whole exercise here.', 1);
   assert.equal(s[0], 'The signal_to_noise ratio was quietly the point of the whole exercise here.');
+});
+
+test('stripMarkup removes svg/script/style/comments/fences/tags so their quoted attributes are not treated as quotes', () => {
+  const body = 'Real prose here.\n<svg viewBox="0 0 10 10"><text font-family="JetBrains Mono, monospace">"not a quotation at all"</text></svg>\n<!-- "hidden comment text here" -->\n```\n"code block quoted text here"\n```\n<em>kept text</em> and "an actual quotation of note" ([s](https://x.y/z)).';
+  const out = stripMarkup(body);
+  assert.ok(!out.includes('svg') && !out.includes('hidden comment') && !out.includes('code block'));
+  assert.ok(out.includes('kept text'));
+  assert.deepEqual(extractQuotes(body), [{ quote: 'an actual quotation of note', url: 'https://x.y/z' }]);
 });

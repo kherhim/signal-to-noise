@@ -11,7 +11,18 @@ const SCHEMA = {
   },
 };
 
+export function stripMarkup(body) {
+  return body
+    .replace(/<svg[\s\S]*?<\/svg>/gi, '')
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/<[^>]+>/g, '');
+}
+
 export function pickSentences(body, n = 8) {
+  body = stripMarkup(body);
   const prose = body.split('\n').filter((l) => l.trim() && !/^(#|>|-|\d+\.|!\[|\|)/.test(l.trim())).join(' ');
   return prose.replace(/\*\*?|(?<![\w])_(?=\S)|(?<=\S)_(?![\w])/g, '').split(/(?<=[.!?])\s+/)
     .map((s) => s.trim()).filter((s) => s.length >= 5 && !s.includes(']('))
@@ -19,6 +30,7 @@ export function pickSentences(body, n = 8) {
 }
 
 export function extractQuotes(body) {
+  body = stripMarkup(body);
   const out = [];
   for (const m of body.matchAll(/["“]([^"”\n]{12,})["”](?:\s*\(\[[^\]]*\]\((https?:[^)]+)\))?/g)) out.push({ quote: m[1], url: m[2] ?? null });
   for (const m of body.matchAll(/^((?:> (?!—)[^\n>][^\n]*\n)+)(?:>\s*\n)?(?:> — [^\n]*?\[[^\]]*\]\((https?:[^)]+)\))?/gm)) {
