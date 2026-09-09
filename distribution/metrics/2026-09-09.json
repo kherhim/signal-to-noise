@@ -9,7 +9,263 @@
     "views_30d_delta": 3
   },
   "cloudflare": {
-    "error": "CLOUDFLARE_ANALYTICS_TOKEN (and CLOUDFLARE_ZONE_ID) missing from .env",
-    "hint": "Create it once: dash.cloudflare.com → profile icon → My Profile → API Tokens → Create Token → Create Custom Token → Permissions: Zone · Analytics · Read → Zone Resources: Include · Specific zone · signal-to-noise.co → Continue → Create. Paste the value into .env as CLOUDFLARE_ANALYTICS_TOKEN. The existing purge token cannot read analytics."
+    "since": "2026-08-10",
+    "requests_30d": 54182,
+    "cached_30d": 2360,
+    "pct_cached_30d": 4.4,
+    "burst_days": [
+      "2026-09-08"
+    ],
+    "pct_cached_excl_bursts": 5.5,
+    "days": [
+      {
+        "date": "2026-08-10",
+        "requests": 1078,
+        "cached": 18,
+        "pct_cached": 1.7,
+        "page_views": 99,
+        "uniques": 93
+      },
+      {
+        "date": "2026-08-11",
+        "requests": 779,
+        "cached": 7,
+        "pct_cached": 0.9,
+        "page_views": 311,
+        "uniques": 109
+      },
+      {
+        "date": "2026-08-12",
+        "requests": 1957,
+        "cached": 29,
+        "pct_cached": 1.5,
+        "page_views": 135,
+        "uniques": 108
+      },
+      {
+        "date": "2026-08-13",
+        "requests": 659,
+        "cached": 7,
+        "pct_cached": 1.1,
+        "page_views": 81,
+        "uniques": 110
+      },
+      {
+        "date": "2026-08-14",
+        "requests": 871,
+        "cached": 10,
+        "pct_cached": 1.1,
+        "page_views": 67,
+        "uniques": 79
+      },
+      {
+        "date": "2026-08-15",
+        "requests": 979,
+        "cached": 4,
+        "pct_cached": 0.4,
+        "page_views": 59,
+        "uniques": 90
+      },
+      {
+        "date": "2026-08-16",
+        "requests": 1274,
+        "cached": 11,
+        "pct_cached": 0.9,
+        "page_views": 75,
+        "uniques": 140
+      },
+      {
+        "date": "2026-08-17",
+        "requests": 3640,
+        "cached": 28,
+        "pct_cached": 0.8,
+        "page_views": 131,
+        "uniques": 152
+      },
+      {
+        "date": "2026-08-18",
+        "requests": 1482,
+        "cached": 25,
+        "pct_cached": 1.7,
+        "page_views": 217,
+        "uniques": 223
+      },
+      {
+        "date": "2026-08-19",
+        "requests": 1154,
+        "cached": 8,
+        "pct_cached": 0.7,
+        "page_views": 67,
+        "uniques": 127
+      },
+      {
+        "date": "2026-08-20",
+        "requests": 737,
+        "cached": 15,
+        "pct_cached": 2,
+        "page_views": 94,
+        "uniques": 150
+      },
+      {
+        "date": "2026-08-21",
+        "requests": 1725,
+        "cached": 29,
+        "pct_cached": 1.7,
+        "page_views": 173,
+        "uniques": 176
+      },
+      {
+        "date": "2026-08-22",
+        "requests": 1416,
+        "cached": 10,
+        "pct_cached": 0.7,
+        "page_views": 75,
+        "uniques": 105
+      },
+      {
+        "date": "2026-08-23",
+        "requests": 637,
+        "cached": 7,
+        "pct_cached": 1.1,
+        "page_views": 118,
+        "uniques": 66
+      },
+      {
+        "date": "2026-08-24",
+        "requests": 1404,
+        "cached": 47,
+        "pct_cached": 3.3,
+        "page_views": 144,
+        "uniques": 97
+      },
+      {
+        "date": "2026-08-25",
+        "requests": 1189,
+        "cached": 120,
+        "pct_cached": 10.1,
+        "page_views": 129,
+        "uniques": 82
+      },
+      {
+        "date": "2026-08-26",
+        "requests": 1919,
+        "cached": 45,
+        "pct_cached": 2.3,
+        "page_views": 194,
+        "uniques": 220
+      },
+      {
+        "date": "2026-08-27",
+        "requests": 1555,
+        "cached": 59,
+        "pct_cached": 3.8,
+        "page_views": 160,
+        "uniques": 145
+      },
+      {
+        "date": "2026-08-28",
+        "requests": 830,
+        "cached": 45,
+        "pct_cached": 5.4,
+        "page_views": 95,
+        "uniques": 95
+      },
+      {
+        "date": "2026-08-29",
+        "requests": 766,
+        "cached": 70,
+        "pct_cached": 9.1,
+        "page_views": 145,
+        "uniques": 125
+      },
+      {
+        "date": "2026-08-30",
+        "requests": 367,
+        "cached": 51,
+        "pct_cached": 13.9,
+        "page_views": 46,
+        "uniques": 122
+      },
+      {
+        "date": "2026-08-31",
+        "requests": 1168,
+        "cached": 61,
+        "pct_cached": 5.2,
+        "page_views": 229,
+        "uniques": 98
+      },
+      {
+        "date": "2026-09-01",
+        "requests": 1592,
+        "cached": 227,
+        "pct_cached": 14.3,
+        "page_views": 346,
+        "uniques": 157
+      },
+      {
+        "date": "2026-09-02",
+        "requests": 1109,
+        "cached": 188,
+        "pct_cached": 17,
+        "page_views": 253,
+        "uniques": 141
+      },
+      {
+        "date": "2026-09-03",
+        "requests": 1199,
+        "cached": 251,
+        "pct_cached": 20.9,
+        "page_views": 311,
+        "uniques": 212
+      },
+      {
+        "date": "2026-09-04",
+        "requests": 981,
+        "cached": 154,
+        "pct_cached": 15.7,
+        "page_views": 276,
+        "uniques": 120
+      },
+      {
+        "date": "2026-09-05",
+        "requests": 1022,
+        "cached": 367,
+        "pct_cached": 35.9,
+        "page_views": 187,
+        "uniques": 123
+      },
+      {
+        "date": "2026-09-06",
+        "requests": 3146,
+        "cached": 177,
+        "pct_cached": 5.6,
+        "page_views": 256,
+        "uniques": 184
+      },
+      {
+        "date": "2026-09-07",
+        "requests": 3384,
+        "cached": 170,
+        "pct_cached": 5,
+        "page_views": 312,
+        "uniques": 202
+      },
+      {
+        "date": "2026-09-08",
+        "requests": 12823,
+        "cached": 75,
+        "pct_cached": 0.6,
+        "page_views": 237,
+        "uniques": 196
+      },
+      {
+        "date": "2026-09-09",
+        "requests": 1340,
+        "cached": 45,
+        "pct_cached": 3.4,
+        "page_views": 57,
+        "uniques": 37
+      }
+    ]
   }
 }
