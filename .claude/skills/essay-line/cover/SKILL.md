@@ -9,8 +9,9 @@ Rules
 - Design from the argument of the essay (given in Input), not from the title.
   One abstract mechanism that embodies the essay's central move.
 - Write `src/covers/<slug>.ts` exporting a `Cover` with `slug`, `fig`,
-  `caption` in the form "NOUN, ADJECTIVE" (capitals, letters and spaces
-  only — no hyphens or other punctuation), `still(alt)` built as a pure
+  `caption` in the form "NOUN, ADJECTIVE" (capitals, letters, spaces, and
+  hyphens for compound adjectives only — e.g. "FAITH, CLEAR-EYED" — no
+  other punctuation), `still(alt)` built as a pure
   string (it runs in Node), `motion(svg)` returning Animations that loop
   over PERIOD and rest on the still (use `hold`), and `motionPx` = the largest
   displacement in canvas pixels; it must be at least 60.
