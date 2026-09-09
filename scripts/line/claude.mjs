@@ -1,0 +1,38 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { ROOT, log } from './env.mjs';
+
+export const SKILLS = path.join(ROOT, '.claude', 'skills', 'essay-line');
+
+export function buildArgs({ prompt, tools = [], schema = null, maxTurns = 30, model = null }) {
+  const a = ['-p', prompt, '--output-format', 'json', '--max-turns', String(maxTurns), '--permission-mode', 'acceptEdits'];
+  if (tools.length) a.push('--allowedTools', tools.join(','));
+  if (schema) a.push('--json-schema', JSON.stringify(schema));
+  if (model) a.push('--model', model);
+  return a;
+}
+
+export function parseOutput(stdout, wantJson) {
+  const arr = JSON.parse(stdout);
+  const last = (Array.isArray(arr) ? arr : [arr]).findLast((m) => m.type === 'result');
+  if (!last) throw new Error('no result message from claude');
+  if (last.is_error) throw new Error(`claude error: ${String(last.result).slice(0, 300)}`);
+  let json = null;
+  if (wantJson) {
+    const raw = typeof last.result === 'string' ? last.result : JSON.stringify(last.result);
+    json = JSON.parse(raw.replace(/^```json\s*|\s*```$/g, ''));
+  }
+  return { result: last.result, json, cost_usd: last.total_cost_usd ?? 0, session_id: last.session_id };
+}
+
+export function runSkill({ skill, input, tools = [], schema = null, maxTurns = 30, model = null, cwd = ROOT }) {
+  const skillMd = fs.readFileSync(path.join(SKILLS, skill, 'SKILL.md'), 'utf8');
+  const prompt = `${skillMd}\n\n---\n\n# Input\n\n${input}`;
+  const started = Date.now();
+  const r = spawnSync('claude', buildArgs({ prompt, tools, schema, maxTurns, model }), { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  if (r.status !== 0) throw new Error(`claude ${skill} exited ${r.status}: ${(r.stderr || r.stdout).slice(0, 400)}`);
+  const out = parseOutput(r.stdout, Boolean(schema));
+  log('claude', `${skill} done in ${Math.round((Date.now() - started) / 1000)}s, $${out.cost_usd.toFixed(3)}`);
+  return out;
+}
