@@ -37,6 +37,20 @@ plagiarism and provenance, Layer A and Layer B, never Axi) enforced by code.
 Corrections received after Wed 06:00 roll the essay to the following Wednesday
 so a correction is never rushed past the gate.
 
+Reply handling rules (settled during the build, 9 Sep):
+- A prose reply to the Monday brief is not consent: the essay is parked with
+  `hold: true`, the text is kept, and the owner is emailed once. Silence still
+  means go.
+- An `ok` reply to the Tuesday final does nothing and the owner is told so;
+  only `publish` ships.
+- Every acted-on reply is recorded (`*_reply_seen`) so un-parking an essay by
+  hand does not re-apply the old reply.
+- A stage that fails three times is parked and the owner is emailed on the
+  first failure and on parking, never on every wake.
+- The runner advances at most one essay per wake, and the Monday brief and
+  daily scan fire in a morning window (06:00–12:00) guarded by "already done
+  this week/today", so a missed 06:30 wake does not skip the week.
+
 ## 3. Topic engine
 
 ### 3.1 Sourcing order for Monday's brief
