@@ -67,7 +67,7 @@ export function runBrief({ dry = false } = {}) {
   const vetoAt = vetoDeadline(new Date(), cfg.veto_hour_local);
   if (dry) { log('brief', `DRY would email brief for ${slug}`); return { slug, brief, messageId: null }; }
   const { messageId, token } = sendMail({ subject: `Brief: ${topic.title}`, text: `${brief}\n\nReply "no" to kill, "hold" to park, or nothing to proceed. Veto closes ${vetoAt.toLocaleString('en-GB')}.` });
-  saveState(slug, { stage: 'briefed', title: topic.title, family: topic.family, source: topic.source, peg: topic.peg ?? null, brief_message_id: messageId, brief_token: token, veto_deadline: vetoAt.toISOString(), cost_usd: out.cost_usd });
+  saveState(slug, { stage: 'briefed', title: topic.title, family: topic.family, source: topic.source, peg: topic.peg ?? null, brief_message_id: messageId, brief_token: token, brief_sent_at: new Date().toISOString(), veto_deadline: vetoAt.toISOString(), cost_usd: out.cost_usd });
   if (topic.source === 'queue') markQueue(topic.title, 'briefed');
   log('brief', `${slug} briefed, veto until ${vetoAt.toISOString()}`);
   return { slug, brief, messageId };

@@ -84,3 +84,131 @@ No paid calls (the scan test explicitly asserts "no spend"; the runner tests are
 ## Concerns
 
 - None blocking. Worth flagging for the owner: with `brief_hour_local` now 6, `runBrief` (unguarded, live) and `scan` (dry-guarded) both fire in the same `hour === 6` tick on a Monday — by design, since Task 17's job wakes once at 06:30 and both jobs are meant to run then. No code change needed, just noting it since it wasn't obviously spelled out anywhere.
+
+---
+
+## Fix report
+
+Review findings on Task 16, all eight applied. TDD throughout, with one deliberate
+ordering change: **item 8 (injectable deps) was done first, as a pure refactor**, and
+the existing five `nextAction` tests re-run green before a single behavioural test was
+written. Without that, the RED run would have been live — pre-fix `advance` ignored
+`deps`, so `check-veto` would have curled the real Zoho IMAP box (`.env` resolves), the
+one-advance-per-wake test would have called the paid `claude` draft skill, and the
+retry-cap test would have called the real `publish()`. Deps first keeps RED honest and
+free. No live runner, no mail sent, no `claude`/`codex` invocation, no paid call at any
+point.
+
+`distribution/autopilot/PAUSE` was confirmed absent before the suite — `advance` now
+returns `'paused'` when it exists, which would otherwise have failed every state test
+for the wrong reason.
+
+### RED — after the deps refactor, before the behaviour fixes
+
+```
+$ node --test scripts/line/test/runner.test.mjs
+✔ briefed waits for the veto deadline then checks
+✔ approved → draft → gate → cover → send-final in order
+✔ final-sent polls for a reply; publishes only when approved and after the slot
+✔ a failed deploy or push retries publish on the next wake
+✔ hold, killed and published do nothing
+✖ isoWeek stamps the ISO year and week
+✔ a dry tick on Monday 06:00 calls neither the scanner nor the brief
+✖ a missed Monday wake still briefs, once, and not twice in the same ISO week
+✖ check-veto: a hold reply parks the essay and is not re-applied once marked seen
+✖ check-veto: a text reply parks the essay and notifies the owner once
+✔ check-veto: silence means go
+✖ check-final: silence holds, "ok" only nudges, "publish" ships
+✖ three failures at the same action park the essay, with two notifications
+✖ a tick advances at most one essay per wake
+ℹ tests 14
+ℹ pass 7
+ℹ fail 7
+```
+
+The seven failures were each the specific missing behaviour, not a crash:
+`isoWeek` not exported; `runBrief` never called at 09:00 (gate was `hour === 6`);
+`brief_reply_seen` `undefined` and the consumed hold re-applied; a `text` brief reply
+approving instead of parking, `sendMail` never called; `final_reply_seen` `undefined`
+and `ok` silently ignored with no nudge; `last_error.count` `undefined` and `hold`
+still `false` after three failures; both essays advanced on one tick (`2 !== 1`).
+
+### GREEN — after the fixes
+
+```
+$ node --test scripts/line/test/runner.test.mjs
+ℹ tests 14
+ℹ pass 14
+ℹ fail 0
+```
+
+Full suite, one run, pristine:
+
+```
+$ npm run test:line
+ℹ tests 90
+ℹ pass 89
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1   # the LINE_LIVE=1-gated paid gate fixture, opt-in only
+```
+
+`--now` validation, checked directly (it exits before `tick`, so nothing runs):
+
+```
+$ node scripts/line/runner.mjs --dry --now "not-a-date"
+runner: --now needs a parseable date, got "not-a-date"
+exit=2
+```
+
+`git status --porcelain` after every run listed only the five intended files — no
+state.json was written by a test into the real staging tree (all state tests run
+against an `LINE_STAGING` temp dir).
+
+### What changed, and why
+
+- **`scripts/line/mail.mjs`** — `replyKey(r)` exported (`${r.date}|${r.from}|${r.text}`);
+  `findReply` now returns `key`. One reply, one stable identity.
+- **`scripts/line/final.mjs`** — the "final send in progress" error carries
+  `code = 'FINAL_IN_PROGRESS'`. The runner branches on the code, not on the prose, so
+  rewording the message can no longer turn an idle wake into a failure.
+- **`scripts/line/brief.mjs`** — `saveState` records `brief_sent_at`, which is what the
+  new missed-wake brief gate reads.
+- **`scripts/line/runner.mjs`** — reply-seen markers on both gates; a `text` reply to the
+  Monday brief parks and notifies once; `ok` on the Tuesday final nudges once and does
+  not approve; retry cap of 3 with notification back-off (shout on the first failure,
+  silent, shout again on parking) storing `count` and `notified_at`; one advance per
+  wake; `PAUSE` honoured in `advance` (returns `'paused'`); `--now` validated, exit 2;
+  window gates (`hour >= 6 && hour < 12` for the scan, plus a peg-board-date check;
+  `day === 1 && hour >= brief_hour_local && hour < 12` plus an ISO-week check for the
+  brief); `isoWeek` and `boardDate` exported; `DEFAULT_DEPS` with every side-effecting
+  collaborator injectable.
+- **`scripts/line/test/runner.test.mjs`** — nine new tests, the original five kept
+  verbatim; `LINE_STAGING` temp dir and dynamic import, matching `state.test.mjs`.
+
+### Two judgement calls beyond the brief
+
+- **`final_reply_seen` is recorded *after* `applyCorrections` returns, not before.** If it
+  were recorded first and the corrections skill threw, the reply would be permanently
+  consumed, and since silence means hold the essay would sit in `final-sent` forever
+  with no way back. Recorded after, a failing corrections run is a normal failure and
+  the retry cap governs it.
+- **A clean action clears `last_error`** (one line on the success path). Without it the
+  counter is a lifetime tally, not a streak: two IMAP flakes in September plus one
+  unrelated failure in November would park the essay. Not in the brief; small, and the
+  cap reads as "three failures in a row" everywhere else.
+
+Also preserved the previous `veto` text when a consumed reply falls through to the
+approve path, so clearing `hold` by hand no longer erases the record of what the owner
+actually wrote.
+
+### Concerns
+
+- The peg-board freshness check compares against `now.toISOString().slice(0, 10)` — a UTC
+  day, matching exactly how `scan.mjs` stamps the board it writes. On a machine well west
+  of UTC a 06:00–12:00 local window could straddle two UTC days and scan twice; on UK
+  time (the only machine this runs on) it cannot. Left matching the writer rather than
+  introducing a second, disagreeing notion of "today".
+- `advance` returning `'paused'` is non-idle, so a tick that somehow reached the loop
+  with `PAUSE` present would stop after the first essay. Unreachable in practice: `tick`
+  checks `PAUSE` first and returns.

@@ -72,6 +72,10 @@ export function sendMail({ subject, text, attachments = [], token = Math.random(
   return { messageId, token };
 }
 
+// A stable identity for one reply, so the runner can record that it has already
+// acted on it and never apply the same instruction twice.
+export const replyKey = (r) => `${r.date}|${r.from}|${r.text}`;
+
 export function buildSearchNeedle({ token = null, subjectNeedle = null } = {}) {
   return subjectNeedle ?? (token ? `[S2N ${token}]` : null);
 }
@@ -89,7 +93,8 @@ export function findReply({ messageId, token = null, subjectNeedle = null }) {
   const { headers, text } = parseReply(raw);
   if ((headers.from ?? '').includes(zohoUser)) return null;
   if (messageId && headers['in-reply-to'] && headers['in-reply-to'] !== messageId) return null;
-  return { verdict: classify(text), text, date: headers.date ?? null, from: headers.from ?? null };
+  const reply = { verdict: classify(text), text, date: headers.date ?? null, from: headers.from ?? null };
+  return { ...reply, key: replyKey(reply) };
 }
 
 export { TOKEN_RE };

@@ -49,7 +49,11 @@ export function finalSendAllowed(state, now, retryAfterMinutes = 60) {
 
 export function sendFinal(slug) {
   const dir = essayDir(slug), st = loadState(slug);
-  if (!finalSendAllowed(st, new Date())) throw new Error('final send in progress; not resending');
+  if (!finalSendAllowed(st, new Date())) {
+    const e = new Error('final send in progress; not resending');
+    e.code = 'FINAL_IN_PROGRESS'; // the runner treats this as "nothing to do", not a failure
+    throw e;
+  }
   const finalPath = buildFinal(slug);
   const report = fs.readFileSync(path.join(dir, 'gate-report.md'), 'utf8');
   const webp = path.join(ROOT, 'public', 'img', `${slug}.webp`);
