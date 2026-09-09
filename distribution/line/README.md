@@ -9,11 +9,27 @@ this is the operational reference.
 
 The gate's Layer A step (invisible-Unicode inspect and clean) runs against a
 **local watermarks service**, and the gate now refuses to start without it
-rather than spending on Layer B and the plagiarism check first:
+rather than spending on Layer B and the plagiarism check first.
+
+The service is the `wr-core` Docker container from
+`~/Documents/devProjects/watermarks-remover` (`restart: unless-stopped`), kept
+up by the LaunchAgent `co.signal-to-noise.watermarks`
+(`infra/co.signal-to-noise.watermarks.plist`). At login and every 30 minutes it
+runs `infra/watermarks-ensure.sh`: starts Docker Desktop if its daemon is down,
+starts the container (recreating it with `docker compose` if it is gone), and
+requires `/health` to answer `{"ok": true}`. Nothing is started by hand.
 
 ```bash
-cd ~/Documents/devProjects/watermarks-remover && make serve   # serves http://127.0.0.1:8765
+curl -s http://127.0.0.1:8765/health                       # {"ok":true,...} when up
+tail ~/Library/Logs/signal2noise-watermarks-launchd.log    # what the agent did
+launchctl kickstart gui/$(id -u)/co.signal-to-noise.watermarks   # run it now
 ```
+
+launchd runs the script through `/bin/sh`, which macOS bars from `~/Documents`,
+so the plist points at a copy in `~/Library/Application Support/signal2noise/`.
+After editing the script, re-copy it there. Another process answering on port
+8765 (a stray `python -m http.server` has been seen) is not mistaken for the
+service: both the agent and the gate check the reply, not just the port.
 
 Override the address with `WATERMARKS_SERVICE_URL` in `.env` if you must; it has
 to be a loopback host. When the service is down, `runGate` writes an ERROR gate

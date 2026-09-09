@@ -2290,7 +2290,7 @@ git push origin main
 No new files. Checklist, run with Claude in session on the first Monday after Task 17:
 
 - [ ] Owner has filled `_sources/NEVER-LIST.md`.
-- [ ] Watermarks service is running (`make serve` in ~/Documents/devProjects/watermarks-remover); confirm with `curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:8765/inspect` → 200/400, not a connection error. Consider a LaunchAgent for it.
+- [x] Watermarks service is kept up by the LaunchAgent `co.signal-to-noise.watermarks` (installed 9 Sep; `infra/watermarks-ensure.sh`, copy in `~/Library/Application Support/signal2noise/`). Confirm with `curl -s http://127.0.0.1:8765/health` → `{"ok":true,...}`.
 - [ ] `git commit` and `git push` do not prompt under launchd: `git config commit.gpgsign` is unset/false and the push credential needs no passphrase (test with `launchctl kickstart` of a harmless job, or `GIT_TERMINAL_PROMPT=0 git push --dry-run`).
 - [ ] Reset the test staging folder: `rm -r _sources/staging-articles/the-verification-premium` (its state lacks title/family because the brief ran in dry mode; Monday re-briefs it properly — the seed queue still lists it first).
 - [ ] Mon 06:30: brief email arrives; owner replies nothing (or "no" to test the kill path once, then re-run `runBrief` by hand).

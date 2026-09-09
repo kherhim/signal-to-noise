@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>co.signal-to-noise.watermarks</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>/Users/himanshu.kher/Library/Application Support/signal2noise/watermarks-ensure.sh</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>StartInterval</key><integer>1800</integer>
+  <key>StandardOutPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-watermarks-launchd.log</string>
+  <key>StandardErrorPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-watermarks-launchd.log</string>
+</dict>
+</plist>
