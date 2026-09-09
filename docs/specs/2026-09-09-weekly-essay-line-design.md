@@ -1,6 +1,6 @@
 # The weekly essay line — design
 
-**Status:** approved in conversation 9 Sep 2026, awaiting written review.
+**Status:** Implemented 9 Sep 2026; first supervised cycle pending (line PAUSED until then).
 **Owner:** Himanshu. **Builder:** Claude Code.
 **Goal:** publish one essay a week on signal-to-noise.co with no human in the
 loop except two emails, while keeping every standing rule (British English,
