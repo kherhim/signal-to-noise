@@ -34,7 +34,8 @@ export function parseReply(raw) {
     }
   }
   if (qp) plain = qpDecode(plain);
-  const above = plain.split(/\n(?=On .{6,120} wrote:)/)[0];
+  const cut = plain.match(/^On [\s\S]{6,300}?wrote:/m);
+  const above = cut ? plain.slice(0, cut.index) : plain;
   const text = above.split('\n').filter((l) => !l.startsWith('>')).join('\n').trim();
   return { headers, text };
 }
@@ -71,14 +72,23 @@ export function sendMail({ subject, text, attachments = [], token = Math.random(
   return { messageId, token };
 }
 
-export function findReply({ messageId }) {
-  const host = need('ZOHO_IMAP_HOST'), auth = `${need('ZOHO_USER')}:${need('ZOHO_APP_PASSWORD')}`;
+export function buildSearchNeedle({ token = null, subjectNeedle = null } = {}) {
+  return subjectNeedle ?? (token ? `[S2N ${token}]` : null);
+}
+
+export function findReply({ messageId, token = null, subjectNeedle = null }) {
+  const needle = buildSearchNeedle({ token, subjectNeedle });
+  if (!needle) throw new Error('findReply needs token or subjectNeedle');
+  const host = need('ZOHO_IMAP_HOST'), zohoUser = need('ZOHO_USER'), auth = `${zohoUser}:${need('ZOHO_APP_PASSWORD')}`;
   const url = `imaps://${host}/INBOX`;
-  const ids = curl(['--url', url, '--user', auth, '-X', `SEARCH HEADER In-Reply-To "${messageId}"`])
-    .replace('* SEARCH', '').trim().split(/\s+/).filter(Boolean);
+  const ids = curl(['--url', url, '--user', auth, '-X', `SEARCH SUBJECT "${needle}"`])
+    .replace('* SEARCH', '').trim().split(/\s+/).filter(Boolean).map(Number).filter((n) => !Number.isNaN(n));
   if (!ids.length) return null;
-  const raw = curl(['--url', `${url};MAILINDEX=${ids.at(-1)}`, '--user', auth]);
+  const newest = Math.max(...ids);
+  const raw = curl(['--url', `${url};MAILINDEX=${newest}`, '--user', auth]);
   const { headers, text } = parseReply(raw);
+  if ((headers.from ?? '').includes(zohoUser)) return null;
+  if (messageId && headers['in-reply-to'] && headers['in-reply-to'] !== messageId) return null;
   return { verdict: classify(text), text, date: headers.date ?? null, from: headers.from ?? null };
 }
 
