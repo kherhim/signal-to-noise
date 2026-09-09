@@ -274,16 +274,16 @@ analytics.
 
 ---
 
-## Week 3/4 readout — Mon 7 September 2026 (DRAFT, numbers arriving)
+## Week 3/4 readout — Mon 7 September 2026 (closed Wed 9 Sep)
 
 | # | Metric | 7 Sep | Prior | Note |
 |---|---|---|---|---|
 | 1 | Newsletter subscribers | **708** | 680 (31 Aug) · 563 (17 Aug) | +28 in 7d, slowest weekly delta since launch; no edition in the window, so this is the between-edition floor. Edition 3 (Fri 11 Sep) is the growth event |
-| 2 | Substack subscribers | _TBC_ | 8 | |
-| 3 | LinkedIn followers | _TBC_ | 6,554 (17 Aug) | |
-| 4 | Value-accrual post, final 24h | _TBC_ | — | |
-| 5 | Supply-chain P1 (1 Sep) | _TBC_ | — | |
-| 6 | Cloudflare percent cached | _TBC_ | — | LCP fix shipped 24 Aug; this is the first read on the Cache Rule |
+| 2 | Substack subscribers | **10** | 8 | +2 since 10 Jul (the ambidextrous mirror emailed 7 Sep); still an order of magnitude below LinkedIn — the owned audience is LinkedIn. 30d open rate 44% |
+| 3 | LinkedIn followers | **6,610** | 6,554 (17 Aug) | +56 in ~3 weeks; every post reads "0 followers gained" — growth comes via the newsletter invite, not the feed |
+| 4 | Value-accrual post (wk-3 P2), current | **624 imps · 19% OON · 410 reached · 9 reactions · 5 comments** | 260 @6.5h (9% OON) | Read ~2 weeks after posting, not at 24h (the 24h read was missed). Lowest OON of the month: IPO peg drew reactions but not distribution |
+| 5 | Supply-chain P1 (1 Sep), current | **417 imps · 27% OON · 281 reached · 2 reactions · 3 comments** | — | Soft. Abstract-supplier framing, no number in the hook |
+| 6 | Cloudflare percent cached (30d) | **4.4%** (2.31k cached / 52.84k requests) | 1.13% (pre-LCP-fix) | NOT a clean read on the Cache Rule: a one-day bot burst on 7 Sep (12,031 requests from France in 24h, all uncached) dominates the denominator, and even before it the cached band is thin. Spot-checks on 24 Aug showed HTML+assets HIT at the edge. Cache Analytics is paid-only; free source is HTTP Traffic cached/total. OPEN FOLLOW-UP: pull daily granularity via the analytics API and exclude bot days |
 
 **Supply-chain P2 ("Four disciplines"), fired Mon 7 Sep 1:45pm UK.** ~7h
 snapshot: 263 impressions, 172 members reached, **35% OON** on day one (week-2
@@ -291,3 +291,19 @@ posts started ~17% and climbed to 27% over a week). One substantive pushback
 comment ("flexibility adds more complexity than value"); replied with the
 tiering position and a question back in the commenter's architecture lane.
 Tue-night rule: >1,000 imps or >40% OON ⇒ skip Wed, work the thread.
+
+**P2 at ~41h (Wed 9 Sep, 7am UK):** 507 impressions, **40% OON**, 342 reached,
+4 reactions, 3 comments, 4 profile views, 0 followers gained. Under the
+impression trigger, exactly on the OON trigger. Rule call: treat as a marginal
+breakout — no Wednesday post (none was drafted), work the existing thread.
+P2 beat P1 on every measure and its 40% OON is the best supply-chain angle,
+but the essay as a whole runs well below pricing week (pricing P1 has kept
+climbing: 2,071 impressions as of today, from 1,651 at the week-3 close).
+Pattern across the month: the two news-pegged posts (pricing P1, value-accrual)
+are the two strongest by reach; the abstract-supplier angles convert reach
+poorly. Edition 2 announcement post: 357 impressions; Edition 2 itself now
+248 article views on 503 sends (was 224 on 31 Aug).
+
+**Collection note:** all LinkedIn figures pulled via the Chrome extension from
+`/analytics/post-summary/urn:li:activity:<id>/`; Substack and Cloudflare via
+`scripts/metrics-pull.mjs` (see `distribution/metrics/README.md`).

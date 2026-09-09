@@ -1,0 +1,10 @@
+{
+  "note": "Activity URNs for LinkedIn posts we track. Analytics page: https://www.linkedin.com/analytics/post-summary/urn:li:activity:<activity>/ — add every new native post and edition announcement here on posting day.",
+  "posts": [
+    { "label": "wk3 P1 pricing (all-time best)", "posted": "2026-08-24", "activity": "7497548303841210369" },
+    { "label": "wk3 P2 value-accrual", "posted": "2026-08-26", "activity": "7498273083523334144" },
+    { "label": "Edition 2 announcement (metered)", "posted": "2026-08-28", "activity": "7498997928473157633" },
+    { "label": "wk4 P1 supply-chain Tuesday email", "posted": "2026-09-01", "activity": "7500488960607985664" },
+    { "label": "wk4 P2 supply-chain four disciplines", "posted": "2026-09-07", "activity": "7502707532755259392" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-09",
+  "substack": {
+    "subscribers": 10,
+    "paid": 0,
+    "open_rate_30d": 44.4,
+    "open_rate_30d_diff": 6.9,
+    "views_30d": 40,
+    "views_30d_delta": 3
+  },
+  "cloudflare": {
+    "error": "CLOUDFLARE_ANALYTICS_TOKEN (and CLOUDFLARE_ZONE_ID) missing from .env",
+    "hint": "Create it once: dash.cloudflare.com → profile icon → My Profile → API Tokens → Create Token → Create Custom Token → Permissions: Zone · Analytics · Read → Zone Resources: Include · Specific zone · signal-to-noise.co → Continue → Create. Paste the value into .env as CLOUDFLARE_ANALYTICS_TOKEN. The existing purge token cannot read analytics."
+  }
+}
