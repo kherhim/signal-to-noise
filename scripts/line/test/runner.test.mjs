@@ -45,6 +45,23 @@ test('hold, killed and published do nothing', () => {
   assert.equal(nextAction({ stage: 'published' }, at('2026-09-14T20:00:00Z'), cfg), null);
 });
 
+test('paused: advance returns \'paused\' and tick takes no actions', async () => {
+  const slug = 'paused-slug';
+  saveState(slug, { stage: 'approved', title: 'T' });
+  const advanceDeps = { paused: () => true, runDraft: () => { throw new Error('must not run'); }, sendMail: () => {} };
+  assert.equal(advance(slug, at('2026-09-14T20:00:00Z'), { deps: advanceDeps }), 'paused');
+
+  const tickDeps = {
+    paused: () => true,
+    listEssays: () => [{ slug }],
+    scan: () => { throw new Error('must not scan'); },
+    runBrief: () => { throw new Error('must not brief'); },
+    sendMail: () => {},
+  };
+  const took = await tick({ now: new Date(2026, 8, 14, 9, 0), deps: tickDeps });
+  assert.deepEqual(took, []);
+});
+
 test('isoWeek stamps the ISO year and week', () => {
   assert.equal(isoWeek(new Date(2026, 8, 14)), '2026-W38');
 });
@@ -52,6 +69,7 @@ test('isoWeek stamps the ISO year and week', () => {
 test('a dry tick on Monday 06:00 calls neither the scanner nor the brief', async () => {
   const called = [];
   const deps = {
+    paused: () => false,
     scan: () => { called.push('scan'); }, runBrief: () => { called.push('brief'); },
     listEssays: () => [], boardDate: () => null, sendMail: () => {},
   };
@@ -63,6 +81,7 @@ test('a missed Monday wake still briefs, once, and not twice in the same ISO wee
   const now = new Date(2026, 8, 14, 9, 0); // Monday 09:00, brief_hour_local is 06:00
   const briefs = [];
   const base = {
+    paused: () => false,
     scan: () => {}, runBrief: () => { briefs.push(1); return null; }, boardDate: () => day(now),
     sendMail: () => {}, loadState: (slug) => ({ slug, stage: 'published' }),
   };
@@ -77,7 +96,7 @@ test('a missed Monday wake still briefs, once, and not twice in the same ISO wee
 test('check-veto: a hold reply parks the essay and is not re-applied once marked seen', () => {
   const slug = 'veto-hold';
   saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't1', veto_deadline: '2026-09-14T18:00:00.000Z' });
-  const deps = { findReply: () => ({ verdict: 'hold', text: 'hold', date: 'D', from: 'F', key: 'k1' }), sendMail: () => {} };
+  const deps = { paused: () => false, findReply: () => ({ verdict: 'hold', text: 'hold', date: 'D', from: 'F', key: 'k1' }), sendMail: () => {} };
   advance(slug, at('2026-09-14T19:00:00Z'), { deps });
   assert.equal(loadState(slug).hold, true);
   assert.equal(loadState(slug).brief_reply_seen, 'k1');
@@ -92,6 +111,7 @@ test('check-veto: a text reply parks the essay and notifies the owner once', () 
   saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't2', veto_deadline: '2026-09-14T18:00:00.000Z' });
   const mail = [];
   const deps = {
+    paused: () => false,
     findReply: () => ({ verdict: 'text', text: 'Narrow it to one bank.', date: 'D', from: 'F', key: 'k2' }),
     sendMail: (m) => { mail.push(m); },
   };
@@ -107,7 +127,7 @@ test('check-veto: a text reply parks the essay and notifies the owner once', () 
 test('check-veto: silence means go', () => {
   const slug = 'veto-silent';
   saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't3', veto_deadline: '2026-09-14T18:00:00.000Z' });
-  advance(slug, at('2026-09-14T19:00:00Z'), { deps: { findReply: () => null, sendMail: () => {} } });
+  advance(slug, at('2026-09-14T19:00:00Z'), { deps: { paused: () => false, findReply: () => null, sendMail: () => {} } });
   assert.equal(loadState(slug).stage, 'approved');
 });
 
@@ -117,17 +137,17 @@ test('check-final: silence holds, "ok" only nudges, "publish" ships', () => {
   saveState(slug, base);
   const when = at('2026-09-15T20:00:00Z');
 
-  advance(slug, when, { deps: { readFinalReply: () => null, sendMail: () => {} } });
+  advance(slug, when, { deps: { paused: () => false, readFinalReply: () => null, sendMail: () => {} } });
   assert.equal(loadState(slug).approved, false);
 
   const mail = [];
-  advance(slug, when, { deps: { readFinalReply: () => ({ verdict: 'ok', text: 'ok', date: 'D', from: 'F', key: 'o1' }), sendMail: (m) => { mail.push(m); } } });
+  advance(slug, when, { deps: { paused: () => false, readFinalReply: () => ({ verdict: 'ok', text: 'ok', date: 'D', from: 'F', key: 'o1' }), sendMail: (m) => { mail.push(m); } } });
   assert.equal(loadState(slug).approved, false, '"ok" is not approval');
   assert.equal(loadState(slug).final_reply_seen, 'o1');
   assert.equal(mail.length, 1);
   assert.match(mail[0].text, /Reply 'publish' to ship/);
 
-  advance(slug, when, { deps: { readFinalReply: () => ({ verdict: 'publish', text: 'publish', date: 'D', from: 'F', key: 'p1' }), sendMail: () => {} } });
+  advance(slug, when, { deps: { paused: () => false, readFinalReply: () => ({ verdict: 'publish', text: 'publish', date: 'D', from: 'F', key: 'p1' }), sendMail: () => {} } });
   assert.equal(loadState(slug).approved, true);
 });
 
@@ -135,7 +155,7 @@ test('three failures at the same action park the essay, with two notifications',
   const slug = 'retry-cap';
   saveState(slug, { stage: 'final-sent', approved: true, title: 'T', publish_not_before: '2026-09-16T07:00:00.000Z' });
   const mail = [];
-  const deps = { publish: () => { throw new Error('rsync refused'); }, sendMail: (m) => { mail.push(m); } };
+  const deps = { paused: () => false, publish: () => { throw new Error('rsync refused'); }, sendMail: (m) => { mail.push(m); } };
   for (let i = 0; i < 3; i++) advance(slug, at('2026-09-16T08:00:00Z'), { deps });
   const st = loadState(slug);
   assert.equal(st.hold, true);
@@ -150,6 +170,7 @@ test('a tick advances at most one essay per wake', async () => {
   saveState('two-b', { stage: 'drafted', title: 'B' });
   const gated = [];
   const deps = {
+    paused: () => false,
     listEssays: () => [{ slug: 'two-a' }, { slug: 'two-b' }],
     runGate: () => { gated.push(1); return { verdict: 'pass' }; },
     sendMail: () => {},
@@ -165,6 +186,7 @@ test('an idle poll (no fresh reply) does not consume the wake: the next essay st
     'poll-b': { stage: 'approved', title: 'B' },
   };
   const deps = {
+    paused: () => false,
     listEssays: () => [{ slug: 'poll-a' }, { slug: 'poll-b' }],
     loadState: (slug) => states[slug],
     readFinalReply: () => null,
@@ -187,6 +209,7 @@ test('check-final: an "ok" reply notifies once even if the same message is seen 
   saveState(slug, { stage: 'final-sent', approved: false, title: 'T', publish_not_before: '2026-09-16T07:00:00.000Z' });
   const mail = [];
   const deps = {
+    paused: () => false,
     readFinalReply: () => ({ verdict: 'ok', text: 'ok', date: 'D', from: 'F', key: 'dup1' }),
     sendMail: (m) => { mail.push(m); },
   };
@@ -198,12 +221,12 @@ test('check-final: an "ok" reply notifies once even if the same message is seen 
 test('a failure streak resets when the action changes', () => {
   const slug = 'streak-reset';
   saveState(slug, { stage: 'drafted', title: 'T' });
-  advance(slug, at('2026-09-16T08:00:00Z'), { deps: { runGate: () => { throw new Error('gate boom'); }, sendMail: () => {} } });
+  advance(slug, at('2026-09-16T08:00:00Z'), { deps: { paused: () => false, runGate: () => { throw new Error('gate boom'); }, sendMail: () => {} } });
   assert.equal(loadState(slug).last_error.count, 1);
   assert.equal(loadState(slug).last_error.action, 'gate');
 
   saveState(slug, { stage: 'gated', gate_verdict: 'pass' });
-  advance(slug, at('2026-09-16T08:05:00Z'), { deps: { makeCover: () => { throw new Error('cover boom'); }, sendMail: () => {} } });
+  advance(slug, at('2026-09-16T08:05:00Z'), { deps: { paused: () => false, makeCover: () => { throw new Error('cover boom'); }, sendMail: () => {} } });
   const st = loadState(slug);
   assert.equal(st.last_error.count, 1, 'a different action does not inherit the previous streak');
   assert.equal(st.last_error.action, 'cover');
@@ -212,12 +235,12 @@ test('a failure streak resets when the action changes', () => {
 test('two failures at publish then a success clears last_error', () => {
   const slug = 'streak-clear';
   saveState(slug, { stage: 'final-sent', approved: true, title: 'T', publish_not_before: '2026-09-16T07:00:00.000Z' });
-  const failing = { publish: () => { throw new Error('rsync refused'); }, sendMail: () => {} };
+  const failing = { paused: () => false, publish: () => { throw new Error('rsync refused'); }, sendMail: () => {} };
   advance(slug, at('2026-09-16T08:00:00Z'), { deps: failing });
   advance(slug, at('2026-09-16T08:05:00Z'), { deps: failing });
   assert.equal(loadState(slug).last_error.count, 2);
 
-  const okDeps = { publish: () => ({ url: 'https://x', commit: 'abc' }), sendMail: () => {} };
+  const okDeps = { paused: () => false, publish: () => ({ url: 'https://x', commit: 'abc' }), sendMail: () => {} };
   advance(slug, at('2026-09-16T08:10:00Z'), { deps: okDeps });
   assert.equal(loadState(slug).last_error, null, 'a clean publish clears the streak');
 });
@@ -226,6 +249,7 @@ test('a dry tick collects every essay\'s would-be action, not just the first', a
   saveState('dry-a', { stage: 'drafted', title: 'A' });
   saveState('dry-b', { stage: 'drafted', title: 'B' });
   const deps = {
+    paused: () => false,
     listEssays: () => [{ slug: 'dry-a' }, { slug: 'dry-b' }],
     sendMail: () => {},
   };
