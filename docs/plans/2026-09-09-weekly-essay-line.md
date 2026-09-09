@@ -945,7 +945,7 @@ test('scanBrE flags American forms with line numbers and suggests fixes', () => 
 });
 
 test('scanBrE ignores allowlisted words and code/URLs', () => {
-  assert.deepEqual(scanBrE('We learned the license terms at https://x.com/color?theme=center and used `color: red`.'), []);
+  assert.deepEqual(scanBrE('We learned the terms at https://x.com/color?theme=center and used `color: red`.'), []);
 });
 
 test('applySpellingFixes replaces only whole words, preserving case', () => {
@@ -967,7 +967,7 @@ export const AMERICAN = {
   behavior: 'behaviour', behaviors: 'behaviours', color: 'colour', colors: 'colours', favor: 'favour', favorite: 'favourite',
   honor: 'honour', labor: 'labour', neighbor: 'neighbour', rumor: 'rumour', humor: 'humour', harbor: 'harbour',
   center: 'centre', centers: 'centres', meter: 'metre', meters: 'metres', theater: 'theatre', fiber: 'fibre', liter: 'litre',
-  defense: 'defence', offense: 'offence', pretense: 'pretence', license: 'licence', practise: 'practise',
+  defense: 'defence', offense: 'offence', pretense: 'pretence', license: 'licence',
   analyze: 'analyse', analyzed: 'analysed', analyzing: 'analysing', paralyze: 'paralyse', catalyze: 'catalyse',
   optimize: 'optimise', optimized: 'optimised', optimizing: 'optimising', optimization: 'optimisation',
   organize: 'organise', organized: 'organised', organization: 'organisation', organizations: 'organisations',
@@ -977,11 +977,9 @@ export const AMERICAN = {
   program: 'programme', programs: 'programmes', catalog: 'catalogue', dialog: 'dialogue', gray: 'grey', mold: 'mould',
   traveled: 'travelled', traveling: 'travelling', canceled: 'cancelled', modeling: 'modelling', modeled: 'modelled',
   labeled: 'labelled', fulfill: 'fulfil', enroll: 'enrol', skillful: 'skilful', artifact: 'artefact', artifacts: 'artefacts',
-  aluminum: 'aluminium', jewelry: 'jewellery', pajamas: 'pyjamas', check: null, tire: null,
+  aluminum: 'aluminium', jewelry: 'jewellery', pajamas: 'pyjamas',
 };
-// null = flag for a human/Layer B decision (meaning-dependent); house style: "learned" stays.
-const ALLOW = new Set(['learned', 'license', 'program']); // "license" verb and "program" (software) are allowed; the scan still flags "program" as a noun in prose — reviewers decide
-delete AMERICAN.check; delete AMERICAN.tire;
+// House style: "learned" (not "learnt") is correct and is deliberately absent from the map.
 
 function stripCodeAndUrls(line) {
   return line.replace(/`[^`]*`/g, ' ').replace(/https?:\/\/\S+/g, ' ').replace(/\]\([^)]*\)/g, ']');
