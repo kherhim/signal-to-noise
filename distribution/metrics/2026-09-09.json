@@ -10,7 +10,60 @@
   },
   "cloudflare": {
     "since": "2026-08-10",
-    "requests_30d": 54182,
+    "hit_rate_non404_7d": 31.6,
+    "not_found_7d": 18520,
+    "last7": [
+      {
+        "date": "2026-09-02",
+        "non404": 648,
+        "hit": 176,
+        "pct_hit_non404": 27.2,
+        "not_found": 461
+      },
+      {
+        "date": "2026-09-03",
+        "non404": 711,
+        "hit": 279,
+        "pct_hit_non404": 39.2,
+        "not_found": 441
+      },
+      {
+        "date": "2026-09-04",
+        "non404": 627,
+        "hit": 97,
+        "pct_hit_non404": 15.5,
+        "not_found": 331
+      },
+      {
+        "date": "2026-09-05",
+        "non404": 456,
+        "hit": 300,
+        "pct_hit_non404": 65.8,
+        "not_found": 415
+      },
+      {
+        "date": "2026-09-06",
+        "non404": 624,
+        "hit": 161,
+        "pct_hit_non404": 25.8,
+        "not_found": 2437
+      },
+      {
+        "date": "2026-09-07",
+        "non404": 658,
+        "hit": 246,
+        "pct_hit_non404": 37.4,
+        "not_found": 2290
+      },
+      {
+        "date": "2026-09-08",
+        "non404": 573,
+        "hit": 97,
+        "pct_hit_non404": 16.9,
+        "not_found": 12145
+      }
+    ],
+    "requests_30d": 54184,
     "cached_30d": 2360,
     "pct_cached_30d": 4.4,
     "burst_days": [
@@ -260,11 +313,11 @@
       },
       {
         "date": "2026-09-09",
-        "requests": 1340,
+        "requests": 1342,
         "cached": 45,
         "pct_cached": 3.4,
-        "page_views": 57,
-        "uniques": 37
+        "page_views": 58,
+        "uniques": 38
       }
     ]
   }

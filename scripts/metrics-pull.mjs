@@ -142,8 +142,39 @@ async function cloudflare() {
     const burst = days.filter((d) => median && d.requests > 5 * median).map((d) => d.date);
     const clean = days.filter((d) => !burst.includes(d.date));
     const ct = clean.reduce((a, d) => ({ r: a.r + d.requests, c: a.c + d.cached }), { r: 0, c: 0 });
+    // Last 7 days, one query per day (free plan caps adaptive queries at 1d): cache hit rate on
+    // non-404 responses only (what "is the Cache Rule working" actually means) and 404 volume,
+    // which on this site is almost entirely vulnerability scanners probing /.env, wp-*, actuator…
+    const last7 = [];
+    for (let i = 7; i >= 1; i--) {
+      const d = daysAgo(i);
+      const q7 = `{ viewer { zones(filter: { zoneTag: "${zone}" }) {
+        ok: httpRequestsAdaptiveGroups(limit: 10, filter: { date: "${d}", edgeResponseStatus_lt: 400 }) { count dimensions { cacheStatus } }
+        nf: httpRequestsAdaptiveGroups(limit: 1, filter: { date: "${d}", edgeResponseStatus: 404 }) { count }
+      } } }`;
+      try {
+        const r = await getJson('https://api.cloudflare.com/client/v4/graphql', {
+          method: 'POST',
+          headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+          body: JSON.stringify({ query: q7 }),
+        });
+        const z = r.data?.viewer?.zones?.[0];
+        if (!z) continue;
+        const ok = z.ok.reduce((a, g) => a + g.count, 0);
+        const hit = z.ok
+          .filter((g) => ['hit', 'revalidated'].includes(g.dimensions.cacheStatus))
+          .reduce((a, g) => a + g.count, 0);
+        last7.push({ date: d, non404: ok, hit, pct_hit_non404: pct(hit, ok), not_found: z.nf[0]?.count ?? 0 });
+      } catch {
+        /* skip day */
+      }
+    }
+    const s7 = last7.reduce((a, d) => ({ ok: a.ok + d.non404, hit: a.hit + d.hit, nf: a.nf + d.not_found }), { ok: 0, hit: 0, nf: 0 });
     return {
       since,
+      hit_rate_non404_7d: pct(s7.hit, s7.ok),
+      not_found_7d: s7.nf,
+      last7,
       requests_30d: tot.r,
       cached_30d: tot.c,
       pct_cached_30d: pct(tot.c, tot.r),
@@ -208,6 +239,7 @@ if (jsonOnly) {
   } else {
     const burst = cf.burst_days.length ? `bot-burst days excluded: ${cf.burst_days.join(', ')} → **${cf.pct_cached_excl_bursts}%** clean` : 'no bot-burst days detected';
     out.push(row(6, 'Cloudflare percent cached (30d)', `**${cf.pct_cached_30d}%** (${cf.cached_30d.toLocaleString()} / ${cf.requests_30d.toLocaleString()})`, burst));
+    out.push(row('6b', 'Cache hit rate, non-404 responses (7d)', `**${cf.hit_rate_non404_7d}%**`, `the real Cache Rule read; ${cf.not_found_7d.toLocaleString()} 404s in 7d (scanner probes, not audience)`));
   }
   out.push('');
   out.push(`Snapshot written: ${path.relative(ROOT, outFile)}`);
