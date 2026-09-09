@@ -2260,7 +2260,7 @@ description: The attended Monday session — health line, readout, peg board, th
 
 - [ ] **Step 3: Write the README and install the job**
 
-`distribution/line/README.md`: one page — rhythm table from spec §2, the two-email rules, kill switch, where state and logs live, how to run each stage by hand (`node scripts/line/<stage>.mjs <slug>`), how to run tests (`npm run test:line`), and the calibration note.
+`distribution/line/README.md`: one page — rhythm table from spec §2, the two-email rules (prose reply to the brief parks; `ok` on the final does nothing; only `publish` ships), kill switch and per-essay hold/kill via `state.json`, where state and logs live, how to run each stage by hand (`node scripts/line/<stage>.mjs <slug>`), how to run tests (`npm run test:line`), the calibration note, and two operational caveats: the Monday brief and daily scan fire only in the 06:00–12:00 window, so a Mac first woken after noon on a Monday produces no essay that week; and the tick-level scan/brief calls have no retry cap (a brief that fails after the paid step may re-spend on a catch-up wake within the window).
 
 Install:
 ```bash
@@ -2290,6 +2290,7 @@ git push origin main
 No new files. Checklist, run with Claude in session on the first Monday after Task 17:
 
 - [ ] Owner has filled `_sources/NEVER-LIST.md`.
+- [ ] Reset the test staging folder: `rm -r _sources/staging-articles/the-verification-premium` (its state lacks title/family because the brief ran in dry mode; Monday re-briefs it properly — the seed queue still lists it first).
 - [ ] Mon 06:30: brief email arrives; owner replies nothing (or "no" to test the kill path once, then re-run `runBrief` by hand).
 - [ ] Mon 19:00: state → approved. Mon 22:00: draft written; read it.
 - [ ] Tue 06:30: gate report clean (if held, fix the essay by hand, set stage back to `drafted`, let it re-run).
