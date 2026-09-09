@@ -157,3 +157,78 @@ test('a tick advances at most one essay per wake', async () => {
   await tick({ now: new Date(2026, 8, 15, 14, 0), deps }); // Tuesday afternoon: no scan, no brief
   assert.equal(gated.length, 1);
 });
+
+test('an idle poll (no fresh reply) does not consume the wake: the next essay still advances', async () => {
+  const drafted = [];
+  const states = {
+    'poll-a': { stage: 'final-sent', approved: false, title: 'A', publish_not_before: '2026-09-16T07:00:00.000Z' },
+    'poll-b': { stage: 'approved', title: 'B' },
+  };
+  const deps = {
+    listEssays: () => [{ slug: 'poll-a' }, { slug: 'poll-b' }],
+    loadState: (slug) => states[slug],
+    readFinalReply: () => null,
+    runDraft: (slug) => { drafted.push(slug); },
+    sendMail: () => {},
+  };
+  const took = await tick({ now: new Date(2026, 8, 15, 14, 0), deps });
+  assert.deepEqual(drafted, ['poll-b']);
+  assert.deepEqual(took, [{ slug: 'poll-b', action: 'draft' }]);
+});
+
+test('isoWeek at year boundaries', () => {
+  assert.equal(isoWeek(new Date(2027, 0, 1)), '2026-W53');
+  assert.equal(isoWeek(new Date(2025, 11, 29)), '2026-W01');
+  assert.equal(isoWeek(new Date(2024, 11, 30)), '2025-W01');
+});
+
+test('check-final: an "ok" reply notifies once even if the same message is seen again', () => {
+  const slug = 'final-ok-dedup';
+  saveState(slug, { stage: 'final-sent', approved: false, title: 'T', publish_not_before: '2026-09-16T07:00:00.000Z' });
+  const mail = [];
+  const deps = {
+    readFinalReply: () => ({ verdict: 'ok', text: 'ok', date: 'D', from: 'F', key: 'dup1' }),
+    sendMail: (m) => { mail.push(m); },
+  };
+  advance(slug, at('2026-09-15T20:00:00Z'), { deps });
+  advance(slug, at('2026-09-15T20:05:00Z'), { deps });
+  assert.equal(mail.length, 1, 'the second advance sees the same key and must not re-notify');
+});
+
+test('a failure streak resets when the action changes', () => {
+  const slug = 'streak-reset';
+  saveState(slug, { stage: 'drafted', title: 'T' });
+  advance(slug, at('2026-09-16T08:00:00Z'), { deps: { runGate: () => { throw new Error('gate boom'); }, sendMail: () => {} } });
+  assert.equal(loadState(slug).last_error.count, 1);
+  assert.equal(loadState(slug).last_error.action, 'gate');
+
+  saveState(slug, { stage: 'gated', gate_verdict: 'pass' });
+  advance(slug, at('2026-09-16T08:05:00Z'), { deps: { makeCover: () => { throw new Error('cover boom'); }, sendMail: () => {} } });
+  const st = loadState(slug);
+  assert.equal(st.last_error.count, 1, 'a different action does not inherit the previous streak');
+  assert.equal(st.last_error.action, 'cover');
+});
+
+test('two failures at publish then a success clears last_error', () => {
+  const slug = 'streak-clear';
+  saveState(slug, { stage: 'final-sent', approved: true, title: 'T', publish_not_before: '2026-09-16T07:00:00.000Z' });
+  const failing = { publish: () => { throw new Error('rsync refused'); }, sendMail: () => {} };
+  advance(slug, at('2026-09-16T08:00:00Z'), { deps: failing });
+  advance(slug, at('2026-09-16T08:05:00Z'), { deps: failing });
+  assert.equal(loadState(slug).last_error.count, 2);
+
+  const okDeps = { publish: () => ({ url: 'https://x', commit: 'abc' }), sendMail: () => {} };
+  advance(slug, at('2026-09-16T08:10:00Z'), { deps: okDeps });
+  assert.equal(loadState(slug).last_error, null, 'a clean publish clears the streak');
+});
+
+test('a dry tick collects every essay\'s would-be action, not just the first', async () => {
+  saveState('dry-a', { stage: 'drafted', title: 'A' });
+  saveState('dry-b', { stage: 'drafted', title: 'B' });
+  const deps = {
+    listEssays: () => [{ slug: 'dry-a' }, { slug: 'dry-b' }],
+    sendMail: () => {},
+  };
+  const took = await tick({ now: new Date(2026, 8, 15, 14, 0), dry: true, deps });
+  assert.deepEqual(took, [{ slug: 'dry-a', action: 'gate' }, { slug: 'dry-b', action: 'gate' }]);
+});

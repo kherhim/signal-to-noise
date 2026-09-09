@@ -13,7 +13,7 @@
     "og": "node scripts/make-og-images.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "test:line": "node --test scripts/line/test/*.mjs"
+    "test:line": "LINE_NO_FILE_LOG=1 node --test scripts/line/test/*.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.1",

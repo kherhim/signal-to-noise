@@ -36,7 +36,8 @@ export function isoWeek(date) {
 // no test ever reaches the network, a paid model or the real staging tree.
 export const DEFAULT_DEPS = {
   scan, runBrief, runDraft, runGate, makeCover, sendFinal, readFinalReply, applyCorrections,
-  publish, findReply, sendMail, listEssays, loadState, saveState, boardDate,
+  publish, findReply, sendMail, listEssays, loadState, saveState, boardDate, addCost, paused,
+  readFile: fs.readFileSync,
 };
 
 export function nextAction(st, now, cfg) {
@@ -64,7 +65,7 @@ const freshReply = (r, seen) => (r && r.key && r.key === seen ? null : r);
 
 export function advance(slug, now = new Date(), { dry = false, deps: injected = {} } = {}) {
   const deps = { ...DEFAULT_DEPS, ...injected };
-  if (paused()) { log('runner', 'PAUSE present'); return 'paused'; }
+  if (deps.paused()) { log('runner', 'PAUSE present'); return 'paused'; }
   const cfg = loadConfig();
   const st = deps.loadState(slug);
   const action = nextAction(st, now, cfg);
@@ -85,7 +86,7 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
           // and let the owner decide, rather than drafting against a stale brief.
           deps.saveState(slug, { hold: true, veto: r.text, brief_reply_seen: seen });
           notify(deps, `Parked on your reply: ${st.title ?? slug}`,
-            `You replied with text; the essay is parked. Reply 'no' to kill, or clear hold in state.json to proceed.\n\nYour reply:\n${r.text}`);
+            `You replied with text, so the essay is parked. To kill it, set killed: true in its state.json; to proceed with the original brief, clear hold in state.json. Text replies to the Monday brief are never treated as consent.\n\nYour reply:\n${r.text}`);
           log('runner', `${slug} parked on a text reply`);
         }
         else deps.saveState(slug, { stage: 'approved', veto: r?.text ?? st.veto ?? null, brief_reply_seen: seen });
@@ -100,7 +101,7 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
       }
       case 'cover': {
         const c = deps.makeCover({ slug, finalPath: path.join(dir, 'gated.md') });
-        addCost(slug, c.cost_usd);
+        deps.addCost(slug, c.cost_usd);
         deps.saveState(slug, { stage: 'covered', fig: c.fig, caption: c.caption });
         break;
       }
@@ -123,7 +124,7 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
         // Silence-means-hold: no reply (or one already consumed) leaves the essay
         // parked in final-sent (Tuesday final rule).
         const r = freshReply(deps.readFinalReply(slug), st.final_reply_seen);
-        if (!r) break;
+        if (!r) return 'idle'; // nothing new: the poll must not consume this wake (mirrors FINAL_IN_PROGRESS below)
         const seen = r.key ?? null;
         if (r.verdict === 'publish') deps.saveState(slug, { approved: true, approved_at: now.toISOString(), final_reply_seen: seen });
         else if (r.verdict === 'hold' || r.verdict === 'no') deps.saveState(slug, { hold: true, killed: r.verdict === 'no', final_reply_seen: seen });
@@ -137,7 +138,7 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
           // The key is recorded only once the corrections have landed: if the skill
           // throws, the reply stays unconsumed and the retry cap governs it.
           if (c.verdict === 'pass') { deps.saveState(slug, { stage: 'covered', final_reply_seen: seen }); } // → send-final again on next wake (sendFinal rebuilds final.md from the re-gated file)
-          else { deps.saveState(slug, { stage: 'gated', gate_verdict: 'fail', final_reply_seen: seen }); notify(deps, `Held at gate after corrections: ${st.title}`, fs.readFileSync(path.join(dir, 'gate-report.md'), 'utf8')); }
+          else { deps.saveState(slug, { stage: 'gated', gate_verdict: 'fail', final_reply_seen: seen }); notify(deps, `Held at gate after corrections: ${st.title}`, deps.readFile(path.join(dir, 'gate-report.md'), 'utf8')); }
         }
         break;
       }
@@ -172,7 +173,7 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
 
 export async function tick({ now = new Date(), dry = false, deps: injected = {} } = {}) {
   const deps = { ...DEFAULT_DEPS, ...injected };
-  if (paused()) { log('runner', 'PAUSE present'); return; }
+  if (deps.paused()) { log('runner', 'PAUSE present'); return []; }
   const cfg = loadConfig();
   const hour = now.getHours(), day = now.getDay();
   // Both morning gates are windows, not instants: a missed 06:30 wake (laptop
@@ -191,10 +192,17 @@ export async function tick({ now = new Date(), dry = false, deps: injected = {} 
     else { try { deps.runBrief(); } catch (e) { log('runner', `brief failed: ${e.message}`); notify(deps, 'Essay line: brief failed', e.message); } }
   }
   // One essay per wake. Each action is slow and some cost money; doing them one
-  // at a time keeps a wake bounded and a failure isolated to a single essay.
+  // at a time keeps a wake bounded and a failure isolated to a single essay. A
+  // dry tick never spends anything, so it reports every essay's would-be action
+  // instead of stopping after the first.
+  const took = [];
   for (const e of deps.listEssays()) {
-    if (advance(e.slug, now, { dry, deps }) !== 'idle') break;
+    const action = advance(e.slug, now, { dry, deps });
+    if (action === 'idle') continue;
+    took.push({ slug: e.slug, action });
+    if (!dry) break;
   }
+  return took;
 }
 
 if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1]))) {

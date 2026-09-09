@@ -212,3 +212,141 @@ actually wrote.
 - `advance` returning `'paused'` is non-idle, so a tick that somehow reached the loop
   with `PAUSE` present would stop after the first essay. Unreachable in practice: `tick`
   checks `PAUSE` first and returns.
+
+## Fix report 2
+
+Re-review findings on Task 16, all six applied.
+
+1. **Polling no longer consumes the wake.** `check-final`'s "nothing new" branch was
+   `if (!r) break;`, which fell through to the post-switch success path and returned the
+   action name (`'check-final'`) — non-idle, so `tick`'s one-advance-per-wake loop treated
+   an empty poll as if real work had happened and stopped there. Changed to
+   `if (!r) return 'idle';`, mirroring the existing `FINAL_IN_PROGRESS` early return in
+   `send-final`. `check-veto` was checked and has no such branch: its silence path falls
+   through to the final `else` and legitimately advances the essay (Monday brief rule —
+   silence is consent), so nothing there needed to change, as the task said to expect.
+
+2. **Dry mode reports every essay.** `tick`'s loop broke after the first non-idle result
+   unconditionally. Now it only breaks when `!dry`; in dry mode it walks every essay and
+   collects `{ slug, action }` for each one that isn't idle. This is also the vehicle for
+   test 7(e): `tick` now *returns* that array (previously it returned nothing at all,
+   `undefined`). `paused()` returning early now returns `[]` instead of `undefined` for
+   the same reason — the empty-array contract is my extension beyond the brief's ask, not
+   something the task specified.
+
+3. **Park email copy.** Replaced verbatim with the specified text; kept the existing
+   `\n\nYour reply:\n${r.text}` trailer after it (not part of the specified message, but
+   useful context the original had and nothing asked to drop).
+
+4. **`final_reply_seen` scoped to the round.** `sendFinal`'s `final-sent` save now also
+   sets `final_reply_seen: null`, so a reply key from a previous round (e.g. a stale
+   `'ok'` already marked seen) can never suppress a fresh reply to the new final email.
+
+5. **Uniform deps.** `paused` and `addCost` added to `DEFAULT_DEPS`; `advance`/`tick` call
+   `deps.paused()` instead of the bare imported `paused()`, and the `cover` case calls
+   `deps.addCost(...)`. `gate-report.md` in the post-corrections-failure notify is now
+   read via `deps.readFile` (default `fs.readFileSync`) instead of a bare `fs.readFileSync`
+   call, so a test can inject a failing read without an ENOENT against the real tree. No
+   test exercises that injection directly — item 7 didn't ask for one, so none was added.
+
+6. **Test log suppressed even run directly.** `package.json`'s `test:line` script is now
+   `LINE_NO_FILE_LOG=1 node --test scripts/line/test/*.mjs`.
+
+### Tests added (7a–7e)
+
+- (a) "an idle poll (no fresh reply) does not consume the wake: the next essay still
+  advances" — `poll-a` sits in `final-sent` with `readFinalReply` returning `null`;
+  `poll-b` is `approved`. Asserts `runDraft` fires for `poll-b` in the same tick, and that
+  `tick`'s returned array is `[{ slug: 'poll-b', action: 'draft' }]`.
+- (b) "isoWeek at year boundaries" — `2027-01-01 → '2026-W53'`, `2025-12-29 → '2026-W01'`,
+  `2024-12-30 → '2025-W01'`, matching the brief exactly (verified independently against a
+  standalone copy of the function before adding the test).
+- (c) "check-final: an 'ok' reply notifies once even if the same message is seen again" —
+  two consecutive `advance()` calls with an identical fake reply (`key: 'dup1'`); asserts
+  `mail.length === 1`.
+- (d) split into two: "a failure streak resets when the action changes" (a `gate` failure
+  then a `cover` failure on the same essay both land at `count: 1`, not 2) and "two
+  failures at publish then a success clears last_error" (two `publish` failures reach
+  `count: 2`; a subsequent successful `publish` leaves `last_error === null`).
+- (e) "a dry tick collects every essay's would-be action, not just the first" — two
+  essays both in `drafted`; asserts the returned array has both, in order, each
+  `{ slug, action: 'gate' }`.
+
+### RED — honestly, 2 of 6 new tests, not all
+
+I stashed `runner.mjs`, `final.mjs` and `package.json` (keeping the new test file) and
+ran against the pre-fix code:
+
+```
+$ git stash push -- scripts/line/runner.mjs scripts/line/final.mjs package.json
+$ node --test scripts/line/test/runner.test.mjs
+...
+✖ an idle poll (no fresh reply) does not consume the wake: the next essay still advances
+✖ a dry tick collects every essay's would-be action, not just the first
+ℹ tests 20
+ℹ pass 18
+ℹ fail 2
+```
+
+Only tests (a) and (e) are RED against the pre-fix behaviour — those are the two tests
+that actually exercise fixes 1 and 2. Tests (b), (c), (d) pass unchanged against the
+pre-fix code: `isoWeek`'s year-boundary handling, the reply-seen dedup on `'ok'`, and the
+failure-streak reset/clear logic were all already correct before this round (built in
+the first fix pass) — they're new *coverage* per item 7's request, not drivers for a new
+fix. Said plainly rather than dressed up as a uniform write-first RED.
+
+```
+$ git stash pop
+$ node --test scripts/line/test/runner.test.mjs
+ℹ tests 20
+ℹ pass 20
+ℹ fail 0
+```
+
+### GREEN — full suite, one run
+
+```
+$ npm run test:line
+ℹ tests 100
+ℹ pass 99
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1   # the LINE_LIVE=1-gated paid gate fixture, opt-in only
+```
+
+`git status --porcelain` afterwards listed only the four intended files — no stray
+`state.json` written into the real staging tree.
+
+Separately confirmed the log-suppression fix (item 6) holds when the script is the
+entry point, not just under a test harness that already sets `NODE_TEST_CONTEXT`:
+recorded `~/Library/Logs/signal2noise-essay-line.log`'s mtime, ran `npm run test:line`
+again, and the mtime was byte-identical before and after — no file-log write occurred.
+
+### Files changed
+
+- `scripts/line/runner.mjs` — fixes 1, 2, 3, 5.
+- `scripts/line/final.mjs` — fix 4.
+- `package.json` — fix 6.
+- `scripts/line/test/runner.test.mjs` — five new tests (7a–7e; 7d split into two).
+
+### Concerns
+
+- **`check-final`'s idle return skips the post-switch `last_error` clear.** Before this
+  fix, a poll that reached IMAP successfully and simply found nothing new fell through to
+  the same "a clean pass clears the streak" line that every other successful action hits,
+  clearing any prior `check-final` failure. The new `return 'idle'` skips that, exactly
+  mirroring `FINAL_IN_PROGRESS` — but that mirror isn't quite apples-to-apples:
+  `FINAL_IN_PROGRESS` means nothing was attempted (the send was blocked before it ran),
+  while an empty `check-final` poll did contact IMAP and succeed. Net effect: three IMAP
+  flakes at `check-final`, even with clean empty polls between them, now park the essay
+  (whereas before, an intervening clean poll would have reset the streak to zero). The
+  owner is still notified when it parks (`hold: true` plus a mail), so this is
+  degraded-safe rather than silent, but it is a real behavioural narrowing from the
+  mirror, not something I introduced independently — the task specified the mirror
+  explicitly. Left as specified rather than adding an un-requested `last_error` clear
+  before the early return; flagging it here rather than silently deviating either way.
+- Item 5's `deps.readFile` injection point has no dedicated test — item 7 didn't ask for
+  one, and adding an untested seam felt worse than a plainly noted gap.
+- The park-copy trailer (`Your reply:\n${r.text}`) was kept after the specified message
+  text rather than dropped; if the intent was to fully replace the mail body, that line
+  should go.

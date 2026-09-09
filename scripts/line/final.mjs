@@ -64,7 +64,7 @@ export function sendFinal(slug) {
   const { messageId } = sendMail({ subject: `Final for approval: ${st.title}`, text: finalEmailText({ title: st.title, final: fs.readFileSync(finalPath, 'utf8'), report }), attachments, token });
   const cfg = loadConfig();
   const pub = nextPublishSlot(new Date(), cfg.publish_hour_uk);
-  saveState(slug, { stage: 'final-sent', final_message_id: messageId, final_sent_at: new Date().toISOString(), publish_not_before: pub.toISOString(), approved: false });
+  saveState(slug, { stage: 'final-sent', final_message_id: messageId, final_sent_at: new Date().toISOString(), publish_not_before: pub.toISOString(), approved: false, final_reply_seen: null });
   log('final', `${slug} final sent`);
   return { messageId };
 }
