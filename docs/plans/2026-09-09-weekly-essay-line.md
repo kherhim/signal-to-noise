@@ -2033,7 +2033,7 @@ git commit -m "Essay line: publish stage (content, OG, build, deploy, verify, le
 
 **Interfaces:**
 - Consumes: everything above.
-- Produces: `nextAction(state, now, cfg) → null | 'check-veto' | 'draft' | 'gate' | 'cover' | 'send-final' | 'check-final' | 'publish'`; `advance(slug, now) → string` (action taken); CLI `node scripts/line/runner.mjs [--dry] [--now ISO]`.
+- Produces: `nextAction(state, now, cfg) → null | 'check-veto' | 'draft' | 'gate' | 'cover' | 'send-final' | 'check-final' | 'publish'` (a `final-sending` state retries `send-final` only once `finalSendAllowed` says the retry window has passed); `advance(slug, now) → string` (action taken); CLI `node scripts/line/runner.mjs [--dry] [--now ISO]`.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -2093,7 +2093,7 @@ import { runBrief } from './brief.mjs';
 import { runDraft } from './draft.mjs';
 import { runGate } from './gate.mjs';
 import { makeCover } from './cover.mjs';
-import { sendFinal, readFinalReply, applyCorrections } from './final.mjs';
+import { sendFinal, readFinalReply, applyCorrections, finalSendAllowed } from './final.mjs';
 import { publish } from './publish.mjs';
 
 export function nextAction(st, now, cfg) {
@@ -2104,6 +2104,7 @@ export function nextAction(st, now, cfg) {
     case 'drafted': return 'gate';
     case 'gated': return st.gate_verdict === 'pass' ? 'cover' : null;
     case 'covered': return 'send-final';
+    case 'final-sending': return finalSendAllowed(st, now) ? 'send-final' : null; // crashed send: retry after the window
     case 'final-sent':
       if (st.approved) return now >= new Date(st.publish_not_before) ? 'publish' : null;
       return 'check-final';
@@ -2150,7 +2151,7 @@ export function advance(slug, now = new Date(), { dry = false } = {}) {
         else if (r.verdict === 'hold' || r.verdict === 'no') saveState(slug, { hold: true, killed: r.verdict === 'no' });
         else if (r.verdict === 'text') {
           const c = applyCorrections(slug, r.text);
-          if (c.verdict === 'pass') { saveState(slug, { stage: 'covered' }); } // → send-final again on next wake
+          if (c.verdict === 'pass') { saveState(slug, { stage: 'covered' }); } // → send-final again on next wake (sendFinal rebuilds final.md from the re-gated file)
           else { saveState(slug, { stage: 'gated', gate_verdict: 'fail' }); notify(`Held at gate after corrections: ${st.title}`, fs.readFileSync(path.join(dir, 'gate-report.md'), 'utf8')); }
         }
         break;
