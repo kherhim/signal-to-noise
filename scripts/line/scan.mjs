@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, log, paused } from './env.mjs';
 import { runSkill } from './claude.mjs';
-import { loadConfig, loadQueue, loadNeverList, neverListHits, loadLedger } from './queue.mjs';
+import { loadConfig, loadQueue, loadNeverList, neverListHits } from './queue.mjs';
 
 const LINE = path.join(ROOT, 'distribution', 'line');
 export const BOARD_JSON = path.join(LINE, 'peg-board.json');
@@ -21,6 +21,15 @@ const SCHEMA = {
 };
 
 export const score = (it, w) => Math.round((it.corpus_fit * w.corpus_fit + it.magnitude * w.magnitude + it.velocity * w.velocity + it.number * w.number) * 100) / 10;
+
+export const topScore = (items) => items.reduce((max, i) => Math.max(max, i.score), 0);
+
+export function filterNeverList(items, never) {
+  return items.filter((i) => {
+    const text = Object.values(i).filter((v) => typeof v === 'string').join(' ');
+    return neverListHits(text, never).length === 0;
+  });
+}
 
 export function actionFor(s, fit, cfg) {
   const t = cfg.thresholds;
@@ -49,17 +58,29 @@ export async function scan({ dry = false } = {}) {
     `Published essay slugs:\n${published.join(', ')}`,
     `Never-list:\n${never.join(', ')}`,
   ].join('\n\n');
-  const out = runSkill({ skill: 'scan', input, tools: ['WebSearch', 'WebFetch'], schema: SCHEMA, maxTurns: 40 });
-  const items = out.json.items
-    .filter((i) => neverListHits(`${i.headline} ${i.note}`, never).length === 0)
+  if (dry) {
+    log('scan', `DRY: would call the scan skill with input of ${input.length} chars`);
+    return null;
+  }
+
+  let out;
+  let rawItems;
+  try {
+    out = runSkill({ skill: 'scan', input, tools: ['WebSearch', 'WebFetch'], schema: SCHEMA, model: cfg.models?.scan ?? null, maxTurns: cfg.scan_max_turns ?? 40 });
+    rawItems = out.json?.items;
+    if (!Array.isArray(rawItems)) throw new Error('scan skill did not return an items array');
+  } catch (err) {
+    log('scan', `FAILED: ${err.message}`);
+    throw err;
+  }
+
+  const items = filterNeverList(rawItems, never)
     .map((i) => ({ ...i, score: score(i, cfg.weights) }))
     .map((i) => ({ ...i, action: actionFor(i.score, i.corpus_fit, cfg) }));
   const board = { date: new Date().toISOString().slice(0, 10), cost_usd: out.cost_usd, items };
-  if (!dry) {
-    fs.writeFileSync(BOARD_JSON, JSON.stringify(board, null, 2) + '\n');
-    fs.writeFileSync(BOARD_MD, renderBoard(board));
-  }
-  log('scan', `${items.length} items, top ${items[0]?.score ?? 0}, $${out.cost_usd.toFixed(3)}`);
+  fs.writeFileSync(BOARD_JSON, JSON.stringify(board, null, 2) + '\n');
+  fs.writeFileSync(BOARD_MD, renderBoard(board));
+  log('scan', `${items.length} items, top ${topScore(items)}, $${out.cost_usd.toFixed(3)}`);
   return board;
 }
 

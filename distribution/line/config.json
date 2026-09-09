@@ -4,5 +4,7 @@
   "thresholds": { "log": 0, "native_post": 50, "preempt": 70, "fast_piece": 85, "min_fit_to_preempt": 8 },
   "weights": { "corpus_fit": 0.35, "magnitude": 0.25, "velocity": 0.20, "number": 0.20 },
   "brief_hour_local": 7, "veto_hour_local": 19, "final_hour_local": 18, "publish_hour_uk": 8,
-  "min_age_hours_substack": 48
+  "min_age_hours_substack": 48,
+  "models": { "scan": "claude-sonnet-5", "brief": "claude-sonnet-5", "write": null, "cover": null, "plagiarism": "claude-sonnet-5" },
+  "scan_max_turns": 25
 }
