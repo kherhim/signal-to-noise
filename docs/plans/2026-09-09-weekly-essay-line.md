@@ -45,7 +45,7 @@
 | `scripts/line/runner.mjs` | State machine; one advance per wake |
 | `scripts/line/fixtures/planted.md` | Gate fixture with three planted faults |
 | `scripts/line/test/*.test.mjs` | `node --test` suites |
-| `.claude/skills/essay-line/{scan,brief,write-essay,plagiarism,cover,monday}/SKILL.md` | Versioned prompts |
+| `.claude/skills/essay-line/{scan,brief,write-essay,plagiarism,cover,corrections}/SKILL.md`, `.claude/skills/essay-line-monday/SKILL.md` | Versioned prompts (the Monday skill sits at the top level so Claude Code discovers it) |
 | `distribution/line/config.json` | `calibration_until`, `preempt`, thresholds |
 | `distribution/line/themes.md` | Scanner theme list and watch-list |
 | `distribution/line/queue.md` | Seed queue + holding pen (from spec §3.3–3.4) |
@@ -2208,7 +2208,7 @@ git commit -m "Essay line: runner state machine (one advance per wake, veto/fina
 ### Task 17: launchd schedule, Monday skill, docs
 
 **Files:**
-- Create: `infra/co.signal-to-noise.essay-line.plist`, `.claude/skills/essay-line/monday/SKILL.md`, `distribution/line/README.md`
+- Create: `infra/co.signal-to-noise.essay-line.plist`, `.claude/skills/essay-line-monday/SKILL.md`, `distribution/line/README.md`
 - Modify: `distribution/README.md` (daily loop: add the line), `docs/specs/2026-09-09-weekly-essay-line-design.md` status line.
 
 - [ ] **Step 1: Write the plist**
@@ -2244,7 +2244,7 @@ Note: `tick()` keys the brief on `hour === 7` but the job fires at 06:30; set `b
 
 - [ ] **Step 2: Write the Monday skill**
 
-`.claude/skills/essay-line/monday/SKILL.md`:
+`.claude/skills/essay-line-monday/SKILL.md`:
 ```markdown
 ---
 name: essay-line-monday
