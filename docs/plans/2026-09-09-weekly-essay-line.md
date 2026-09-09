@@ -2290,6 +2290,8 @@ git push origin main
 No new files. Checklist, run with Claude in session on the first Monday after Task 17:
 
 - [ ] Owner has filled `_sources/NEVER-LIST.md`.
+- [ ] Watermarks service is running (`make serve` in ~/Documents/devProjects/watermarks-remover); confirm with `curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:8765/inspect` → 200/400, not a connection error. Consider a LaunchAgent for it.
+- [ ] `git commit` and `git push` do not prompt under launchd: `git config commit.gpgsign` is unset/false and the push credential needs no passphrase (test with `launchctl kickstart` of a harmless job, or `GIT_TERMINAL_PROMPT=0 git push --dry-run`).
 - [ ] Reset the test staging folder: `rm -r _sources/staging-articles/the-verification-premium` (its state lacks title/family because the brief ran in dry mode; Monday re-briefs it properly — the seed queue still lists it first).
 - [ ] Mon 06:30: brief email arrives; owner replies nothing (or "no" to test the kill path once, then re-run `runBrief` by hand).
 - [ ] Mon 19:00: state → approved. Mon 22:00: draft written; read it.
@@ -2309,4 +2311,4 @@ No new files. Checklist, run with Claude in session on the first Monday after Ta
 
 **Placeholder scan.** None. Every step has code or an exact command with expected output.
 
-**Type consistency.** `runSkill` returns `{ result, json, cost_usd, session_id }` and is consumed that way in scan, plagiarism, brief, draft, cover, final. `saveState`/`loadState`/`addCost`/`essayDir` signatures match across Tasks 1, 12–16. `splitFrontmatter`/`joinFrontmatter` return/take `{ meta, body, order }` consistently. `runGate` returns `{ verdict, report, checks }` and is called with `{ inPath, outPath, reportPath, skipLayerB }` in Tasks 10, 14, 16. Stage names match `STAGES`.
+**Type consistency.** `runSkill` returns `{ result, json, cost_usd, session_id }` and is consumed that way in scan, plagiarism, brief, draft, cover, final. `saveState`/`loadState`/`addCost`/`essayDir` signatures match across Tasks 1, 12–16. `splitFrontmatter`/`joinFrontmatter` return/take `{ meta, body, raw }` consistently (changed from `order` in Task 6; all call sites updated). `runGate` returns `{ verdict, report, checks }` and is called with `{ inPath, outPath, reportPath, skipLayerB }` in Tasks 10, 14, 16. Stage names match `STAGES`.
