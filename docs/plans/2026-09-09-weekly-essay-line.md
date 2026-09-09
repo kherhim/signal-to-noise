@@ -790,7 +790,7 @@ git commit -m "Essay line: daily scanner and peg board (score-only)"
 - Create: `scripts/line/layerb.mjs`, `scripts/line/test/layerb.test.mjs`, `scripts/line/md.mjs` (frontmatter helpers), `scripts/line/test/md.test.mjs`
 
 **Interfaces:**
-- Produces (md.mjs): `splitFrontmatter(md) → { meta: {k: v}, body, order: [k] }`, `joinFrontmatter(meta, body, order)`; `SHIPPING_FIELDS = ['title','excerpt','seoDescription','coverImageAlt']`.
+- Produces (md.mjs): `splitFrontmatter(md) → { meta: {k: v}, body, raw: [line] }` (preserve-unknown: nested blocks and unknown lines live only in `raw`), `joinFrontmatter(meta, body, raw)`; `SHIPPING_FIELDS = ['title','excerpt','seoDescription','coverImageAlt']`.
 - Produces (layerb.mjs): `layerBText(text, { kind }) → string` (Codex rewrite), `layerBEssay(inPath, outPath) → { changed: number }`, `codexArgs()`.
 
 - [ ] **Step 1: Write failing tests**
@@ -1310,9 +1310,9 @@ export function runGate({ inPath, outPath, reportPath, skipLayerB = false }) {
   const flagsBefore = scanBrE(md);
   const fixed = applySpellingFixes(md);
   md = fixed.text;
-  const { meta, body, order } = splitFrontmatter(md);
+  const { meta, body, raw } = splitFrontmatter(md);
   for (const k of SHIPPING_FIELDS) if (typeof meta[k] === 'string') meta[k] = applySpellingFixes(meta[k]).text;
-  md = joinFrontmatter(meta, body, order);
+  md = joinFrontmatter(meta, body, raw);
   fs.writeFileSync(outPath, md);
   const flagsAfter = scanBrE(md);
   checks.bre = { flags: flagsBefore, fixed: fixed.fixed, remaining: flagsAfter };
@@ -1869,10 +1869,10 @@ export function finalEmailText({ title, final, report }) {
 export function buildFinal(slug) {
   const dir = essayDir(slug);
   const st = loadState(slug);
-  const { meta, body, order } = splitFrontmatter(fs.readFileSync(path.join(dir, 'gated.md'), 'utf8'));
+  const { meta, body, raw } = splitFrontmatter(fs.readFileSync(path.join(dir, 'gated.md'), 'utf8'));
   meta.coverImageAlt = fs.readFileSync(path.join(dir, 'cover-alt.txt'), 'utf8').trim();
   const finalPath = path.join(dir, 'final.md');
-  fs.writeFileSync(finalPath, joinFrontmatter(meta, body, order));
+  fs.writeFileSync(finalPath, joinFrontmatter(meta, body, raw));
   return finalPath;
 }
 
