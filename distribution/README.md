@@ -33,6 +33,7 @@ poster), `buffer-queue.mjs` (LinkedIn-via-Buffer layer), `substack-post.mjs`
 
 ## The daily loop (once set up)
 
+0. **Essay** — automated by the weekly essay line (`distribution/line/README.md`).
 1. **Site** publishes (day 0, existing `publish.sh` flow).
 2. **Substack** full-text repost 48h later — AUTOMATED since 9 Sep 2026:
    `scripts/substack-mirror.mjs` runs daily at 09:15 (launchd

@@ -39,6 +39,8 @@ export interface Cover {
   caption: string;
   still(alt: string): string;
   motion(svg: SVGSVGElement): Animation[];
+  /** Largest displacement any element makes during motion, in canvas px (2400 wide). Must be ≥ 60 so it reads at 700 px. */
+  motionPx?: number;
 }
 
 /* ---------- string builders ---------------------------------------- */

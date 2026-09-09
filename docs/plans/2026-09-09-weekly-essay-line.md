@@ -14,7 +14,7 @@
 - Never mention Axi, the owner's employer, colleagues or clients; never a company on `_sources/NEVER-LIST.md`; never a number or quote from memory (spec §1 rules A, B, D).
 - Every shipping string goes through Layer B (Codex) then plagiarism, British English, and Layer A last, in that order (spec §5).
 - Monday brief: silence means go. Tuesday final: silence means hold; only the word `publish` ships (spec §2).
-- Automation mail always sets `Reply-To: essay-line@signal-to-noise.co`; replies are matched on `In-Reply-To` (spec §6).
+- Automation mail always sets `Reply-To: essay-line@signal-to-noise.co`; replies are matched on the subject token `[S2N <token>]` because Zoho IMAP cannot search `In-Reply-To` (found in Task 2); `In-Reply-To` is checked only when present (spec §6).
 - Scanner runs score-only until `calibration_until` in `distribution/line/config.json` (initially `2026-10-07`).
 - Kill switch: `distribution/autopilot/PAUSE` halts every job. `state.json.hold === true` parks one essay.
 - Credentials only from `.env` (`SUBSTACK_SID`, `ZOHO_*`, `OWNER_EMAIL`, `ESSAY_LINE_REPLY_TO`, `CLOUDFLARE_*`); never printed, never committed.
@@ -45,7 +45,7 @@
 | `scripts/line/runner.mjs` | State machine; one advance per wake |
 | `scripts/line/fixtures/planted.md` | Gate fixture with three planted faults |
 | `scripts/line/test/*.test.mjs` | `node --test` suites |
-| `.claude/skills/essay-line/{scan,brief,write-essay,plagiarism,cover,monday}/SKILL.md` | Versioned prompts |
+| `.claude/skills/essay-line/{scan,brief,write-essay,plagiarism,cover,corrections}/SKILL.md`, `.claude/skills/essay-line-monday/SKILL.md` | Versioned prompts (the Monday skill sits at the top level so Claude Code discovers it) |
 | `distribution/line/config.json` | `calibration_until`, `preempt`, thresholds |
 | `distribution/line/themes.md` | Scanner theme list and watch-list |
 | `distribution/line/queue.md` | Seed queue + holding pen (from spec §3.3–3.4) |
@@ -203,7 +203,7 @@ git commit -m "Essay line: env, state and test scaffolding"
 
 **Interfaces:**
 - Consumes: `ENV`, `need`, `log` from `env.mjs`.
-- Produces: `sendMail({ subject, text, attachments? }) → { messageId }` (always to `OWNER_EMAIL`, Reply-To alias); `findReply({ messageId }) → null | { verdict, text, date, from }`; `parseReply(rawEml) → { text, headers }`; `classify(text) → 'no'|'hold'|'publish'|'ok'|'text'`.
+- Produces: `sendMail({ subject, text, attachments? }) → { messageId }` (always to `OWNER_EMAIL`, Reply-To alias); `findReply({ messageId, token = null, subjectNeedle = null }) → null | { verdict, text, date, from }` (matches on subject token); `parseReply(rawEml) → { text, headers }`; `classify(text) → 'no'|'hold'|'publish'|'ok'|'text'`.
 
 - [ ] **Step 1: Write the fixture and failing test**
 
@@ -594,7 +594,11 @@ export function loadNeverList() {
   } catch { return ['Axi']; }
 }
 export function neverListHits(text, list = loadNeverList()) {
-  return list.filter((w) => new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text));
+  // Lookaround boundaries, not \b: entries like "Acme Inc." end in punctuation and \b would never match.
+  return list.filter((w) => {
+    const esc = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return new RegExp(`(?<!\\w)${esc}(?!\\w)`, 'i').test(text);
+  });
 }
 
 export const loadLedger = () => { try { return JSON.parse(fs.readFileSync(LEDGER, 'utf8')); } catch { return { published: [] }; } };
@@ -786,7 +790,7 @@ git commit -m "Essay line: daily scanner and peg board (score-only)"
 - Create: `scripts/line/layerb.mjs`, `scripts/line/test/layerb.test.mjs`, `scripts/line/md.mjs` (frontmatter helpers), `scripts/line/test/md.test.mjs`
 
 **Interfaces:**
-- Produces (md.mjs): `splitFrontmatter(md) → { meta: {k: v}, body, order: [k] }`, `joinFrontmatter(meta, body, order)`; `SHIPPING_FIELDS = ['title','excerpt','seoDescription','coverImageAlt']`.
+- Produces (md.mjs): `splitFrontmatter(md) → { meta: {k: v}, body, raw: [line] }` (preserve-unknown: nested blocks and unknown lines live only in `raw`), `joinFrontmatter(meta, body, raw)`; `SHIPPING_FIELDS = ['title','excerpt','seoDescription','coverImageAlt']`.
 - Produces (layerb.mjs): `layerBText(text, { kind }) → string` (Codex rewrite), `layerBEssay(inPath, outPath) → { changed: number }`, `codexArgs()`.
 
 - [ ] **Step 1: Write failing tests**
@@ -945,7 +949,7 @@ test('scanBrE flags American forms with line numbers and suggests fixes', () => 
 });
 
 test('scanBrE ignores allowlisted words and code/URLs', () => {
-  assert.deepEqual(scanBrE('We learned the license terms at https://x.com/color?theme=center and used `color: red`.'), []);
+  assert.deepEqual(scanBrE('We learned the terms at https://x.com/color?theme=center and used `color: red`.'), []);
 });
 
 test('applySpellingFixes replaces only whole words, preserving case', () => {
@@ -967,7 +971,7 @@ export const AMERICAN = {
   behavior: 'behaviour', behaviors: 'behaviours', color: 'colour', colors: 'colours', favor: 'favour', favorite: 'favourite',
   honor: 'honour', labor: 'labour', neighbor: 'neighbour', rumor: 'rumour', humor: 'humour', harbor: 'harbour',
   center: 'centre', centers: 'centres', meter: 'metre', meters: 'metres', theater: 'theatre', fiber: 'fibre', liter: 'litre',
-  defense: 'defence', offense: 'offence', pretense: 'pretence', license: 'licence', practise: 'practise',
+  defense: 'defence', offense: 'offence', pretense: 'pretence', license: 'licence',
   analyze: 'analyse', analyzed: 'analysed', analyzing: 'analysing', paralyze: 'paralyse', catalyze: 'catalyse',
   optimize: 'optimise', optimized: 'optimised', optimizing: 'optimising', optimization: 'optimisation',
   organize: 'organise', organized: 'organised', organization: 'organisation', organizations: 'organisations',
@@ -977,11 +981,9 @@ export const AMERICAN = {
   program: 'programme', programs: 'programmes', catalog: 'catalogue', dialog: 'dialogue', gray: 'grey', mold: 'mould',
   traveled: 'travelled', traveling: 'travelling', canceled: 'cancelled', modeling: 'modelling', modeled: 'modelled',
   labeled: 'labelled', fulfill: 'fulfil', enroll: 'enrol', skillful: 'skilful', artifact: 'artefact', artifacts: 'artefacts',
-  aluminum: 'aluminium', jewelry: 'jewellery', pajamas: 'pyjamas', check: null, tire: null,
+  aluminum: 'aluminium', jewelry: 'jewellery', pajamas: 'pyjamas',
 };
-// null = flag for a human/Layer B decision (meaning-dependent); house style: "learned" stays.
-const ALLOW = new Set(['learned', 'license', 'program']); // "license" verb and "program" (software) are allowed; the scan still flags "program" as a noun in prose — reviewers decide
-delete AMERICAN.check; delete AMERICAN.tire;
+// House style: "learned" (not "learnt") is correct and is deliberately absent from the map.
 
 function stripCodeAndUrls(line) {
   return line.replace(/`[^`]*`/g, ' ').replace(/https?:\/\/\S+/g, ' ').replace(/\]\([^)]*\)/g, ']');
@@ -1293,7 +1295,7 @@ import path from 'node:path';
 import { log } from './env.mjs';
 import { layerBEssay, layerBText } from './layerb.mjs';
 import { checkPlagiarism } from './plagiarism.mjs';
-import { scanBrE, applySpellingFixes } from './bre.mjs';
+import { scanBrE, applySpellingFixes, scanAmbiguous } from './bre.mjs';
 import { inspectFile, cleanFile } from './layera.mjs';
 import { splitFrontmatter, joinFrontmatter, SHIPPING_FIELDS } from './md.mjs';
 
@@ -1308,12 +1310,12 @@ export function runGate({ inPath, outPath, reportPath, skipLayerB = false }) {
   const flagsBefore = scanBrE(md);
   const fixed = applySpellingFixes(md);
   md = fixed.text;
-  const { meta, body, order } = splitFrontmatter(md);
+  const { meta, body, raw } = splitFrontmatter(md);
   for (const k of SHIPPING_FIELDS) if (typeof meta[k] === 'string') meta[k] = applySpellingFixes(meta[k]).text;
-  md = joinFrontmatter(meta, body, order);
+  md = joinFrontmatter(meta, body, raw);
   fs.writeFileSync(outPath, md);
   const flagsAfter = scanBrE(md);
-  checks.bre = { flags: flagsBefore, fixed: fixed.fixed, remaining: flagsAfter };
+  checks.bre = { flags: flagsBefore, fixed: fixed.fixed, remaining: flagsAfter, warnings: scanAmbiguous(md) };
   // 4. Layer A last
   const before = inspectFile(outPath);
   if (before.suspicious) cleanFile(outPath);
@@ -1337,7 +1339,8 @@ function renderReport({ inPath, outPath, checks, verdict, fails }) {
   L.push('## 2. Plagiarism and provenance', `Verdict: ${checks.plagiarism.verdict}`, ...checks.plagiarism.sentences.map((s) => `- ${s.hit ? '❌ HIT' : '✅ clean'} — "${s.text.slice(0, 90)}…"${s.hit ? ` (${s.url})` : ''}`),
     ...checks.plagiarism.citations.map((c) => `- ${c.verified ? '✅' : '❌'} quote "${c.quote.slice(0, 60)}…" — ${c.url || 'no url'}${c.note ? ` — ${c.note}` : ''}`), '');
   L.push('## 3. British English', `Flagged ${checks.bre.flags.length}, fixed ${checks.bre.fixed.length}, unresolved ${checks.bre.remaining.length}`,
-    ...checks.bre.flags.map((f) => `- line ${f.line}: ${f.word}${f.fix ? ` → ${f.fix}` : ' (needs a decision)'}`), '');
+    ...checks.bre.flags.map((f) => `- line ${f.line}: ${f.word} → ${f.fix}`),
+    ...(checks.bre.warnings.length ? ['Ambiguous (not auto-fixed, check by eye):', ...checks.bre.warnings.map((w) => `- line ${w.line}: ${w.word} — ${w.note}`)] : []), '');
   L.push('## 4. Layer A (invisible Unicode)', `Before: ${checks.layera.before.suspicious ? 'SUSPICIOUS' : 'clean'} · After: ${checks.layera.after.suspicious ? 'SUSPICIOUS' : 'clean'}`, '');
   return L.join('\n');
 }
@@ -1480,7 +1483,7 @@ export function makeCover({ slug, finalPath }) {
   const motionPx = checkMotionDeclared(src);
   if (motionPx < 60) throw new Error(`cover motionPx ${motionPx} < 60 (would not read at 700 px)`);
   const caption = src.match(/caption:\s*['"]([^'"]+)['"]/)?.[1] ?? '';
-  if (!/^[A-Z][A-Z ]+, [A-Z][A-Z ]+$/.test(caption)) throw new Error(`caption "${caption}" is not NOUN, ADJECTIVE`);
+  if (!/^[A-Z][A-Z -]+, [A-Z][A-Z -]+$/.test(caption)) throw new Error(`caption "${caption}" is not NOUN, ADJECTIVE`); // hyphens allowed: 'FAITH, CLEAR-EYED' is house style
   run('node', ['scripts/render-cover.mjs', slug]);
   const webp = path.join(ROOT, 'public', 'img', `${slug}.webp`);
   if (!fs.existsSync(webp)) throw new Error('render-cover produced no webp');
@@ -1519,7 +1522,7 @@ git commit -m "Essay line: cover stage (skill → module → render, motion floo
 
 **Interfaces:**
 - Consumes: `loadConfig`, `loadQueue`, `loadLedger`, `neverListHits`, `runSkill`, `sendMail`, `saveState`, peg-board.json.
-- Produces: `pickTopic({ queue, ledger, board, cfg, today }) → { title, family, source: 'peg'|'queue', peg|null }`, `slugify(title)`, `runBrief({ dry }) → { slug, brief, messageId }`.
+- Produces: `pickTopic({ queue, ledger, board, cfg, today }) → { title, family, source: 'peg'|'queue', peg|null }`, `slugify(title)`, `inFlight(essays) → boolean` (ignores published, killed and held), `vetoDeadline(now, vetoHour, minLeadHours = 4) → Date` (rolls to the next day when the lead time is short), `slugTaken(slug, { published, staged }) → boolean`, `runBrief({ dry }) → { slug, brief, messageId }`.
 
 - [ ] **Step 1: Write the skill**
 
@@ -1707,8 +1710,9 @@ coverImage: /img/<slug>.webp
 coverImageAlt: ""                (leave empty; the cover stage fills it)
 coverAnimation: <slug>
 ---
-then the body. Internal links to other essays use absolute
-`https://signal-to-noise.co/insights/<slug>/` URLs.
+then the body. Internal links to other essays use the site's relative form
+`/insights/<slug>/` (never the full domain), per docs/specs/article-formatting.md;
+the Substack mirror makes them absolute on its side.
 
 Write both files into the directory given in Input and nothing else.
 ```
@@ -1820,7 +1824,7 @@ git commit -m "Essay line: draft stage (outline + essay via write-essay skill)"
 
 **Interfaces:**
 - Consumes: `sendMail`, `findReply`, `runGate`, `layerBText`, `essayDir`, `loadState`, `saveState`.
-- Produces: `buildFinal(slug) → finalPath` (gated markdown + cover alt merged), `sendFinal(slug) → { messageId }`, `applyCorrections(slug, text) → { changed }` (headless Claude edits `final.md` per the correction text, then re-gate with `skipLayerB=false` on changed strings only — implemented as full re-gate for simplicity), `readFinalReply(slug) → null | { verdict, text }`.
+- Produces: `buildFinal(slug) → finalPath` (gated markdown + cover alt merged), `nextPublishSlot(now, hourUk) → Date` (today if Wednesday before the hour, else next Wednesday), `sendFinal(slug) → { messageId }` (stores `final_message_id` and `final_token`; `readFinalReply` passes both to `findReply`), `applyCorrections(slug, text) → { changed }` (headless Claude edits `final.md` per the correction text, then re-gate with `skipLayerB=false` on changed strings only — implemented as full re-gate for simplicity), `readFinalReply(slug) → null | { verdict, text }`.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1867,10 +1871,10 @@ export function finalEmailText({ title, final, report }) {
 export function buildFinal(slug) {
   const dir = essayDir(slug);
   const st = loadState(slug);
-  const { meta, body, order } = splitFrontmatter(fs.readFileSync(path.join(dir, 'gated.md'), 'utf8'));
+  const { meta, body, raw } = splitFrontmatter(fs.readFileSync(path.join(dir, 'gated.md'), 'utf8'));
   meta.coverImageAlt = fs.readFileSync(path.join(dir, 'cover-alt.txt'), 'utf8').trim();
   const finalPath = path.join(dir, 'final.md');
-  fs.writeFileSync(finalPath, joinFrontmatter(meta, body, order));
+  fs.writeFileSync(finalPath, joinFrontmatter(meta, body, raw));
   return finalPath;
 }
 
@@ -2029,7 +2033,7 @@ git commit -m "Essay line: publish stage (content, OG, build, deploy, verify, le
 
 **Interfaces:**
 - Consumes: everything above.
-- Produces: `nextAction(state, now, cfg) → null | 'check-veto' | 'draft' | 'gate' | 'cover' | 'send-final' | 'check-final' | 'publish'`; `advance(slug, now) → string` (action taken); CLI `node scripts/line/runner.mjs [--dry] [--now ISO]`.
+- Produces: `nextAction(state, now, cfg) → null | 'check-veto' | 'draft' | 'gate' | 'cover' | 'send-final' | 'check-final' | 'publish'` (a `final-sending` state retries `send-final` only once `finalSendAllowed` says the retry window has passed); `advance(slug, now) → string` (action taken); CLI `node scripts/line/runner.mjs [--dry] [--now ISO]`.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -2063,6 +2067,11 @@ test('final-sent polls for a reply; publishes only when approved and after the s
   assert.equal(nextAction({ ...st, approved: true }, at('2026-09-16T07:30:00Z'), cfg), 'publish');
 });
 
+test('a failed deploy or push retries publish on the next wake', () => {
+  assert.equal(nextAction({ stage: 'deploy-failed', approved: true }, at('2026-09-16T09:00:00Z'), cfg), 'publish');
+  assert.equal(nextAction({ stage: 'push-failed', approved: true }, at('2026-09-16T09:00:00Z'), cfg), 'publish');
+});
+
 test('hold, killed and published do nothing', () => {
   assert.equal(nextAction({ stage: 'approved', hold: true }, at('2026-09-14T20:00:00Z'), cfg), null);
   assert.equal(nextAction({ stage: 'approved', killed: true }, at('2026-09-14T20:00:00Z'), cfg), null);
@@ -2089,7 +2098,7 @@ import { runBrief } from './brief.mjs';
 import { runDraft } from './draft.mjs';
 import { runGate } from './gate.mjs';
 import { makeCover } from './cover.mjs';
-import { sendFinal, readFinalReply, applyCorrections } from './final.mjs';
+import { sendFinal, readFinalReply, applyCorrections, finalSendAllowed } from './final.mjs';
 import { publish } from './publish.mjs';
 
 export function nextAction(st, now, cfg) {
@@ -2100,9 +2109,11 @@ export function nextAction(st, now, cfg) {
     case 'drafted': return 'gate';
     case 'gated': return st.gate_verdict === 'pass' ? 'cover' : null;
     case 'covered': return 'send-final';
+    case 'final-sending': return finalSendAllowed(st, now) ? 'send-final' : null; // crashed send: retry after the window
     case 'final-sent':
       if (st.approved) return now >= new Date(st.publish_not_before) ? 'publish' : null;
       return 'check-final';
+    case 'deploying': case 'deploy-failed': case 'push-failed': return 'publish'; // publish() resumes from its saved state
     default: return null;
   }
 }
@@ -2146,7 +2157,7 @@ export function advance(slug, now = new Date(), { dry = false } = {}) {
         else if (r.verdict === 'hold' || r.verdict === 'no') saveState(slug, { hold: true, killed: r.verdict === 'no' });
         else if (r.verdict === 'text') {
           const c = applyCorrections(slug, r.text);
-          if (c.verdict === 'pass') { saveState(slug, { stage: 'covered' }); } // → send-final again on next wake
+          if (c.verdict === 'pass') { saveState(slug, { stage: 'covered' }); } // → send-final again on next wake (sendFinal rebuilds final.md from the re-gated file)
           else { saveState(slug, { stage: 'gated', gate_verdict: 'fail' }); notify(`Held at gate after corrections: ${st.title}`, fs.readFileSync(path.join(dir, 'gate-report.md'), 'utf8')); }
         }
         break;
@@ -2184,7 +2195,7 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
 
 - [ ] **Step 4: Run tests and a dry tick**
 
-Run: `node --test scripts/line/test/runner.test.mjs` — Expected: `# pass 4`.
+Run: `node --test scripts/line/test/runner.test.mjs` — Expected: `# pass 5`.
 Run: `node scripts/line/runner.mjs --dry --now 2026-09-14T07:00:00` — Expected: log lines showing what would run for the state files present (brief would email; an in-flight essay reports its would-be action).
 
 - [ ] **Step 5: Commit**
@@ -2197,7 +2208,7 @@ git commit -m "Essay line: runner state machine (one advance per wake, veto/fina
 ### Task 17: launchd schedule, Monday skill, docs
 
 **Files:**
-- Create: `infra/co.signal-to-noise.essay-line.plist`, `.claude/skills/essay-line/monday/SKILL.md`, `distribution/line/README.md`
+- Create: `infra/co.signal-to-noise.essay-line.plist`, `.claude/skills/essay-line-monday/SKILL.md`, `distribution/line/README.md`
 - Modify: `distribution/README.md` (daily loop: add the line), `docs/specs/2026-09-09-weekly-essay-line-design.md` status line.
 
 - [ ] **Step 1: Write the plist**
@@ -2233,7 +2244,7 @@ Note: `tick()` keys the brief on `hour === 7` but the job fires at 06:30; set `b
 
 - [ ] **Step 2: Write the Monday skill**
 
-`.claude/skills/essay-line/monday/SKILL.md`:
+`.claude/skills/essay-line-monday/SKILL.md`:
 ```markdown
 ---
 name: essay-line-monday
@@ -2249,7 +2260,7 @@ description: The attended Monday session — health line, readout, peg board, th
 
 - [ ] **Step 3: Write the README and install the job**
 
-`distribution/line/README.md`: one page — rhythm table from spec §2, the two-email rules, kill switch, where state and logs live, how to run each stage by hand (`node scripts/line/<stage>.mjs <slug>`), how to run tests (`npm run test:line`), and the calibration note.
+`distribution/line/README.md`: one page — rhythm table from spec §2, the two-email rules (prose reply to the brief parks; `ok` on the final does nothing; only `publish` ships), kill switch and per-essay hold/kill via `state.json`, where state and logs live, how to run each stage by hand (`node scripts/line/<stage>.mjs <slug>`), how to run tests (`npm run test:line`), the calibration note, and two operational caveats: the Monday brief and daily scan fire only in the 06:00–12:00 window, so a Mac first woken after noon on a Monday produces no essay that week; and the tick-level scan/brief calls have no retry cap (a brief that fails after the paid step may re-spend on a catch-up wake within the window).
 
 Install:
 ```bash
@@ -2279,6 +2290,9 @@ git push origin main
 No new files. Checklist, run with Claude in session on the first Monday after Task 17:
 
 - [ ] Owner has filled `_sources/NEVER-LIST.md`.
+- [ ] Watermarks service is running (`make serve` in ~/Documents/devProjects/watermarks-remover); confirm with `curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:8765/inspect` → 200/400, not a connection error. Consider a LaunchAgent for it.
+- [ ] `git commit` and `git push` do not prompt under launchd: `git config commit.gpgsign` is unset/false and the push credential needs no passphrase (test with `launchctl kickstart` of a harmless job, or `GIT_TERMINAL_PROMPT=0 git push --dry-run`).
+- [ ] Reset the test staging folder: `rm -r _sources/staging-articles/the-verification-premium` (its state lacks title/family because the brief ran in dry mode; Monday re-briefs it properly — the seed queue still lists it first).
 - [ ] Mon 06:30: brief email arrives; owner replies nothing (or "no" to test the kill path once, then re-run `runBrief` by hand).
 - [ ] Mon 19:00: state → approved. Mon 22:00: draft written; read it.
 - [ ] Tue 06:30: gate report clean (if held, fix the essay by hand, set stage back to `drafted`, let it re-run).
@@ -2297,4 +2311,4 @@ No new files. Checklist, run with Claude in session on the first Monday after Ta
 
 **Placeholder scan.** None. Every step has code or an exact command with expected output.
 
-**Type consistency.** `runSkill` returns `{ result, json, cost_usd, session_id }` and is consumed that way in scan, plagiarism, brief, draft, cover, final. `saveState`/`loadState`/`addCost`/`essayDir` signatures match across Tasks 1, 12–16. `splitFrontmatter`/`joinFrontmatter` return/take `{ meta, body, order }` consistently. `runGate` returns `{ verdict, report, checks }` and is called with `{ inPath, outPath, reportPath, skipLayerB }` in Tasks 10, 14, 16. Stage names match `STAGES`.
+**Type consistency.** `runSkill` returns `{ result, json, cost_usd, session_id }` and is consumed that way in scan, plagiarism, brief, draft, cover, final. `saveState`/`loadState`/`addCost`/`essayDir` signatures match across Tasks 1, 12–16. `splitFrontmatter`/`joinFrontmatter` return/take `{ meta, body, raw }` consistently (changed from `order` in Task 6; all call sites updated). `runGate` returns `{ verdict, report, checks }` and is called with `{ inPath, outPath, reportPath, skipLayerB }` in Tasks 10, 14, 16. Stage names match `STAGES`.

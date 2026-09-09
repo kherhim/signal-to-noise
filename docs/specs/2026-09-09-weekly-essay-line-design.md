@@ -1,6 +1,6 @@
 # The weekly essay line — design
 
-**Status:** approved in conversation 9 Sep 2026, awaiting written review.
+**Status:** Implemented 9 Sep 2026; first supervised cycle pending (line PAUSED until then).
 **Owner:** Himanshu. **Builder:** Claude Code.
 **Goal:** publish one essay a week on signal-to-noise.co with no human in the
 loop except two emails, while keeping every standing rule (British English,
@@ -24,18 +24,33 @@ plagiarism and provenance, Layer A and Layer B, never Axi) enforced by code.
 | When | What | Who |
 |---|---|---|
 | Daily 06:30 | Scanner refreshes the peg board | automation |
-| Mon 07:00 | Brief email: topic, angle, why now, sources, peg score if any | automation |
+| Mon 06:30 wake | Brief email: topic, angle, why now, sources, peg score if any | automation |
 | Mon until 19:00 | Veto window: reply "no" (kill), "hold" (park), or nothing (go) | owner, optional |
 | Mon 19:00 → Tue | Outline, draft, gate (Layer B, plagiarism, BrE, Layer A), cover | automation |
 | Tue evening | "Final for approval" email: exact shipping text, cover attached, gate report | automation |
 | Tue → Wed 06:00 | Reply "publish", "hold", or corrections. No reply = hold | owner |
-| Wed 08:00 UK | Publish if approved. A late "publish" ships the next morning at 08:00 | automation |
-| Fri 09:15 | Substack mirror (already live, `scripts/substack-mirror.mjs`) | automation |
+| Wed, first wake after 08:00 UK (the 12:00 wake) | Publish if approved. A late "publish" ships at the first wake after the next 08:00 | automation |
+| Sat 09:15 | Substack mirror (already live, `scripts/substack-mirror.mjs`; 48 h after a Wednesday-noon publish means Saturday's run) | automation |
 | Mon 07:30 | Metrics pull (already live, `scripts/metrics-pull.mjs`) | automation |
+| any | Replies are accepted only from the owner's address; auto-replies are ignored; an essay whose final goes unanswered for 7 days is parked | automation |
 | Mon, attended | Readout, peg board, LinkedIn edition for last Wednesday's essay, native post scheduled 08:00 UK | owner + Claude in Chrome |
 
 Corrections received after Wed 06:00 roll the essay to the following Wednesday
 so a correction is never rushed past the gate.
+
+Reply handling rules (settled during the build, 9 Sep):
+- A prose reply to the Monday brief is not consent: the essay is parked with
+  `hold: true`, the text is kept, and the owner is emailed once. Silence still
+  means go.
+- An `ok` reply to the Tuesday final does nothing and the owner is told so;
+  only `publish` ships.
+- Every acted-on reply is recorded (`*_reply_seen`) so un-parking an essay by
+  hand does not re-apply the old reply.
+- A stage that fails three times is parked and the owner is emailed on the
+  first failure and on parking, never on every wake.
+- The runner advances at most one essay per wake, and the Monday brief and
+  daily scan fire in a morning window (06:00–12:00) guarded by "already done
+  this week/today", so a missed 06:30 wake does not skip the week.
 
 ## 3. Topic engine
 
@@ -107,7 +122,7 @@ only sources cannot be opened and read.
 | ≥ 85 | Same-morning email proposing an off-cycle fast piece; one-word reply accepts |
 
 Rules: preempting requires corpus fit ≥ 8; a new-topic proposal requires
-≥ 70 and is written to the ideas file regardless. **First four weeks: score
+≥ 70 and is appended to the ideas file under "Scanner proposals" regardless. **First four weeks: score
 only, no preempting**, board shown on Mondays for calibration.
 
 ## 4. Stages and the runner
@@ -139,7 +154,7 @@ Published artefacts land where they do today: `src/content/insights/<slug>.md`,
 | drafted | Outline then draft from the corpus style guide and the brief's sources | headless Claude, `write-essay` skill |
 | gated | §5 gate; any fail stops here and emails the owner | scripts + Codex |
 | covered | Cover module from the argument; render webp + OG; 700 px motion check | headless Claude, `cover` skill + render scripts |
-| final-sent | Tuesday email with `final.md`, cover, gate report | script |
+| final-sent | Final assembly: the cover alt text goes through Layer B, BrE and the never-list; the publish date is re-stamped; `final.md` is written and then Layer A runs on it (the last touch on the shipping file); Tuesday email with `final.md`, cover, gate report | script |
 | published | On "publish": commit, build, `deploy.sh`, verify 200s, ledger, LinkedIn registry placeholder | script |
 
 Corrections re-enter at `gated` for the changed strings and re-run the full
@@ -152,7 +167,8 @@ and 22:00 daily. Each run: read all `state.json`, advance whichever essay is due
 for its next stage (deadlines respected), exit. A stage completes and records
 itself, or fails and records why; nothing is half-done between wakes. A
 sleeping Mac delays, never corrupts. Re-running a passed stage is a no-op.
-Publishing checks the live site for the slug before deploying.
+Publishing is state-driven (`published`, `deploying`, `deploy-failed`,
+`push-failed`) so a retry resumes rather than re-deploys.
 
 ### 4.4 Skills
 
@@ -166,7 +182,8 @@ files so they are versioned and readable.
 Fixed order; one report; binary verdict.
 
 1. **Layer B first.** Every shipping string (body, excerpt, seoDescription,
-   coverImageAlt, caption) through Codex for the statistical rewrite. Output
+   coverImageAlt) through Codex for the statistical rewrite. The approved
+   title is not rewritten (it is what the owner accepted in the brief). Output
    becomes the working draft; sentence-level diff kept.
 2. **Plagiarism and provenance.** Eight most distinctive original sentences
    searched as exact quoted strings, expecting zero verbatim hits. Every quoted
@@ -177,14 +194,18 @@ Fixed order; one report; binary verdict.
    change more than spelling go back through Layer B.
 4. **Layer A last.** Invisible-Unicode scan on the exact files that ship, via
    the local watermarks service on :8765 (never SuperCompress). Strip and
-   re-scan. Nothing edits the file after this step.
+   re-scan. Nothing edits the file after this step. Because the cover stage
+   runs after the gate, the alt text it produces is checked (Layer B, BrE,
+   never-list) during final assembly and Layer A is then re-run on `final.md`
+   itself, so the last touch on the shipping file is always Layer A.
 
 Any fail: essay stays at `gated`, owner gets a "held at gate" email with the
 failing check and evidence. The line never overrides the gate.
 
 **Cover rules:** designed from the finished argument, not the title; the
 existing animated-fabric system (`src/covers/_lib.ts`); caption "NOUN,
-ADJECTIVE"; next FIG number; alt text goes through the gate; a 700-pixel frame
+ADJECTIVE" (regex-validated, not Layer-B rewritten — a deliberate deviation
+from §5.1); next FIG number; alt text goes through the gate at final assembly; a 700-pixel frame
 is rendered and animated elements must move by a visible amount.
 
 ## 6. Publishing, mail, Monday, failure, cost
@@ -202,8 +223,10 @@ never the mailbox address:** Gmail has the mailbox address configured as a
 send-as alias, so a Gmail reply to it never leaves Google (verified 9 Sep,
 test 1 vanished; test 2 via the alias arrived in 40 s). Reads the Zoho inbox
 over IMAP (`imappro.zoho.eu:993`, IMAP Access enabled 9 Sep) only for messages
-whose `In-Reply-To` matches a Message-ID the automation sent; all other mail is
-never read or stored. Recognised replies: `no`, `hold`, `publish`; anything
+whose subject carries the automation's token (`[S2N <token>]`, which Gmail
+preserves in a reply); Zoho's IMAP cannot search the `In-Reply-To` header
+(verified 9 Sep), so that header is checked only when present. All other mail
+is never read or stored. Recognised replies: `no`, `hold`, `publish`; anything
 else is correction text, taken from the plain-text part above the quoted
 original. Credentials in `.env` (all set 9 Sep): `ZOHO_USER`,
 `ZOHO_APP_PASSWORD` (app password "essay-line"), `ZOHO_SMTP_HOST`,
