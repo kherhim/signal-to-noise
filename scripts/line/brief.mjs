@@ -14,13 +14,6 @@ const CONTENT_INSIGHTS = path.join(ROOT, 'src', 'content', 'insights');
 
 export const inFlight = (essays) => essays.some((e) => e.stage !== 'published' && !e.killed && !e.hold);
 
-export function vetoDeadline(now, vetoHour, minLeadHours = 4) {
-  const at = new Date(now);
-  at.setHours(vetoHour, 0, 0, 0);
-  if ((at.getTime() - now.getTime()) / 3600000 < minLeadHours) at.setDate(at.getDate() + 1);
-  return at;
-}
-
 export const slugTaken = (slug, { published, staged }) =>
   published.includes(slug) || staged.some((e) => e.slug === slug && !e.killed);
 
@@ -67,16 +60,15 @@ export function runBrief({ dry = false } = {}) {
   if (hits.length) throw new Error(`brief mentions never-list: ${hits.join(', ')}`);
   fs.mkdirSync(essayDir(slug), { recursive: true });
   fs.writeFileSync(path.join(essayDir(slug), 'brief.md'), brief + '\n');
-  const vetoAt = vetoDeadline(new Date(), cfg.veto_hour_local);
   // Persist the intent to send BEFORE sending. A crash inside sendMail would
   // otherwise leave no state at all: the next wake would see no essay in flight,
   // pick the same topic and pay for a second brief — and the owner might get two
   // emails for one essay. `brief-sending` needs a human, and says so.
   saveState(slug, { stage: 'brief-sending', brief_sending_at: new Date().toISOString(), title: topic.title, family: topic.family, source: topic.source, cost_usd: out.cost_usd });
-  const { messageId, token } = sendMail({ subject: `Brief: ${topic.title}`, text: `${brief}\n\nReply "no" to kill, "hold" to park, or nothing to proceed. Veto closes ${vetoAt.toLocaleString('en-GB')}.` });
-  saveState(slug, { stage: 'briefed', title: topic.title, family: topic.family, source: topic.source, peg: topic.peg ?? null, brief_message_id: messageId, brief_token: token, brief_sent_at: new Date().toISOString(), veto_deadline: vetoAt.toISOString(), cost_usd: out.cost_usd });
+  const { messageId, token } = sendMail({ subject: `Brief: ${topic.title}`, text: `${brief}\n\nReply "go" to proceed, "no" to kill, "hold" to park. Nothing happens on silence.` });
+  saveState(slug, { stage: 'briefed', title: topic.title, family: topic.family, source: topic.source, peg: topic.peg ?? null, brief_message_id: messageId, brief_token: token, brief_sent_at: new Date().toISOString(), cost_usd: out.cost_usd });
   if (topic.source === 'queue') markQueue(topic.title, 'briefed');
-  log('brief', `${slug} briefed, veto until ${vetoAt.toISOString()}`);
+  log('brief', `${slug} briefed; waiting for "go"`);
   return { slug, brief, messageId };
 }
 

@@ -7,16 +7,16 @@ import os from 'node:os';
 
 process.env.LINE_STAGING = fs.mkdtempSync(path.join(os.tmpdir(), 'line-runner-'));
 const { loadState, saveState } = await import('../state.mjs');
-const { nextAction, advance, tick, isoWeek } = await import('../runner.mjs');
+const { nextAction, advance, tick, isoWeek, waitForNetwork, isNetworkError } = await import('../runner.mjs');
 
 const cfg = { veto_hour_local: 19, publish_hour_uk: 8 };
 const at = (s) => new Date(s);
 const day = (d) => d.toISOString().slice(0, 10);
 
-test('briefed waits for the veto deadline then checks', () => {
-  const st = { stage: 'briefed', veto_deadline: '2026-09-14T18:00:00.000Z' };
-  assert.equal(nextAction(st, at('2026-09-14T17:00:00Z'), cfg), null);
-  assert.equal(nextAction(st, at('2026-09-14T18:05:00Z'), cfg), 'check-veto');
+test('briefed checks for a reply at every wake — there is no veto deadline', () => {
+  const st = { stage: 'briefed', brief_sent_at: '2026-09-14T16:00:00.000Z' };
+  assert.equal(nextAction(st, at('2026-09-14T17:00:00Z'), cfg), 'check-veto');
+  assert.equal(nextAction(st, at('2026-09-16T18:05:00Z'), cfg), 'check-veto');
 });
 
 test('approved → draft → gate → cover → send-final in order', () => {
@@ -95,7 +95,7 @@ test('a missed Monday wake still briefs, once, and not twice in the same ISO wee
 
 test('check-veto: a hold reply parks the essay and is not re-applied once marked seen', () => {
   const slug = 'veto-hold';
-  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't1', veto_deadline: '2026-09-14T18:00:00.000Z' });
+  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't1', brief_sent_at: '2026-09-14T16:00:00.000Z' });
   const deps = { paused: () => false, findReply: () => ({ verdict: 'hold', text: 'hold', date: 'D', from: 'F', key: 'k1' }), sendMail: () => {} };
   advance(slug, at('2026-09-14T19:00:00Z'), { deps });
   assert.equal(loadState(slug).hold, true);
@@ -108,7 +108,7 @@ test('check-veto: a hold reply parks the essay and is not re-applied once marked
 
 test('check-veto: a text reply parks the essay and notifies the owner once', () => {
   const slug = 'veto-text';
-  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't2', veto_deadline: '2026-09-14T18:00:00.000Z' });
+  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't2', brief_sent_at: '2026-09-14T16:00:00.000Z' });
   const mail = [];
   const deps = {
     paused: () => false,
@@ -124,11 +124,56 @@ test('check-veto: a text reply parks the essay and notifies the owner once', () 
   assert.match(mail[0].text, /the essay is parked/);
 });
 
-test('check-veto: silence means go', () => {
+test('check-veto: silence means no action — the essay waits, the wake is not consumed', () => {
   const slug = 'veto-silent';
-  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't3', veto_deadline: '2026-09-14T18:00:00.000Z' });
-  advance(slug, at('2026-09-14T19:00:00Z'), { deps: { paused: () => false, findReply: () => null, sendMail: () => {} } });
+  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't3', brief_sent_at: '2026-09-14T16:00:00.000Z' });
+  const mail = [];
+  const r = advance(slug, at('2026-09-15T19:00:00Z'), { deps: { paused: () => false, findReply: () => null, sendMail: (m) => { mail.push(m); } } });
+  assert.equal(r, 'idle');
+  assert.equal(loadState(slug).stage, 'briefed');
+  assert.equal(mail.length, 0);
+});
+
+test('check-veto: "go" is the only word that approves', () => {
+  const slug = 'veto-go';
+  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't4', brief_sent_at: '2026-09-14T16:00:00.000Z' });
+  const deps = { paused: () => false, findReply: () => ({ verdict: 'go', text: 'go', date: 'D', from: 'F', key: 'k4' }), sendMail: () => {} };
+  assert.equal(advance(slug, at('2026-09-14T19:00:00Z'), { deps }), 'check-veto');
   assert.equal(loadState(slug).stage, 'approved');
+  assert.equal(loadState(slug).brief_reply_seen, 'k4');
+});
+
+test('check-veto: "ok" or "publish" is not consent — the owner is nudged once and the essay waits', () => {
+  const slug = 'veto-ok';
+  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't5', brief_sent_at: '2026-09-14T16:00:00.000Z' });
+  const mail = [];
+  const deps = { paused: () => false, findReply: () => ({ verdict: 'ok', text: 'ok', date: 'D', from: 'F', key: 'k5' }), sendMail: (m) => { mail.push(m); } };
+  advance(slug, at('2026-09-14T19:00:00Z'), { deps });
+  assert.equal(loadState(slug).stage, 'briefed');
+  assert.equal(loadState(slug).brief_reply_seen, 'k5');
+  assert.equal(mail.length, 1);
+  assert.match(mail[0].text, /Reply 'go'/);
+  advance(slug, at('2026-09-14T22:00:00Z'), { deps });
+  assert.equal(mail.length, 1, 'the same reply must not nudge twice');
+});
+
+test('a brief unanswered for more than 6 days is parked, and the owner is told once', () => {
+  const slug = 'brief-stale';
+  saveState(slug, { stage: 'briefed', title: 'T', brief_token: 't6', brief_sent_at: '2026-09-14T16:00:00.000Z' });
+  const mail = [];
+  const deps = { paused: () => false, findReply: () => null, sendMail: (m) => { mail.push(m); } };
+  advance(slug, at('2026-09-19T18:00:00Z'), { deps });
+  assert.equal(loadState(slug).hold, false, 'five days is not stale');
+  assert.equal(advance(slug, at('2026-09-20T18:00:00Z'), { deps }), 'expire-brief');
+  const st = loadState(slug);
+  assert.equal(st.hold, true);
+  assert.ok(st.brief_expired_at);
+  assert.equal(mail.length, 1);
+  assert.match(mail[0].text, /brief unanswered for 6 days; parked/);
+  saveState(slug, { hold: false }); // the owner clears it by hand
+  advance(slug, at('2026-09-21T18:00:00Z'), { deps });
+  assert.equal(mail.length, 1, 'the expiry notice is sent once, not on every wake');
+  assert.equal(loadState(slug).hold, false);
 });
 
 test('check-final: silence holds, "ok" only nudges, "publish" ships', () => {
@@ -177,6 +222,59 @@ test('a tick advances at most one essay per wake', async () => {
   };
   await tick({ now: new Date(2026, 8, 15, 14, 0), deps }); // Tuesday afternoon: no scan, no brief
   assert.equal(gated.length, 1);
+});
+
+test('once approved, one wake chains draft → gate → cover → final so the essay reaches the inbox at once', async () => {
+  const slug = 'chain';
+  saveState(slug, { stage: 'approved', title: 'C' });
+  const calls = [];
+  const deps = {
+    paused: () => false,
+    listEssays: () => [{ slug }],
+    runDraft: (s) => { calls.push('draft'); saveState(s, { stage: 'drafted' }); },
+    runGate: () => { calls.push('gate'); return { verdict: 'pass', checks: {} }; },
+    makeCover: () => { calls.push('cover'); return { cost_usd: 0, fig: 51, caption: 'c' }; },
+    sendFinal: (s) => { calls.push('final'); saveState(s, { stage: 'final-sent', approved: false }); },
+    sendMail: () => {},
+  };
+  const took = await tick({ now: new Date(2026, 8, 14, 19, 0), deps });
+  assert.deepEqual(calls, ['draft', 'gate', 'cover', 'final']);
+  assert.equal(loadState(slug).stage, 'final-sent');
+  assert.deepEqual(took.map((t) => t.action), ['draft', 'gate', 'cover', 'send-final']);
+});
+
+test('a "go" reply chains straight into the draft in the same wake', async () => {
+  const slug = 'chain-go';
+  saveState(slug, { stage: 'briefed', title: 'G', brief_token: 'tg', brief_sent_at: '2026-09-14T16:00:00.000Z' });
+  const calls = [];
+  const deps = {
+    paused: () => false,
+    listEssays: () => [{ slug }],
+    findReply: () => ({ verdict: 'go', text: 'go', date: 'D', from: 'F', key: 'kg' }),
+    runDraft: (s) => { calls.push('draft'); saveState(s, { stage: 'drafted' }); },
+    runGate: () => { calls.push('gate'); return { verdict: 'fail', report: 'r', checks: {} }; },
+    sendMail: () => {},
+  };
+  await tick({ now: new Date(2026, 8, 14, 19, 0), deps });
+  assert.deepEqual(calls, ['draft', 'gate'], 'a failed gate stops the chain');
+  assert.equal(loadState(slug).hold, true);
+});
+
+test('a failure mid-chain stops the chain; the retry cap still governs the next wake', async () => {
+  const slug = 'chain-fail';
+  saveState(slug, { stage: 'approved', title: 'F' });
+  const calls = [];
+  const deps = {
+    paused: () => false,
+    listEssays: () => [{ slug }],
+    runDraft: (s) => { calls.push('draft'); saveState(s, { stage: 'drafted' }); },
+    runGate: () => { calls.push('gate'); throw new Error('gate boom'); },
+    makeCover: () => { calls.push('cover'); return { cost_usd: 0 }; },
+    sendMail: () => {},
+  };
+  await tick({ now: new Date(2026, 8, 14, 19, 0), deps });
+  assert.deepEqual(calls, ['draft', 'gate']);
+  assert.equal(loadState(slug).last_error.count, 1);
 });
 
 test('an idle poll (no fresh reply) does not consume the wake: the next essay still advances', async () => {
@@ -405,4 +503,40 @@ test('a dry tick collects every essay\'s would-be action, not just the first', a
   };
   const took = await tick({ now: new Date(2026, 8, 15, 14, 0), dry: true, deps });
   assert.deepEqual(took, [{ slug: 'dry-a', action: 'gate' }, { slug: 'dry-b', action: 'gate' }]);
+});
+
+test('a failing Monday brief is retried at most twice in one ISO week', async () => {
+  const attempts = [];
+  const mail = [];
+  const deps = {
+    paused: () => false, boardDate: () => '2026-09-14', listEssays: () => [],
+    runBrief: () => { attempts.push(1); throw new Error('boom'); },
+    sendMail: (m) => { mail.push(m); },
+  };
+  for (const h of [7, 8, 9, 10]) await tick({ now: new Date(2026, 8, 14, h, 0), deps });
+  assert.equal(attempts.length, 2, 'two paid attempts, then the cap holds for the rest of the window');
+  assert.equal(mail.length, 2);
+  assert.match(mail[1].text, /attempt 2 of 2/);
+  fs.rmSync(path.join(process.env.LINE_STAGING, '.brief-attempts.json'), { force: true });
+});
+
+test('a reply poll that cannot reach the mailbox is idle, not a failure', () => {
+  const slug = 'poll-net';
+  saveState(slug, { stage: 'final-sent', approved: false, title: 'T', publish_not_before: '2026-09-16T07:00:00.000Z' });
+  const mail = [];
+  const deps = { paused: () => false, readFinalReply: () => { throw new Error('curl failed (6): '); }, sendMail: (m) => { mail.push(m); } };
+  assert.equal(advance(slug, at('2026-09-14T19:11:34Z'), { deps }), 'idle');
+  assert.equal(loadState(slug).last_error, undefined);
+  assert.equal(mail.length, 0);
+  const deps2 = { ...deps, readFinalReply: () => { throw new Error('curl failed (67): auth'); } };
+  assert.equal(advance(slug, at('2026-09-14T20:00:00Z'), { deps: deps2 }), 'error:check-final', 'an auth failure still counts');
+  assert.equal(isNetworkError(new Error('curl failed (28): ')), true);
+});
+
+test('waitForNetwork polls DNS until it answers, then gives up after maxMs', async () => {
+  let n = 0;
+  const flaky = async () => { n++; if (n < 3) throw new Error('ENOTFOUND'); };
+  assert.equal(await waitForNetwork({ lookup: flaky, stepMs: 1, maxMs: 1000 }), true);
+  assert.equal(n, 3);
+  assert.equal(await waitForNetwork({ lookup: async () => { throw new Error('ENOTFOUND'); }, stepMs: 1, maxMs: 5 }), false);
 });

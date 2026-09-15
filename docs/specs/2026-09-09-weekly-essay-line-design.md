@@ -13,7 +13,7 @@ plagiarism and provenance, Layer A and Layer B, never Axi) enforced by code.
 | Owner time per essay | Mode C: near zero. Corrections by exception, by email reply. No attended drafting mode. |
 | LinkedIn legs | One attended Monday session with Claude in Chrome, about fifteen minutes. No cookie automation. |
 | Hard rules for unattended weeks | (A) never name employer, colleagues or clients, past or present; (B) never publish on a company where the owner holds a position or inside knowledge; (D) never cite a source the line could not open and read; (E) every essay is preceded by a one-line brief the owner can veto. |
-| Monday brief | Silence means go. |
+| Monday brief | Silence means **no action** (amended 14 Sep 2026; was "silence means go"). Only an explicit `go` reply proceeds. |
 | Tuesday final | Silence means **hold**. Publishing needs an explicit "publish" reply. |
 | News pegs | A news-peggable piece never ships without its peg. It waits in a holding pen with its trigger written down. |
 | Scanner latitude | May propose brand-new topics, only as a vetoable brief and only at score 70 or above; every proposal is written to the ideas file. |
@@ -150,7 +150,7 @@ Published artefacts land where they do today: `src/content/insights/<slug>.md`,
 |---|---|---|
 | scanned | Daily peg board `distribution/peg-board.md` | script + WebSearch in headless Claude |
 | briefed | Pick topic (§3.1), never-list check, email brief, record deadline | headless Claude, `brief` skill |
-| approved | Read Zoho inbox after 19:00; apply "no"/"hold"/silence | script (mail module) |
+| approved | Read Zoho inbox at every wake; only "go" approves, "no"/"hold" kill/park, silence waits (amended 14 Sep 2026) | script (mail module) |
 | drafted | Outline then draft from the corpus style guide and the brief's sources | headless Claude, `write-essay` skill |
 | gated | §5 gate; any fail stops here and emails the owner | scripts + Codex |
 | covered | Cover module from the argument; render webp + OG; 700 px motion check | headless Claude, `cover` skill + render scripts |

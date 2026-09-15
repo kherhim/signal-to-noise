@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { parseReply, classify, buildMime, buildSearchNeedle, findReply, isOwnCopy, senderAllowed, isAutoReply, extractAddress } from '../mail.mjs';
+import { parseReply, classify, stripSignature, buildMime, buildSearchNeedle, findReply, isOwnCopy, senderAllowed, isAutoReply, extractAddress } from '../mail.mjs';
 
 const raw = fs.readFileSync(new URL('./fixtures/reply-ok.eml', import.meta.url), 'utf8');
 const rawWrapped = fs.readFileSync(new URL('./fixtures/reply-ok-wrapped.eml', import.meta.url), 'utf8');
@@ -23,6 +23,12 @@ test('classify recognises the keywords and treats anything else as text', () => 
   assert.equal(classify(' Publish '), 'publish');
   assert.equal(classify('HOLD'), 'hold');
   assert.equal(classify('no'), 'no');
+  assert.equal(classify('go'), 'go');
+  assert.equal(classify('Go.'), 'go');
+  assert.equal(classify('go ahead'), 'text');
+  assert.equal(classify('Go\nSent from my iPhone\nForgive telegraphy and typos'), 'go', 'a phone signature is not part of the answer');
+  assert.equal(classify('publish\n-- \nHimanshu'), 'publish');
+  assert.equal(classify('Go ahead with writing the full article\nSent from my iPhone'), 'text', 'a sentence is still prose');
   assert.equal(classify('Publish, but change the heading'), 'text');
 });
 
@@ -144,4 +150,11 @@ test('isAutoReply lets an ordinary reply through, including auto-submitted: no',
   assert.equal(isAutoReply({ from: 'a@b.c', subject: 'Re: x' }), false);
   assert.equal(isAutoReply({ precedence: 'list' }), false, 'a plain list copy is not a responder');
   assert.equal(isAutoReply({ precedence: 'normal' }), false);
+});
+
+test('stripSignature keeps a multi-line correction and drops the phone signature', () => {
+  const t = 'Tighten the second paragraph.\nDrop the Gartner figure.\n\nSent from my iPhone\nForgive telegraphy and typos';
+  assert.equal(stripSignature(t), 'Tighten the second paragraph.\nDrop the Gartner figure.\n');
+  assert.equal(stripSignature('publish\n\nGet Outlook for iOS'), 'publish\n');
+  assert.equal(stripSignature('no signature here'), 'no signature here');
 });

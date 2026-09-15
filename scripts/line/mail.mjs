@@ -4,9 +4,17 @@ import { ENV, need, log } from './env.mjs';
 
 const TOKEN_RE = /\[S2N ([a-z0-9]+)\]/;
 
+// Phone mail clients append a signature block; the owner's decision word is
+// the part before it. Cut at the first "Sent from my …", "-- " or "__" line.
+export function stripSignature(text) {
+  const lines = String(text ?? '').replace(/\r\n/g, '\n').split('\n');
+  const cut = lines.findIndex((l) => /^(sent from (my|gmail)\b|--\s*$|_{2,}\s*$|get outlook for\b)/i.test(l.trim()));
+  return (cut >= 0 ? lines.slice(0, cut) : lines).join('\n');
+}
+
 export function classify(text) {
-  const t = String(text ?? '').trim().toLowerCase().replace(/[.!]+$/, '');
-  return ['no', 'hold', 'publish', 'ok'].includes(t) ? t : 'text';
+  const t = stripSignature(text).trim().toLowerCase().replace(/[.!]+$/, '');
+  return ['go', 'no', 'hold', 'publish', 'ok'].includes(t) ? t : 'text';
 }
 
 function qpDecode(s) {
@@ -146,7 +154,9 @@ export function findReply({ messageId, token = null, subjectNeedle = null }) {
   if (isAutoReply(headers)) { log('mail', 'reply ignored: auto-responder headers'); return null; }
   if (!text.trim()) { log('mail', 'reply ignored: empty body'); return null; }
   if (messageId && headers['in-reply-to'] && headers['in-reply-to'] !== messageId) return null;
-  const reply = { verdict: classify(text), text, date: headers.date ?? null, from: headers.from ?? null };
+  // The stored text is what the owner wrote, minus the phone signature: it is
+  // quoted back in park notices and fed to the corrections skill as-is.
+  const reply = { verdict: classify(text), text: stripSignature(text).trim(), date: headers.date ?? null, from: headers.from ?? null };
   return { ...reply, key: replyKey(reply) };
 }
 

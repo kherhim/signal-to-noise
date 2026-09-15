@@ -1,5 +1,8 @@
 # LinkedIn newsletter — editions 4–8 (frames)
 
+> **Numbering note, 15 Sep 2026:** Edition 3 went to *The verification premium* (the essay line's first essay) and the pricing-the-future draft became Edition 4. The frames below keep their original labels; read each as one number higher, and slot line essays in as they ship.
+
+
 Editions 1–3 are fully drafted as standalone files. For 4–8 here's the efficient
 form: each edition's *body* is the essay itself (already written, in
 `src/content/insights/`), so this gives you only the **frame** — the title, the

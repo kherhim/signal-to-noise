@@ -60,3 +60,11 @@ executive anxiety the corpus doesn't yet cover.
 | Idea | Why parked |
 |---|---|
 | Essays mined from the November keynote (the CFO's new mandate) | Deliver the keynote first (11 Nov), then harvest 2–3 essays from the outline rather than pre-empting it. |
+
+## Scanner proposals
+
+Titles the scanner proposed that no queue item covers. Unreviewed — prune as ruthlessly as the rest.
+
+| Idea | Angle | Axes | Status |
+|---|---|---|---|
+| The IPO priced on a promise | Anthropic picks Nasdaq, eyes mid-October IPO that could top SpaceX's $86.3bn raise at a $2trn valuation — https://www.investing.com/news/stock-market-news/anthropic-selects-nasdaq-for-ipo-business-insider-reports-4898744 | scanner | idea |

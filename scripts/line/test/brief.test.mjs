@@ -1,7 +1,7 @@
 // scripts/line/test/brief.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { pickTopic, slugify, inFlight, vetoDeadline, slugTaken } from '../brief.mjs';
+import { pickTopic, slugify, inFlight, slugTaken } from '../brief.mjs';
 
 const cfg = { preempt: true, calibration_until: '2000-01-01', thresholds: { preempt: 70, min_fit_to_preempt: 8 } };
 const queue = [
@@ -44,15 +44,6 @@ test('inFlight ignores published, killed and held essays', () => {
 
 test('inFlight counts a half-sent brief: brief-sending blocks a second brief', () => {
   assert.equal(inFlight([{ stage: 'brief-sending' }]), true);
-});
-
-test('vetoDeadline rolls to the next day when the lead time is too short', () => {
-  const at = (h, m = 0) => { const d = new Date(2026, 8, 14, h, m, 0, 0); return d; };
-  assert.equal(vetoDeadline(at(7), 19).getTime(), at(19).getTime());
-  const late = vetoDeadline(at(18), 19);
-  assert.equal(late.getDate(), 15); assert.equal(late.getHours(), 19);
-  const past = vetoDeadline(at(21), 19);
-  assert.equal(past.getDate(), 15);
 });
 
 test('slugTaken detects published and live staged slugs but not killed ones', () => {

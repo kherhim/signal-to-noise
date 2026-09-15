@@ -37,21 +37,21 @@ report saying so and returns `fail` without calling a paid model.
 
 ## The weekly rhythm
 
-The runner wakes at 06:30, 12:00, 19:00 and 22:00 (`infra/co.signal-to-noise.essay-line.plist`).
+The runner wakes at 06:30 and then hourly from 07:00 to 23:00 (`infra/co.signal-to-noise.essay-line.plist`; hourly since 14 Sep 2026 so a reply is seen within the hour).
 Nothing happens between wakes, so every row below names the wake that does the work.
 
 | When | What | Who |
 |---|---|---|
 | Daily 06:30 | Scanner refreshes the peg board | automation |
 | Mon, the 06:30 wake | Brief email: topic, angle, why now, sources, peg score if any | automation |
-| Mon until 19:00 | Veto window: reply "no" (kill), "hold" (park), or nothing (go) | owner, optional |
-| Mon 19:00 → Tue | Outline, draft, gate (Layer B, plagiarism, BrE, never-list, Layer A), cover | automation |
-| Tue evening | "Final for approval" email: exact shipping text, cover attached, gate report | automation |
-| Tue → Wed 06:00 | Reply "publish", "hold", or corrections. No reply = hold | owner |
-| Wed, the 12:00 wake | Publish if approved — the first wake after the 08:00 UK slot. A late "publish" ships at the next wake past 08:00 | automation |
-| Daily 09:15, so Sat for a Wed essay | Substack mirror (`co.signal-to-noise.substack-mirror`) | automation |
+| Mon, any hourly wake after | Reply "go" (proceed), "no" (kill), "hold" (park). Silence: nothing happens | owner, required |
+| The wake that sees "go" | Draft, gate (Layer B, plagiarism, BrE, never-list, Layer A), cover and the "Final for approval" email, all in that one wake (about an hour) | automation |
+| Until Wed 08:00 | Reply "publish", "hold", or corrections. No reply = hold. The final pins the slot to the coming Wednesday when sent before Wed 08:00 | owner |
+| Wed, the 08:00 wake | Publish if approved — the first wake at or after the 08:00 UK slot. A late "publish" ships at the next hourly wake | automation |
+| Daily 09:15, so Fri for a Wed 08:00 essay | Substack mirror (`co.signal-to-noise.substack-mirror`) | automation |
 | Mon 07:30 | Metrics pull (`co.signal-to-noise.metrics`) | automation |
-| Mon, attended | Readout, peg board, LinkedIn edition for last Wednesday's essay, native post scheduled 08:00 UK | owner + Claude in Chrome (`.claude/skills/essay-line-monday/`) |
+| Wed, attended, after 08:00 | LinkedIn newsletter edition for the essay that just went live, same day as the canonical (owner's rule 15 Sep 2026: subscriber growth outweighs the indexing gap). Gate it beforehand, then paste and confirm in Chrome | owner + Claude in Chrome |
+| Mon, attended | Readout, peg board, native post scheduled 08:00 UK | owner + Claude in Chrome (`.claude/skills/essay-line-monday/`) |
 
 **Why Saturday for the mirror.** The mirror job runs every day at 09:15 and
 mirrors anything older than `min_age_hours_substack` (48 h). The essay goes live
@@ -62,10 +62,14 @@ but the wait.
 
 ## The two-email rules
 
-- **Monday brief — silence means go.** A reply of `no` kills the essay; `hold`
-  parks it. Any other prose reply is **not** consent: the essay is parked
-  with `hold: true`, the text is kept, and the owner is emailed once. Silence
-  still means go.
+- **Monday brief — silence means no action.** Only the exact word `go`
+  moves the essay on; the runner checks for it at every wake. `no` kills the
+  essay; `hold` parks it. `ok` or `publish` does nothing and the owner is
+  told so, once. Any other prose reply is **not** consent: the essay is parked
+  with `hold: true`, the text is kept, and the owner is emailed once. A brief
+  unanswered for six days is parked with one email, so it never blocks the
+  next Monday's brief. (Changed 14 Sep 2026 from "silence means go" at the
+  owner's instruction.)
 - **Tuesday final — silence means hold.** Only the exact word `publish`
   ships. An `ok` reply does nothing and the owner is told so, once. `hold` or
   `no` parks or kills it. Any other text is taken as corrections, which
@@ -152,15 +156,30 @@ The scanner (`scan.mjs`) runs score-only (no preempting the queue) until
 then the peg board is shown on Mondays for calibration but never jumps the
 seed queue.
 
-## Two operational caveats
+## Operational caveats
+
+- **The Mac must stay awake for a wake.** launchd fires a missed wake inside the
+  next Power Nap dark wake, which lasts about 46 seconds before the Mac returns
+  to Maintenance Sleep; a headless Claude run cannot finish in those slivers
+  (the first live brief, 14 Sep 2026, timed out this way with the output
+  complete three seconds before the kill). The plist therefore runs the runner
+  under `/usr/bin/caffeinate -s -i`, which holds the machine awake for as long
+  as the runner runs. It does not wake a sleeping Mac; the wake still happens
+  at the next dark wake, up to five minutes late.
 
 - **The morning window.** The Monday brief and the daily scan both fire only
   in the 06:00–12:00 local window (`tick()`'s own guard, independent of the
   launchd wake times). A Mac first woken after noon on a Monday produces no
   essay that week — there is no evening catch-up.
-- **No retry cap inside the window.** The tick-level scan and brief calls
-  have no retry cap of their own: if a brief fails after its paid step (the
-  brief skill call), a catch-up wake later in the same 06:00–12:00 window
-  will try again and may re-spend on the paid step. The per-essay stages
-  (draft, gate, cover, publish) are protected by the three-failure cap in
-  `runner.mjs`; the tick-level scan/brief calls are not.
+- **Brief retries are capped at two per week.** With hourly wakes, a brief
+  that fails after its paid step would otherwise be retried at 07:00, 08:00 …
+  11:00. `runner.mjs` records failed attempts in
+  `_sources/staging-articles/.brief-attempts.json` and stops after two; the
+  second failure email says so and gives the manual command. The daily scan
+  has no such cap (it runs once a day by board date).
+- **One runner at a time.** A wake now chains draft, gate, cover and the
+  final, which can take an hour, so the next hourly wake may arrive while a
+  run is still going. launchd never starts a second instance of a running
+  label: that trigger is dropped and the following one fires on schedule.
+  Nothing is lost, because every stage is re-derived from state on the next
+  wake.

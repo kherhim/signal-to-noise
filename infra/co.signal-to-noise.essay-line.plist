@@ -4,18 +4,40 @@
 <dict>
   <key>Label</key><string>co.signal-to-noise.essay-line</string>
   <key>ProgramArguments</key>
+  <!-- caffeinate: launchd fires this inside a Power Nap dark wake when the Mac is
+       asleep, and a dark wake lasts ~46 s before Maintenance Sleep resumes. The
+       14 Sep 2026 brief ran in those slivers and timed out. -s (system, AC only)
+       plus -i (idle) hold the machine awake for as long as the runner runs. -->
   <array>
+    <string>/usr/bin/caffeinate</string>
+    <string>-s</string>
+    <string>-i</string>
     <string>/opt/homebrew/bin/node</string>
     <string>/Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/line/runner.mjs</string>
   </array>
   <key>WorkingDirectory</key><string>/Users/himanshu.kher/Documents/devProjects/signal2noise</string>
   <key>EnvironmentVariables</key><dict><key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
   <key>StartCalendarInterval</key>
+  <!-- 06:30 for the daily scan / Monday brief, then hourly: a reply is acted on within the hour (14 Sep 2026). -->
   <array>
     <dict><key>Hour</key><integer>6</integer><key>Minute</key><integer>30</integer></dict>
+    <dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>10</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>0</integer></dict>
     <dict><key>Hour</key><integer>12</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>13</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>14</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>15</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>16</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>17</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>18</integer><key>Minute</key><integer>0</integer></dict>
     <dict><key>Hour</key><integer>19</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>20</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>21</integer><key>Minute</key><integer>0</integer></dict>
     <dict><key>Hour</key><integer>22</integer><key>Minute</key><integer>0</integer></dict>
+    <dict><key>Hour</key><integer>23</integer><key>Minute</key><integer>0</integer></dict>
   </array>
   <key>StandardOutPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-essay-line-launchd.log</string>
   <key>StandardErrorPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-essay-line-launchd.log</string>
