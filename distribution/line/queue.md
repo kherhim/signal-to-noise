@@ -2,7 +2,7 @@
 
 | title | family | trigger | status |
 |---|---|---|---|
-| The verification premium | metered cognition | | briefed |
+| The verification premium | metered cognition | | published 2026-09-16 |
 | Alignment is a capital-allocation problem | CFO mandate | | queued |
 | The broken rung | metered cognition | | queued |
 | Buffett on moats when cognition is a commodity | Buffett | | queued |
