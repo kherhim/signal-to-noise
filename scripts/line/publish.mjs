@@ -78,7 +78,7 @@ export function addPaths(slug) {
     path.join(ROOT, 'src', 'content', 'insights', `${slug}.md`),
     path.join(ROOT, 'src', 'covers', `${slug}.ts`),
     path.join(ROOT, 'public', 'img', `${slug}.webp`),
-    path.join(ROOT, 'public', 'og', `${slug}.jpg`),
+    // public/og/ is gitignored: prebuild regenerates the OG image on every build and it ships via dist.
     REGISTRY,
     path.join(ROOT, 'distribution', 'line', 'ledger.json'),
     path.join(ROOT, 'distribution', 'line', 'queue.md'),

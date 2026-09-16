@@ -68,3 +68,4 @@ Titles the scanner proposed that no queue item covers. Unreviewed — prune as r
 | Idea | Angle | Axes | Status |
 |---|---|---|---|
 | The IPO priced on a promise | Anthropic picks Nasdaq, eyes mid-October IPO that could top SpaceX's $86.3bn raise at a $2trn valuation — https://www.investing.com/news/stock-market-news/anthropic-selects-nasdaq-for-ipo-business-insider-reports-4898744 | scanner | idea |
+| The slowdown premium | Chip stocks crash 5.9% and OpenAI delays its IPO after Amodei's 'We Must Pace the Frontier' triggers CEO consensus on slowing AI, hours before the Fed's rate call — https://www.techtimes.com/articles/327518/20260915/chip-stocks-crash-ai-ceos-back-slowdown-fed-rate-hike-decision-wednesday.htm | scanner | idea |

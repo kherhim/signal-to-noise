@@ -2,6 +2,8 @@
 
 **Title:** The verification premium
 
+**PUBLISHED Wed 16 Sep 2026** via Claude in Chrome (gated version, cover = FIG. 51 OG image): https://www.linkedin.com/pulse/verification-premium-himanshu-kher-7sl8e/ — activity 7505924088490749952. Commentary in `_sources/linkedin-hooks/the-verification-premium-edition-03.md`.
+
 *Publish ~1 week after the site + Substack versions (site Wed 16 Sep, Substack
 Fri 18 Sep, so this lands Mon 21 Sep). Links here are safe — the newsletter is
 exempt from the feed link penalty. Be online for the first 90 minutes to reply

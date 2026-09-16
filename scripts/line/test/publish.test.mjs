@@ -25,6 +25,7 @@ test('addPaths lists only explicit per-essay and bookkeeping files', () => {
   const p = addPaths('x');
   assert.ok(p.every((f) => !f.endsWith('/') && (f.includes('/x.') || f.endsWith('.json') || f.endsWith('.md'))));
   assert.ok(!p.includes('public/og') && !p.includes('distribution/line'));
+  assert.ok(p.every((f) => !f.includes('/public/og/')), 'public/og is gitignored; git add must not list it');
 });
 test('upsertRegistry appends once and is a no-op on a retry of the same essay', () => {
   const empty = { posts: [] };
