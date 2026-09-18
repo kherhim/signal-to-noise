@@ -316,3 +316,16 @@ poorly. Edition 2 announcement post: 357 impressions; Edition 2 itself now
 **Collection note:** all LinkedIn figures pulled via the Chrome extension from
 `/analytics/post-summary/urn:li:activity:<id>/`; Substack and Cloudflare via
 `scripts/metrics-pull.mjs` (see `distribution/metrics/README.md`).
+
+---
+
+## Week 5 readout — Mon 21 September 2026 (opened Fri 18 Sep)
+
+| # | Metric | 18 Sep | Prior | Note |
+|---|---|---|---|---|
+| 1 | Newsletter subscribers | **729** | 708 (7 Sep) · 680 (31 Aug) · 634 (22 Aug) · 563 (17 Aug) · 482 (launch day 4) | +21 in 11 days (~+13/wk), the slowest window yet; the weekly rate has fallen every window since launch. Read 2 days after Edition 3 (Wed 16 Sep, not the Fri 11 Sep pencilled above), so too early to call the edition flat: Edition 2's delta was only readable at day 3. Native announcement post for Edition 3 still pending at time of reading, so the first-90-minute subscribe mechanism has not fired. Conversion is fine (729 ≈ 11% of ~6,610 followers, up from 7.4% at launch); the ceiling is the flat follower base. Revisit trigger for a real email option (1,000–1,500) is ~5 months off at the floor rate, ~2 at the post-Edition-2 rate. Re-read Mon |
+| 2 | Substack subscribers | **10** (18 Sep, dormant) | 10 (7 Sep) | **DECISION Fri 18 Sep: Substack goes DORMANT.** Owner first asked to delete all content; on review, ten subscribers is not a reason either way and deleting the publication forecloses the cheapest email option at zero saving. Kept the publication, stopped the mirror: PAUSE file in place, daily mirror LaunchAgent unloaded (plist still installed, PAUSE guards a reload). One mirror post ("The 10 commandments for a newbie CFO", 2022) was deleted in a test before the stop; 59 mirrors remain live. No site, script or doc changes. Drop this row from future readouts; revisit at the 1,000–1,500 LinkedIn-subscriber trigger |
+| 3 | LinkedIn followers | _fill Mon_ | 6,610 (7 Sep) | |
+| 4 | Edition 3 ("The verification premium", Wed 16 Sep) | _fill Mon_ | Edition 2: 248 views / 503 sends / 29% opens | article views, sends, opens, subscriber delta; never impressions |
+| 5 | Edition 3 native post | _fill Mon_ | — | confirm whether it fired; if not, that explains row 1 |
+| 6 | Cloudflare percent cached (30d) | _fill Mon_ | 4.4% (7 Sep, bot-skewed) | daily granularity via analytics API, exclude bot days |
