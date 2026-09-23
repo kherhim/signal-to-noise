@@ -5,6 +5,7 @@ import { runSkill } from './claude.mjs';
 import { essayDir, saveState, addCost } from './state.mjs';
 import { loadNeverList, neverListHits, loadConfig } from './queue.mjs';
 import { splitFrontmatter } from './md.mjs';
+import { promptBanText } from './claudish.mjs';
 import { snapshotTree, unexpectedWrites } from './writes.mjs';
 
 const INSIGHTS = path.join(ROOT, 'src', 'content', 'insights');
@@ -35,7 +36,7 @@ export function runDraft(slug) {
   const never = loadNeverList();
   const input = [
     `Output directory: ${dir}`, `Slug: ${slug}`, `Publish date: ${nextWednesday()}`,
-    `Never-list: ${never.join(', ')}`, `Formatting rules:\n${fs.readFileSync(path.join(ROOT, 'docs', 'specs', 'article-formatting.md'), 'utf8').slice(0, 6000)}`,
+    `Never-list: ${never.join(', ')}`, `Banned constructions (the gate rejects any): ${promptBanText()}`, `Formatting rules:\n${fs.readFileSync(path.join(ROOT, 'docs', 'specs', 'article-formatting.md'), 'utf8').slice(0, 6000)}`,
     `Brief:\n${brief}`, `Exemplars of the voice:\n${exemplars(4)}`,
   ].join('\n\n');
   const cfg = loadConfig();

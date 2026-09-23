@@ -175,7 +175,7 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
       case 'draft': deps.runDraft(slug); break;
       case 'gate': {
         const r = deps.runGate({ inPath: path.join(dir, 'draft.md'), outPath: path.join(dir, 'gated.md'), reportPath: path.join(dir, 'gate-report.md') });
-        deps.addCost(slug, r.checks?.plagiarism?.cost_usd ?? 0); // the paid check runs whatever the verdict
+        deps.addCost(slug, (r.checks?.plagiarism?.cost_usd ?? 0) + (r.checks?.humaniser?.cost_usd ?? 0)); // the paid checks run whatever the verdict
         // A failed gate is a stop, not a step: park it so no later wake walks
         // an essay that failed plagiarism, BrE, the never-list or Layer A
         // onward to a cover and a final email.

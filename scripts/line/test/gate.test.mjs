@@ -59,6 +59,7 @@ const offlineDeps = (over = {}) => ({
   inspectFile: () => clean,
   cleanFile: () => ({ changed: false, report: null }),
   loadNeverList: () => ['Axi'],
+  checkHumaniser: () => ({ flags: [], dropped: 0, words: 1000, rate: 0, cost_usd: 0 }),
   ...over,
 });
 
@@ -122,4 +123,27 @@ test('BrE fixes touch the body and the shipping fields only — never an identif
   assert.match(md, /The behaviour of the colour model\./);
   assert.deepEqual(r.checks.bre.remaining, [], 'identifier lines must not flag for ever as unresolved');
   assert.equal(r.verdict, 'pass');
+});
+
+test('runGate fails on a humaniser flag and reports the sentence', () => {
+  const dir = tmp('gate-human-');
+  const src = path.join(dir, 'in.md'), out = path.join(dir, 'out.md'), rep = path.join(dir, 'rep.md');
+  fs.writeFileSync(src, '---\ntitle: "T"\n---\n\nThe loop is hidden.\n');
+  const flag = { sentence: 'The loop is hidden.', why: 'flat', rewrite: 'Nobody can see the loop.' };
+  const r = runGate({ inPath: src, outPath: out, reportPath: rep, skipLayerB: true,
+    deps: offlineDeps({ checkHumaniser: () => ({ flags: [flag, flag, flag, flag], dropped: 0, words: 1000, rate: 4, cost_usd: 0 }) }) });
+  assert.equal(r.verdict, 'fail');
+  assert.match(r.report, /humaniser \(4 flags, 4\.00\/1k\)/);
+  assert.match(r.report, /Nobody can see the loop/);
+});
+
+test('runGate passes below the humaniser rate and reports the flags as warnings', () => {
+  const dir = tmp('gate-human-warn-');
+  const src = path.join(dir, 'in.md'), out = path.join(dir, 'out.md'), rep = path.join(dir, 'rep.md');
+  fs.writeFileSync(src, '---\ntitle: "T"\n---\n\nThe loop is hidden.\n');
+  const flag = { sentence: 'The loop is hidden.', why: 'flat', rewrite: 'Nobody can see the loop.' };
+  const r = runGate({ inPath: src, outPath: out, reportPath: rep, skipLayerB: true,
+    deps: offlineDeps({ checkHumaniser: () => ({ flags: [flag, flag, flag], dropped: 0, words: 1000, rate: 3, cost_usd: 0 }) }) });
+  assert.equal(r.verdict, 'pass');
+  assert.match(r.report, /warnings only/);
 });

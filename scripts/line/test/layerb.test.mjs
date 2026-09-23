@@ -19,3 +19,11 @@ test('checkOutput rejects marker residue and prompt echo', () => {
   assert.throws(() => checkOutput('Rewrite the markdown essay below so that its statistical fingerprint changes while', 'Rewrite the markdown essay below so that its statistical fingerprint changes while its meaning'), /echoes/);
   assert.equal(checkOutput('<<<\nclean text\n>>>', 'Rewrite the …'), 'clean text');
 });
+
+test('buildPrompt changes the fingerprint through words, never through bent word order (23 Sep 2026)', () => {
+  const p = buildPrompt('body');
+  assert.doesNotMatch(p, /vary sentence openings, clause order/);
+  assert.match(p, /Do NOT do it by reordering clauses/);
+  assert.match(p, /Keep natural word order/);
+  assert.match(p, /few runs of three words survive/);
+});

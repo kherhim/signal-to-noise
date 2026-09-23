@@ -6,6 +6,8 @@ import { checkPlagiarism } from './plagiarism.mjs';
 import { scanBrE, applySpellingFixes, scanAmbiguous } from './bre.mjs';
 import { inspectFile, cleanFile, serviceUp, resolveServiceUrl } from './layera.mjs';
 import { splitFrontmatter, joinFrontmatter, BRE_FIELDS } from './md.mjs';
+import { scanClaudish, claudishFails, renderClaudish } from './claudish.mjs';
+import { checkHumaniser, renderHumaniser, humaniserFails } from './humaniser.mjs';
 import { loadNeverList, neverListHits } from './queue.mjs';
 
 // All automatic BrE fixes are spelling-only (bre.mjs AMERICAN); ambiguous words are
@@ -14,7 +16,7 @@ import { loadNeverList, neverListHits } from './queue.mjs';
 
 // Every paid or networked collaborator in one place, so tests can inject fakes
 // and no test reaches the network, a paid model or the watermarks service.
-export const GATE_DEPS = { layerBEssay, checkPlagiarism, inspectFile, cleanFile, serviceUp, loadNeverList, neverListHits };
+export const GATE_DEPS = { layerBEssay, checkPlagiarism, inspectFile, cleanFile, serviceUp, loadNeverList, neverListHits, scanClaudish, checkHumaniser };
 
 // The text the gate is allowed to respell: the body plus the shipping strings.
 // Identifier lines (coverImage:, coverAnimation:, tags:) are paths and slugs,
@@ -70,6 +72,17 @@ export function runGate({ inPath, outPath, reportPath, skipLayerB = false, deps:
     // cannot reach publish.
     stage = 'never-list';
     checks.neverlist = { hits: deps.neverListHits(md, deps.loadNeverList()) };
+    // 3c. The Claudish test — AFTER Layer B, because Layer B is where most of
+    // these come from: it rewrites surface wording while preserving the
+    // constructions a reader notices (21 Sep 2026). Run on the shipping text,
+    // body and shipping fields, with source quotations excluded.
+    stage = 'claudish';
+    checks.claudish = { hits: deps.scanClaudish(checkableText(meta, fixedBody.text)) };
+    // 3d. The humaniser read (23 Sep 2026): a model reader for the tells the
+    // Claudish list has not named yet. Holds above FAIL_PER_1K, warns below;
+    // nothing is auto-rewritten.
+    stage = 'humaniser';
+    checks.humaniser = deps.checkHumaniser(checkableText(meta, fixedBody.text));
     // 4. Layer A last
     stage = 'layera';
     const beforeA = deps.inspectFile(outPath);
@@ -88,11 +101,14 @@ export function runGate({ inPath, outPath, reportPath, skipLayerB = false, deps:
   if (checks.plagiarism.verdict === 'fail') fails.push('plagiarism/provenance');
   if (checks.bre.remaining.length) fails.push('British English (unresolved)');
   if (checks.neverlist.hits.length) fails.push(`never-list: ${checks.neverlist.hits.join(', ')}`);
+  const claudish = claudishFails(checks.claudish?.hits ?? []);
+  if (claudish.length) fails.push(`Claudish (${claudish.length})`);
+  if (checks.humaniser && humaniserFails(checks.humaniser)) fails.push(`humaniser (${checks.humaniser.flags.length} flags, ${checks.humaniser.rate.toFixed(2)}/1k)`);
   if (checks.layera.after.suspicious) fails.push('Layer A (still suspicious after clean)');
   const verdict = fails.length ? 'fail' : 'pass';
   const report = renderReport({ inPath, outPath, checks, verdict, fails });
   if (reportPath) fs.writeFileSync(reportPath, report);
-  log('gate', `${path.basename(inPath)} → ${verdict.toUpperCase()}${fails.length ? ': ' + fails.join('; ') : ''} (plagiarism cost $${Number(checks.plagiarism.cost_usd ?? 0).toFixed(3)})`);
+  log('gate', `${path.basename(inPath)} → ${verdict.toUpperCase()}${fails.length ? ': ' + fails.join('; ') : ''} (plagiarism $${Number(checks.plagiarism.cost_usd ?? 0).toFixed(3)}, humaniser $${Number(checks.humaniser?.cost_usd ?? 0).toFixed(3)})`);
   return { verdict, report, checks };
 }
 
@@ -121,6 +137,10 @@ export function renderReport({ inPath, outPath, checks, verdict, fails, error })
   }
   L.push('## 3b. Never-list',
     checks.neverlist ? (checks.neverlist.hits.length ? `HIT — never-list: ${checks.neverlist.hits.join(', ')}` : 'No never-listed name in the file that ships.') : 'not reached', '');
+  L.push('## 3c. The Claudish test',
+    checks.claudish ? renderClaudish(checks.claudish.hits) : 'not reached', '');
+  L.push('## 3d. Humaniser read',
+    checks.humaniser ? `${renderHumaniser(checks.humaniser)}\nCost: $${Number(checks.humaniser.cost_usd ?? 0).toFixed(3)}` : 'not reached', '');
   if (checks.layera) {
     L.push('## 4. Layer A (invisible Unicode)', `Before: ${checks.layera.before.suspicious ? 'SUSPICIOUS' : 'clean'} · After: ${checks.layera.after.suspicious ? 'SUSPICIOUS' : 'clean'}`, '');
   } else {
