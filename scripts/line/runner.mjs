@@ -12,6 +12,7 @@ import { runGate } from './gate.mjs';
 import { makeCover } from './cover.mjs';
 import { sendFinal, readFinalReply, applyCorrections, finalSendAllowed } from './final.mjs';
 import { publish } from './publish.mjs';
+import { acquire } from './lock.mjs';
 
 const MAX_FAILURES = 3;
 const POLL_ACTIONS = new Set(['check-veto', 'check-final']);
@@ -54,7 +55,7 @@ export function isoWeek(date) {
 // no test ever reaches the network, a paid model or the real staging tree.
 export const DEFAULT_DEPS = {
   scan, runBrief, runDraft, runGate, makeCover, sendFinal, readFinalReply, applyCorrections,
-  publish, findReply, sendMail, listEssays, loadState, saveState, boardDate, addCost, paused,
+  publish, findReply, sendMail, listEssays, loadState, saveState, boardDate, addCost, paused, acquire,
   readFile: fs.readFileSync, waitForNetwork,
 };
 
@@ -283,6 +284,18 @@ export async function waitForNetwork({ host = process.env.ZOHO_IMAP_HOST ?? 'ima
 export async function tick({ now = new Date(), dry = false, deps: injected = {} } = {}) {
   const deps = { ...DEFAULT_DEPS, ...injected };
   if (deps.paused()) { log('runner', 'PAUSE present'); return []; }
+  // A dry tick spends nothing and writes nothing, so it never needs the lock
+  // and must never take one from a real runner.
+  const release = dry ? () => {} : deps.acquire();
+  if (!release) return [];
+  try {
+    return await runTick({ now, dry, deps });
+  } finally {
+    release();
+  }
+}
+
+async function runTick({ now, dry, deps }) {
   if (!dry) await deps.waitForNetwork();
   const cfg = loadConfig();
   const hour = now.getHours(), day = now.getDay();

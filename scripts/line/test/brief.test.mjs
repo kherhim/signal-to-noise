@@ -1,7 +1,7 @@
 // scripts/line/test/brief.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { pickTopic, slugify, inFlight, slugTaken } from '../brief.mjs';
+import { pickTopic, slugify, inFlight, slugTaken, resolveTopic } from '../brief.mjs';
 
 const cfg = { preempt: true, calibration_until: '2000-01-01', thresholds: { preempt: 70, min_fit_to_preempt: 8 } };
 const queue = [
@@ -51,4 +51,40 @@ test('slugTaken detects published and live staged slugs but not killed ones', ()
   assert.equal(slugTaken('b', { published: [], staged: [{ slug: 'b', stage: 'drafted' }] }), true);
   assert.equal(slugTaken('c', { published: [], staged: [{ slug: 'c', killed: true }] }), false);
   assert.equal(slugTaken('d', { published: [], staged: [] }), false);
+});
+
+// The shortlist hands runBrief a title the owner chose. Resolving it has to
+// keep the peg attached: an owner picking the top-scored story and getting an
+// evergreen brief back is the whole failure this override exists to prevent.
+const board = { items: [
+  { headline: 'Nvidia anchors the IPO', score: 90, action: 'fast_piece', corpus_fit: 9, url: 'u', date: '2026-09-12', note: 'disclose the vendor', proposed_title: 'The landlord finances the tenant', maps_to: '' },
+  { headline: 'JPM guides fees up', score: 71, action: 'preempt', corpus_fit: 9, url: 'v', date: '2026-09-19', maps_to: 'Two banks, one start line' },
+] };
+
+test('resolveTopic keeps the peg when the pick is a board-only proposal', () => {
+  const t = resolveTopic('The landlord finances the tenant', { board, queue });
+  assert.equal(t.source, 'peg');
+  assert.equal(t.peg.score, 90);
+  assert.equal(t.family, 'proposed');
+});
+
+test('resolveTopic prefers the queue row for family but still carries the peg', () => {
+  const t = resolveTopic('Two banks, one start line', { board, queue });
+  assert.equal(t.source, 'queue');
+  assert.equal(t.family, 'capital allocation');
+  assert.equal(t.peg.score, 71);
+});
+
+test('resolveTopic matches an unpegged queue item and reports no peg', () => {
+  const t = resolveTopic('Alignment is a capital-allocation problem', { board, queue });
+  assert.equal(t.source, 'queue');
+  assert.equal(t.peg, null);
+});
+
+test('resolveTopic is case- and space-insensitive', () => {
+  assert.equal(resolveTopic('  two banks, ONE start line ', { board, queue }).title, 'Two banks, one start line');
+});
+
+test('an unknown title throws rather than falling back to an evergreen', () => {
+  assert.throws(() => resolveTopic('Not a real topic', { board, queue }), /no topic titled/);
 });

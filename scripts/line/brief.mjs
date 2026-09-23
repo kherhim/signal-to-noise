@@ -40,20 +40,51 @@ export function pickTopic({ queue, ledger, board, cfg, today = new Date().toISOS
   return { ...pick, source: 'queue', peg: null };
 }
 
-export function runBrief({ dry = false } = {}) {
+// A topic named by the owner, resolved across the pools the shortlist ranks.
+// The board is searched first: a peg carries the number, the date and the
+// scanner's note, and briefing a pegged topic as if it were evergreen throws
+// all three away. A title that matches nothing is an error, never a silent
+// evergreen fallback.
+export function resolveTopic(title, { board, queue }) {
+  const want = title.trim().toLowerCase();
+  const peg = board.items?.find((i) => [i.proposed_title, i.maps_to].some((t) => (t ?? '').trim().toLowerCase() === want));
+  const q = queue.find((x) => x.title.trim().toLowerCase() === want);
+  if (peg) return { title: q?.title ?? peg.proposed_title ?? peg.maps_to, family: q?.family ?? 'proposed', trigger: q?.trigger ?? null, status: q?.status ?? 'proposed', source: q ? 'queue' : 'peg', peg };
+  if (q) return { ...q, source: 'queue', peg: null };
+  throw new Error(`no topic titled ${JSON.stringify(title)} on the peg board or in the queue`);
+}
+
+export function runBrief({ dry = false, topic: chosen = null, ownerNote = null } = {}) {
   if (paused()) { log('brief', 'PAUSE present'); return null; }
   const staged = listEssays();
   if (inFlight(staged)) { log('brief', 'an essay is already in flight; no new brief'); return null; }
   const cfg = loadConfig();
   const board = fs.existsSync(BOARD_JSON) ? JSON.parse(fs.readFileSync(BOARD_JSON, 'utf8')) : { items: [] };
-  const topic = pickTopic({ queue: loadQueue(), ledger: loadLedger(), board, cfg });
+  // A topic supplied by the owner (the shortlist pick) skips the automatic
+  // choice entirely; pickTopic remains the unattended path.
+  const topic = chosen ?? pickTopic({ queue: loadQueue(), ledger: loadLedger(), board, cfg });
   const slug = slugify(topic.title);
   if (slugTaken(slug, { published: listPublishedSlugs(), staged })) throw new Error(`slug already taken: ${slug}`);
   // A dry run spends nothing and writes nothing: the decision to be inspected is
   // which topic was picked, and that is already made.
   if (dry) { log('brief', `DRY would brief ${slug} (${topic.title}) — no skill call, no email`); return { slug, title: topic.title, brief: null, messageId: null }; }
   const never = loadNeverList();
-  const input = `Working title: ${topic.title}\nFamily: ${topic.family}\n${topic.peg ? `Peg: ${topic.peg.headline} — ${topic.peg.url} (score ${topic.peg.score})` : 'Peg: none (evergreen)'}\nNever-list: ${never.join(', ')}\nIdeas file context:\n${fs.readFileSync(path.join(ROOT, 'distribution', 'ARTICLE-IDEAS.md'), 'utf8')}`;
+  // Owner notes are typed by hand and go straight into the skill prompt, so
+  // they are checked on the way in as well as on the way out: the outbound
+  // check only sees what the model chose to repeat.
+  const noteHits = ownerNote ? neverListHits(ownerNote, never) : [];
+  if (noteHits.length) throw new Error(`owner note mentions never-list: ${noteHits.join(', ')}`);
+  // The scanner's note holds what the headline does not — corroborating figures,
+  // how firm the terms are, and any disclosure the essay owes the reader. It is
+  // written nowhere else, so it has to travel with the peg.
+  const peg = topic.peg
+    ? `Peg: ${topic.peg.headline} — ${topic.peg.url} (score ${topic.peg.score}, ${topic.peg.source ?? 'source unknown'}, ${topic.peg.date})${topic.peg.note ? `\nPeg note: ${topic.peg.note}` : ''}`
+    : 'Peg: none (evergreen)';
+  const input = [
+    `Working title: ${topic.title}`, `Family: ${topic.family}`, peg, `Never-list: ${never.join(', ')}`,
+    ...(ownerNote ? [`Owner notes — these are instructions, not context:\n${ownerNote}`] : []),
+    `Ideas file context:\n${fs.readFileSync(path.join(ROOT, 'distribution', 'ARTICLE-IDEAS.md'), 'utf8')}`,
+  ].join('\n');
   const out = runSkill({ skill: 'brief', input, tools: ['WebSearch', 'WebFetch'], maxTurns: 40, model: cfg.models?.brief ?? null });
   const brief = String(out.result).trim();
   const hits = neverListHits(brief, never);
@@ -73,6 +104,10 @@ export function runBrief({ dry = false } = {}) {
 }
 
 if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1]))) {
-  const r = runBrief({ dry: process.argv.includes('--dry') });
+  const arg = (flag) => { const i = process.argv.indexOf(flag); return i > 0 ? process.argv[i + 1] ?? null : null; };
+  const title = arg('--topic');
+  const board = fs.existsSync(BOARD_JSON) ? JSON.parse(fs.readFileSync(BOARD_JSON, 'utf8')) : { items: [] };
+  const topic = title ? resolveTopic(title, { board, queue: loadQueue() }) : null;
+  const r = runBrief({ dry: process.argv.includes('--dry'), topic, ownerNote: arg('--note') });
   if (r?.brief) console.log(r.brief);
 }

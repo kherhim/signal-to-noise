@@ -9,6 +9,9 @@ import { promptBanText } from './claudish.mjs';
 import { snapshotTree, unexpectedWrites } from './writes.mjs';
 
 const INSIGHTS = path.join(ROOT, 'src', 'content', 'insights');
+export const MIN_WORDS = 600;
+export const MAX_WORDS = 1050;
+
 export const REQUIRED = ['title', 'date', 'excerpt', 'seoDescription', 'tags', 'draft', 'coverImage', 'coverImageAlt', 'coverAnimation'];
 
 export function exemplars(n = 4) {
@@ -58,7 +61,12 @@ export function runDraft(slug) {
   const hits = neverListHits(md, never);
   if (hits.length) throw new Error(`draft.md mentions never-list: ${hits.join(', ')}`);
   const words = splitFrontmatter(md).body.split(/\s+/).length;
-  if (words < 1100 || words > 2100) throw new Error(`draft is ${words} words, outside 1,100–2,100`);
+  // 600–1,050 (owner, 21 Sep 2026). The old 1,100–2,100 floor sat ABOVE the
+  // archive's median of 833 words, so every essay the line wrote landed in the
+  // top quartile of the site by construction — the two longest essays ever
+  // published were the line's first two. The upper bound is the one that
+  // matters; the floor exists only to catch a truncated draft.
+  if (words < MIN_WORDS || words > MAX_WORDS) throw new Error(`draft is ${words} words, outside ${MIN_WORDS.toLocaleString('en-GB')}–${MAX_WORDS.toLocaleString('en-GB')}`);
   const linkHits = md.match(SITE_LINK_RE) ?? [];
   if (linkHits.length) {
     fs.writeFileSync(draftPath, normaliseInternalLinks(md));
