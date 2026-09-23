@@ -6,7 +6,7 @@ seoDescription: "Revenue ceases to demonstrate demand when a supplier finances i
 tags: ["cfo", "capital-markets", "ipo", "ai", "risk"]
 draft: false
 coverImage: /img/the-landlord-finances-the-tenant.webp
-coverImageAlt: "Three solid cream discs sit against a near-black background across the upper half of the frame: a large one at left, a smaller one above the centre, and another at right. Two ash hairlines connect them from left to right, making the path read as an open chain, not a ring. Below them, a ledger of twenty small squares forms a row on a thin baseline; sixteen are filled cream and four, spaced along the row, remain bare outlines. From the large disc at left, a hairline runs straight down into that same baseline, closing the chain into the first party's own book, while four fine lines fan down from the disc at right to the four outlined squares. The lower rule reads 'DEMAND, SELF-FUNDED'."
+coverImageAlt: "Three solid cream discs sit against a near-black background across the upper half of the frame: a large one at left, a smaller one above the centre, and another at right. Two ash hairlines connect them from left to right, making the path read as an open chain, not a ring. Beneath them, twenty small squares form a row along a thin baseline; sixteen have a cream fill and four, spaced across the row, remain bare outlines. From the large disc at left, a hairline runs straight down into that same baseline, closing the chain into the first party's own book, while four fine lines fan down from the disc at right to the four outlined squares. The lower rule reads 'DEMAND, SELF-FUNDED'."
 coverAnimation: the-landlord-finances-the-tenant
 ---
 
@@ -24,26 +24,26 @@ The money moves one hop at a time. Nvidia invests in Anthropic. Azure capacity i
 
 Accounting standards do not require a company to disclose how much of its revenue it financed. Nvidia instead reports its equity holdings in the companies around it. The [results for the quarter ended 26 July 2026](https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027) show marketable equity securities of $42,783m, compared with $12,886m six months earlier, and non-marketable securities of $51,157m, compared with $22,251m. In half a year, the combined lines rose from roughly $35bn to roughly $94bn. With quarterly revenue of $96.2bn, the equity book at carrying value now amounts to about one quarter's sales.
 
-Bank of America's Vivek Arya sees the [$70 billion committed across ecosystem partners](https://finance.yahoo.com/markets/stocks/article/nvidias-70-billion-bet-on-openai-anthropic-and-others-could-pay-off-big-for-shareholders-150039868.html) as comfortably carried. He is right about affordability. The question lies elsewhere. A company can spend years financing its own demand, meet every cheque and still be mispriced. The mispricing comes from what people take the revenue to prove.
+Bank of America's Vivek Arya sees the [$70 billion committed across ecosystem partners](https://finance.yahoo.com/markets/stocks/article/nvidias-70-billion-bet-on-openai-anthropic-and-others-could-pay-off-big-for-shareholders-150039868.html) as comfortably carried. He is correct about affordability. Affordability was never the problem. A company can spend years financing its own demand, meet every cheque and still be mispriced. The mispricing comes from what people take the revenue to prove.
 
 ## Lucent already ran this experiment
 
 Filings from the previous large-scale run of this experiment remain available to read. Lucent Technologies lent its customers money to purchase the equipment it sold. Its [10-Q/A for the quarter ended 31 December 2000](https://www.sec.gov/Archives/edgar/data/0001006240/000095011701500564/a29849.txt) discloses that "As of December 31, 2000, Lucent had made commitments or entered into agreements to extend credit to certain customers for an aggregate of approximately $5.7 billion", of which "approximately $1.8 billion had been advanced and was outstanding". Quarterly revenue dropped from $8,065m to $5,841m, with the decline attributed in part to "a more selective vendor financing program".
 
-That last phrase deserves a slow reading. As the supplier tightened its own financing, its own revenue fell. In the quarter the funding stopped, the seller disclosed a measurement of the loop from inside it.
+The final phrase matters most. As the supplier tightened its own financing, its own revenue fell. In the quarter the funding stopped, the seller disclosed a measurement of the loop from inside it.
 
 The difference between then and now goes the wrong way. Credit brings unforgiving accounting. A customer's inability to pay triggers a provision that analysts can see. Equity brings no provision. There is only a carrying value that climbs with the sector, followed by a write-down that comes late and all at once.
 
 ## The outside share
 
-Your own ledger deserves this test before Nvidia's does. What share of the revenue you booked this period came from customers able to pay without the capital you supplied? Knowing the answer pays precisely because nobody requires you to report it. Four questions will get you there.
+The same test should start with your own company. How much of the revenue you booked this period came from customers who could have paid without your capital? Almost nobody works out that number, because reporting it is optional. Four questions give you the answer.
 
 - **Exposure by counterparty:** For each of the twenty largest customers, what equity, credit, guarantee or purchase commitment have we extended, and what did they spend with us this year? Those columns are rarely kept together.
 - **Cohort behaviour:** do funded customers grow their spend faster than unfunded ones? If so, part of the growth rate you are quoting is a financing rate.
 - **The stop test:** if we wrote no more cheques from tomorrow, what happens to next year's revenue? Lucent answered that one by accident.
 - **Where the number lands:** is the funded cohort's growth inside the figure the market is capitalising? A multiple applied to loop-funded revenue capitalises your own capital twice.
 
-A trillion-dollar balance sheet is unnecessary for any of this. A minority stake in a distributor, with sales booked through them, puts part of your revenue inside a loop. No line called *revenue we funded* will ever reveal it. This turns the discipline I argued for in [The cognitive supply chain](/insights/the-cognitive-supply-chain/) towards the other end of the ledger.
+A trillion-dollar balance sheet is unnecessary for any of this. A minority stake in a distributor, with sales booked through them, puts part of your revenue inside a loop. No line called *revenue we funded* will ever reveal it. In [The cognitive supply chain](/insights/the-cognitive-supply-chain/), I argued for the same discipline with suppliers. Customers need it as well.
 
 ## What is not disclosed
 
