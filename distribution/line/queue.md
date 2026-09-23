@@ -3,7 +3,7 @@
 | title | family | trigger | status |
 |---|---|---|---|
 | The verification premium | metered cognition | | published 2026-09-16 |
-| Alignment is a capital-allocation problem | CFO mandate | | queued |
+| Alignment is a capital-allocation problem | CFO mandate | | held |
 | The broken rung | metered cognition | | queued |
 | Buffett on moats when cognition is a commodity | Buffett | | queued |
 | The invisible balance sheet | metered cognition | | queued |
@@ -14,3 +14,4 @@
 | The transformation that never finishes | CFO mandate | | queued |
 | Budgeting for deflation | metered cognition | | queued |
 | What the 10-K can't see | capital allocation | Any AI-spend disclosure story; else evergreen after week 12 | pen |
+| The landlord finances the tenant | capital allocation | Nvidia/Anthropic IPO anchor, Sep 2026 | published 2026-09-23 |
