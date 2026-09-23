@@ -18,7 +18,7 @@ An anchor investor supplying its customer's compute has two interests in the lis
 
 The arrangement was announced by the companies themselves. [Anthropic's release of 18 November 2025](https://www.anthropic.com/news/microsoft-nvidia-anthropic-announce-strategic-partnerships) states that "NVIDIA and Microsoft are committing to invest up to $10 billion and up to $5 billion respectively in Anthropic", and that "Anthropic has committed to purchase $30 billion of Azure compute capacity".
 
-The money moves one hop at a time. Nvidia invests in Anthropic. Azure capacity is what Anthropic buys from Microsoft. The systems Microsoft buys come from Nvidia, which records the sale as data centre revenue. There is no single contract under which Nvidia pays Anthropic and Anthropic pays Nvidia. That makes the shape difficult to see. Microsoft sits between them, so none of the agreements looks circular to its signatory. The ceilings sit side by side, up to $15bn of committed equity against up to $30bn of committed purchase. The indirect route conceals the loop; it does nothing to remove it.
+The money moves one hop at a time. Nvidia invests in Anthropic. Anthropic purchases Azure capacity from Microsoft. The systems Microsoft buys come from Nvidia, which records the sale as data centre revenue. There is no single contract under which Nvidia pays Anthropic and Anthropic pays Nvidia. That makes the shape difficult to see. Microsoft sits between them, so none of the agreements looks circular to its signatory. The ceilings sit side by side, up to $15bn of committed equity against up to $30bn of committed purchase. The indirect route conceals the loop; it does nothing to remove it.
 
 ## What the balance sheet has started to show
 
@@ -30,13 +30,13 @@ Bank of America's Vivek Arya sees the [$70 billion committed across ecosystem pa
 
 Filings from the previous large-scale run of this experiment remain available to read. Lucent Technologies lent its customers money to purchase the equipment it sold. Its [10-Q/A for the quarter ended 31 December 2000](https://www.sec.gov/Archives/edgar/data/0001006240/000095011701500564/a29849.txt) discloses that "As of December 31, 2000, Lucent had made commitments or entered into agreements to extend credit to certain customers for an aggregate of approximately $5.7 billion", of which "approximately $1.8 billion had been advanced and was outstanding". Quarterly revenue dropped from $8,065m to $5,841m, with the decline attributed in part to "a more selective vendor financing program".
 
-The final phrase matters most. As the supplier tightened its own financing, its own revenue fell. In the quarter the funding stopped, the seller disclosed a measurement of the loop from inside it.
+As the supplier tightened its own financing, its own revenue fell. In the quarter the funding stopped, the seller disclosed a measurement of the loop from inside it.
 
-The difference between then and now goes the wrong way. Credit brings unforgiving accounting. A customer's inability to pay triggers a provision that analysts can see. Equity brings no provision. There is only a carrying value that climbs with the sector, followed by a write-down that comes late and all at once.
+Today's version is tougher to spot. Credit brings unforgiving accounting. A customer's inability to pay triggers a provision that analysts can see. Equity brings no provision. There is only a carrying value that climbs with the sector, followed by a write-down that comes late and all at once.
 
 ## The outside share
 
-The same test should start with your own company. How much of the revenue you booked this period came from customers who could have paid without your capital? Almost nobody works out that number, because reporting it is optional. Four questions give you the answer.
+You should test your company the same way first. How much of the revenue you booked this period came from customers who could have paid without your capital? Almost nobody works out that number, because reporting it is optional. It requires four questions.
 
 - **Exposure by counterparty:** For each of the twenty largest customers, what equity, credit, guarantee or purchase commitment have we extended, and what did they spend with us this year? Those columns are rarely kept together.
 - **Cohort behaviour:** do funded customers grow their spend faster than unfunded ones? If so, part of the growth rate you are quoting is a financing rate.
