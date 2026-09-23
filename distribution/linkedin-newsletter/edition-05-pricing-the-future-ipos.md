@@ -1,8 +1,8 @@
-# Signal to Noise — Edition 4
+# Signal to Noise — Edition 5
 
 **Title:** Pricing the future: how CFOs should read the SpaceX, Anthropic and OpenAI IPOs
 
-*Renumbered to Edition 4 on 15 Sep 2026; Edition 3 is the verification premium. Publish ~1 week after the site + Substack versions. This is the most
+*Renumbered to Edition 5 on 23 Sep 2026 (Edition 4 went to the landlord essay, same day as the canonical); send it in a week with no new essay, after an IPO freshness check. Publish ~1 week after the site + Substack versions. This is the most
 news-sensitive piece in the archive — if any of the three has filed or priced by
 the time you send this, add a two-line topical intro referencing the news before
 the body. Links here are safe (newsletter is link-penalty exempt).*

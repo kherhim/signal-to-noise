@@ -1,0 +1,58 @@
+# Signal to Noise, Edition 4
+
+**Title:** The landlord finances the tenant
+
+**PUBLISHED Wed 23 Sep 2026** via Claude in Chrome (gated text = `.final.md`, cover = OG image): https://www.linkedin.com/pulse/landlord-finances-tenant-himanshu-kher-tfrhe/ (activity 7508500594517733376). Commentary: `_sources/linkedin-hooks/the-landlord-finances-the-tenant-edition-04.gated.md`.
+
+*Same day as the site essay (Wed 23 Sep 2026), per the weekly rule. Links are safe here, because the newsletter is exempt from the feed link penalty. Cover: the essay's OG image. Freshness checked 23 Sep: the Reuters report of 11 Sep is still the latest word on the Nvidia talks.*
+
+---
+
+Anthropic is expected to list before the US midterms in November, and Nvidia is in talks to anchor the offering. Most of the coverage is about the size of the cheque. This edition is about what the cheque does to the meaning of revenue.
+
+Nvidia is discussing an investment of as much as $10bn in Anthropic's flotation, while Anthropic is seeking as much as $100bn. At those reported ceilings, the chip supplier would account for about a tenth of its own customer's listing. [Reuters reported](https://www.investing.com/news/company-news/nvidia-in-talks-to-invest-up-to-10-billion-in-anthropic-ipo--reuters-4898582) the discussions in mid-September at a valuation of around $2 trillion. Its warning that the plans and their timing may change applies to every figure that follows.
+
+An anchor investor supplying its customer's compute has two interests in the listing. Cash paid out as equity can return as revenue. Once it returns, that revenue ceases to demonstrate that anyone outside the arrangement wanted the product. I want to look through a single ratio, which I call the outside share. Of the revenue you booked, what proportion was funded by money that did not originate with you?
+
+## The shape of the loop
+
+The arrangement was announced by the companies themselves. [Anthropic's release of 18 November 2025](https://www.anthropic.com/news/microsoft-nvidia-anthropic-announce-strategic-partnerships) states that "NVIDIA and Microsoft are committing to invest up to $10 billion and up to $5 billion respectively in Anthropic", and that "Anthropic has committed to purchase $30 billion of Azure compute capacity".
+
+The money moves one hop at a time. Nvidia invests in Anthropic. Anthropic purchases Azure capacity from Microsoft. The systems Microsoft buys come from Nvidia, which records the sale as data centre revenue. There is no single contract under which Nvidia pays Anthropic and Anthropic pays Nvidia, which makes the shape difficult to see. Microsoft sits between them, so none of the agreements looks circular to its signatory. The ceilings sit side by side, up to $15bn of committed equity against up to $30bn of committed purchase. The indirect route conceals the loop; it does nothing to remove it.
+
+## What the balance sheet has started to show
+
+Accounting standards do not require a company to disclose how much of its revenue it financed. Nvidia instead reports its equity holdings in the companies around it. The [results for the quarter ended 26 July 2026](https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027) show marketable equity securities of $42,783m, compared with $12,886m six months earlier, and non-marketable securities of $51,157m, compared with $22,251m. In half a year, the combined lines rose from roughly $35bn to roughly $94bn. With quarterly revenue of $96.2bn, the equity book at carrying value now amounts to about one quarter's sales.
+
+Bank of America's Vivek Arya sees the [$70 billion committed across ecosystem partners](https://finance.yahoo.com/markets/stocks/article/nvidias-70-billion-bet-on-openai-anthropic-and-others-could-pay-off-big-for-shareholders-150039868.html) as comfortably carried. He is correct about affordability, which was never the problem. A company can spend years financing its own demand, meet every cheque and still be mispriced. The mispricing comes from what people take the revenue to prove.
+
+## Lucent already ran this experiment
+
+Filings from the last large-scale run of this experiment remain available to read. Lucent Technologies lent its customers money to purchase the equipment it sold. Its [10-Q/A for the quarter ended 31 December 2000](https://www.sec.gov/Archives/edgar/data/0001006240/000095011701500564/a29849.txt) discloses that "As of December 31, 2000, Lucent had made commitments or entered into agreements to extend credit to certain customers for an aggregate of approximately $5.7 billion", of which "approximately $1.8 billion had been advanced and was outstanding". Quarterly revenue dropped from $8,065m to $5,841m, with the decline attributed in part to "a more selective vendor financing program".
+
+As the supplier tightened its own financing, its own revenue fell. In the quarter the funding stopped, the seller disclosed a measurement of the loop from inside it.
+
+Today's version is harder to spot. Credit brings unforgiving accounting. A customer's inability to pay triggers a provision that analysts can see. Equity brings no provision. There is only a carrying value that climbs with the sector, followed by a write-down that comes late and all at once.
+
+## The outside share
+
+Test your own company the same way first. How much of the revenue you booked this period came from customers who could have paid without your capital? Almost nobody works out that number, because reporting it is optional. It takes four questions.
+
+- **Exposure by counterparty.** For each of the twenty largest customers, what equity, credit, guarantee or purchase commitment have we extended, and what did they spend with us this year? Those columns are rarely kept together.
+- **Cohort behaviour.** Do funded customers grow their spend faster than unfunded ones? If so, part of the growth rate you are quoting is a financing rate.
+- **The stop test.** If we wrote no more cheques from tomorrow, what happens to next year's revenue? Lucent answered that one by accident.
+- **Where the number lands.** Is the funded cohort's growth inside the figure the market is capitalising? A multiple applied to loop-funded revenue capitalises your own capital twice.
+
+None of this needs a trillion-dollar balance sheet. A minority stake in a distributor, with sales booked through them, puts part of your revenue inside a loop, and no line called *revenue we funded* will ever reveal it. In [The cognitive supply chain](https://signal-to-noise.co/insights/the-cognitive-supply-chain/?utm_source=linkedin&utm_medium=newsletter&utm_campaign=the-landlord-finances-the-tenant) I argued for the same discipline with suppliers. Customers need it as well.
+
+## What is not disclosed
+
+Two things remain unknown. The first is whether the investment is new. Nvidia had already committed "up to $10 billion" in November 2025, and nothing I have read establishes whether the proposed investment recasts that commitment. The second is the size of the loop. Anthropic's annualised run rate exceeded $65 billion at the end of July, up from about $9 billion at the end of 2025. An outsider cannot calculate what share came from customers who were themselves funded by the compute sellers.
+
+Neither amounts to an accusation. At a valuation of around $2 trillion, a buyer lacks the two figures they most need, so the loop and the demand get priced together at one multiple. In [Pricing the future](https://signal-to-noise.co/insights/pricing-the-future-spacex-anthropic-openai-ipos/?utm_source=linkedin&utm_medium=newsletter&utm_campaign=the-landlord-finances-the-tenant) I treated the partner as a concentration risk for the customer. An anchor-investor structure reverses that relationship. The partner underwrites the listing and records the revenue, and dependency becomes an input to the valuation.
+
+A tenth makes the headline, but it is the wrong figure to argue about. The share that counts has yet to be published. The first company to publish it will have done its shareholders a considerable favour.
+
+**[Read the essay at signal-to-noise.co](https://signal-to-noise.co/insights/the-landlord-finances-the-tenant/?utm_source=linkedin&utm_medium=newsletter&utm_campaign=the-landlord-finances-the-tenant)**
+
+*A new essay lands here every week, so subscribe if this was useful. And tell me in the comments: does your finance team know what share of revenue came from customers you helped fund?*
