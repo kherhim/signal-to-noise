@@ -1,5 +1,5 @@
 {
-  "note": "Activity URNs for LinkedIn posts we track. Analytics page: https://www.linkedin.com/analytics/post-summary/urn:li:activity:<activity>/ — add every new native post and edition announcement here on posting day.",
+  "note": "Activity URNs for LinkedIn posts we track. Analytics page: https://www.linkedin.com/analytics/post-summary/urn:li:activity:<activity>/ \u2014 add every new native post and edition announcement here on posting day.",
   "posts": [
     {
       "label": "wk3 P1 pricing (all-time best)",
@@ -45,7 +45,16 @@
       "posted": "2026-09-23",
       "activity": "7508500594517733376",
       "essay": "the-landlord-finances-the-tenant",
-      "url": "https://www.linkedin.com/pulse/landlord-finances-tenant-himanshu-kher-tfrhe/"
+      "url": "https://www.linkedin.com/pulse/landlord-finances-tenant-himanshu-kher-tfrhe/",
+      "owner_reported": [
+        {
+          "date": "2026-09-29",
+          "impressions": 794,
+          "in_network_pct": 47,
+          "out_of_network_pct": 53,
+          "note": "owner-reported from LinkedIn analytics; email sends reportedly unopened"
+        }
+      ]
     },
     {
       "label": "The landlord finances the tenant (native post, pending)",
@@ -53,6 +62,13 @@
       "activity": "",
       "essay": "the-landlord-finances-the-tenant",
       "added": "2026-09-23"
+    },
+    {
+      "label": "Edition 4 repost with commentary (Anthropic draft prospectus follow-up)",
+      "posted": "2026-09-29",
+      "activity": "",
+      "essay": "the-landlord-finances-the-tenant",
+      "note": "activity id not yet captured; grab from the post URL for the metrics pull"
     }
   ]
 }

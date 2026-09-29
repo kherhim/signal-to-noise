@@ -1,9 +1,9 @@
-# Peg board — 2026-09-16
+# Peg board — 2026-09-29
 
 | Story | Score | Action | Maps to | Link |
 |---|---|---|---|---|
-| Chip stocks crash 5.9% and OpenAI delays its IPO after Amodei's 'We Must Pace the Frontier' triggers CEO consensus on slowing AI, hours before the Fed's rate call | 82.5 | native_post | The slowdown premium | [source](https://www.techtimes.com/articles/327518/20260915/chip-stocks-crash-ai-ceos-back-slowdown-fed-rate-hike-decision-wednesday.htm) |
-| Anthropic still targeting a $2 trillion October IPO on Morgan Stanley/Goldman/JPMorgan underwriting, even as OpenAI just called its own listing 'ill-advised' | 76.5 | native_post | pricing-the-future-spacex-anthropic-openai-ipos | [source](https://finance.yahoo.com/technology/ai/articles/anthropic-september-1-triple-release-012352481.html) |
-| OpenAI's Videos API and all Sora 2 models are removed on 24 September with no successor named | 72 | preempt | The 90-day notice | [source](https://developers.openai.com/api/docs/deprecations) |
-| Google cuts AI Plus 37%, OpenAI reportedly weighing 'drastic' token price cuts to counter Anthropic — the price war is intensifying this week | 62.5 | native_post | Budgeting for deflation | [source](https://sherwood.news/tech/openai-anthropic-google-price-wars-where-no-one-is-making-money/) |
-| Oracle to raise $45–50bn in debt and equity for AI data centres after Q2 free cash flow ran negative $13bn on $12bn of capex | 56.5 | native_post |  | [source](https://www.constellationr.com/insights/news/oracle-raise-45-billion-50-billion-debt-equity-data-center-buildout) |
+| Nvidia weighs $10bn anchor stake in Anthropic's IPO — buying its own demand | 91 | fast_piece | The landlord finances the tenant | [source](https://www.fool.com/investing/2026/09/26/nvidia-is-weighing-a-usd10-billion-stake-in-anthropic-s-ipo-it-would-be-buying-its-own-demand/) |
+| AI token prices keep falling — Morgan Stanley flags $300bn of data-centre bonds as exposed | 81 | preempt | Budgeting for deflation | [source](https://fortune.com/2026/09/09/ai-compute-tokens-cheaper-boom/) |
+| AI is hollowing out entry-level roles, UK employer survey finds | 70 | preempt | The broken rung | [source](https://jingletree.com/ai-is-killing-the-grunt-work-forcing-companies-to-rethink-entry-level-hiring-274899.html) |
+| Alphabet's cloud surge outruns Meta's AI capex bet, capex-ROI scorecard shows | 63.5 | native_post |  | [source](https://247wallst.com/investing/2026/09/28/hyperscaler-bang-for-buck-the-ai-capex-roi-has-two-clear-winners/) |
+| Buyback announcements on pace for a 10-year quarterly low as dividend cuts spike | 45 | log |  | [source](https://www.wallstreethorizon.com/blog/Capital-Return-Retreat-Dividends-and-Buybacks-Slump-as-Macro-Risks-Mount-in-Q3) |
