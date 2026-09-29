@@ -1,0 +1,7 @@
+{
+  "newsletter": "Signal to Noise (LinkedIn)",
+  "source": "owner-reported from LinkedIn; the Monday pull cannot read subscriber counts (no LinkedIn API)",
+  "history": [
+    { "date": "2026-09-29", "subscribers": 752, "note": "before Edition 5 (Budgeting for deflation, 30 Sep)" }
+  ]
+}
