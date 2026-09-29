@@ -236,7 +236,7 @@ export function advance(slug, now = new Date(), { dry = false, deps: injected = 
       }
       case 'publish': {
         const p = deps.publish(slug);
-        notify(deps, `Published: ${st.title}`, `${p.url}\n\nCommit ${p.commit}. Substack mirror follows automatically after 48 h. LinkedIn edition and native post are on Monday's session.`);
+        notify(deps, `Published: ${st.title}`, `${p.url}\n\nCommit ${p.commit}. LinkedIn edition goes out the same day; the native post is on Monday's session.`);
         break;
       }
     }

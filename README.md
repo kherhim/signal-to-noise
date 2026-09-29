@@ -1,16 +1,16 @@
 # signal-to-noise.co
 
 Personal site + insights blog. Astro · Tailwind · MDX. Live on a GCE VM
-behind Cloudflare. Email + subscriptions via
-[hkher.substack.com](https://hkher.substack.com).
+behind Cloudflare. Subscriptions via the
+[Signal to Noise newsletter on LinkedIn](https://www.linkedin.com/newsletters/signal-to-noise-7490249039209271296/).
 
 - Original project brief & design intent: [`docs/specs/signal2noise.md`](./docs/specs/signal2noise.md)
 - Article conventions (linter-enforced): [`docs/specs/article-formatting.md`](./docs/specs/article-formatting.md)
 - SEO phases: [`docs/plans/SEO-Plan.md`](./docs/plans/SEO-Plan.md) · Buffett series plan: [`buffett.md`](./buffett.md)
-- Substack/LinkedIn distribution: [`docs/plans/DISTRIBUTION-Plan.md`](./docs/plans/DISTRIBUTION-Plan.md)
+- Distribution: [`docs/plans/DISTRIBUTION-Plan.md`](./docs/plans/DISTRIBUTION-Plan.md)
   (strategy) · [`distribution/`](./distribution/) (ready-to-post assets, newsletter,
-  back-catalogue queue). The release routine below reflects this — full-text
-  Substack, native LinkedIn posts, a LinkedIn newsletter. Execution (posting) is
+  back-catalogue queue). The release routine below reflects this: native
+  LinkedIn posts and a LinkedIn newsletter. Execution (posting) is
   manual and the user's call; the tooling and assets are shipped.
 
 ## Develop
@@ -28,14 +28,20 @@ Articles live in `src/content/insights/*.md`; frontmatter schema in
 ## Release routine
 
 The canonical order for shipping an article. The site is the canonical home;
-Substack (email + discovery) and LinkedIn both point back to it — which is why
-the site always publishes first.
+the LinkedIn newsletter and feed posts point back to it, which is why the site
+always publishes first.
+
+> **Substack retired (29 Sep 2026).** With 10 subscribers against 752 on the
+> LinkedIn newsletter, Substack was shut down: the mirror job,
+> `substack-post.mjs`, `substack-mirror.mjs`, the metrics section and the
+> `/subscribe` email form were removed. A farewell post goes to the list, then
+> the owner exports it and deletes the publication. Everything below that mentions Substack is
+> history; the old tooling is in git history before that date.
 
 > **Beehiiv detour (June 2026) — reverted.** Email briefly moved to Beehiiv for
 > its Role/Company custom fields, then moved back to Substack on 2026-07-02
-> (commit `e069071`) before any subscribers accumulated there. Substack is once
-> again the email engine AND the system of record for the subscriber list. The
-> Beehiiv account is dead; if you see Beehiiv referenced anywhere, it's stale.
+> (commit `e069071`) before any subscribers accumulated there. The Beehiiv
+> account is dead; if you see Beehiiv referenced anywhere, it's stale.
 
 ### 1. Site (canonical) — first, always
 
@@ -53,41 +59,7 @@ the site always publishes first.
 > [`distribution/`](./distribution/). The old teaser-based Substack flow is
 > preserved in git history (pre-`article-virality-strategy` branch) if needed.
 
-### 2. Substack — email send + discovery engine
-
-The one place the post is emailed to subscribers, plus Substack's Notes /
-Recommendations discovery reach — which keys on on-platform read-through and
-restacks, so post the **full text**, not a teaser. The site subscribe form is
-the embedded Substack form on `/subscribe` + article footers.
-
-1. Wait 24–48h after the site version is live, so Google indexes the site copy
-   first. Then write `_sources/substack-hooks/<slug>.md`: frontmatter
-   `title:` (exact article title) + `subtitle:` (≤140 chars), then the **whole
-   essay body**, opened with:
-
-   `*Originally published at [signal-to-noise.co](https://signal-to-noise.co/insights/<slug>/)*`
-
-   **Substack has no canonical-URL feature** (verified 7 Sep 2026: the editor's
-   SEO Options offer only SEO title, SEO description and the post slug, and the
-   draft API silently drops a `canonical_url` field). A full-text mirror is
-   therefore an un-canonicalised duplicate; the 24–48h head start for the site
-   copy plus the "Originally published" backlink are the only mitigations.
-   Series posts: children still open with
-   `*Part N of X in the series* [Series name](parent site URL)`.
-2. `node scripts/substack-post.mjs draft _sources/substack-hooks/<slug>.md`
-3. `node scripts/substack-post.mjs get <draftId>` — sanity-check title and
-   state before publishing.
-4. `node scripts/substack-post.mjs publish <draftId> --send-email` — email
-   delivery is OFF by default; pass `--send-email` so subscribers get the post.
-5. Append `<slug> <draftId>` to `_sources/substack-hooks/draft-ids.txt`.
-6. Restack your own post the day it goes out, then again 2–3 days later as a
-   Note with a pulled quote. Restacks are Substack's primary distribution signal.
-
-Auth is the `SUBSTACK_SID` cookie in `.env` (template: `.env.example`). It dies
-when that browser session logs out — if calls start failing 401, re-grab it.
-`setdate <postId> <ISO date>` backdates a post after publishing.
-
-### 3. LinkedIn — native posts + newsletter, last
+### 2. LinkedIn — newsletter the same day, native posts after
 
 Feed posts with outbound links are reach-taxed (~60% as of 2026), so LinkedIn's
 job here is **audience acquisition**, not clicks. Two surfaces:
@@ -97,22 +69,22 @@ job here is **audience acquisition**, not clicks. Two surfaces:
   profile"). One essay → several native posts, spaced over ~2 weeks. Drop the
   "I've just published…" framing. Reply to comments in the first 90 minutes.
 - **LinkedIn newsletter** (*Signal to Noise*) — publish each essay as an edition
-  ~a week after the site version. This is the one LinkedIn surface where links
+  the same day as the site version (owner's rule, 15 Sep 2026), after the 08:00
+  publish. This is the one LinkedIn surface where links
   aren't downranked, so it links the canonical freely. Setup + first edition:
   [`distribution/linkedin-newsletter/`](./distribution/linkedin-newsletter/).
 
-Ready-to-paste native posts, Notes, and carousels per article:
+Ready-to-paste native posts and carousels per article:
 `node scripts/repurpose.mjs <slug>` to scaffold, or grab a finished pack from
 [`distribution/ready-to-post/`](./distribution/ready-to-post/).
 
 ### Why this order
 
 Site first because everything deep-links the canonical page, so it must be live
-before the rest go out. Substack next (after a 48h indexing gap) because it's
-the email send, the subscriber-list home, and — via Notes — the biggest
-discovery engine. LinkedIn last: feed posts acquire followers, the newsletter
-converts them to guaranteed reach, and both point back to the canonical archive
-with the subscribe form ready to convert anyone who lands.
+before the rest go out. Then LinkedIn: the newsletter edition reaches every
+subscriber by notification, feed posts acquire followers, and both point back
+to the canonical archive with the subscribe box ready to convert anyone who
+lands.
 
 ## Lessons
 
@@ -152,7 +124,7 @@ the code or git log, it doesn't need to be here.
 - **Cloudflare Web Analytics in proxied mode is server-side** — no JS beacon needed in BaseLayout. Ad-blockers can't strip it. Less accurate beacon mode is only needed when DNS isn't on CF.
 - **HTML isn't cached by CF by default** (`cf-cache-status: DYNAMIC`). Static assets (`.webp`, `.js`, `.css`, fonts) are cached at the edge, sometimes for hours. After a deploy that changes assets, edge cache may serve stale content. Open follow-up: add a CF cache-purge API call to the deploy chain.
 
-### Substack mirror
+### Substack mirror (historical: retired 29 Sep 2026)
 
 - **No official API.** `scripts/substack-post.mjs` drives the private dashboard endpoints (`/api/v1/drafts`) with the `substack.sid` session cookie. Stable for years (python-substack wraps the same), but unofficial — if a call 404s, cross-check https://github.com/ma2za/python-substack.
 - **Substack rewrites slugs from titles** (`leadership-lessons-i-wish-knew-earlier` → `/p/leadership-lessons-i-wish-i-knew`) and curls straight quotes in titles — don't exact-match titles against hook files when verifying.
@@ -207,4 +179,4 @@ the code or git log, it doesn't need to be here.
 - **Voice and judgment are the moat, not keyword density.** SEO hygiene matters (titles, metadata, structure) but the real lift for a personal essay site comes from clear audience positioning and authority signals (named author, real bio, corpus depth).
 - **Pair every SEO change with measurement.** Without GSC, "did Phase 2 move impressions?" is unanswerable. With GSC, you have a feedback loop.
 - **Strip ceremony.** When the original LinkedIn imports had `[cite:N]` markers, the right call was "strip them, ship it" — perfect is the enemy of shipped.
-- **RSS subscribers aren't yours; emails are.** The email list (on Substack) is the portable, monetisable asset — full content stays canonical on the domain; Substack sends the email and gets condensed summaries linking back to the canonical page.
+- *(Superseded 29 Sep 2026: Substack is retired, so there is no owned email list. LinkedIn newsletter subscribers cannot be exported.)* **RSS subscribers aren't yours; emails are.** The email list (on Substack) is the portable, monetisable asset — full content stays canonical on the domain; Substack sends the email and gets condensed summaries linking back to the canonical page.

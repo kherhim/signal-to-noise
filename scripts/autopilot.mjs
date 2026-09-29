@@ -10,12 +10,8 @@
  * Queue: distribution/autopilot/queue/*.md — one file per scheduled post:
  *   ---
  *   date: 2026-08-10          # publish on/after this date (UTC)
- *   channel: linkedin         # linkedin | substack
- *   type: post                # post (linkedin) | post|newsletter (substack)
- *   title: ...                # substack only (draft title)
- *   subtitle: ...             # substack only (optional)
- *   canonical: https://...    # substack only (optional; SEO safeguard)
- *   send_email: false         # substack only; MUST be true to email the list
+ *   channel: linkedin         # linkedin (Substack channel removed 29 Sep 2026)
+ *   type: post
  *   status: pending           # pending | posted | skipped   (autopilot updates)
  *   ---
  *   <the exact body to publish>
@@ -23,7 +19,7 @@
  * GUARDRAILS (all on by default):
  *   1. Dry-run unless --live is passed. The Routine passes --live.
  *   2. A file named distribution/autopilot/PAUSE halts everything (kill switch).
- *   3. send_email is false unless explicitly set true — no accidental blasts.
+ *   3. (was: Substack send_email guard; channel removed 29 Sep 2026)
  *   4. Max --max N posts per run (default 2) — no runaway.
  *   5. Freshness: items whose date is >7 days stale are skipped, not posted late.
  *   6. Idempotent: status flips to `posted`, so re-runs never double-post.
@@ -39,7 +35,6 @@
 import {
   readFileSync, writeFileSync, readdirSync, existsSync, appendFileSync, mkdirSync,
 } from 'node:fs';
-import { execFileSync } from 'node:child_process';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { queueLinkedInPost } from './buffer-queue.mjs';
@@ -122,37 +117,6 @@ async function postLinkedIn(item) {
   return queueLinkedInPost({ text: item.body, dryRun: !LIVE });
 }
 
-function postSubstack(item) {
-  if (!LIVE) {
-    console.log(`[dry-run] would draft+publish Substack "${item.meta.title}"` +
-      `${item.meta.send_email === 'true' ? ' (+email)' : ' (no email)'}`);
-    return { ok: true, dryRun: true };
-  }
-  // Shell out to the existing, tested Substack script via a temp hook file.
-  const tmp = resolve(ROOT, `.autopilot-hook-${Date.now()}.md`);
-  const fm = [
-    '---',
-    `title: ${JSON.stringify(item.meta.title ?? 'Untitled')}`,
-    `subtitle: ${JSON.stringify(item.meta.subtitle ?? '')}`,
-    ...(item.meta.canonical ? [`canonical: ${item.meta.canonical}`] : []),
-    '---',
-    item.body,
-  ].join('\n');
-  writeFileSync(tmp, fm, 'utf8');
-  try {
-    const out = execFileSync('node', [resolve(ROOT, 'scripts/substack-post.mjs'), 'draft', tmp],
-      { encoding: 'utf8' });
-    const id = out.match(/Draft\s+(\S+):/)?.[1];
-    if (!id) throw new Error(`could not parse draft id from: ${out.slice(0, 120)}`);
-    const pubArgs = [resolve(ROOT, 'scripts/substack-post.mjs'), 'publish', id];
-    if (item.meta.send_email === 'true') pubArgs.push('--send-email');
-    execFileSync('node', pubArgs, { encoding: 'utf8' });
-    return { ok: true, id };
-  } finally {
-    try { execFileSync('rm', ['-f', tmp]); } catch { /* ignore */ }
-  }
-}
-
 // ---------- run ----------
 
 log(`Autopilot ${LIVE ? 'LIVE' : 'DRY-RUN'} — ${TODAY} — ${items.length} due, cap ${MAX}`);
@@ -171,7 +135,6 @@ for (const item of items) {
   try {
     let res;
     if (item.meta.channel === 'linkedin') res = await postLinkedIn(item);
-    else if (item.meta.channel === 'substack') res = postSubstack(item);
     else { log(`SKIP (unknown channel): ${item.file}`); continue; }
 
     if (LIVE && res?.ok && !res.dryRun) {

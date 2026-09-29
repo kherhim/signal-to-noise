@@ -6,8 +6,8 @@ The hands-off posting engine. Full design in
 ## How it works
 
 `scripts/autopilot.mjs` reads the pre-approved items in `queue/`, and on each run
-posts the ones due today — LinkedIn feed posts via Buffer, full-text Substack
-posts via `scripts/substack-post.mjs`. A scheduled Routine fires it on a cadence.
+posts the ones due today: LinkedIn feed posts via Buffer (the Substack channel was
+removed on 29 Sep 2026). A scheduled Routine fires it on a cadence.
 It only publishes what's already in the queue; it never writes content.
 
 ## queue/ item format
@@ -17,12 +17,8 @@ One markdown file per scheduled post. Frontmatter + the exact body to publish:
 ```
 ---
 date: 2026-08-11          # publish on/after this date (UTC)
-channel: linkedin         # linkedin | substack
-type: post                # linkedin: post · substack: post|newsletter
-title: ...                # substack only
-subtitle: ...             # substack only (optional)
-canonical: https://...    # substack only (optional SEO safeguard)
-send_email: false         # substack only — true actually emails the list
+channel: linkedin         # linkedin only
+type: post
 status: pending           # autopilot flips this to posted|skipped
 ---
 <the exact text to publish>

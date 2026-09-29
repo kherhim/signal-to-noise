@@ -2,7 +2,7 @@
 name: essay-line-monday
 description: The attended Monday session — health line, readout, peg board, then the LinkedIn edition and native post in Chrome with the owner watching. Trigger when the user says "Monday".
 ---
-1. Health: tail ~/Library/Logs/signal2noise-*.log; report last run and last success of essay-line, metrics, substack-mirror; list any state.json with last_error or hold.
+1. Health: tail ~/Library/Logs/signal2noise-*.log; report last run and last success of essay-line and metrics; list any state.json with last_error or hold.
 2. Readout: run `node scripts/metrics-pull.mjs --linkedin`; pull LinkedIn figures via the Chrome extension for every post in distribution/metrics/linkedin-posts.json with an activity id; fill the LEARNING-LOG week entry; commit.
 3. Peg board: show distribution/line/peg-board.md; ask which native_post items to use.
 4. Edition: since 15 Sep 2026 the LinkedIn edition goes out on WEDNESDAY, the same day as the canonical, in an attended session after the 08:00 publish (owner says "post edition N"). On Monday only check that next Wednesday's edition is drafted and gated in distribution/linkedin-newsletter/; draft it if not (topical intro from the peg board, `node scripts/line/gate.mjs <in> <out> --report <r>`).

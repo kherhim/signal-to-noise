@@ -1,6 +1,6 @@
 # distribution/
 
-Everything needed to execute the Substack + LinkedIn distribution strategy in
+Everything needed to execute the LinkedIn distribution strategy in
 [`../docs/plans/DISTRIBUTION-Plan.md`](../docs/plans/DISTRIBUTION-Plan.md). The plan is the *why*;
 this directory is the *what to paste*.
 
@@ -28,25 +28,15 @@ execution list (one-time setup, then a day-by-day first month).
 
 Scripts in `../scripts/`: `repurpose.mjs` (scaffold a pack), `normalize-tags.mjs`
 (dry-run tag cleanup — not applied; editorial call), `autopilot.mjs` (hands-off
-poster), `buffer-queue.mjs` (LinkedIn-via-Buffer layer), `substack-post.mjs`
-(Substack full-text mirror; note Substack has no canonical-URL feature — see root README §2).
+poster), `buffer-queue.mjs` (LinkedIn-via-Buffer layer). Substack tooling was
+removed on 29 Sep 2026 (see the root README).
 
 ## The daily loop (once set up)
 
 0. **Essay** — automated by the weekly essay line (`distribution/line/README.md`).
 1. **Site** publishes (day 0, existing `publish.sh` flow).
-2. **Substack** full-text repost 48h later — AUTOMATED since 9 Sep 2026:
-   `scripts/substack-mirror.mjs` runs daily at 09:15 (launchd
-   `co.signal-to-noise.substack-mirror`, plist in `infra/`), finds essays live on
-   the site ≥48h that are not yet on Substack, and publishes + emails them (max 1
-   per run; kill switch `distribution/autopilot/PAUSE`; ledger
-   `distribution/substack-mirror-ledger.json`). The 48h head start is the only
-   duplicate-content mitigation; Substack cannot set a canonical URL (README §2).
-   A hand-written `_sources/substack-hooks/<slug>.md` is honoured for title and
-   subtitle if present; otherwise title + excerpt are used.
-3. **LinkedIn newsletter** edition ~day 7 (links the site page freely).
-4. **LinkedIn feed** native posts across the fortnight (no body link).
-5. **Substack Notes** most days — pull-quotes, reactions, restacks of peers.
+2. **LinkedIn newsletter** edition the same day, after the 08:00 publish (links the site page freely).
+3. **LinkedIn feed** native posts across the fortnight (no body link).
 
 ## To repurpose a new article
 

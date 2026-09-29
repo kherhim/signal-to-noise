@@ -3,12 +3,13 @@
 `node scripts/metrics-pull.mjs [--linkedin] [--json]`
 
 Writes `distribution/metrics/YYYY-MM-DD.json` and prints a paste-ready table in the
-LEARNING-LOG row format. Substack and Cloudflare are fully scripted; LinkedIn is a
-browser routine (see below).
+LEARNING-LOG row format. Cloudflare is fully scripted; LinkedIn newsletter subscribers
+are owner-reported (`linkedin-newsletter-subscribers.json`); LinkedIn post analytics are a
+browser routine (see below). Substack was retired on 29 Sep 2026.
 
 | Source | How | Credential (in `.env`) | Failure mode |
 |---|---|---|---|
-| Substack | aggregate stats endpoints, no subscriber rows | `SUBSTACK_SID` (session cookie) | 401/403 ⇒ cookie rotated; re-grab per script hint |
+| LinkedIn newsletter subscribers | latest row of `linkedin-newsletter-subscribers.json` (no API) | none | file missing or empty ⇒ row shows `_error_` |
 | Cloudflare | GraphQL `httpRequests1dGroups`, daily + 30d, bot-burst days flagged (>5× median) | `CLOUDFLARE_ANALYTICS_TOKEN` (Zone · Analytics · Read, scoped to signal-to-noise.co) | missing ⇒ script prints the one-time token recipe |
 | LinkedIn | Chrome extension in the user's own session, straight to each post's `/analytics/post-summary/urn:li:activity:<id>/` | none (logged-in browser) | needs an interactive Claude Code session with the Chrome extension |
 
@@ -33,11 +34,3 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/co.signal-to-noise.metri
 launchctl kickstart gui/$(id -u)/co.signal-to-noise.metrics                                 # run now
 launchctl bootout gui/$(id -u)/co.signal-to-noise.metrics                                   # remove
 ```
-
-## Substack mirror (daily, hands-off)
-
-launchd agent `co.signal-to-noise.substack-mirror` runs `scripts/substack-mirror.mjs --live --max 1`
-every day at 09:15 local. It mirrors any essay that is live on the site for ≥48h and not
-yet on Substack, emailing subscribers. Dry run: `node scripts/substack-mirror.mjs`.
-Stop it: `touch distribution/autopilot/PAUSE`. Logs: `~/Library/Logs/signal2noise-substack-mirror*.log`.
-Fails loudly (exit 1, logged) if `SUBSTACK_SID` has rotated — re-grab per `substack-post.mjs` header.

@@ -48,17 +48,9 @@ Nothing happens between wakes, so every row below names the wake that does the w
 | The wake that sees "go" | Draft, gate (Layer B, plagiarism, BrE, never-list, Layer A), cover and the "Final for approval" email, all in that one wake (about an hour) | automation |
 | Until Wed 08:00 | Reply "publish", "hold", or corrections. No reply = hold. The final pins the slot to the coming Wednesday when sent before Wed 08:00 | owner |
 | Wed, the 08:00 wake | Publish if approved — the first wake at or after the 08:00 UK slot. A late "publish" ships at the next hourly wake | automation |
-| Daily 09:15, so Fri for a Wed 08:00 essay | Substack mirror (`co.signal-to-noise.substack-mirror`) | automation |
 | Mon 07:30 | Metrics pull (`co.signal-to-noise.metrics`) | automation |
 | Wed, attended, after 08:00 | LinkedIn newsletter edition for the essay that just went live, same day as the canonical (owner's rule 15 Sep 2026: subscriber growth outweighs the indexing gap). Gate it beforehand, then paste and confirm in Chrome | owner + Claude in Chrome |
 | Mon, attended | Readout, peg board, native post scheduled 08:00 UK | owner + Claude in Chrome (`.claude/skills/essay-line-monday/`) |
-
-**Why Saturday for the mirror.** The mirror job runs every day at 09:15 and
-mirrors anything older than `min_age_hours_substack` (48 h). The essay goes live
-at Wednesday's 12:00 wake, so it clears 48 h at Friday 12:00 — after Friday's
-09:15 run. The mirror therefore goes out on **Saturday's** 09:15 run, not
-Friday's. An essay is only ever mirrored once, so the extra day costs nothing
-but the wait.
 
 ## The two-email rules
 

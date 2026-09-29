@@ -5,7 +5,7 @@
  * article from src/content/insights/, extracts its structure and the
  * strongest candidate lines, pre-builds UTM-tagged canonical links, and
  * writes a scaffold you finish by editing — a native LinkedIn post per
- * major section, a batch of Substack Notes, and a carousel outline.
+ * major section and a carousel outline.
  *
  * It deliberately does NOT write the posts for you. The voice is the moat;
  * a machine-drafted LinkedIn post reads like a machine-drafted LinkedIn
@@ -139,8 +139,6 @@ const utm = (source, medium) =>
 const links = {
   linkedinFeed: utm('linkedin', 'social'),
   linkedinNewsletter: utm('linkedin', 'newsletter'),
-  substack: utm('substack', 'email'),
-  note: utm('substack', 'note'),
 };
 
 // ---------- scaffold ----------
@@ -206,21 +204,6 @@ postSections.forEach((sec, i) => {
 
 P(`---`);
 P();
-P(`## Substack Notes (batch of 5 — space over ~2 weeks)`);
-P();
-P(`Restacks are the algorithm. A note is a quote + one line of your take.`);
-P(`Note link (only where a link genuinely helps): ${links.note}`);
-P();
-quotes.slice(0, 5).forEach((q, i) => {
-  P(`**Note ${i + 1}**`);
-  P(`> ${q}`);
-  P(``);
-  P(`Your take: <one sentence that makes someone want to restack>`);
-  P();
-});
-
-P(`---`);
-P();
 P(`## LinkedIn document carousel (6–10 slides)`);
 P();
 P(`Title slide → one idea per slide → CTA slide. Each slide ≤ 20 words.`);
@@ -231,13 +214,6 @@ P(`${postSections.length + 2}. **CTA:** Full essay on signal-to-noise.co · foll
 P();
 P(`---`);
 P();
-P(`## Substack full-text repost`);
-P();
-P(`Post the WHOLE essay (not a teaser). Open with:`);
-P(`  *Originally published at [signal-to-noise.co](${links.substack})*`);
-P(`Then the full article body. Restack it the day it goes out.`);
-P();
-
 // ---------- write ----------
 
 const targetDir = resolve(ROOT, outDir);

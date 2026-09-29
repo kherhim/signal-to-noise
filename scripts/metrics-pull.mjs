@@ -2,16 +2,14 @@
 /**
  * metrics-pull.mjs — pull the weekly readout numbers without a human in the loop.
  *
- *   node scripts/metrics-pull.mjs            # Substack + Cloudflare, print table, write snapshot
+ *   node scripts/metrics-pull.mjs            # LinkedIn subscribers + Cloudflare, print table, write snapshot
  *   node scripts/metrics-pull.mjs --linkedin # also print the LinkedIn browser runbook
  *   node scripts/metrics-pull.mjs --json     # JSON only, no table
  *
  * Sources
- *   Substack   — session cookie (SUBSTACK_SID in .env), aggregate-only endpoints:
- *                  /api/v1/publication/stats/subscribers            → totalEmail (free+paid count)
- *                  /api/v1/publication/stats/email_stats/30d_open_rate
- *                  /api/v1/publication/stats/publication_traffic/30d_views
- *                No subscriber rows are fetched; nothing personal is written to disk.
+ *   LinkedIn newsletter subscribers — owner-reported, latest row of
+ *                distribution/metrics/linkedin-newsletter-subscribers.json (no API).
+ *                Substack was retired on 29 Sep 2026.
  *   Cloudflare — GraphQL analytics (CLOUDFLARE_ANALYTICS_TOKEN in .env, Zone→Analytics→Read).
  *                The purge token in .env cannot read analytics. Daily requests/cached so
  *                bot-burst days are visible, plus the 30-day aggregate.
@@ -28,7 +26,7 @@ import path from 'node:path';
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT_DIR = path.join(ROOT, 'distribution', 'metrics');
 const POSTS_FILE = path.join(OUT_DIR, 'linkedin-posts.json');
-const PUB = 'https://hkher.substack.com';
+const SUBS_FILE = path.join(OUT_DIR, 'linkedin-newsletter-subscribers.json');
 
 const args = new Set(process.argv.slice(2));
 const wantLinkedIn = args.has('--linkedin');
@@ -69,34 +67,16 @@ async function getJson(url, init) {
   return json;
 }
 
-// ---------- Substack ----------
-async function substack() {
-  const sid = ENV.SUBSTACK_SID;
-  if (!sid) return { error: 'SUBSTACK_SID missing from .env' };
-  const init = { headers: { cookie: `substack.sid=${sid}`, referer: `${PUB}/publish` } };
+// ---------- LinkedIn newsletter subscribers ----------
+function linkedinSubscribers() {
   try {
-    const [subs, open, views] = await Promise.all([
-      getJson(`${PUB}/api/v1/publication/stats/subscribers`, init),
-      getJson(`${PUB}/api/v1/publication/stats/email_stats/30d_open_rate`, init),
-      getJson(`${PUB}/api/v1/publication/stats/publication_traffic/30d_views`, init).catch(() => null),
-    ]);
-    return {
-      subscribers: subs.totalEmail ?? null,
-      paid: subs.subscribers ?? 0,
-      open_rate_30d: open.openRate != null ? Math.round(open.openRate * 10) / 10 : null,
-      open_rate_30d_diff: open.openRateDiff != null ? Math.round(open.openRateDiff * 10) / 10 : null,
-      views_30d: views?.views30d ?? null,
-      views_30d_delta: views?.viewsDelta30d ?? null,
-    };
+    const hist = JSON.parse(fs.readFileSync(SUBS_FILE, 'utf8')).history ?? [];
+    if (!hist.length) return { error: 'no rows in linkedin-newsletter-subscribers.json' };
+    const last = hist[hist.length - 1];
+    const prev = hist.length > 1 ? hist[hist.length - 2] : null;
+    return { subscribers: last.subscribers, as_of: last.date, change: prev ? last.subscribers - prev.subscribers : null, prev_date: prev?.date ?? null };
   } catch (e) {
-    const msg = String(e.message);
-    const auth = /→ (401|403)/.test(msg);
-    return {
-      error: msg,
-      hint: auth
-        ? 'Session cookie expired. Re-grab: log in at substack.com → DevTools → Application → Cookies → https://substack.com → copy `substack.sid` (URL-encoded form, starts s%3A) into .env as SUBSTACK_SID. Verify with `node scripts/substack-post.mjs probe`.'
-        : undefined,
-    };
+    return { error: String(e.message) };
   }
 }
 
@@ -213,8 +193,9 @@ function linkedinRunbook() {
 }
 
 // ---------- main ----------
-const [ss, cf] = await Promise.all([substack(), cloudflare()]);
-const snapshot = { date: today, substack: ss, cloudflare: cf };
+const ls = linkedinSubscribers();
+const cf = await cloudflare();
+const snapshot = { date: today, linkedin_newsletter: ls, cloudflare: cf };
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 const outFile = path.join(OUT_DIR, `${today}.json`);
@@ -229,10 +210,10 @@ if (jsonOnly) {
   out.push('');
   out.push('| # | Metric | Value | Note |');
   out.push('|---|---|---|---|');
-  if (ss.error) {
-    out.push(row(2, 'Substack subscribers', '_error_', ss.error + (ss.hint ? ` — ${ss.hint}` : '')));
+  if (ls.error) {
+    out.push(row(2, 'LinkedIn newsletter subscribers', '_error_', ls.error));
   } else {
-    out.push(row(2, 'Substack subscribers', `**${ss.subscribers}**`, `30d open rate ${ss.open_rate_30d}% (${ss.open_rate_30d_diff >= 0 ? '+' : ''}${ss.open_rate_30d_diff} pts)${ss.views_30d != null ? `; 30d site views ${ss.views_30d}` : ''}`));
+    out.push(row(2, 'LinkedIn newsletter subscribers', `**${ls.subscribers}**`, `as of ${ls.as_of}${ls.change != null ? `; ${ls.change >= 0 ? '+' : ''}${ls.change} since ${ls.prev_date}` : ''} (owner-reported)`));
   }
   if (cf.error) {
     out.push(row(6, 'Cloudflare percent cached (30d)', '_error_', cf.error + (cf.hint ? ` — ${cf.hint}` : '')));
