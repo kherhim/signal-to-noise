@@ -34,9 +34,10 @@ always publishes first.
 > **Substack retired (29 Sep 2026).** With 10 subscribers against 752 on the
 > LinkedIn newsletter, Substack was shut down: the mirror job,
 > `substack-post.mjs`, `substack-mirror.mjs`, the metrics section and the
-> `/subscribe` email form were removed. A farewell post goes to the list, then
-> the owner exports it and deletes the publication. Everything below that mentions Substack is
-> history; the old tooling is in git history before that date.
+> `/subscribe` email form were removed. All 10 Substack subscribers already
+> took the LinkedIn newsletter, so no farewell was sent; the owner deletes the
+> publication. Everything below that mentions Substack is history; the old
+> tooling is in git history before that date.
 
 > **Beehiiv detour (June 2026) — reverted.** Email briefly moved to Beehiiv for
 > its Role/Company custom fields, then moved back to Substack on 2026-07-02
