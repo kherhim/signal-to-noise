@@ -12,6 +12,6 @@
 | The depreciation cliff | capital allocation | Hyperscaler earnings, late October 2026 | pen |
 | Pricing cyber like a CFO | CFO mandate | A large breach headline; else evergreen after week 9 | pen |
 | The transformation that never finishes | CFO mandate | | queued |
-| Budgeting for deflation | metered cognition | | queued |
+| Budgeting for deflation | metered cognition | | published 2026-09-30 |
 | What the 10-K can't see | capital allocation | Any AI-spend disclosure story; else evergreen after week 12 | pen |
 | The landlord finances the tenant | capital allocation | Nvidia/Anthropic IPO anchor, Sep 2026 | published 2026-09-23 |

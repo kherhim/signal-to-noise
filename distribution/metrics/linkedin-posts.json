@@ -1,5 +1,5 @@
 {
-  "note": "Activity URNs for LinkedIn posts we track. Analytics page: https://www.linkedin.com/analytics/post-summary/urn:li:activity:<activity>/ \u2014 add every new native post and edition announcement here on posting day.",
+  "note": "Activity URNs for LinkedIn posts we track. Analytics page: https://www.linkedin.com/analytics/post-summary/urn:li:activity:<activity>/ — add every new native post and edition announcement here on posting day.",
   "posts": [
     {
       "label": "wk3 P1 pricing (all-time best)",
@@ -69,6 +69,13 @@
       "activity": "",
       "essay": "the-landlord-finances-the-tenant",
       "note": "activity id not yet captured; grab from the post URL for the metrics pull"
+    },
+    {
+      "label": "Budgeting for deflation (native post, pending)",
+      "posted": "",
+      "activity": "",
+      "essay": "budgeting-for-deflation",
+      "added": "2026-09-30"
     }
   ]
 }
