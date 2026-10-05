@@ -13,7 +13,9 @@
     "og": "node scripts/make-og-images.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "test:line": "LINE_NO_FILE_LOG=1 node --test scripts/line/test/*.mjs"
+    "test:line": "LINE_NO_FILE_LOG=1 node --test scripts/line/test/*.mjs",
+    "postbuild": "node scripts/build-search-index.mjs",
+    "search:index": "node scripts/build-search-index.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.1",
@@ -25,6 +27,7 @@
     "tailwindcss": "4.1.18"
   },
   "devDependencies": {
+    "pagefind": "^1.5.2",
     "turndown": "^7.2.4"
   }
 }

@@ -1,0 +1,243 @@
+---
+/* One search over the essays and the Buffett letters. The index is built
+   by Pagefind after `astro build` (scripts/build-search-index.mjs) and
+   lives at /pagefind/, so this page has nothing to search under
+   `astro dev`; use `npm run build && npm run preview`.
+
+   Pagefind loads only the index fragments a query touches, so the 4 MB of
+   letters never come down whole. Essays and letters are searched as two
+   filtered queries and shown as two groups, essays first, so a short
+   essay list is never buried under seventy years of letters. The query
+   and the group live in the URL (?q=float&in=letters) so a search can be
+   shared or bookmarked. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Search — signal-to-noise.co"
+  description="Search every essay on signal-to-noise.co and every Buffett letter from 1959 to 2025."
+>
+  <section class="mx-auto max-w-[720px] px-6 py-16 sm:py-24" data-site-search>
+    <header class="mb-10">
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Search</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">
+        Find an essay, or a passage.
+      </h1>
+      <p class="text-lg text-muted leading-relaxed">
+        Every essay on this site and every Buffett letter from 1959 to 2025, in one place.
+      </p>
+    </header>
+
+    <form role="search" data-search-form onsubmit="return false">
+      <label class="block">
+        <span class="sr-only">Search essays and letters</span>
+        <input type="search" name="q" data-search-input placeholder="deflation, buybacks, float, culture…" autocomplete="off"
+          class="w-full rounded-lg border border-divider/60 bg-transparent px-4 py-3 text-fg placeholder:text-muted focus:outline-none focus:border-accent/60" />
+      </label>
+      <div class="mt-4 flex flex-wrap gap-2" role="group" aria-label="Show results from">
+        <button type="button" data-scope="all" class="search-scope">All</button>
+        <button type="button" data-scope="essays" class="search-scope">Essays</button>
+        <button type="button" data-scope="letters" class="search-scope">Buffett letters</button>
+      </div>
+    </form>
+
+    <p class="mt-6 text-sm text-muted" data-search-status aria-live="polite"></p>
+
+    <section class="mt-10" data-group="essays" hidden aria-labelledby="essays-heading">
+      <h2 id="essays-heading" class="text-sm uppercase tracking-widest text-accent mb-6" data-group-heading>Essays</h2>
+      <ol class="grid gap-10" data-group-list></ol>
+      <button type="button" data-group-more hidden class="mt-8 text-sm text-muted hover:text-accent underline underline-offset-4">Show more essays</button>
+    </section>
+
+    <section class="mt-16" data-group="letters" hidden aria-labelledby="letters-heading">
+      <h2 id="letters-heading" class="text-sm uppercase tracking-widest text-accent mb-6" data-group-heading>From the Buffett letters</h2>
+      <ol class="grid gap-6" data-group-list></ol>
+      <button type="button" data-group-more hidden class="mt-8 text-sm text-muted hover:text-accent underline underline-offset-4">Show more passages</button>
+    </section>
+  </section>
+</BaseLayout>
+
+<style>
+  .search-scope {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--color-divider);
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    transition: color 150ms, border-color 150ms;
+  }
+  .search-scope:hover { color: var(--color-accent); }
+  .search-scope[aria-pressed='true'] { color: var(--color-fg); border-color: var(--color-accent); }
+  [data-site-search] :global(mark) { background: transparent; color: var(--color-fg); font-weight: 600; }
+</style>
+
+<script>
+  type Scope = 'all' | 'essays' | 'letters';
+  type Hit = { url: string; excerpt: string; meta: Record<string, string> };
+  type Result = { data: () => Promise<Hit> };
+  type Pagefind = {
+    options: (o: Record<string, unknown>) => Promise<void>;
+    search: (q: string, o?: Record<string, unknown>) => Promise<{ results: Result[] } | null>;
+  };
+
+  /* Page sizes per group; "Show more" adds another page. Letters fetch
+     extra rows because repeated passages are folded away below. */
+  const STEP = { essays: 10, letters: 12 } as const;
+
+  let pf: Promise<Pagefind> | null = null;
+  function pagefind(): Promise<Pagefind> {
+    if (!pf) {
+      const url = '/pagefind/pagefind.js';
+      pf = import(/* @vite-ignore */ url).then(async (m: Pagefind) => {
+        await m.options({ excerptLength: 36 });
+        return m;
+      });
+      pf.catch(() => { pf = null; });
+    }
+    return pf;
+  }
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
+
+  function essayItem(h: Hit): string {
+    const img = h.meta.image
+      ? `<img src="${esc(h.meta.image)}" alt="" loading="lazy" class="hidden sm:block w-28 shrink-0 aspect-[1.91/1] object-cover rounded border border-divider/60" />`
+      : '';
+    return `<li><article class="group flex gap-5">
+      ${img}
+      <div class="min-w-0">
+        ${h.meta.date ? `<p class="text-xs text-muted mb-2">${esc(h.meta.date)}</p>` : ''}
+        <h3 class="text-lg sm:text-xl font-semibold tracking-tight text-fg mb-2 group-hover:text-accent transition-colors"><a href="${esc(h.url)}">${esc((h.meta.title ?? h.url).replace(/^📌\s*\d+\s*—\s*/, ''))}</a></h3>
+        <p class="text-sm text-muted leading-relaxed">…${h.excerpt}…</p>
+      </div>
+    </article></li>`;
+  }
+
+  function letterItem(h: Hit): string {
+    const link = h.meta.link ?? '/buffett/';
+    const external = /^https?:/.test(link);
+    const label = external ? 'source ↗' : 'Buffett tab';
+    const attrs = external ? ' target="_blank" rel="noopener"' : '';
+    return `<li class="grid gap-2">
+      <p class="text-xs uppercase tracking-widest text-muted">${esc(h.meta.title ?? 'Letter')}, ${esc(h.meta.date ?? '')} · <a href="${esc(link)}"${attrs} class="underline underline-offset-4 hover:text-fg">${label}</a></p>
+      <p class="text-fg/90 leading-relaxed">…${h.excerpt}…</p>
+    </li>`;
+  }
+
+  function setup() {
+    const root = document.querySelector<HTMLElement>('[data-site-search]');
+    if (!root) return;
+    const input = root.querySelector<HTMLInputElement>('[data-search-input]')!;
+    const status = root.querySelector<HTMLElement>('[data-search-status]')!;
+    const scopes = [...root.querySelectorAll<HTMLButtonElement>('[data-scope]')];
+    const groups = {
+      essays: root.querySelector<HTMLElement>('[data-group="essays"]')!,
+      letters: root.querySelector<HTMLElement>('[data-group="letters"]')!,
+    };
+
+    const params = new URLSearchParams(location.search);
+    let scope: Scope = (['all', 'essays', 'letters'] as const).find((s) => s === params.get('in')) ?? 'all';
+    input.value = params.get('q') ?? '';
+
+    let run = 0;
+    let timer = 0;
+
+    function paintScope() {
+      for (const b of scopes) b.setAttribute('aria-pressed', String(b.dataset.scope === scope));
+    }
+
+    function syncUrl(q: string) {
+      const u = new URL(location.href);
+      q ? u.searchParams.set('q', q) : u.searchParams.delete('q');
+      scope === 'all' ? u.searchParams.delete('in') : u.searchParams.set('in', scope);
+      history.replaceState(history.state, '', u);
+    }
+
+    /* Fills one group and wires its "Show more" button. Returns the count. */
+    async function fill(kind: 'essays' | 'letters', results: Result[], id: number): Promise<number> {
+      const el = groups[kind];
+      const list = el.querySelector<HTMLOListElement>('[data-group-list]')!;
+      const more = el.querySelector<HTMLButtonElement>('[data-group-more]')!;
+      const heading = el.querySelector<HTMLElement>('[data-group-heading]')!;
+      const render = kind === 'essays' ? essayItem : letterItem;
+      const seen = new Set<string>();
+      let cursor = 0;
+      let shown = 0;
+      list.innerHTML = '';
+
+      /* Buffett reused whole paragraphs across years; keep the first
+         appearance of a passage rather than listing it three times. */
+      async function page() {
+        const want = shown + STEP[kind];
+        while (shown < want && cursor < results.length) {
+          const batch = await Promise.all(results.slice(cursor, cursor + want - shown).map((r) => r.data()));
+          cursor += batch.length;
+          if (id !== run) return;
+          for (const h of batch) {
+            const key = h.excerpt.replace(/<[^>]+>/g, '').toLowerCase().slice(0, 120);
+            if (kind === 'letters' && seen.has(key)) continue;
+            seen.add(key);
+            list.insertAdjacentHTML('beforeend', render(h));
+            shown++;
+          }
+        }
+        more.hidden = cursor >= results.length;
+      }
+
+      more.onclick = () => { page(); };
+      heading.textContent = `${kind === 'essays' ? 'Essays' : 'From the Buffett letters'} (${results.length})`;
+      el.hidden = results.length === 0;
+      await page();
+      return results.length;
+    }
+
+    async function search() {
+      const q = input.value.trim();
+      const id = ++run;
+      syncUrl(q);
+      if (!q) {
+        status.textContent = '';
+        groups.essays.hidden = groups.letters.hidden = true;
+        return;
+      }
+      status.textContent = 'Searching…';
+      let api: Pagefind;
+      try { api = await pagefind(); } catch {
+        status.textContent = 'Search did not load. Please try once more.';
+        return;
+      }
+      const [essays, letters] = await Promise.all([
+        scope !== 'letters' ? api.search(q, { filters: { type: 'essay' } }) : null,
+        scope !== 'essays' ? api.search(q, { filters: { type: 'letter' } }) : null,
+      ]);
+      if (id !== run) return;
+      groups.essays.hidden = groups.letters.hidden = true;
+      const [ne, nl] = await Promise.all([
+        essays ? fill('essays', essays.results, id) : 0,
+        letters ? fill('letters', letters.results, id) : 0,
+      ]);
+      if (id !== run) return;
+      const parts = [
+        scope !== 'letters' ? `${ne} essay${ne === 1 ? '' : 's'}` : '',
+        scope !== 'essays' ? `${nl} letter passage${nl === 1 ? '' : 's'}` : '',
+      ].filter(Boolean);
+      status.textContent = ne + nl ? `${parts.join(' and ')} match “${q}”.` : `Nothing matches “${q}”. Try a more general word.`;
+    }
+
+    for (const b of scopes) {
+      b.addEventListener('click', () => {
+        scope = b.dataset.scope as Scope;
+        paintScope();
+        search();
+      });
+    }
+    input.addEventListener('focus', () => { pagefind().catch(() => {}); }, { once: true });
+    input.addEventListener('input', () => { clearTimeout(timer); timer = window.setTimeout(search, 180); });
+
+    paintScope();
+    if (input.value) search();
+    else input.focus();
+  }
+
+  document.addEventListener('astro:page-load', setup);
+</script>

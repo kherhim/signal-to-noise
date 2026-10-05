@@ -24,6 +24,7 @@ const isActive = (href: string) =>
       Home
     </a>
 
+    <div class="flex items-center gap-3 sm:gap-8">
     <!-- Desktop: inline links, unchanged -->
     <ul class="hidden sm:flex items-center gap-8">
       {links.map(({ href, label }) => (
@@ -40,6 +41,24 @@ const isActive = (href: string) =>
         </li>
       ))}
     </ul>
+
+    <!-- Search: an icon at every width, so it costs the crowded nav no text -->
+    <a
+      href="/search"
+      aria-label="Search"
+      title="Search"
+      class:list={[
+        'p-2 sm:p-0 transition-colors',
+        isActive('/search') ? 'text-accent' : 'text-fg hover:text-accent',
+      ]}
+    >
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+          <circle cx="8.5" cy="8.5" r="5.75" />
+          <line x1="13" y1="13" x2="17.5" y2="17.5" />
+        </g>
+      </svg>
+    </a>
 
     <!-- Mobile: hamburger -->
     <button
@@ -62,6 +81,7 @@ const isActive = (href: string) =>
         </g>
       </svg>
     </button>
+    </div>
   </nav>
 
   <!-- Mobile panel -->

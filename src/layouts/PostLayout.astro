@@ -79,6 +79,13 @@ const formatted = date.toLocaleDateString('en-GB', {
       </figure>
     )}
 
+    {/* Site search (scripts/build-search-index.mjs) indexes this region only:
+        the header and the essay text, not the share, subscribe or related
+        blocks below. The hidden spans hand the results page its metadata. */}
+    <div data-pagefind-body>
+    <span hidden data-pagefind-filter="type:essay"></span>
+    <span hidden data-pagefind-meta={`date:${formatted}`}></span>
+    {coverImage && <span hidden data-pagefind-meta={`image:${coverImage}`}></span>}
     <header class="mb-12">
       {seriesKicker && (
         <p class="text-sm uppercase tracking-widest text-accent mb-6">
@@ -92,14 +99,14 @@ const formatted = date.toLocaleDateString('en-GB', {
         </p>
       )}
 
-      <time class="text-sm text-muted block mb-3" datetime={date.toISOString()}>
+      <time data-pagefind-ignore class="text-sm text-muted block mb-3" datetime={date.toISOString()}>
         {formatted}
       </time>
       <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg">
         {title}
       </h1>
       {tags.length > 0 && (
-        <ul class="flex flex-wrap gap-2 mt-6">
+        <ul data-pagefind-ignore class="flex flex-wrap gap-2 mt-6">
           {tags.map((t) => (
             <li>
               <a
@@ -117,6 +124,7 @@ const formatted = date.toLocaleDateString('en-GB', {
     <Prose>
       <slot />
     </Prose>
+    </div>
 
     <ShareLinks url={canonicalUrl} title={title} />
 

@@ -25,8 +25,17 @@ gcloud compute ssh "$VM" --zone="$ZONE" --tunnel-through-iap \
   --command="rm -rf $STAGE && mkdir $STAGE && echo STAGED_OK"
 
 echo "==> Step 2/4: copy local dist/ to VM staging"
-gcloud compute scp --recurse --zone="$ZONE" --tunnel-through-iap \
-  dist/* "$VM:$STAGE/"
+# One archive, not --recurse: the search index (dist/pagefind/) is ~7,000
+# small files, and scp over IAP pays a round trip per file. COPYFILE_DISABLE
+# stops macOS tar adding ._ AppleDouble files.
+TARDIR="$(mktemp -d)"
+TARBALL="$TARDIR/s2n-dist.tgz"
+COPYFILE_DISABLE=1 tar --no-xattrs -czf "$TARBALL" -C dist .
+gcloud compute scp --zone="$ZONE" --tunnel-through-iap \
+  "$TARBALL" "$VM:/tmp/s2n-dist.tgz"
+rm -rf "$TARDIR"
+gcloud compute ssh "$VM" --zone="$ZONE" --tunnel-through-iap \
+  --command="tar -xzf /tmp/s2n-dist.tgz -C $STAGE && rm /tmp/s2n-dist.tgz && echo UNPACKED_OK"
 
 echo "==> Step 3/4: rsync staging → webroot ($WEBROOT)"
 gcloud compute ssh "$VM" --zone="$ZONE" --tunnel-through-iap \
