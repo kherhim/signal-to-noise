@@ -1,0 +1,323 @@
+{
+  "date": "2026-10-05",
+  "linkedin_newsletter": {
+    "subscribers": 752,
+    "as_of": "2026-09-29",
+    "change": null,
+    "prev_date": null
+  },
+  "cloudflare": {
+    "since": "2026-09-05",
+    "hit_rate_non404_7d": 22.4,
+    "not_found_7d": 1391,
+    "last7": [
+      {
+        "date": "2026-09-28",
+        "non404": 496,
+        "hit": 81,
+        "pct_hit_non404": 16.3,
+        "not_found": 446
+      },
+      {
+        "date": "2026-09-29",
+        "non404": 370,
+        "hit": 113,
+        "pct_hit_non404": 30.5,
+        "not_found": 92
+      },
+      {
+        "date": "2026-09-30",
+        "non404": 466,
+        "hit": 100,
+        "pct_hit_non404": 21.5,
+        "not_found": 486
+      },
+      {
+        "date": "2026-10-01",
+        "non404": 228,
+        "hit": 30,
+        "pct_hit_non404": 13.2,
+        "not_found": 14
+      },
+      {
+        "date": "2026-10-02",
+        "non404": 462,
+        "hit": 71,
+        "pct_hit_non404": 15.4,
+        "not_found": 140
+      },
+      {
+        "date": "2026-10-03",
+        "non404": 332,
+        "hit": 115,
+        "pct_hit_non404": 34.6,
+        "not_found": 22
+      },
+      {
+        "date": "2026-10-04",
+        "non404": 687,
+        "hit": 171,
+        "pct_hit_non404": 24.9,
+        "not_found": 191
+      }
+    ],
+    "requests_30d": 91190,
+    "cached_30d": 5456,
+    "pct_cached_30d": 6,
+    "burst_days": [
+      "2026-09-08",
+      "2026-09-16"
+    ],
+    "pct_cached_excl_bursts": 8,
+    "days": [
+      {
+        "date": "2026-09-05",
+        "requests": 1022,
+        "cached": 367,
+        "pct_cached": 35.9,
+        "page_views": 187,
+        "uniques": 123
+      },
+      {
+        "date": "2026-09-06",
+        "requests": 3146,
+        "cached": 177,
+        "pct_cached": 5.6,
+        "page_views": 256,
+        "uniques": 184
+      },
+      {
+        "date": "2026-09-07",
+        "requests": 3384,
+        "cached": 170,
+        "pct_cached": 5,
+        "page_views": 312,
+        "uniques": 202
+      },
+      {
+        "date": "2026-09-08",
+        "requests": 12823,
+        "cached": 75,
+        "pct_cached": 0.6,
+        "page_views": 237,
+        "uniques": 196
+      },
+      {
+        "date": "2026-09-09",
+        "requests": 1826,
+        "cached": 78,
+        "pct_cached": 4.3,
+        "page_views": 138,
+        "uniques": 165
+      },
+      {
+        "date": "2026-09-10",
+        "requests": 296,
+        "cached": 37,
+        "pct_cached": 12.5,
+        "page_views": 82,
+        "uniques": 147
+      },
+      {
+        "date": "2026-09-11",
+        "requests": 1994,
+        "cached": 81,
+        "pct_cached": 4.1,
+        "page_views": 326,
+        "uniques": 182
+      },
+      {
+        "date": "2026-09-12",
+        "requests": 2227,
+        "cached": 111,
+        "pct_cached": 5,
+        "page_views": 162,
+        "uniques": 210
+      },
+      {
+        "date": "2026-09-13",
+        "requests": 1904,
+        "cached": 98,
+        "pct_cached": 5.1,
+        "page_views": 92,
+        "uniques": 155
+      },
+      {
+        "date": "2026-09-14",
+        "requests": 1701,
+        "cached": 89,
+        "pct_cached": 5.2,
+        "page_views": 310,
+        "uniques": 142
+      },
+      {
+        "date": "2026-09-15",
+        "requests": 466,
+        "cached": 64,
+        "pct_cached": 13.7,
+        "page_views": 153,
+        "uniques": 135
+      },
+      {
+        "date": "2026-09-16",
+        "requests": 12100,
+        "cached": 81,
+        "pct_cached": 0.7,
+        "page_views": 221,
+        "uniques": 174
+      },
+      {
+        "date": "2026-09-17",
+        "requests": 1899,
+        "cached": 95,
+        "pct_cached": 5,
+        "page_views": 281,
+        "uniques": 166
+      },
+      {
+        "date": "2026-09-18",
+        "requests": 7036,
+        "cached": 503,
+        "pct_cached": 7.1,
+        "page_views": 486,
+        "uniques": 342
+      },
+      {
+        "date": "2026-09-19",
+        "requests": 2845,
+        "cached": 121,
+        "pct_cached": 4.3,
+        "page_views": 212,
+        "uniques": 159
+      },
+      {
+        "date": "2026-09-20",
+        "requests": 2749,
+        "cached": 117,
+        "pct_cached": 4.3,
+        "page_views": 130,
+        "uniques": 133
+      },
+      {
+        "date": "2026-09-21",
+        "requests": 2719,
+        "cached": 94,
+        "pct_cached": 3.5,
+        "page_views": 187,
+        "uniques": 241
+      },
+      {
+        "date": "2026-09-22",
+        "requests": 5496,
+        "cached": 454,
+        "pct_cached": 8.3,
+        "page_views": 534,
+        "uniques": 212
+      },
+      {
+        "date": "2026-09-23",
+        "requests": 4989,
+        "cached": 119,
+        "pct_cached": 2.4,
+        "page_views": 189,
+        "uniques": 159
+      },
+      {
+        "date": "2026-09-24",
+        "requests": 2012,
+        "cached": 577,
+        "pct_cached": 28.7,
+        "page_views": 533,
+        "uniques": 213
+      },
+      {
+        "date": "2026-09-25",
+        "requests": 2138,
+        "cached": 95,
+        "pct_cached": 4.4,
+        "page_views": 147,
+        "uniques": 164
+      },
+      {
+        "date": "2026-09-26",
+        "requests": 3222,
+        "cached": 768,
+        "pct_cached": 23.8,
+        "page_views": 927,
+        "uniques": 195
+      },
+      {
+        "date": "2026-09-27",
+        "requests": 4542,
+        "cached": 419,
+        "pct_cached": 9.2,
+        "page_views": 290,
+        "uniques": 175
+      },
+      {
+        "date": "2026-09-28",
+        "requests": 1736,
+        "cached": 62,
+        "pct_cached": 3.6,
+        "page_views": 224,
+        "uniques": 115
+      },
+      {
+        "date": "2026-09-29",
+        "requests": 667,
+        "cached": 85,
+        "pct_cached": 12.7,
+        "page_views": 142,
+        "uniques": 138
+      },
+      {
+        "date": "2026-09-30",
+        "requests": 1794,
+        "cached": 77,
+        "pct_cached": 4.3,
+        "page_views": 200,
+        "uniques": 127
+      },
+      {
+        "date": "2026-10-01",
+        "requests": 261,
+        "cached": 25,
+        "pct_cached": 9.6,
+        "page_views": 105,
+        "uniques": 120
+      },
+      {
+        "date": "2026-10-02",
+        "requests": 1040,
+        "cached": 54,
+        "pct_cached": 5.2,
+        "page_views": 197,
+        "uniques": 142
+      },
+      {
+        "date": "2026-10-03",
+        "requests": 521,
+        "cached": 93,
+        "pct_cached": 17.9,
+        "page_views": 102,
+        "uniques": 139
+      },
+      {
+        "date": "2026-10-04",
+        "requests": 1490,
+        "cached": 161,
+        "pct_cached": 10.8,
+        "page_views": 254,
+        "uniques": 145
+      },
+      {
+        "date": "2026-10-05",
+        "requests": 1145,
+        "cached": 109,
+        "pct_cached": 9.5,
+        "page_views": 34,
+        "uniques": 41
+      }
+    ]
+  }
+}
