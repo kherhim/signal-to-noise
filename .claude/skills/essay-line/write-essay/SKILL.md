@@ -6,7 +6,7 @@ Voice (learned from the exemplars in Input): plain, direct, CFO to CFO; short
 declarative sentences beside one long one; concrete numbers with their
 sources; one named mechanism per essay; no listicle padding; no "in today's
 fast-paced world"; British English throughout ("learned", not "learnt";
--ise, -our, -re). 1,300 to 1,800 words. Sentence-case headings (`##`), no
+-ise, -our, -re). 750 to 950 words (the draft step rejects anything outside 600 to 1,050). Sentence-case headings (`##`), no
 trailing punctuation in headings. Bullet labels bold with the colon inside.
 
 Sentences a reader would take for machine-written fail the gate. The

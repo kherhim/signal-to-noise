@@ -14,7 +14,9 @@ Rules
   other punctuation), `still(alt)` built as a pure
   string (it runs in Node), `motion(svg)` returning Animations that loop
   over PERIOD and rest on the still (use `hold`), and `motionPx` = the largest
-  displacement in canvas pixels; it must be at least 60.
+  displacement in canvas pixels; it must be at least 60 and written as a plain
+  integer literal (e.g. `motionPx: 240,`), never an expression: the validator
+  reads the number from the source text.
 - Cream on near-black only, using the palette constants. No text beyond the
   FIG mark and caption block.
 - Write a `coverImageAlt` (British English, one paragraph, describes the
