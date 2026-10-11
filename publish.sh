@@ -15,6 +15,8 @@
 #      that returned 403 last time) and fix to 644.
 #   3. Validate frontmatter on each new article: required fields
 #      present, coverImage path resolves to a real file.
+#   3b. Humaniser: flag machine-sounding sentences, write a rewrite copy,
+#      prompt before continuing if anything is held (HUMANISE=skip|regex).
 #   4. Build (npm run build runs the title linter via prebuild).
 #   5. Show a summary and prompt before invoking deploy.sh.
 #
@@ -133,6 +135,42 @@ if [[ ${#NEW_ARTICLES[@]} -gt 0 ]]; then
       echo "    [warn] coverImageAlt is ${#alt} chars — target is 200–400."
     fi
   done
+fi
+
+# ---------- 3b. Humaniser ---------------------------------------------------
+# Owner rule, 11 Oct 2026: everything that ships gets the humaniser. The essay
+# line gates its own output; this covers essays written by hand. Flags each
+# machine-sounding sentence with a plain rewrite and writes
+# <slug>.humanised.md beside the article for you to diff. The original is not
+# touched. HUMANISE=skip bypasses it (no model run, no cost);
+# HUMANISE=regex runs the free regex test only.
+
+if [[ ${#NEW_ARTICLES[@]} -gt 0 && "${HUMANISE:-on}" != "skip" ]]; then
+  echo "==> Humaniser"
+  hargs=(--kind essay --apply)
+  [[ "${HUMANISE:-on}" == "regex" ]] && hargs=(--kind essay --no-model)
+  hstatus=0
+  node scripts/humanise.mjs "${NEW_ARTICLES[@]}" "${hargs[@]}" || hstatus=$?
+  # Move the rewrite copies out first, whatever the verdict: left in
+  # src/content/insights they would be built as pages and rediscovered as new
+  # articles on the next run.
+  for article in "${NEW_ARTICLES[@]}"; do
+    h="${article%.md}.humanised.md"
+    if [[ -f "$h" ]]; then
+      mkdir -p _sources/humanised
+      mv "$h" "_sources/humanised/$(basename "$h")"
+      echo "    rewrite copy → _sources/humanised/$(basename "$h")"
+    fi
+  done
+  if [[ $hstatus -ne 0 ]]; then
+    echo ""
+    echo "    The humaniser is holding at least one article (report above)."
+    read -r -p "    Publish anyway? [y/N] " hans
+    if [[ ! "$hans" =~ ^[Yy]$ ]]; then
+      echo "    Stopped. Edit the article (or adopt the rewrite copy) and re-run." >&2
+      exit 1
+    fi
+  fi
 fi
 
 # ---------- 4. Build ---------------------------------------------------------
