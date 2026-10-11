@@ -81,6 +81,6 @@ export function renderHumaniser(r) {
 
 function renderFlags(r) {
   if (!r.flags.length) return `No machine-sounding sentences flagged.${r.dropped ? ` (${r.dropped} unquotable flags dropped.)` : ''}`;
-  return r.flags.map((f) => `- "${f.sentence}"\n  Tell: ${f.why}\n  ${f.rewrite ? `Plain: "${f.rewrite}"` : `Plain: withheld (suggestion tripped Claudish: ${f.rewriteRejected})`}`).join('\n')
+  return r.flags.map((f) => `- "${f.sentence}"\n  Tell: ${f.why}\n  ${f.rewrite === 'DELETE' ? 'Plain: cut it' : f.rewrite ? `Plain: "${f.rewrite}"` : `Plain: withheld (suggestion tripped Claudish: ${f.rewriteRejected})`}`).join('\n')
     + (r.dropped ? `\n(${r.dropped} unquotable flags dropped.)` : '');
 }

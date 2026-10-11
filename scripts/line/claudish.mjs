@@ -132,6 +132,18 @@ export const POST_RULES = [
     fix: 'close on the claim, or the pointer to the full essay' },
 ];
 
+// Comment replies only (owner rule, 11 Oct 2026: every reply to a LinkedIn
+// comment goes through the humaniser). A reply may end on a question to the
+// commenter, which is conversation, so engagement-close does not apply. The
+// stock opener is the reply-guy formula.
+export const COMMENT_RULES = [
+  { id: 'stock-opener', severity: 'fail', label: 'stock reply opener ("Great point!")',
+    re: /^\s*(?:Great|Excellent|Brilliant|Fantastic|Interesting|Good) (?:point|question|take|post|insight|observation)s?\b|^\s*(?:Spot on|Love this|Well said|Totally agree|Absolutely|100%|So true|This\.)|^\s*Thanks? (?:you )?(?:so much )?for (?:sharing|this|the (?:comment|thoughtful))/gi,
+    fix: 'open with your answer; thank them in a clause if at all' },
+  { id: 'reply-exclaim', severity: 'warn', label: 'more than one exclamation mark',
+    re: /!/g, max: 1, fix: 'full stops' },
+];
+
 // A source's own words are evidence, not voice: a quotation that contains a
 // listed construction must never fail the gate, because it cannot be reworded
 // without misquoting. Markdown link targets, code, SVG and HTML go too.

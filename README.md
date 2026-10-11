@@ -84,6 +84,15 @@ npm run humanise -- src/content/insights/<slug>.md --apply          # an essay
 npm run humanise:posts                                              # regex sweep of the post backlog
 ```
 
+Comment replies go through it too (owner rule, 11 Oct 2026). Paste the reply,
+not a file: comments add a stock-opener ban ("Great point!", "Love this") and
+hold on a single model flag.
+
+```bash
+npm run humanise -- --text "<your reply>" --apply
+pbpaste | npm run humanise -- --stdin --apply
+```
+
 Where it runs: the essay line's gate (step 3d), `publish.sh` for hand-written
 essays (`HUMANISE=skip` or `HUMANISE=regex` to bypass the model), and by hand
 for anything headed to LinkedIn. Kind is inferred: files under `distribution/`

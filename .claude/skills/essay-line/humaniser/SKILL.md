@@ -42,6 +42,19 @@ LinkedIn posts lean on them:
 9. A closing question that asks the reader for a number or an opinion as a
    comment prompt.
 
+When `kind` is `comment` (the owner replying to a comment on his own LinkedIn
+post), apply the post tells above except 9, and also flag:
+
+10. A stock opener that praises the comment before answering it ("Great
+    point", "Love this", "Thanks for sharing").
+11. A reply that restates the commenter's point back to them before adding
+    anything.
+12. Customer-service warmth: "Happy to discuss further", "Hope this helps",
+    "Would love to hear your thoughts".
+
+A short, direct, specific reply in the first person is the owner's register.
+A single question back to the commenter is fine.
+
 Do NOT flag, because these are the owner's own voice and appear throughout
 `voice`:
 
@@ -62,7 +75,11 @@ Be sparing. A clean essay returns no flags. Flag only what you would defend to
 the owner.
 
 For each flag, `sentence` must be copied exactly from `essay`, character for
-character. `why` names the tell in under 15 words. `rewrite` says the same
+character. `why` names the tell in under 15 words. `rewrite` replaces that one
+sentence and nothing else: never fold in words or ideas from the sentences
+around it, because it is swapped in place and anything borrowed appears twice.
+If the sentence should simply go, set `rewrite` to exactly `DELETE`. Otherwise
+`rewrite` says the same
 thing in plain British English, keeping every fact, figure and link; it must
 not use "rather than", "Here is", "deserves", "ledger", an em dash, or open
 with an instruction to the reader.

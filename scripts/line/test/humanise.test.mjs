@@ -65,3 +65,28 @@ test('posts hold on a flag count, essays on the rate; --apply writes a copy and 
   assert.equal(humaniseFile(f, { kind: 'essay', check: one }).hold, true);
   assert.equal(humaniseFile(f, { useModel: false }).read, null);
 });
+
+test('comment replies: stock openers fail, a direct reply with a question back passes, one flag holds', async () => {
+  const { humaniseText, COMMENT_HOLD_FLAGS } = await import('../../humanise.mjs');
+  const bad = humaniseText('Great point, Prem! The utilisation number matters.', { useModel: false });
+  assert.ok(bad.hits.some((h) => h.id === 'stock-opener'));
+  assert.equal(bad.hold, true);
+  const good = humaniseText('The utilisation number is the one most CFOs never compute. What did yours come out at?', { useModel: false });
+  assert.equal(good.hold, false);
+  assert.equal(good.hits.length, 0, 'a question back is conversation, not engagement bait');
+  const one = () => ({ flags: [{ sentence: 'The utilisation number matters.', why: 'restates', rewrite: 'At 40% utilisation you rent an empty building.' }], dropped: 0, words: 4, rate: 250 });
+  const r = humaniseText('The utilisation number matters.', { check: one, apply: true });
+  assert.equal(COMMENT_HOLD_FLAGS, 1);
+  assert.equal(r.hold, true);
+  assert.equal(r.out.text, 'At 40% utilisation you rent an empty building.');
+});
+
+test('rewrites never duplicate a neighbour, and DELETE cuts the sentence', () => {
+  const text = 'Thanks for the comment. Most finance teams never compute utilisation, which is the problem. Happy to discuss!';
+  const r = applyRewrites(text, [
+    { sentence: 'Thanks for the comment.', rewrite: 'Most finance teams never compute utilisation, and that is the problem.' },
+    { sentence: 'Happy to discuss!', rewrite: 'DELETE' },
+  ]);
+  assert.equal(r.md, 'Thanks for the comment. Most finance teams never compute utilisation, which is the problem.');
+  assert.equal(r.unapplied[0].reason, 'duplicates a neighbouring sentence');
+});
