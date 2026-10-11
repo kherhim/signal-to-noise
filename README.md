@@ -48,8 +48,9 @@ always publishes first.
 
 1. Drop the article `.md` into `src/content/insights/` and a matching cover
    image (same slug) into `public/img/`.
-2. Run `./publish.sh` — converts images to WebP, validates frontmatter, builds
-   (title linter runs via prebuild), prompts before `deploy.sh`.
+2. Run `./publish.sh` — converts images to WebP, validates frontmatter, runs
+   the humaniser (below), builds (title linter runs via prebuild), prompts
+   before `deploy.sh`.
 3. Commit (selective add — publish.sh deliberately doesn't touch git).
 
 > **Distribution strategy (Aug 2026).** The routine below was rewritten to
@@ -59,6 +60,34 @@ always publishes first.
 > [`docs/plans/DISTRIBUTION-Plan.md`](./docs/plans/DISTRIBUTION-Plan.md) and
 > [`distribution/`](./distribution/). The old teaser-based Substack flow is
 > preserved in git history (pre-`article-virality-strategy` branch) if needed.
+
+### Humaniser — on everything that ships
+
+Owner rule (11 Oct 2026): every essay and every post goes through the
+humaniser before it is published. It flags, then rewrites; it never edits the
+original.
+
+- **Claudish test** (free, regex): the constructions in
+  `scripts/line/claudish.mjs`, each measured against the owner's hand-written
+  essays. Posts also get the LinkedIn-register rules (countdown signposts,
+  "Not X. Y." reversals, stock beats, "Look," openers) and an
+  engagement-question warning.
+- **Humaniser read** (about $0.20): a model reads the text against excerpts of
+  the owner's own essays and quotes each machine-sounding sentence with a plain
+  rewrite. Essays hold above 3 flags per 1,000 words; posts hold on 2+ flags.
+- **Rewrite**: `--apply` writes `<name>.humanised.md` with the rewrites swapped
+  in, for you to diff and adopt.
+
+```bash
+npm run humanise -- distribution/ready-to-post/<post>.md --apply   # a LinkedIn post
+npm run humanise -- src/content/insights/<slug>.md --apply          # an essay
+npm run humanise:posts                                              # regex sweep of the post backlog
+```
+
+Where it runs: the essay line's gate (step 3d), `publish.sh` for hand-written
+essays (`HUMANISE=skip` or `HUMANISE=regex` to bypass the model), and by hand
+for anything headed to LinkedIn. Kind is inferred: files under `distribution/`
+or `_sources/social/` are posts.
 
 ### 2. LinkedIn — newsletter the same day, native posts after
 

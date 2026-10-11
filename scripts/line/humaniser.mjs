@@ -63,12 +63,12 @@ const wordCount = (t) => t.split(/\s+/).filter(Boolean).length;
 export const humaniserRate = (flags, words) => (words ? (flags / words) * 1000 : 0);
 export const humaniserFails = (r) => r.rate > FAIL_PER_1K;
 
-export function checkHumaniser(text, { run = runSkill, voice = null } = {}) {
+export function checkHumaniser(text, { run = runSkill, voice = null, kind = 'essay' } = {}) {
   const essay = scannableText(text);
   const line = loadLedger().published.map((p) => p.slug);
   const samples = voice ?? pickVoice({ exclude: line, seed: new Date().getUTCDate() });
   const cfg = loadConfig();
-  const out = run({ skill: 'humaniser', input: JSON.stringify({ voice: samples, essay }, null, 2), schema: SCHEMA, maxTurns: 5, model: cfg.models?.humaniser ?? null });
+  const out = run({ skill: 'humaniser', input: JSON.stringify({ kind, voice: samples, essay }, null, 2), schema: SCHEMA, maxTurns: 5, model: cfg.models?.humaniser ?? null });
   const { flags, dropped } = vetFlags(out.json?.flags ?? [], essay);
   const words = wordCount(essay);
   return { flags, dropped: dropped.length, words, rate: humaniserRate(flags.length, words), cost_usd: out.cost_usd ?? 0 };

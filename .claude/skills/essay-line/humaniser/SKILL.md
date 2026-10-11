@@ -27,6 +27,21 @@ measured: the line produces them and the owner almost never does.
 5. "Precisely because", "goes the wrong way" and similar scaffolding that makes
    a plain causal point sound clever.
 
+When `kind` is `post` (a LinkedIn feed post, newsletter intro or carousel
+text), also flag these. The owner's essays never use them; machine-written
+LinkedIn posts lean on them:
+
+6. Staccato rhythm as a device: three or more consecutive sentences under six
+   words that exist for cadence, not content ("Everybody cheered. Fair enough.",
+   "Pride.", "Cannot."). One short closer is the owner's voice; a drumbeat is
+   not.
+7. Performed candour: "Look, I…", "I'll be honest", "That is exactly why I…",
+   a disclosure staged as a hook rather than stated as a fact.
+8. The good-reasons, bad-reason shape: a numbered list of "honest" reasons
+   followed by "And one bad reason." or similar twist.
+9. A closing question that asks the reader for a number or an opinion as a
+   comment prompt.
+
 Do NOT flag, because these are the owner's own voice and appear throughout
 `voice`:
 

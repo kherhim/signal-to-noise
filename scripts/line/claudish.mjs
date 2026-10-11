@@ -85,6 +85,33 @@ export const RULES = [
   { id: 'lies-elsewhere', severity: 'fail', label: '"the question lies elsewhere"',
     re: /\b(?:question|problem|answer|risk|point|difference) lies\b/gi, fix: 'say where it is' },
 
+  // LinkedIn-register tells (11 Oct 2026). Measured against the owner's 59
+  // hand-written essays (44,421 words): every rate below is 0.00 per 1,000 for
+  // the owner, and each appears in the machine-shaped LinkedIn post that
+  // prompted the rule ("Three honest reasons.", "Not 'would rather not'.
+  // Cannot.", "Fair enough.", "Look, I sell…", "That is exactly why…").
+  { id: 'not-fragment', severity: 'fail', label: '"Not X. Y." fragment reversal',
+    re: /(?:^|(?<=[.!?]\s{1,3}))Not\s[^.!?\n]{1,40}\.\s+[A-Z][a-z]+\./gm,
+    fix: 'one sentence that says what it is' },
+
+  { id: 'countdown', severity: 'fail', label: 'countdown signpost ("Three honest reasons.")',
+    re: /(?:^|\n)[ \t]*(?:And )?(?:One|Two|Three|Four|Five|Six|Seven) (?:honest |simple |real |big |key |bad |good |hard )?(?:reasons?|things?|questions?|lessons?|truths?|problems?|mistakes?)\.[ \t]*$/gim,
+    fix: 'start the list, or state a fact about the items' },
+
+  { id: 'stock-beat', severity: 'fail', label: 'stock LinkedIn beat',
+    re: /\b(?:Fair enough|Here's the thing|Let that sink in|Read that again)\b|(?:^|(?<=[.!?]\s{1,3}))Full stop\./gim,
+    fix: 'cut it; the next sentence carries the point' },
+
+  { id: 'chummy-opener', severity: 'fail', label: '"Look," / "Honestly," opener',
+    re: /(?:^|(?<=[.!?]\s{1,3}))(?:Look|Listen|Honestly|Truth is|Spoiler),\s/gm,
+    fix: 'start with the claim' },
+
+  { id: 'exactly-why', severity: 'fail', label: '"That is exactly why"',
+    // Sentence-initial only: "Leverage magnifies gains, and that is exactly why
+    // it…" is the owner's own (Buffett fortress essay).
+    re: /(?:^|(?<=[.!?]\s{1,3}))That(?:'s|’s| is) exactly (?:why|what|how)\b/gm,
+    fix: '"That is why", or join it to the sentence before' },
+
   // Good moves that stop working when repeated. Counted, not banned: the gate
   // fails only above the threshold, so one deliberate use survives.
   { id: 'contrastive-negation', severity: 'fail', label: 'contrastive negation', // 0.39 / 0.74
@@ -93,6 +120,16 @@ export const RULES = [
 
   { id: 'colon-payoff', severity: 'warn', label: 'colon-then-lowercase payoff', // 3.20 / 5.92
     re: /:\s+[a-z]/g, max: 3, fix: 'a full stop carries most of these' },
+];
+
+// Short-form only (LinkedIn posts, newsletter intros). An essay may end on a
+// real question; a feed post that ends by asking the reader for a number is the
+// engagement formula. Warned, not failed: the owner's README already prefers a
+// soft pointer to the site as the close.
+export const POST_RULES = [
+  { id: 'engagement-close', severity: 'warn', label: 'engagement-bait closing question',
+    re: /(?:What|Which|How|Who|Where|When|Would|Do|Does|Have|Has|Is|Are|Will)\b[^?\n]{0,120}\byou\b[^?\n]{0,120}\?(?:[^\S\n]*[A-Z][^?\n]{0,40}\?)?\s*$/g,
+    fix: 'close on the claim, or the pointer to the full essay' },
 ];
 
 // A source's own words are evidence, not voice: a quotation that contains a
@@ -169,6 +206,11 @@ export const PROMPT_BANS = [
   ['signpost-close', 'never close a paragraph with a signpost such as "will get you there" or "is all it takes"'],
   ['your-own-pivot', 'never write "your own X should/deserves/needs"; address the reader plainly'],
   ['lies-elsewhere', 'never write "the question lies elsewhere" or "the problem lies"'],
+  ['not-fragment', 'no "Not X. Y." fragment reversals ("Not \'would rather not\'. Cannot.")'],
+  ['countdown', 'never announce a list with a stand-alone countdown such as "Three honest reasons."'],
+  ['stock-beat', 'never write "Fair enough", "Here\'s the thing", "Let that sink in", "Read that again" or "Full stop"'],
+  ['chummy-opener', 'never open a sentence with "Look,", "Listen,", "Honestly," or "Truth is,"'],
+  ['exactly-why', 'never write "That is exactly why/what/how"'],
   ['contrastive-negation', 'use at most ONE "is not a/an/the ..." construction in the whole text'],
   ['colon-payoff', 'use at most three colons followed by a lower-case clause'],
 ];
