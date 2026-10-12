@@ -69,8 +69,8 @@ export function hashFiles(paths) {
   return out;
 }
 
-// Everything that could reach the network, a paid model or the watermarks
-// service, in one place so the assembly can be tested offline.
+// Everything that could reach the network or a paid model, plus the Layer A
+// self-check, in one place so the assembly can be tested offline.
 export const FINAL_DEPS = { serviceUp, layerBText, applySpellingFixes, inspectFile, cleanFile, loadNeverList, neverListHits };
 
 // The alt text is a shipping string like any other, and until now it was the one

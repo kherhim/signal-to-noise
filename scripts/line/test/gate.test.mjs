@@ -63,7 +63,7 @@ const offlineDeps = (over = {}) => ({
   ...over,
 });
 
-test('runGate refuses to start when the watermarks service is down, and spends nothing', () => {
+test('runGate refuses to start when the Layer A self-check fails, and spends nothing', () => {
   const dir = tmp('gate-down-');
   const src = path.join(dir, 'in.md'), out = path.join(dir, 'out.md'), rep = path.join(dir, 'report.md');
   fs.writeFileSync(src, '---\ntitle: "T"\n---\n\nBody.\n');
@@ -72,11 +72,10 @@ test('runGate refuses to start when the watermarks service is down, and spends n
     deps: offlineDeps({ serviceUp: () => false, checkPlagiarism: () => { throw new Error('must not spend'); } }),
   });
   assert.equal(r.verdict, 'fail');
-  assert.match(r.error.message, /watermarks service not running at http/);
-  assert.match(r.error.message, /make serve.*watermarks-remover/);
+  assert.match(r.error.message, /Layer A self-check failed/);
   const report = fs.readFileSync(rep, 'utf8');
   assert.ok(report.includes('## Verdict: ERROR'));
-  assert.ok(report.includes('watermarks service not running'));
+  assert.ok(report.includes('Layer A self-check failed'));
   assert.equal(fs.existsSync(out), false, 'nothing is written when the prerequisite is missing');
 });
 
@@ -146,4 +145,11 @@ test('runGate passes below the humaniser rate and reports the flags as warnings'
     deps: offlineDeps({ checkHumaniser: () => ({ flags: [flag, flag, flag], dropped: 0, words: 1000, rate: 3, cost_usd: 0 }) }) });
   assert.equal(r.verdict, 'pass');
   assert.match(r.report, /warnings only/);
+});
+
+test('the Layer A report line counts what was found', () => {
+  const report = renderReport({ inPath: 'in.md', outPath: 'out.md', verdict: 'pass', fails: [], checks: {
+    layera: { before: { suspicious: true, report: { findings: [{ kind: 'zero-width' }, { kind: 'zero-width' }, { kind: 'bidi' }] } }, after: { suspicious: false, report: { findings: [] } } },
+  } });
+  assert.match(report, /Before: SUSPICIOUS \(2 zero-width, 1 bidi\) · After: clean/);
 });

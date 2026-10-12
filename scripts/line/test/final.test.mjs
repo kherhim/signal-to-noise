@@ -137,12 +137,12 @@ test('buildFinal runs the alt through Layer B, then BrE, then the never-list, an
 // Layer A is the last step of the assembly and cannot be skipped, so an assembly
 // that starts with the service down would pay Codex for the alt rewrite and then
 // die at the end. Same precheck the gate already makes.
-test('buildFinal refuses to start when the watermarks service is down, before any spend', () => {
+test('buildFinal refuses to start when the Layer A self-check fails, before any spend', () => {
   const slug = 'm1-service-down';
   seed(slug);
   assert.throws(
     () => buildFinal(slug, { deps: finalDeps({ serviceUp: () => false, layerBText: () => { throw new Error('must not spend'); } }) }),
-    /watermarks service not running/,
+    /Layer A self-check failed/,
   );
 });
 

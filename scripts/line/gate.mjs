@@ -4,7 +4,7 @@ import { log } from './env.mjs';
 import { layerBEssay } from './layerb.mjs';
 import { checkPlagiarism } from './plagiarism.mjs';
 import { scanBrE, applySpellingFixes, scanAmbiguous } from './bre.mjs';
-import { inspectFile, cleanFile, serviceUp, resolveServiceUrl } from './layera.mjs';
+import { inspectFile, cleanFile, serviceUp, summariseFindings } from './layera.mjs';
 import { splitFrontmatter, joinFrontmatter, BRE_FIELDS } from './md.mjs';
 import { scanClaudish, claudishFails, renderClaudish } from './claudish.mjs';
 import { checkHumaniser, renderHumaniser, humaniserFails } from './humaniser.mjs';
@@ -15,7 +15,7 @@ import { loadNeverList, neverListHits } from './queue.mjs';
 // second Layer B pass.
 
 // Every paid or networked collaborator in one place, so tests can inject fakes
-// and no test reaches the network, a paid model or the watermarks service.
+// and no test reaches the network or a paid model.
 export const GATE_DEPS = { layerBEssay, checkPlagiarism, inspectFile, cleanFile, serviceUp, loadNeverList, neverListHits, scanClaudish, checkHumaniser };
 
 // The text the gate is allowed to respell: the body plus the shipping strings.
@@ -25,18 +25,17 @@ export const GATE_DEPS = { layerBEssay, checkPlagiarism, inspectFile, cleanFile,
 export const checkableText = (meta, body) =>
   [body, ...BRE_FIELDS.map((k) => (typeof meta[k] === 'string' ? meta[k] : ''))].filter(Boolean).join('\n');
 
+// Layer A has been in-repo since 12 Oct 2026; serviceUp() is now a self-check
+// of that cleaner, kept so a broken Layer A still stops the gate before spend.
 export function serviceDownError() {
-  let url;
-  try { url = resolveServiceUrl(); } catch { url = 'the configured WATERMARKS_SERVICE_URL'; }
-  return `watermarks service not running at ${url}; start it with \`make serve\` in ~/Documents/devProjects/watermarks-remover`;
+  return 'Layer A self-check failed: the in-repo cleaner (scripts/line/layera.mjs) did not remove a planted zero-width space';
 }
 
 export function runGate({ inPath, outPath, reportPath, skipLayerB = false, deps: injected = {} }) {
   const deps = { ...GATE_DEPS, ...injected };
   const checks = {};
-  // Layer A is the last step and cannot be skipped, so a gate run that starts
-  // without the service would spend on Layer B and plagiarism and then fail at
-  // the end. Check the prerequisite before anything costs money.
+  // Layer A is the last step and cannot be skipped, so check the in-repo
+  // cleaner before anything costs money.
   if (!deps.serviceUp()) {
     const error = { stage: 'prerequisites', message: serviceDownError() };
     const report = renderReport({ inPath, outPath, checks, verdict: 'fail', fails: [], error });
@@ -142,7 +141,8 @@ export function renderReport({ inPath, outPath, checks, verdict, fails, error })
   L.push('## 3d. Humaniser read',
     checks.humaniser ? `${renderHumaniser(checks.humaniser)}\nCost: $${Number(checks.humaniser.cost_usd ?? 0).toFixed(3)}` : 'not reached', '');
   if (checks.layera) {
-    L.push('## 4. Layer A (invisible Unicode)', `Before: ${checks.layera.before.suspicious ? 'SUSPICIOUS' : 'clean'} · After: ${checks.layera.after.suspicious ? 'SUSPICIOUS' : 'clean'}`, '');
+    const la = (s) => (s.suspicious ? `SUSPICIOUS${s.report?.findings?.length ? ` (${summariseFindings(s.report.findings)})` : ''}` : 'clean');
+    L.push('## 4. Layer A (invisible Unicode)', `Before: ${la(checks.layera.before)} · After: ${la(checks.layera.after)}`, '');
   } else {
     L.push('## 4. Layer A (invisible Unicode)', 'not reached', '');
   }
