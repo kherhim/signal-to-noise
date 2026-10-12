@@ -8,7 +8,7 @@ import { serviceUp } from '../layera.mjs';
 
 const liveSkip = process.env.LINE_LIVE !== '1'
   ? 'set LINE_LIVE=1 to run the paid live gate fixture'
-  : (!serviceUp() && 'watermarks service not running');
+  : (!serviceUp() && 'Layer A self-check failed');
 
 test('gate catches the three planted faults on the fixture', { skip: liveSkip, timeout: 600000 }, () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gate-'));
