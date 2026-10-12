@@ -15,3 +15,4 @@
 | Budgeting for deflation | metered cognition | | published 2026-09-30 |
 | What the 10-K can't see | capital allocation | Any AI-spend disclosure story; else evergreen after week 12 | pen |
 | The landlord finances the tenant | capital allocation | Nvidia/Anthropic IPO anchor, Sep 2026 | published 2026-09-23 |
+| The leash problem | CFO mandate | Anthropic IPO / rogue-agent news, Sep–Oct 2026 | published 2026-10-14 |
