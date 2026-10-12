@@ -7,33 +7,67 @@ this is the operational reference.
 
 ## Prerequisites
 
-The gate's Layer A step (invisible-Unicode inspect and clean) runs against a
-**local watermarks service**, and the gate now refuses to start without it
-rather than spending on Layer B and the plagiarism check first.
+Nothing to start by hand. Since 12 Oct 2026 both watermark layers live in the
+repo:
 
-The service is the `wr-core` Docker container from
-`~/Documents/devProjects/watermarks-remover` (`restart: unless-stopped`), kept
-up by the LaunchAgent `co.signal-to-noise.watermarks`
-(`infra/co.signal-to-noise.watermarks.plist`). At login and every 30 minutes it
-runs `infra/watermarks-ensure.sh`: starts Docker Desktop if its daemon is down,
-starts the container (recreating it with `docker compose` if it is gone), and
-requires `/health` to answer `{"ok": true}`. Nothing is started by hand.
+- **Layer A** (`scripts/line/layera.mjs`) is pure Node: it removes invisible
+  Unicode carriers (zero-width, bidi controls, tag characters, stray variation
+  selectors, soft hyphens), turns odd spaces into plain ones, maps Cyrillic and
+  Greek look-alikes inside Latin words back to Latin, and drops AI-provenance
+  frontmatter keys (by key name only) and `data:` URIs. Emoji sequences,
+  keycaps, £, accents and curly quotes are kept. `layera-corpus.test.mjs`
+  proves it leaves every published essay alone.
+- **Layer B** (`scripts/line/layerb.mjs`) rewrites through the Codex CLI on
+  the owner's ChatGPT account, with the model pinned in `config.json`
+  (`models.layerb`), never taken from `~/.codex/config.toml`. Each run
+  measures how many of the original's 3-word runs survive (figures, names,
+  quotations and links excluded); above 35% it retries once, then reports a
+  warning in the gate report.
 
-```bash
-curl -s http://127.0.0.1:8765/health                       # {"ok":true,...} when up
-tail ~/Library/Logs/signal2noise-watermarks-launchd.log    # what the agent did
-launchctl kickstart gui/$(id -u)/co.signal-to-noise.watermarks   # run it now
+The `watermarks-remover` Docker service and its LaunchAgent
+(`infra/co.signal-to-noise.watermarks.plist`) are no longer used by the gate.
+They stay in `infra/` for auditing images by hand.
+
+## How an essay is made and checked
+
+```mermaid
+flowchart TD
+    classDef owner fill:#f3e6c4,stroke:#8a6d1f,color:#222
+    classDef check fill:#dfe9e4,stroke:#2f5d50,color:#222
+    classDef stop fill:#f2d4d0,stroke:#9b2d20,color:#222
+
+    KILL{{"Kill switch: distribution/autopilot/PAUSE<br/>or hold / killed in state.json"}}:::stop
+    SCAN["Daily 06:30 scan<br/>peg board"] --> BRIEF["Monday brief email<br/>topic, angle, sources"]
+    BRIEF --> GO{"Owner replies"}:::owner
+    GO -- "go" --> DRAFT["Draft<br/>outline + essay, 600–1,050 words"]
+    GO -- "no" --> KILLED["Killed"]:::stop
+    GO -- "hold / prose / silence 6 days" --> PARK["Parked (hold)"]:::stop
+
+    DRAFT --> GATE
+    subgraph GATE["The gate (gate.mjs), every shipped string incl. frontmatter"]
+        direction TB
+        PRE["0. Layer A self-check<br/>before any spend"]:::check --> LB["1. Layer B<br/>Codex rewrite, pinned model<br/>3-gram survival ≤ 35%"]:::check
+        LB --> PL["2. Plagiarism and provenance<br/>every quote has its source"]:::check
+        PL --> BRE["3. British English<br/>spelling fixed, ambiguities flagged"]:::check
+        BRE --> NEV["3b. Never-list"]:::check
+        NEV --> CL["3c. Claudish test<br/>regex, banned constructions"]:::check
+        CL --> HU["3d. Humaniser read<br/>model reader, holds above 3 per 1,000 words"]:::check
+        HU --> LA["4. Layer A<br/>invisible Unicode, look-alikes, AI frontmatter"]:::check
+    end
+
+    GATE -- "fail" --> PARK
+    GATE -- "pass" --> COVER["Cover<br/>animated FIG., OG image, alt text through Layer B"]
+    COVER --> FINAL["Final email for approval<br/>Layer A again on final.md"]
+    FINAL --> PUB{"Owner replies"}:::owner
+    PUB -- "corrections" --> GATE
+    PUB -- "hold / silence" --> PARK
+    PUB -- "publish" --> SHIP["Wednesday 08:00 UK<br/>build, deploy, live check, push"]
+    SHIP --> LI["LinkedIn edition, same day<br/>gate + humaniser post rules"]
+    LI --> POSTOK{"Owner approves<br/>in Chrome"}:::owner
 ```
 
-launchd runs the script through `/bin/sh`, which macOS bars from `~/Documents`,
-so the plist points at a copy in `~/Library/Application Support/signal2noise/`.
-After editing the script, re-copy it there. Another process answering on port
-8765 (a stray `python -m http.server` has been seen) is not mistaken for the
-service: both the agent and the gate check the reply, not just the port.
-
-Override the address with `WATERMARKS_SERVICE_URL` in `.env` if you must; it has
-to be a loopback host. When the service is down, `runGate` writes an ERROR gate
-report saying so and returns `fail` without calling a paid model.
+Owner decisions are gold, checks green, stops red. The runner does one essay
+per wake and never treats silence as consent.
 
 ## The weekly rhythm
 
@@ -95,7 +129,7 @@ re-reads `draft.md`. `state.json` `gate_fail_origin` records which of the two
 cases you are in, and the mail that parks the essay repeats the one line.
 
 - **Original gate fail** (`gate_fail_origin: "draft"` — the Monday-to-Tuesday
-  gate, or a watermarks outage). Fix the cause (start the service, edit
+  gate). Fix the cause (edit
   `draft.md`), then in `<slug>/state.json` clear `hold` and set
   `stage: "drafted"`. `draft.md` is re-gated from the top.
 - **Corrections-round fail** (`gate_fail_origin: "corrections"` — the owner
