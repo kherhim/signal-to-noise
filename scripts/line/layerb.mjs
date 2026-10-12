@@ -5,8 +5,55 @@ import { log } from './env.mjs';
 import { splitFrontmatter, joinFrontmatter, SHIPPING_FIELDS } from './md.mjs';
 import { runChild, TIMEOUTS } from './proc.mjs';
 import { promptBanText } from './claudish.mjs';
+import { loadConfig } from './queue.mjs';
 
-export const codexArgs = (outFile) => ['exec', '--sandbox', 'read-only', '--skip-git-repo-check', '--ephemeral', '-o', outFile];
+export const LAYERB_MAX_SURVIVAL = 0.35;
+
+// Pinned by the repo since 12 Oct 2026: the global ~/.codex config named a
+// model the ChatGPT account no longer accepts and Layer B failed for every
+// essay. The repo decides the model; there is no fallback to the global one.
+export function layerBModel(cfg = loadConfig()) {
+  const m = cfg.models?.layerb;
+  if (!m) throw new Error('Layer B: set models.layerb in distribution/line/config.json');
+  return m;
+}
+
+export const codexArgs = (outFile, model) => {
+  if (!model) throw new Error('codexArgs: a model is required');
+  return ['exec', '-m', model, '-c', 'service_tier=default', '--sandbox', 'read-only', '--skip-git-repo-check', '--ephemeral', '-o', outFile];
+};
+
+// Share of the original's 3-word runs that survive the rewrite. Runs that
+// touch a figure, a proper name, a quotation or a link are left out: those
+// are meant to survive. The Layer B prompt asks that "few runs of three words
+// survive unchanged"; this measures it.
+const EXCLUDE = /\[[^\]]*\]\([^)]*\)|https?:\/\/\S+|"[^"]*"|“[^”]*”/g;
+const WORD = /[\p{L}\p{N}%£$€'’.]+/gu;
+const words = (s) => (s.match(WORD) ?? []).map((w) => w.replace(/[.]+$/, '').toLowerCase()).filter(Boolean);
+
+function grams(segment) {
+  const out = [];
+  const toks = [...segment.matchAll(WORD)].map((m) => ({ raw: m[0].replace(/[.]+$/, ''), at: m.index }));
+  for (let i = 0; i + 2 < toks.length; i++) {
+    const tri = toks.slice(i, i + 3);
+    const skip = tri.some((t, j) => {
+      if (/[\d%£$€]/.test(t.raw)) return true;
+      const sentenceStart = i + j === 0 || /[.!?:]\s*$/.test(segment.slice(0, t.at));
+      return /^\p{Lu}/u.test(t.raw) && !sentenceStart;
+    });
+    if (!skip) out.push(tri.map((t) => t.raw.toLowerCase()).join(' '));
+  }
+  return out;
+}
+
+export function divergence(before, after) {
+  const mine = before.split(EXCLUDE).flatMap(grams);
+  const w = words(after);
+  const theirs = new Set();
+  for (let i = 0; i + 2 < w.length; i++) theirs.add(w.slice(i, i + 3).join(' '));
+  const survived = mine.filter((g) => theirs.has(g)).length;
+  return { survived, total: mine.length, rate: mine.length ? survived / mine.length : 0 };
+}
 
 export function buildPrompt(text, kind = 'body') {
   return [
@@ -38,7 +85,7 @@ export function layerBText(text, { kind = 'body' } = {}) {
   const out = path.join(os.tmpdir(), `layerb-${Date.now()}.md`);
   try {
     const prompt = buildPrompt(text, kind);
-    const r = runChild('codex', codexArgs(out), { input: prompt, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }, { timeoutMin: TIMEOUTS.codex, label: 'codex' });
+    const r = runChild('codex', codexArgs(out, layerBModel()), { input: prompt, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }, { timeoutMin: TIMEOUTS.codex, label: 'codex' });
     if (r.status !== 0 || !fs.existsSync(out)) throw new Error(`codex failed (${r.status}): ${(r.stderr || r.stdout).slice(0, 300)}`);
     const result = checkOutput(fs.readFileSync(out, 'utf8'), prompt);
     if (!result || result.length < text.length * 0.6) throw new Error('codex output implausibly short');
@@ -50,7 +97,15 @@ export function layerBText(text, { kind = 'body' } = {}) {
 
 export function layerBEssay(inPath, outPath) {
   const { meta, body, raw } = splitFrontmatter(fs.readFileSync(inPath, 'utf8'));
-  const newBody = layerBText(body, { kind: 'body' });
+  let newBody = layerBText(body, { kind: 'body' });
+  let d = divergence(body, newBody);
+  if (d.rate > LAYERB_MAX_SURVIVAL) {
+    log('layerb', `${path.basename(inPath)}: ${(d.rate * 100).toFixed(0)}% of 3-word runs survived; retrying once`);
+    const retry = layerBText(body, { kind: 'body' });
+    const d2 = divergence(body, retry);
+    if (d2.rate < d.rate) { newBody = retry; d = d2; }
+  }
+  const div = { ...d, warn: d.rate > LAYERB_MAX_SURVIVAL };
   let changed = newBody !== body ? 1 : 0;
   for (const k of SHIPPING_FIELDS) {
     if (typeof meta[k] === 'string' && meta[k].length > 0) {
@@ -60,5 +115,5 @@ export function layerBEssay(inPath, outPath) {
   }
   fs.writeFileSync(outPath, joinFrontmatter(meta, newBody, raw));
   log('layerb', `${path.basename(inPath)} → ${path.basename(outPath)}, ${changed} strings changed`);
-  return { changed };
+  return { changed, divergence: div };
 }

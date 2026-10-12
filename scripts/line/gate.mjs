@@ -118,7 +118,10 @@ export function renderReport({ inPath, outPath, checks, verdict, fails, error })
   } else {
     L.push(`## Verdict: ${verdict.toUpperCase()}`, fails.length ? `Failing: ${fails.join('; ')}` : 'All checks clean.', '');
   }
-  L.push('## 1. Layer B (Codex rewrite)', checks.layerb ? `${checks.layerb.changed} strings rewritten → ${path.basename(outPath)}` : 'skipped (fixture / corrections-only run)', '');
+  const lb = checks.layerb;
+  L.push('## 1. Layer B (Codex rewrite)', lb
+    ? `${lb.changed} strings rewritten → ${path.basename(outPath)}${lb.divergence ? `; 3-gram survival ${(lb.divergence.rate * 100).toFixed(0)}% (target ≤ 35%)${lb.divergence.warn ? ' ⚠️ above target, kept after one retry' : ''}` : ''}`
+    : 'skipped (fixture / corrections-only run)', '');
   if (checks.plagiarism) {
     L.push('## 2. Plagiarism and provenance', `Verdict: ${checks.plagiarism.verdict}`, `Cost: $${Number(checks.plagiarism.cost_usd ?? 0).toFixed(3)}`,
       ...checks.plagiarism.sentences.map((s) => `- ${s.hit ? '❌ HIT' : '✅ clean'} — "${s.text.slice(0, 90)}…"${s.hit ? ` (${s.url})` : ''}`),

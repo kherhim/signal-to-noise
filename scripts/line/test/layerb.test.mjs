@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { codexArgs, buildPrompt, checkOutput } from '../layerb.mjs';
+import { codexArgs, buildPrompt, checkOutput, divergence, layerBModel, LAYERB_MAX_SURVIVAL } from '../layerb.mjs';
 
 test('codexArgs runs read-only, non-interactive, writing the last message to a file', () => {
-  const a = codexArgs('/tmp/out.md');
+  const a = codexArgs('/tmp/out.md', 'gpt-5.5');
+  assert.deepEqual(a.slice(0, 5), ['exec', '-m', 'gpt-5.5', '-c', 'service_tier=default']);
   assert.ok(a.includes('exec') && a.includes('--sandbox') && a.includes('read-only'));
   assert.ok(a.includes('-o') && a.includes('/tmp/out.md'));
 });
@@ -26,4 +27,28 @@ test('buildPrompt changes the fingerprint through words, never through bent word
   assert.match(p, /Do NOT do it by reordering clauses/);
   assert.match(p, /Keep natural word order/);
   assert.match(p, /few runs of three words survive/);
+});
+
+test('the Layer B model comes from repo config, never the global Codex config', () => {
+  assert.equal(layerBModel({ models: { layerb: 'gpt-5.5' } }), 'gpt-5.5');
+  assert.throws(() => layerBModel({ models: {} }), /models\.layerb/);
+  assert.throws(() => codexArgs('/tmp/o.md'), /model/);
+});
+
+test('divergence: identical text survives whole, a full reword hardly at all', () => {
+  const a = 'the board asked whether the company could rely on one supplier for the whole of its compute';
+  assert.equal(divergence(a, a).rate, 1);
+  const b = 'directors wanted to know if a single vendor might safely provide every bit of processing capacity the firm needs';
+  assert.ok(divergence(a, b).rate < 0.1);
+});
+
+test('divergence ignores figures, names, quotations and links, which are meant to survive', () => {
+  const a = 'Revenue rose 12% to £4.6bn at Anthropic. He said "we will not stop here" and [Reuters reported](https://x.example/a) it.';
+  const r = divergence(a, a);
+  assert.equal(r.total, 0);
+  assert.equal(r.rate, 0);
+});
+
+test('the survival threshold is 35%', () => {
+  assert.equal(LAYERB_MAX_SURVIVAL, 0.35);
 });
