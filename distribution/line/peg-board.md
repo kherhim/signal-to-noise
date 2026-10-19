@@ -1,10 +1,7 @@
-# Peg board — 2026-10-07
+# Peg board — 2026-10-12
 
 | Story | Score | Action | Maps to | Link |
 |---|---|---|---|---|
-| Nvidia weighs $10bn anchor stake as Anthropic nears $2tn, mid-October Nasdaq listing | 93.5 | fast_piece | The landlord finances the tenant | [source](https://cryptobriefing.com/anthropic-2t-ipo-on-track/) |
-| JPMorgan and Citi confirm Q3 results on 13 October, setting up a direct comparison | 89 | fast_piece | Two banks, one start line | [source](https://www.hudson-labs.com/research/jpmorgan-q3-2026-earnings-preview-revenue-guidance-outlook) |
-| Nvidia's $600bn backstop turns chip vendor into AI's de facto central bank | 74 | preempt | The invisible balance sheet | [source](https://forkast.news/nvidias-600-billion-exposure-to-openai-is-the-compute-landlord-thesis-taken-to-its-structural-extreme/) |
-| Verification eats 60% of enterprise agentic AI spend, McKinsey finds | 71.5 | preempt | The verification premium | [source](https://viviscape.com/news/hallucination-tax-enterprise-ai-2026) |
-| Burry's $176bn depreciation gap resurfaces ahead of hyperscaler Q3 earnings | 71 | preempt | The depreciation cliff | [source](https://techstrong.ai/features/tech-investor-michael-burry-alleges-accounting-irregularities-at-hyperscalers-in-pursuit-of-ai-boom/) |
-| Claude Haiku 4.5's retirement window opens 15 October | 70.5 | preempt | The 90-day notice | [source](https://platform.claude.com/docs/en/about-claude/model-deprecations) |
+| JPMorgan opens Q3 2026 bank earnings season on 13 October, with Citi expected the same week | 91.5 | fast_piece | Two banks, one start line | [source](https://www.hudson-labs.com/research/jpmorgan-q3-2026-earnings-preview-revenue-guidance-outlook) |
+| OpenAI to retire GPT-4, GPT-3.5 Turbo, o1, o1-pro, o3-mini and o4-mini on 23 October | 78.5 | preempt | The 90-day notice | [source](https://developers.openai.com/api/docs/deprecations) |
+| Jamie Dimon says hyperscaler AI spending could top $1 trillion next year, adding to inflation before it eases | 73.5 | preempt | Budgeting for deflation | [source](https://www.fool.com/investing/2026/10/01/jamie-dimon-says-hyperscaler-ai-spending-could-hit/) |
