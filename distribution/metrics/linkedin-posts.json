@@ -66,9 +66,15 @@
     {
       "label": "Edition 4 repost with commentary (Anthropic draft prospectus follow-up)",
       "posted": "2026-09-29",
-      "activity": "",
-      "essay": "the-landlord-finances-the-tenant",
-      "note": "activity id not yet captured; grab from the post URL for the metrics pull"
+      "activity": "7510726351381917696",
+      "essay": "the-landlord-finances-the-tenant"
+    },
+    {
+      "label": "Edition 5 announcement (budgeting for deflation)",
+      "posted": "2026-09-30",
+      "activity": "7510972211231449088",
+      "essay": "budgeting-for-deflation",
+      "url": "https://www.linkedin.com/pulse/budgeting-deflation-himanshu-kher-zxrje/"
     },
     {
       "label": "Budgeting for deflation (native post, pending)",
@@ -78,11 +84,25 @@
       "added": "2026-09-30"
     },
     {
+      "label": "Edition 6 announcement (Buffett on moats)",
+      "posted": "2026-10-07",
+      "activity": "7513561669017694208",
+      "essay": "buffett-on-moats-when-cognition-is-a-commodity",
+      "url": "https://www.linkedin.com/pulse/buffett-moats-when-cognition-commodity-himanshu-kher-ondde/"
+    },
+    {
       "label": "Buffett on moats when cognition is a commodity (native post, pending)",
       "posted": "",
       "activity": "",
       "essay": "buffett-on-moats-when-cognition-is-a-commodity",
       "added": "2026-10-07"
+    },
+    {
+      "label": "Edition 7 announcement (the leash problem)",
+      "posted": "2026-10-14",
+      "activity": "7516046026278006784",
+      "essay": "the-leash-problem",
+      "url": "https://www.linkedin.com/pulse/leash-problem-himanshu-kher-laqge/"
     },
     {
       "label": "The leash problem (native post, pending)",
