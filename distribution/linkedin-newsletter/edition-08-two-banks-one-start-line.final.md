@@ -23,7 +23,7 @@ The crisis hit every bank. JPMorgan shares were down 57% on a total-return basis
 
 **Citigroup** lost $27.7 billion in 2008 and needed $45 billion of TARP capital plus a government guarantee over $306 billion of troubled assets. In 2009 the government converted preferred shares into common at $3.25 and ended up owning roughly 27% of the company. Basic shares outstanding rose from around 5.3 billion to roughly 28.8 billion by 2010. When earnings recovered, they were split across five times as many shares. The dividend, the equivalent of $21.60 a year in 2007 on today’s share basis, is now $2.68.
 
-**JPMorgan** entered 2007 with capital near 7%, when many competitors ran at 3–4%. Jamie Dimon made this discipline famous as the ["fortress balance sheet"](/insights/buffett-on-the-fortress-balance-sheet). It cut its dividend in 2009 and took TARP money it quickly repaid, but it never made the government a co-owner or multiplied its share count. Its spare capacity let it buy while others sold: Bear Stearns in 2008, Washington Mutual’s banking operations that September, First Republic in 2023. The dividend is now $6.60 a year.
+**JPMorgan** entered 2007 with capital near 7%, when many competitors ran at 3–4%. Jamie Dimon made this discipline famous as the ["fortress balance sheet"](https://signal-to-noise.co/insights/buffett-on-the-fortress-balance-sheet). It cut its dividend in 2009 and took TARP money it quickly repaid, but it never made the government a co-owner or multiplied its share count. Its spare capacity let it buy while others sold: Bear Stearns in 2008, Washington Mutual’s banking operations that September, First Republic in 2023. The dividend is now $6.60 a year.
 
 **[IMAGE: fig2-dividends.png]**
 *Annual dividend per share, 2007 peak against October 2026, on today’s share basis.*
@@ -57,13 +57,13 @@ Strip out the banking and the lessons fall into three groups: balance sheet, cap
 
 **The balance sheet**
 
-1. **Survival is the first return.** Citi owners did not lose a quarter century because the bank earned poorly on average. They lost it in about eighteen months, once. The discipline that prevents this is [built in calm and held under pressure](/insights/buffett-on-the-fortress-balance-sheet). It looks inefficient, lowers returns and hands an advantage to bolder competitors in every year except the decisive one.
+1. **Survival is the first return.** Citi owners did not lose a quarter century because the bank earned poorly on average. They lost it in about eighteen months, once. The discipline that prevents this is [built in calm and held under pressure](https://signal-to-noise.co/insights/buffett-on-the-fortress-balance-sheet). It looks inefficient, lowers returns and hands an advantage to bolder competitors in every year except the decisive one.
 
 2. **Dilution is how a bad year becomes a bad quarter century.** Losses in the income statement can heal. Equity issued at the bottom stays issued, and the share count divides every future dividend, buyback and earnings figure.
 
 **Capital allocation**
 
-3. **The round trip in your own shares is the cardinal sin.** Citi bought back stock above $45 in the boom and issued billions of shares at $3.25 in the bust, the reverse of [the Buffett test](/insights/ask-warren-buyback-multiple), which says to buy below intrinsic value and issue above it. JPMorgan used the same tool in the opposite order, and its third-quarter cut shows it still treats buybacks as the last claim on capital.
+3. **The round trip in your own shares is the cardinal sin.** Citi bought back stock above $45 in the boom and issued billions of shares at $3.25 in the bust, the reverse of [the Buffett test](https://signal-to-noise.co/insights/ask-warren-buyback-multiple), which says to buy below intrinsic value and issue above it. JPMorgan used the same tool in the opposite order, and its third-quarter cut shows it still treats buybacks as the last claim on capital.
 
 4. **Transact from strength, or be transacted upon.** JPMorgan built its modern franchise by buying in storms at prices only a fortress could pay. Citi built the supermarket at the top of the cycle and sold Smith Barney, a crown jewel, in the crisis to raise capital. Strong companies choose when to deal. Weak ones take the timing they are given.
 
@@ -86,6 +86,8 @@ The scoreboard that counts is the one a patient owner reads twenty-six years lat
 ---
 
 *Methodology: total returns run from 31 December 1999 to 31 December 2025, dividends reinvested, in nominal US dollars, from dividend- and split-adjusted prices (Yahoo Finance), cross-checked against [independent return calculations](https://totalrealreturns.com/n/SPY,JPM,BAC,C,WFC?start=1999-12-31&end=2025-12-31). Citi’s figures allow for the 2002 Travelers spin-off and the 2011 reverse split. Before December 2000 the JPMorgan series is Chase Manhattan. Fundamentals come from the banks’ filings.*
+
+**[Read the essay at signal-to-noise.co](https://signal-to-noise.co/insights/two-banks-one-start-line/?utm_source=linkedin&utm_medium=newsletter&utm_campaign=two-banks-one-start-line)**
 
 *A new essay lands here every week, so subscribe if this was useful.*
 
