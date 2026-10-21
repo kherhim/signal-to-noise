@@ -50,3 +50,10 @@ test('house style: "learned" is never flagged or warned', () => {
   assert.deepEqual(scanBrE('We learned a lot.'), []);
   assert.deepEqual(scanAmbiguous('We learned a lot.'), []);
 });
+
+test('applySpellingFixes leaves HTML and SVG attributes alone but fixes the text between tags', () => {
+  const line = '<summary style="cursor:pointer;color:#98a0a8">The color of money</summary><text fill="gray">gray</text>';
+  const { text } = applySpellingFixes(line);
+  assert.equal(text, '<summary style="cursor:pointer;color:#98a0a8">The colour of money</summary><text fill="gray">grey</text>');
+  assert.deepEqual(scanBrE('<span style="color:red">ok</span>'), []);
+});

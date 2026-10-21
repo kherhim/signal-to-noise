@@ -33,9 +33,23 @@ export function extractQuotes(body) {
   body = stripMarkup(body);
   const out = [];
   for (const m of body.matchAll(/["“]([^"”\n]{12,})["”](?:\s*\(\[[^\]]*\]\((https?:[^)]+)\))?/g)) out.push({ quote: m[1], url: m[2] ?? null });
-  for (const m of body.matchAll(/^((?:> (?!—)[^\n>][^\n]*\n)+)(?:>\s*\n)?(?:> — [^\n]*?\[[^\]]*\]\((https?:[^)]+)\))?/gm)) {
-    const quote = m[1].split('\n').filter(Boolean).map((l) => l.replace(/^> /, '').trim()).join(' ');
-    out.push({ quote, url: m[2] ?? null });
+  for (const m of body.matchAll(/^(?:>[^\n]*(?:\n|$))+/gm)) {
+    const lines = m[0].split('\n').map((l) => l.replace(/^>\s?/, '').trim()).filter(Boolean);
+    if (!lines.length) continue;
+    // The attribution is the last line when it opens with any dash or "Source:", or, after at
+    // least one line of quotation, carries a link. Layer B and the Claudish rewrite strip em
+    // dashes, so the dash alone cannot be what pairs a quotation with its source.
+    const last = lines[lines.length - 1];
+    const link = last.match(/\[[^\]]*\]\((https?:[^)]+)\)/);
+    let url = null;
+    if (/^(?:—|–|-{1,2})\s|^source:/i.test(last) || (lines.length > 1 && link)) {
+      lines.pop();
+      url = link?.[1] ?? null;
+    } else {
+      const tail = last.match(/\s*\(\[[^\]]*\]\((https?:[^)]+)\)\)\.?$/);
+      if (tail) { lines[lines.length - 1] = last.slice(0, tail.index); url = tail[1]; }
+    }
+    if (lines.length) out.push({ quote: lines.join(' '), url });
   }
   return out;
 }

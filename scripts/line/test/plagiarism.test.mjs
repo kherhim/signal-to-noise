@@ -43,3 +43,15 @@ test('stripMarkup removes svg/script/style/comments/fences/tags so their quoted 
   assert.ok(out.includes('kept text'));
   assert.deepEqual(extractQuotes(body), [{ quote: 'an actual quotation of note', url: 'https://x.y/z' }]);
 });
+
+test('extractQuotes pairs a blockquote with its source when the attribution has no em dash', () => {
+  const body = '> Price is what you pay.\n>\n> Buffett, [2008 letter](https://berkshire/2008)\n\n> Value is what you get.\n> - Buffett, [letter](https://b/2)\n\n> Risk comes from not knowing what you are doing. ([Source](https://b/3))\n\n> Source: [FT](https://ft/x)';
+  assert.deepEqual(extractQuotes(body), [
+    { quote: 'Price is what you pay.', url: 'https://berkshire/2008' },
+    { quote: 'Value is what you get.', url: 'https://b/2' },
+    { quote: 'Risk comes from not knowing what you are doing.', url: 'https://b/3' },
+  ]);
+});
+test('extractQuotes leaves an unattributed blockquote without a url', () => {
+  assert.deepEqual(extractQuotes('> Nobody said this anywhere.\n'), [{ quote: 'Nobody said this anywhere.', url: null }]);
+});

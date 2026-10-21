@@ -37,8 +37,9 @@ export const AMBIGUOUS = {
 };
 
 // Matches spans that are off-limits for spelling checks/fixes: a backtick code span, a bare
-// URL, or a markdown link destination (the "](...)" tail of "[text](url)").
-const PROTECTED_RE = /`[^`]*`|https?:\/\/\S+|\]\([^)]*\)/g;
+// URL, a markdown link destination (the "](...)" tail of "[text](url)"), or an HTML/SVG tag,
+// whose attributes are code (CSS `color:` must stay American). Text between tags is checked.
+const PROTECTED_RE = /`[^`]*`|https?:\/\/\S+|\]\([^)]*\)|<[^<>\n]+>/g;
 
 // Split a single line into { text, protected } pieces. Both scanBrE/scanAmbiguous and
 // applySpellingFixes iterate the same segments and only look at unprotected text, so a
