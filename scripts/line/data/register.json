@@ -6,7 +6,7 @@
       "formal": "expenditure",
       "plain": "spending",
       "owner_per_1k": 0.09,
-      "line_per_1k": 0.27,
+      "line_per_1k": 0.46,
       "source": "seed",
       "except": [
         "capital expenditure"
@@ -16,7 +16,7 @@
       "formal": "acquire",
       "plain": "buy",
       "owner_per_1k": 0.11,
-      "line_per_1k": 0.27,
+      "line_per_1k": 0.37,
       "source": "seed"
     },
     {
@@ -40,7 +40,7 @@
       "formal": "utilisation",
       "plain": "use",
       "owner_per_1k": 0.02,
-      "line_per_1k": 0,
+      "line_per_1k": 0.18,
       "source": "seed"
     },
     {
@@ -54,7 +54,7 @@
       "formal": "demonstrate",
       "plain": "show",
       "owner_per_1k": 0.25,
-      "line_per_1k": 0.27,
+      "line_per_1k": 0.37,
       "source": "seed"
     },
     {
@@ -89,7 +89,7 @@
       "formal": "purchase",
       "plain": "buy",
       "owner_per_1k": 0.29,
-      "line_per_1k": 0.73,
+      "line_per_1k": 0.82,
       "source": "seed"
     },
     {
@@ -152,42 +152,42 @@
       "formal": "generator",
       "plain": "earner",
       "owner_per_1k": 0,
-      "line_per_1k": 0,
+      "line_per_1k": 0.09,
       "source": "seed"
     },
     {
       "formal": "assemble",
       "plain": "build",
       "owner_per_1k": 0.05,
-      "line_per_1k": 0.27,
+      "line_per_1k": 0.37,
       "source": "seed"
     },
     {
       "formal": "excessive",
       "plain": "too big",
       "owner_per_1k": 0.07,
-      "line_per_1k": 0,
+      "line_per_1k": 0.09,
       "source": "seed"
     },
     {
       "formal": "expansion",
       "plain": "growth",
       "owner_per_1k": 0.16,
-      "line_per_1k": 0,
+      "line_per_1k": 0.09,
       "source": "seed"
     },
     {
       "formal": "finest",
       "plain": "best",
       "owner_per_1k": 0,
-      "line_per_1k": 0,
+      "line_per_1k": 0.09,
       "source": "seed"
     },
     {
       "formal": "argue",
       "plain": "say",
       "owner_per_1k": 0.2,
-      "line_per_1k": 0.64,
+      "line_per_1k": 0.82,
       "source": "seed"
     },
     {
@@ -208,7 +208,7 @@
       "formal": "additional",
       "plain": "more",
       "owner_per_1k": 0.05,
-      "line_per_1k": 0.27,
+      "line_per_1k": 0.37,
       "source": "seed"
     },
     {
@@ -313,14 +313,14 @@
       "formal": "external funding",
       "plain": "borrowing",
       "owner_per_1k": 0,
-      "line_per_1k": 0,
+      "line_per_1k": 0.09,
       "source": "seed"
     },
     {
       "formal": "respond to",
       "plain": "move with",
       "owner_per_1k": 0.07,
-      "line_per_1k": 0,
+      "line_per_1k": 0.09,
       "source": "seed"
     },
     {
@@ -334,7 +334,7 @@
       "formal": "substantial",
       "plain": "large",
       "owner_per_1k": 0.05,
-      "line_per_1k": 0.27,
+      "line_per_1k": 0.46,
       "source": "seed"
     },
     {

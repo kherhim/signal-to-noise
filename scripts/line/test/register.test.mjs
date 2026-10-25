@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { loadRegister, scanRegister, measureRates, ownerTexts, lineTexts, inflect, topFormal, OWNER_MAX, REGISTER } from '../register.mjs';
+import { loadRegister, scanRegister, measureRates, ownerTexts, lineTexts, lineSlugs, lineFile, inflect, topFormal, OWNER_MAX, REGISTER } from '../register.mjs';
+import { STAGING } from '../state.mjs';
 
 const PAIRS = [
   { formal: 'expenditure', plain: 'spending', owner_per_1k: 0, line_per_1k: 1, source: 'seed', except: ['capital expenditure'] },
@@ -57,7 +58,11 @@ test('measureRates counts per 1,000 words, honouring exceptions', () => {
   assert.equal(r['prior to'], 0);
 });
 
-test('owner-rate guard: no kept pair flags the owner\'s own voice', () => {
+// Without _sources only the ledger is known, so gated essays outside it
+// (two-banks) would count as the owner's voice: skip, never pass on that.
+const noStaging = !fs.existsSync(STAGING) && `no ${path.relative(process.cwd(), STAGING) || STAGING}: line-written essays outside the ledger are unknown (set LINE_STAGING)`;
+
+test('owner-rate guard: no kept pair flags the owner\'s own voice', { skip: noStaging }, () => {
   const reg = loadRegister();
   const rates = measureRates(ownerTexts(), reg.pairs);
   const over = reg.pairs.filter((p) => rates[p.formal] > OWNER_MAX).map((p) => `${p.formal} ${rates[p.formal].toFixed(2)}`);
@@ -71,4 +76,24 @@ test('line output is optional: a missing _sources gives no texts', () => {
 test('topFormal puts the most line-prone words first', () => {
   const reg = { pairs: [{ formal: 'a', line_per_1k: 0.1 }, { formal: 'b', line_per_1k: 0.9 }] };
   assert.deepEqual(topFormal(reg, 1), ['b']);
+});
+
+test('line-written slugs: the ledger plus every staging folder', () => {
+  const st = fs.mkdtempSync(path.join(os.tmpdir(), 'slugs-'));
+  fs.mkdirSync(path.join(st, 'gated-by-hand'));
+  fs.writeFileSync(path.join(st, 'loose-file.md'), 'x');
+  assert.deepEqual(lineSlugs({ staging: st, ledger: { published: [{ slug: 'from-ledger' }] } }), ['from-ledger', 'gated-by-hand']);
+  assert.deepEqual(lineSlugs({ staging: path.join(st, 'absent'), ledger: { published: [{ slug: 'a' }] } }), ['a']);
+});
+
+test('line text prefers the newest raw Layer B output over a hand-fixed gated.md', () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'linefile-'));
+  assert.equal(lineFile(d), null);
+  fs.writeFileSync(path.join(d, 'gated.md'), 'fixed');
+  assert.equal(path.basename(lineFile(d)), 'gated.md');
+  fs.writeFileSync(path.join(d, 'gated.layerb.md'), 'raw');
+  fs.utimesSync(path.join(d, 'gated.layerb.md'), 1000, 1000);
+  fs.writeFileSync(path.join(d, 'gated.layerb-raw.md'), 'raw2');
+  fs.utimesSync(path.join(d, 'gated.layerb-raw.md'), 2000, 2000);
+  assert.equal(path.basename(lineFile(d)), 'gated.layerb-raw.md');
 });

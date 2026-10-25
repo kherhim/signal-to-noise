@@ -24,22 +24,31 @@
 //   node scripts/line/register.mjs measure [--sources <dir>] [--dry]
 //
 // recomputes owner_per_1k from the owner's hand-written essays and line_per_1k
-// from the line's gated output in <sources>/staging-articles/*/gated.md
-// (default: the repo's _sources, which is gitignored and may be absent; the
-// stored line rates are then kept).
+// from the line's gated output in <sources>/staging-articles/<slug>/: the raw
+// Layer B output (gated.layerb*.md, newest) when there is one, else gated.md,
+// which is often hand-fixed and understates the line (default: the repo's
+// _sources, which is gitignored and may be absent; the stored line rates are
+// then kept).
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './env.mjs';
 import { scannableText } from './claudish.mjs';
 import { loadLedger } from './queue.mjs';
+import { STAGING } from './state.mjs';
 
 export const REGISTER = path.join(ROOT, 'scripts', 'line', 'data', 'register.json');
 const INSIGHTS = path.join(ROOT, 'src', 'content', 'insights');
 export const OWNER_MAX = 0.3;
 
-// Essays that went through the gate (and Layer B) outside the line's ledger.
-// Their published text is not the owner's plain register.
-export const GATED_OUTSIDE_LEDGER = ['two-banks-one-start-line'];
+// Which essays are line-written: every ledger slug, plus any slug with a
+// staging folder, because an essay that went through the gate (and Layer B)
+// outside the ledger is not the owner's plain register either (two-banks
+// shipped by hand after the line was killed). Shared with humaniser-learn.mjs.
+// Without _sources (a fresh clone) only the ledger is known.
+export function lineSlugs({ staging = STAGING, ledger = loadLedger() } = {}) {
+  const dirs = fs.existsSync(staging) ? fs.readdirSync(staging, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name) : [];
+  return [...new Set([...ledger.published.map((p) => p.slug), ...dirs])].sort();
+}
 
 export function loadRegister(file = REGISTER) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return { pairs: [] }; }
@@ -120,23 +129,34 @@ export function topFormal(register = loadRegister(), n = 20) {
     .slice(0, n).map((p) => p.formal);
 }
 
-export function ownerTexts({ dir = INSIGHTS, exclude = [...loadLedger().published.map((p) => p.slug), ...GATED_OUTSIDE_LEDGER] } = {}) {
+export function ownerTexts({ dir = INSIGHTS, exclude = lineSlugs() } = {}) {
   return fs.readdirSync(dir).filter((f) => f.endsWith('.md') && !exclude.includes(f.slice(0, -3))).sort()
     .map((f) => fs.readFileSync(path.join(dir, f), 'utf8'));
+}
+
+const newest = (files) => files.map((f) => [f, fs.statSync(f).mtimeMs]).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+
+// The text Layer B actually produced for one essay: the newest
+// gated.layerb*.md, else gated.md, else null.
+export function lineFile(slugDir) {
+  if (!fs.existsSync(slugDir)) return null;
+  const raw = fs.readdirSync(slugDir).filter((f) => /^gated\.layerb.*\.md$/.test(f)).map((f) => path.join(slugDir, f));
+  const gated = path.join(slugDir, 'gated.md');
+  return newest(raw) ?? (fs.existsSync(gated) ? gated : null);
 }
 
 export function lineTexts(sources = path.join(ROOT, '_sources')) {
   const dir = path.join(sources, 'staging-articles');
   if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir).sort().map((d) => path.join(dir, d, 'gated.md')).filter((f) => fs.existsSync(f))
-    .map((f) => fs.readFileSync(f, 'utf8'));
+  return fs.readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort()
+    .map((d) => lineFile(path.join(dir, d))).filter(Boolean).map((f) => fs.readFileSync(f, 'utf8'));
 }
 
 const r2 = (x) => Math.round(x * 100) / 100;
 
 export function measure({ file = REGISTER, sources, dry = false, today = new Date().toISOString().slice(0, 10) } = {}) {
   const reg = loadRegister(file);
-  const owner = ownerTexts();
+  const owner = ownerTexts({ exclude: lineSlugs({ staging: sources ? path.join(sources, 'staging-articles') : STAGING }) });
   const line = lineTexts(sources);
   const o = measureRates(owner, reg.pairs);
   const l = line.length ? measureRates(line, reg.pairs) : null;

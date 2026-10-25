@@ -61,14 +61,16 @@ gcloud compute ssh s2n-web --zone=us-central1-a --tunnel-through-iap --command='
 The ssh test makes gcloud create and register this Mac's SSH key. Do not run
 `./deploy.sh` until there is something to publish.
 
-## 5. Cut over the scheduled job
+## 5. Cut over the scheduled jobs
 
-Only the Monday 07:30 metrics pull is live (the essay line and the watermarks container
-were retired on 12 Oct 2026). Stop it on the old Mac **first**, then start it on the new:
+Two jobs are live: the Monday 07:30 metrics pull and the Monday 07:45 humaniser
+learn, which needs `claude`, `gh auth status` and git push working on the new Mac
+(the essay line and the watermarks container were retired on 12 Oct 2026). Stop
+them on the old Mac **first**, then start them on the new:
 
 ```sh
 infra/migrate-agents.sh --stop    # on the OLD Mac
-infra/migrate-agents.sh           # on the NEW Mac: rewrites paths for this Mac, then loads it
+infra/migrate-agents.sh           # on the NEW Mac: rewrites paths for this Mac, then loads both
 ```
 
 ## 6. Afterwards
