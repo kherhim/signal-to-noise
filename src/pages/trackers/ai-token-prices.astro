@@ -1,0 +1,200 @@
+---
+// AI token price index tracker. Not linked from the nav until the owner says so.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const FORTUNE = 'https://fortune.com/2026/09/09/ai-compute-tokens-cheaper-boom/';
+const A16Z = 'https://a16z.com/llmflation-llm-inference-cost/';
+
+// Latest OpenRouter snapshot (scripts/trackers/token-prices.mjs).
+const snaps = import.meta.glob('../../data/token-prices/snapshots/*.json', { eager: true, import: 'default' });
+const latestKey = Object.keys(snaps).sort().at(-1);
+const snap = snaps[latestKey];
+const asOf = new Date(snap.fetched_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const rows = [...snap.labs].filter((l) => l.flagship).sort((a, b) => b.flagship.blended - a.flagship.blended);
+const median = (xs) => { const v = [...xs].sort((a, b) => a - b); const m = Math.floor(v.length / 2); return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2; };
+const medFlag = median(rows.map((l) => l.flagship.blended));
+const budgets = rows.filter((l) => l.budget).map((l) => l.budget.blended);
+const medBudget = median(budgets);
+const premiums = rows.filter((l) => l.premium);
+const cheapestFlag = [...rows].sort((a, b) => a.flagship.blended - b.flagship.blended)[0];
+// Tier order, colour and marker shape (shape keeps identity readable without colour).
+const TIERS = [
+  { key: 'budget', label: 'Budget', color: '#C0822A', shape: 'circle' },
+  { key: 'flagship', label: 'Flagship', color: '#3F86D0', shape: 'square' },
+  { key: 'premium', label: 'Premium', color: '#3FA58C', shape: 'diamond' },
+];
+const present = (l) => TIERS.filter((t) => l[t.key]);
+
+// Dot plot geometry (log scale, blended price)
+const W = 640, rowH = 34, L = 150, R = 24, T = 16, B = 34;
+const H = T + rows.length * rowH + B;
+const lo = Math.log10(0.1), hi = Math.log10(30);
+const xp = (v) => L + ((Math.log10(v) - lo) / (hi - lo)) * (W - L - R);
+const yr = (i) => T + i * rowH + rowH / 2;
+const ticks = [0.1, 0.3, 1, 3, 10, 30];
+const money = (v) => (v < 1 ? `$${v.toFixed(2)}` : `$${v % 1 ? v.toFixed(2) : v}`);
+
+// Chart 3 geometry (log scale, cost of GPT-3-level quality)
+const W3 = 640, H3 = 280, L3 = 64, R3 = 24, T3 = 24, B3 = 40;
+const yrs = [2021.85, 2022.85, 2023.85, 2024.85];
+const xr = (t) => L3 + ((t - 2021.6) / (2025.1 - 2021.6)) * (W3 - L3 - R3);
+const ylog = (v) => T3 + ((Math.log10(100) - Math.log10(v)) / (Math.log10(100) - Math.log10(0.01))) * (H3 - T3 - B3);
+---
+
+<BaseLayout
+  title="AI token price index — signal-to-noise.co"
+  description="What nine AI labs charge per million tokens for their budget, flagship and premium models, tracked monthly."
+  starsDim
+>
+  <section class="mx-auto max-w-[960px] px-6 py-16 sm:py-24 tracker">
+    <header class="mb-12 max-w-[720px]">
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Tracker</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">
+        The AI token price index
+      </h1>
+      <p class="text-lg text-muted leading-relaxed">
+        Nine AI labs' prices per million tokens for a budget model, a flagship and, where they sell one, a premium tier, updated monthly. The gaps between tiers matter more to a budget than the gaps between labs.
+      </p>
+    </header>
+
+    <div class="tiles">
+      <div class="tile">
+        <p class="k">Flagship models, median</p>
+        <p class="hero">{money(medFlag)}</p>
+        <p class="sub">blended, per million tokens, {rows.length} labs</p>
+      </div>
+      <div class="tile">
+        <p class="k">Budget models, median</p>
+        <p class="hero">{money(medBudget)}</p>
+        <p class="sub">{budgets.length} labs sell a budget tier</p>
+      </div>
+      <div class="tile">
+        <p class="k">Cheapest flagship</p>
+        <p class="hero">{money(cheapestFlag.flagship.blended)}</p>
+        <p class="sub">{cheapestFlag.lab}; {premiums.length} labs also sell a premium tier</p>
+      </div>
+    </div>
+
+    <figure class="chart">
+      <figcaption class="title">Price per million tokens by lab, {asOf} (blended, log scale)</figcaption>
+      <p class="legend top-legend">
+        {TIERS.map((t) => <span><i class={t.shape} style={`background:${t.color}`}></i>{t.label}</span>)}
+      </p>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Blended list price per million tokens for each lab's budget, flagship and premium model, ${asOf}.`}>
+        {ticks.map((t) => (
+          <g>
+            <line x1={xp(t)} x2={xp(t)} y1={T} y2={H - B} class="grid" />
+            <text x={xp(t)} y={H - 12} text-anchor="middle" class="axis">{money(t)}</text>
+          </g>
+        ))}
+        {rows.map((l, i) => (
+          <g>
+            <text x={L - 12} y={yr(i) + 4} text-anchor="end" class="lbl">{l.lab}</text>
+            {present(l).length > 1 && <line x1={xp(Math.min(...present(l).map((t) => l[t.key].blended)))} x2={xp(Math.max(...present(l).map((t) => l[t.key].blended)))} y1={yr(i)} y2={yr(i)} class="span" />}
+            {present(l).map((t) => {
+              const p = l[t.key], x = xp(p.blended), y = yr(i);
+              const tip = `${l.lab} ${t.label.toLowerCase()}: ${p.name} · in ${money(p.input)} / out ${money(p.output)} · blended ${money(p.blended)}`;
+              return t.shape === 'circle' ? <circle cx={x} cy={y} r="5.5" fill={t.color} class="ring hit" data-tip={tip} />
+                : t.shape === 'square' ? <rect x={x - 5} y={y - 5} width="10" height="10" rx="1.5" fill={t.color} class="ring hit" data-tip={tip} />
+                : <rect x={x - 5} y={y - 5} width="10" height="10" rx="1.5" fill={t.color} class="ring hit" transform={`rotate(45 ${x} ${y})`} data-tip={tip} />;
+            })}
+          </g>
+        ))}
+      </svg>
+      <details><summary>View the data</summary>
+        <div class="scroll"><table><thead><tr><th>Lab</th><th>Tier</th><th>Model</th><th>In / out</th><th>Blended</th></tr></thead>
+          <tbody>{rows.flatMap((l) => present(l).map((t, j) => (
+            <tr class={j === 0 ? 'first' : ''}><td>{j === 0 ? l.lab : ''}</td><td>{t.label}</td><td>{l[t.key].name}</td><td>{money(l[t.key].input)} / {money(l[t.key].output)}</td><td>{money(l[t.key].blended)}</td></tr>
+          )))}</tbody></table></div>
+      </details>
+    </figure>
+
+    <aside class="note">
+      <p class="k">What companies actually pay</p>
+      <p>List prices tell only half the story. Ramp's spending data showed businesses paid an average of $0.68 per million tokens in September, 41% below March, as use shifted to cheaper models (<a href={FORTUNE} class="underline">Fortune</a>).</p>
+    </aside>
+
+    <figure class="chart">
+      <figcaption class="title">The long run: cost of GPT-3-level output, per million tokens (log scale)</figcaption>
+      <svg viewBox={`0 0 ${W3} ${H3}`} role="img" aria-label="The cost of GPT-3-level quality fell from $60 per million tokens in November 2021 to $0.06 by late 2024, roughly tenfold a year.">
+        {[100, 10, 1, 0.1, 0.01].map((v) => (
+          <g>
+            <line x1={L3} x2={W3 - R3} y1={ylog(v)} y2={ylog(v)} class="grid" />
+            <text x={L3 - 8} y={ylog(v) + 4} text-anchor="end" class="axis">{v >= 1 ? `$${v}` : `$${v}`}</text>
+          </g>
+        ))}
+        {[2022, 2023, 2024, 2025].map((t) => <text x={xr(t)} y={H3 - 14} text-anchor="middle" class="axis">{t}</text>)}
+        <line x1={xr(yrs[0])} y1={ylog(60)} x2={xr(yrs[3])} y2={ylog(0.06)} class="line dashed" />
+        <circle cx={xr(yrs[0])} cy={ylog(60)} r="5" class="pt" data-tip="Nov 2021: $60 (a16z)" />
+        <circle cx={xr(yrs[3])} cy={ylog(0.06)} r="5" class="pt" data-tip="Late 2024: $0.06 (a16z)" />
+        <text x={xr(yrs[0]) + 12} y={ylog(60) + 4} class="lbl">$60</text>
+        <text x={xr(yrs[3]) - 12} y={ylog(0.06) + 18} text-anchor="end" class="lbl">$0.06</text>
+        <text x={xr(2023.45)} y={ylog(9)} class="axis">about 10× cheaper each year</text>
+      </svg>
+    </figure>
+
+    <section class="max-w-[720px] mt-16">
+      <h2 class="text-sm uppercase tracking-widest text-accent mb-6">What it means for a budget</h2>
+      <ul class="points">
+        <li>An AI budget line set in March at March prices now sits about 40% too high on price alone. Treat that underspend as a reserve for volume yet to come, not a saving.</li>
+        <li>Use is shifting to cheaper models, which cuts cost per head before any price falls. One annual total hides which effect is winning.</li>
+        <li>A multi-year committed-spend contract agreed at this quarter's rate gives away the deflation the buyer was about to collect.</li>
+      </ul>
+      <p class="text-muted mt-6">The argument in full: <a href="/insights/budgeting-for-deflation/" class="underline">Budgeting for deflation</a>.</p>
+    </section>
+
+    <section class="max-w-[720px] mt-16 text-sm text-muted leading-relaxed">
+      <h2 class="text-sm uppercase tracking-widest text-accent mb-4">Method and sources</h2>
+      <p>Lab prices come from <a href="https://openrouter.ai/models" class="underline">OpenRouter</a>, fetched {asOf}. OpenRouter can route a model through third-party hosts, and large buyers agree discounts that no list records. Blended prices weight input three to one against output. I pick each lab's models by hand and review them monthly. The flagship is the lab's main general model, the budget model its cheapest current one, and the premium tier a stronger model sold well above the flagship. A faster serving of the same model does not count as premium. Every price was checked against the lab's own pricing page on 25 October 2026, and where OpenRouter differed (Zhipu's GLM-5.3) the index uses the lab's price. Several labs charge more for very long prompts, so the index shows the standard rate. DeepSeek charges double during weekday peak hours, and the index shows the off-peak rate. Qwen prices use Alibaba's international (Singapore) rates. What companies pay: Ramp spending data, reported by <a href={FORTUNE} class="underline">Fortune, 9 September 2026</a>. Long-run series: Guido Appenzeller, <a href={A16Z} class="underline">“LLMflation”, Andreessen Horowitz</a>. Updated monthly.</p>
+    </section>
+
+    <div id="tip" class="tip" hidden></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tracker { --rule: #3f3f46; --ink2: #94a3b8; }
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 3rem; }
+  @media (max-width: 640px) { .tiles { grid-template-columns: 1fr; } }
+  .tile { border: 1px solid var(--rule); border-radius: 8px; padding: 18px; }
+  .tile .k { font-size: 12px; color: var(--ink2); text-transform: uppercase; letter-spacing: .06em; }
+  .tile .hero { font-size: 2.6rem; font-weight: 600; color: #f1f5f9; line-height: 1.1; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  .tile .sub { font-size: 13px; color: var(--ink2); }
+  .chart { margin: 0 0 3.5rem; }
+  .chart .title { font-size: 15px; font-weight: 600; color: #cbd0d6; margin-bottom: 10px; }
+  .chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .grid { stroke: #26282b; stroke-width: 1; }
+  .axis { fill: #98a0a8; font-size: 11.5px; }
+  .lbl { fill: #cbd0d6; font-size: 12px; font-weight: 600; }
+  .line { fill: none; stroke: #e8e3d6; stroke-width: 2; }
+  .dashed { stroke-dasharray: 5 4; }
+  .pt { fill: #e8e3d6; stroke: #0a0a0a; stroke-width: 2; cursor: default; }
+  .pt.hollow { fill: #0a0a0a; stroke: #e8e3d6; stroke-width: 1.5; stroke-dasharray: 2 2; }
+  .ring { stroke: #0a0a0a; stroke-width: 2; }
+  .span { stroke: #3f3f46; stroke-width: 2; }
+  .top-legend { margin: 0 0 6px; }
+  .note { border-left: 2px solid #3f3f46; padding: 4px 0 4px 16px; margin: -1.5rem 0 3.5rem; max-width: 720px; color: #cbd5e1; font-size: 15px; line-height: 1.6; }
+  .note .k { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  .legend { display: flex; gap: 18px; font-size: 13px; color: var(--ink2); margin-top: 8px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .legend i.circle { border-radius: 50%; }
+  .legend i.diamond { transform: rotate(45deg) scale(.85); }
+  .scroll { overflow-x: auto; }
+  tr.first td { border-top: 1px solid #3f3f46; }
+  details { margin-top: 10px; font-size: 13px; color: var(--ink2); }
+  details summary { cursor: pointer; }
+  table { margin-top: 8px; border-collapse: collapse; }
+  td, th { padding: 4px 14px 4px 0; text-align: left; border-bottom: 1px solid #26282b; }
+  .points { list-style: disc; padding-left: 1.2rem; color: #e2e8f0; line-height: 1.7; }
+  .points li { margin-bottom: .75rem; }
+  .tip { position: fixed; pointer-events: none; background: #1a1a19; border: 1px solid var(--rule); color: #f1f5f9; font-size: 12px; padding: 6px 8px; border-radius: 6px; z-index: 50; }
+</style>
+
+<script>
+  const tip = document.getElementById('tip');
+  document.querySelectorAll('[data-tip]').forEach((el) => {
+    el.addEventListener('mouseenter', () => { tip.textContent = el.getAttribute('data-tip'); tip.hidden = false; });
+    el.addEventListener('mousemove', (e) => { tip.style.left = `${e.clientX + 12}px`; tip.style.top = `${e.clientY + 12}px`; });
+    el.addEventListener('mouseleave', () => { tip.hidden = true; });
+  });
+</script>
