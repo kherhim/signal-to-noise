@@ -5,7 +5,8 @@ import { layerBEssay } from './layerb.mjs';
 import { checkPlagiarism } from './plagiarism.mjs';
 import { scanBrE, applySpellingFixes, scanAmbiguous } from './bre.mjs';
 import { inspectFile, cleanFile, serviceUp, summariseFindings } from './layera.mjs';
-import { splitFrontmatter, joinFrontmatter, BRE_FIELDS } from './md.mjs';
+import { splitFrontmatter, joinFrontmatter, BRE_FIELDS, SHIPPING_FIELDS } from './md.mjs';
+import { compareFacts, renderFacts } from './figures.mjs';
 import { scanClaudish, claudishFails, renderClaudish } from './claudish.mjs';
 import { checkHumaniser, renderHumaniser, humaniserFails } from './humaniser.mjs';
 import { loadNeverList, neverListHits } from './queue.mjs';
@@ -31,6 +32,19 @@ export function serviceDownError() {
   return 'Layer A self-check failed: the in-repo cleaner (scripts/line/layera.mjs) did not remove a planted zero-width space';
 }
 
+// The draft against the Layer B rewrite: the body, then each shipping field
+// Layer B rewrites, each finding tagged with where it was found.
+export function factsPreserved(inPath, outPath) {
+  const a = splitFrontmatter(fs.readFileSync(inPath, 'utf8')), b = splitFrontmatter(fs.readFileSync(outPath, 'utf8'));
+  const findings = compareFacts(a.body, b.body).map((f) => ({ ...f, field: 'body' }));
+  for (const k of SHIPPING_FIELDS) {
+    if (typeof a.meta[k] === 'string' || typeof b.meta[k] === 'string') {
+      findings.push(...compareFacts(String(a.meta[k] ?? ''), String(b.meta[k] ?? '')).map((f) => ({ ...f, field: k })));
+    }
+  }
+  return { findings };
+}
+
 export function runGate({ inPath, outPath, reportPath, skipLayerB = false, deps: injected = {} }) {
   const deps = { ...GATE_DEPS, ...injected };
   const checks = {};
@@ -47,6 +61,10 @@ export function runGate({ inPath, outPath, reportPath, skipLayerB = false, deps:
   try {
     // 1. Layer B
     if (skipLayerB) fs.copyFileSync(inPath, outPath); else checks.layerb = deps.layerBEssay(inPath, outPath);
+    // 1b. Facts preserved (25 Oct 2026): Layer B turned "raised" into "reduced"
+    // on 24 Oct. Every figure, direction word and negation must survive it.
+    stage = 'facts';
+    checks.facts = skipLayerB ? { skipped: true, findings: [] } : factsPreserved(inPath, outPath);
     // 2. Plagiarism + provenance (on the text that ships)
     stage = 'plagiarism';
     checks.plagiarism = deps.checkPlagiarism(outPath);
@@ -97,6 +115,7 @@ export function runGate({ inPath, outPath, reportPath, skipLayerB = false, deps:
   }
 
   const fails = [];
+  if (checks.facts?.findings.length) fails.push(`facts changed by Layer B (${checks.facts.findings.length})`);
   if (checks.plagiarism.verdict === 'fail') fails.push('plagiarism/provenance');
   if (checks.bre.remaining.length) fails.push('British English (unresolved)');
   if (checks.neverlist.hits.length) fails.push(`never-list: ${checks.neverlist.hits.join(', ')}`);
@@ -122,6 +141,7 @@ export function renderReport({ inPath, outPath, checks, verdict, fails, error })
   L.push('## 1. Layer B (Codex rewrite)', lb
     ? `${lb.changed} strings rewritten → ${path.basename(outPath)}${lb.divergence ? `; 3-gram survival ${(lb.divergence.rate * 100).toFixed(0)}% (target ≤ 35%)${lb.divergence.warn ? ' ⚠️ above target, kept after one retry' : ''}` : ''}`
     : 'skipped (fixture / corrections-only run)', '');
+  L.push('## 1b. Facts preserved', renderFacts(checks.facts), '');
   if (checks.plagiarism) {
     L.push('## 2. Plagiarism and provenance', `Verdict: ${checks.plagiarism.verdict}`, `Cost: $${Number(checks.plagiarism.cost_usd ?? 0).toFixed(3)}`,
       ...checks.plagiarism.sentences.map((s) => `- ${s.hit ? '❌ HIT' : '✅ clean'} — "${s.text.slice(0, 90)}…"${s.hit ? ` (${s.url})` : ''}`),

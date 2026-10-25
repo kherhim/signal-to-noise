@@ -153,3 +153,42 @@ test('the Layer A report line counts what was found', () => {
   } });
   assert.match(report, /Before: SUSPICIOUS \(2 zero-width, 1 bidi\) · After: clean/);
 });
+
+// --- 1b. Facts preserved: Layer B is stubbed with a fixed rewrite ---
+
+const rewriteTo = (md) => (inPath, outPath) => { fs.writeFileSync(outPath, md); return { changed: 1 }; };
+
+test('runGate fails when Layer B flips a direction or changes a figure, body and frontmatter', () => {
+  const dir = tmp('gate-facts-');
+  const src = path.join(dir, 'in.md'), out = path.join(dir, 'out.md'), rep = path.join(dir, 'rep.md');
+  fs.writeFileSync(src, '---\ntitle: "T"\nexcerpt: "Profit was $19.1bn."\n---\n\nNorthwind raised the bottom of its capital budget.\n');
+  const r = runGate({ inPath: src, outPath: out, reportPath: rep, deps: offlineDeps({
+    layerBEssay: rewriteTo('---\ntitle: "T"\nexcerpt: "Profit came to $19.4bn."\n---\n\nNorthwind reduced its capital budget range.\n') }) });
+  assert.equal(r.verdict, 'fail');
+  const kinds = r.checks.facts.findings.map((f) => `${f.field}:${f.kind}`).sort();
+  assert.deepEqual(kinds, ['body:direction-flip', 'excerpt:figure-added', 'excerpt:figure-missing']);
+  assert.match(r.report, /facts changed by Layer B \(3\)/);
+  assert.match(r.report, /## 1b\. Facts preserved\n3 changes of fact/);
+  assert.match(r.report, /raised.*became.*reduced/);
+});
+
+test('runGate passes a Layer B rewrite that keeps every fact', () => {
+  const dir = tmp('gate-facts-ok-');
+  const src = path.join(dir, 'in.md'), out = path.join(dir, 'out.md'), rep = path.join(dir, 'rep.md');
+  fs.writeFileSync(src, '---\ntitle: "T"\nexcerpt: "Spend of $24.8bn."\n---\n\nNorthwind increased capex by 12% in 2025.\n');
+  const r = runGate({ inPath: src, outPath: out, reportPath: rep, deps: offlineDeps({
+    layerBEssay: rewriteTo('---\ntitle: "T"\nexcerpt: "Outlay of $24.8 billion."\n---\n\nNorthwind lifted capex by 12% in 2025.\n') }) });
+  assert.deepEqual(r.checks.facts.findings, []);
+  assert.equal(r.verdict, 'pass');
+  assert.match(r.report, /## 1b\. Facts preserved\nEvery figure/);
+});
+
+test('with --skip-layerb the facts check reports skipped and does not fail', () => {
+  const dir = tmp('gate-facts-skip-');
+  const src = path.join(dir, 'in.md'), out = path.join(dir, 'out.md'), rep = path.join(dir, 'rep.md');
+  fs.writeFileSync(src, '---\ntitle: "T"\n---\n\nRevenue rose 5%.\n');
+  const r = runGate({ inPath: src, outPath: out, reportPath: rep, skipLayerB: true, deps: offlineDeps() });
+  assert.equal(r.verdict, 'pass');
+  assert.equal(r.checks.facts.skipped, true);
+  assert.match(r.report, /## 1b\. Facts preserved\nskipped/);
+});
