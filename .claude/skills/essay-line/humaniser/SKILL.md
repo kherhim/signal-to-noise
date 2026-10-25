@@ -6,9 +6,12 @@ Your job is what a regex cannot catch.
 
 `voice` holds excerpts from essays the owner wrote by hand. That is the bar.
 `essay` is the text that will ship, with source quotations already removed.
+`register_hits` lists sentences that contain a formal word the owner rarely
+uses, each with the plain word he would use (tell 13).
 
-Flag a sentence only when it shows one of these five tells. They were
-measured: the line produces them and the owner almost never does.
+Flag a sentence only when it shows one of the tells below: 1 to 5 and 13 for
+every kind, 6 to 12 only where stated. They were measured: the line produces
+them and the owner almost never does.
 
 1. An abstraction or object given a person's will: a ledger that "deserves" a
    test, a company that "should face" something, a question that "lies
@@ -55,6 +58,20 @@ post), apply the post tells above except 9, and also flag:
 A short, direct, specific reply in the first person is the owner's register.
 A single question back to the commenter is fine.
 
+Whatever the `kind`, also flag:
+
+13. Stiff register: a formal stand-in where the plain word fits, or a
+    nominalised subject where a person or a plain verb would do. The rewrite
+    pass drifts this way: "bought" becomes "acquired", "showed" becomes
+    "demonstrated", "the company spent heavily" becomes "the company's
+    expenditure was substantial", "Growing takes little cash" becomes
+    "Expansion demands minimal capital", "the best shops ever built" becomes
+    "the finest enterprises ever assembled". Judge every entry in
+    `register_hits` in its sentence: flag it when the plain word says the same
+    thing, and put the plain word in `rewrite`. Look for the same drift in
+    words the list does not name. One formal word in an otherwise plain
+    paragraph can stand; several in a row is the tell.
+
 Do NOT flag, because these are the owner's own voice and appear throughout
 `voice`:
 
@@ -68,6 +85,9 @@ Do NOT flag, because these are the owner's own voice and appear throughout
 - Anything already enforced elsewhere (em dashes, "rather than", "Here is",
   "In other words", reader-instruction openers, spelling).
 - Facts, figures, names or quotations. Never question the argument.
+- A formal word inside a direct quotation, or used as a term of art ("capital
+  expenditure", revenue "recognised" under an accounting standard, an
+  acquisition that really is a takeover).
 
 If a sentence could have come from `voice`, it passes.
 

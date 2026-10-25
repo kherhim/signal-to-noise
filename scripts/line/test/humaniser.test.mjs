@@ -44,6 +44,16 @@ test('checkHumaniser strips quotations before the reader sees them, and reports 
   assert.equal(r.cost_usd, 0.1);
 });
 
+test('checkHumaniser passes register hits to the reader for judgement in context', () => {
+  let seen;
+  const run = ({ input }) => { seen = JSON.parse(input); return { json: { flags: [] }, cost_usd: 0 }; };
+  const register = { pairs: [{ formal: 'acquire', plain: 'buy', owner_per_1k: 0, line_per_1k: 1, source: 'seed' }] };
+  const r = checkHumaniser('The bank acquired a lender in May. It paid cash.', { run, voice: ['v'], register });
+  assert.deepEqual(seen.register_hits, [{ formal: 'acquire', plain: 'buy', sentence: 'The bank acquired a lender in May.' }]);
+  assert.equal(r.register_hits, 1);
+  assert.equal(r.flags.length, 0);
+});
+
 test('the hold threshold is a rate, not any flag', async () => {
   const { humaniserRate, humaniserFails, FAIL_PER_1K } = await import('../humaniser.mjs');
   assert.equal(FAIL_PER_1K, 3);
