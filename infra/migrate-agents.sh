@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Install the scheduled jobs on THIS Mac, with this Mac's home, repo path and node.
-# Live: the weekly metrics pull and the weekly humaniser learn (proposals PR, never
-# merges). The essay line (killed 12 Oct 2026) and the watermarks container
+# Live: the weekly metrics pull, the weekly humaniser learn and the monthly token
+# price snapshot (the last two open PRs, never merge). The essay line (killed 12 Oct 2026) and the watermarks container
 # (retired 12 Oct 2026) are deliberately not installed.
 #
 #   infra/migrate-agents.sh            install and load the live agents
@@ -30,7 +30,7 @@ NODE="$(command -v node || true)"
 
 mkdir -p "$AGENTS" "$HOME/Library/Logs"
 # label suffix and when it runs, for the closing message
-for job in "metrics:Mondays 07:30" "humaniser-learn:Mondays 07:45"; do
+for job in "metrics:Mondays 07:30" "humaniser-learn:Mondays 07:45" "token-prices:1st of the month 08:00"; do
   label="co.signal-to-noise.${job%%:*}"
   # The repo copy names the old Mac's paths; rewrite them for this one.
   sed -e "s#/Users/himanshu.kher/Documents/devProjects/signal2noise#$REPO#g" \
