@@ -28,8 +28,10 @@ For a `tell` only:
 - `register`: formal → plain word swaps, where `formal` is a word or short
   phrase (at most three words) the owner removed from `before` and `plain` is
   what he put in its place in `after`. Lower case, base form ("expenditure",
-  not "Expenditures"). Leave it empty when the edit is not a word swap. Skip
-  any pair already in `existing_register`.
+  not "Expenditures"; "purchase", not "purchased"). For an irregular form
+  ("kept", "bought"), copy the word as it appears in the sentence. Leave it
+  empty when the edit is not a word swap. Skip any pair already in
+  `existing_register`.
 - `tell` and `rule`: only when the edit shows a construction the existing
   tells do not already cover, or covers one they describe too loosely.
   `tell` names it in at most eight words. `rule` says what to flag in at most

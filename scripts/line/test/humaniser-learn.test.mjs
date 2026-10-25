@@ -184,3 +184,11 @@ test('register.json missing on main: additions are listed but not applied', () =
   const add = f.calls.find((c) => c.includes('add') && !c.includes('worktree'));
   assert.ok(!add.includes('scripts/line/data/register.json'));
 });
+
+test('register words in base form match their regular inflections', () => {
+  const pairs = [{ before: 'They purchased a rival and were utilising cash.', after: 'They bought a rival and were using cash.' }];
+  const v = vetItems([{ pair: 0, class: 'tell', register: [{ formal: 'purchase', plain: 'bought' }, { formal: 'utilise', plain: 'use' }] }], pairs);
+  assert.deepEqual(v.register.map((r) => r.formal), ['purchase', 'utilise']);
+  assert.equal(per1k('purchase', ['purchases purchased purchasing ' + 'word '.repeat(997)]), 3);
+  assert.equal(per1k('purchase', ['purchaser ' + 'word '.repeat(999)]), 0);
+});

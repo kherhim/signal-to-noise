@@ -156,8 +156,16 @@ const neverList = (load) => [...new Set([...load(), 'Axi'])];
 // ---------- evidence ----------
 
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+// A word or phrase with its regular inflections: "purchase" also matches
+// purchases, purchased, purchasing. Irregular forms (keep/kept) do not.
+export function wordRe(phrase, flags = 'giu') {
+  const p = phrase.toLowerCase().trim();
+  const stem = p.endsWith('e') ? p.slice(0, -1) : p;
+  const tail = p.endsWith('e') ? '(?:e|es|ed|ing)' : '(?:s|es|ed|d|ing)?';
+  return new RegExp(`(?<![\\p{L}\\p{N}])${esc(stem).replace(/\s+/g, '\\s+')}${tail}(?![\\p{L}\\p{N}])`, flags);
+}
 export function per1k(phrase, corpus) {
-  const re = new RegExp(`(?<![\\p{L}\\p{N}])${esc(phrase).replace(/\s+/g, '\\s+')}(?:s|es)?(?![\\p{L}\\p{N}])`, 'giu');
+  const re = wordRe(phrase);
   let hits = 0, total = 0;
   for (const t of corpus) { hits += (t.match(re) ?? []).length; total += wordCount(t); }
   return total ? Math.round((hits / total) * 1000 * 100) / 100 : 0;
@@ -206,7 +214,7 @@ const SCHEMA = {
   } } },
 };
 
-const has = (phrase, s) => new RegExp(`(?<![\\p{L}\\p{N}])${esc(phrase.toLowerCase())}(?![\\p{L}\\p{N}])`, 'u').test(words(s).join(' '));
+const has = (phrase, s) => wordRe(phrase, 'u').test(words(s).join(' '));
 
 // Keep only what the evidence supports: a real pair, a formal word the owner
 // removed and a plain word he put in, a short rule.
@@ -293,6 +301,7 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
       if (deps.sh('git', ['-C', root, 'branch', '--list', branch]).trim() || deps.sh('git', ['-C', root, 'ls-remote', '--heads', 'origin', branch]).trim())
         throw new Error(`branch ${branch} already exists; today's proposals were already made`);
       wt = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'humaniser-learn-')), 'wt');
+      deps.sh('git', ['-C', root, 'worktree', 'prune']); // a crashed run's registration
       deps.sh('git', ['-C', root, 'worktree', 'add', '-q', '-b', branch, wt, 'origin/main']);
       base = wt;
     }
@@ -318,6 +327,7 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
       for (const c of real) pairs.push({ slug: e.slug, ...c, change: describeChange(c.before, c.after) });
     }
     const evidence = pairs.slice(0, MAX_PAIRS);
+    if (pairs.length > MAX_PAIRS) notes.push(`${pairs.length - MAX_PAIRS} further edits not sent to the model (cap ${MAX_PAIRS})`);
     const publishedText = essays.map((e) => e.text).join('\n');
     // Every gated sentence counts as secret, not only the ones sent as evidence.
     const secret = unpublishedShingles(drafts, publishedText);
@@ -415,7 +425,7 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
     if (wt) {
       try { deps.sh('git', ['-C', root, 'worktree', 'remove', '--force', wt]); } catch { /* best effort */ }
       fs.rmSync(path.dirname(wt), { recursive: true, force: true });
-      if (!prUrl) { try { deps.sh('git', ['-C', root, 'branch', '-D', branch]); } catch { /* never created */ } }
+      try { deps.sh('git', ['-C', root, 'branch', '-D', branch]); } catch { /* never created; a pushed branch lives on origin */ }
     }
   }
 }
