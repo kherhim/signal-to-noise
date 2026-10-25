@@ -180,10 +180,10 @@ npm run test:line   # node --test scripts/line/test/*.mjs — no network, no pai
 Every Monday at 07:45 (`infra/co.signal-to-noise.humaniser-learn.plist`)
 `scripts/line/humaniser-learn.mjs` reads the essays published since its last
 run, lines up each one against the gate output it shipped from
-(the newest whole `*.gated.md` in `_sources/staging-articles/<slug>/` that
-differs from the published text, else `gated.md`, else `final.md`; when every
-gated version matches what shipped, the essay is noted as having no owner
-edits) and treats every sentence the owner changed as evidence. A model
+(in `_sources/staging-articles/<slug>/`: the newest raw Layer B output
+`gated.layerb*.md`, else the oldest whole `*.gated.md` that differs from the
+published text, else `gated.md`, else `final.md`; when every gated version
+matches what shipped, the essay is noted as having no owner edits) and treats every sentence the owner changed as evidence. A model
 sorts each change into fact fix, owner taste or machine tell. Machine tells
 become proposed register pairs (formal → plain, `source: "learned"`) and
 proposed humaniser tells. A register pair the owner himself uses more than

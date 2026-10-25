@@ -165,24 +165,29 @@ function readEssays(dir) {
   }).filter((e) => !e.draft);
 }
 
-// The gate output the owner edited from: the newest *.gated.md (by mtime)
-// whose prose differs from the published essay. A re-gate run after the
-// owner's edits matches what shipped and teaches nothing, so it is passed
-// over; if every one matches, the essay had no owner edits ({ same: true }).
-// A gated snippet (a chart caption, a paragraph) under MIN_GATED_WORDS is not
-// the essay. With no whole *.gated.md: gated.md, else final.md.
+// The gate output the owner edited from, in order:
+//   1. the newest gated.layerb*.md, the raw Layer B output: the plain-voice
+//      fixes made after it are the best evidence;
+//   2. else the OLDEST *.gated.md that differs from the published essay
+//      (a later re-gate has already absorbed the owner's swaps);
+//   3. else gated.md, then final.md.
+// A candidate under MIN_GATED_WORDS (a chart caption, a paragraph) is not the
+// essay. If 1 and 2 have candidates but every one matches what shipped, the
+// essay had no owner edits ({ same: true }).
 const MIN_GATED_WORDS = 200;
 const prose = (md) => sentences(md).map(key).join('\n');
 export function gatedFile(staging, slug, publishedMd = null) {
   const dir = path.join(staging, slug);
   if (!fs.existsSync(dir)) return null;
-  const whole = fs.readdirSync(dir).filter((f) => /^.+\.gated\.md$/.test(f)).map((f) => path.join(dir, f))
+  const whole = (re) => fs.readdirSync(dir).filter((f) => re.test(f)).map((f) => path.join(dir, f))
     .filter((f) => wordCount(fs.readFileSync(f, 'utf8')) >= MIN_GATED_WORDS)
-    .sort((x, y) => fs.statSync(y).mtimeMs - fs.statSync(x).mtimeMs);
-  if (whole.length) {
-    if (publishedMd === null) return whole[0];
+    .sort((x, y) => fs.statSync(x).mtimeMs - fs.statSync(y).mtimeMs); // oldest first
+  const raw = whole(/^gated\.layerb.*\.md$/).slice(-1);
+  const candidates = [...raw, ...whole(/^.+\.gated\.md$/)];
+  if (candidates.length) {
+    if (publishedMd === null) return candidates[0];
     const pub = prose(publishedMd);
-    return whole.find((f) => prose(fs.readFileSync(f, 'utf8')) !== pub) ?? { same: true, checked: whole.length };
+    return candidates.find((f) => prose(fs.readFileSync(f, 'utf8')) !== pub) ?? { same: true, checked: candidates.length };
   }
   for (const f of ['gated.md', 'final.md']) if (fs.existsSync(path.join(dir, f))) return path.join(dir, f);
   return null;

@@ -37,7 +37,7 @@ test('describeChange shows changed words only, or describes a large rewrite', ()
   assert.match(describeChange('Every single word of this draft sentence is entirely different now.', 'Nothing matches at all.'), /^sentence rewritten \(\d+ of \d+ words changed\)$/);
 });
 
-test('the baseline is the newest whole *.gated.md, else gated.md, else final.md', () => {
+test('baseline fallbacks: oldest whole *.gated.md, else gated.md, else final.md', () => {
   const st = fs.mkdtempSync(path.join(os.tmpdir(), 'gated-'));
   const d = path.join(st, 'e');
   fs.mkdirSync(d);
@@ -47,24 +47,30 @@ test('the baseline is the newest whole *.gated.md, else gated.md, else final.md'
   fs.writeFileSync(path.join(d, 'gated.md'), essay);
   assert.equal(path.basename(gatedFile(st, 'e')), 'gated.md');
   const at = (f, t) => { fs.writeFileSync(path.join(d, f), f.startsWith('roe') ? 'a short caption' : essay); fs.utimesSync(path.join(d, f), t, t); };
-  at('final.gated.md', 1000); at('expanded.gated.md', 3000); at('roe-caption.gated.md', 4000);
-  assert.equal(path.basename(gatedFile(st, 'e')), 'expanded.gated.md'); // the newer snippet is passed over
+  at('roe-caption.gated.md', 500); at('final.gated.md', 1000); at('expanded.gated.md', 3000);
+  assert.equal(path.basename(gatedFile(st, 'e')), 'final.gated.md'); // the older snippet is passed over
   assert.equal(gatedFile(st, 'missing'), null);
 });
 
-test('the baseline skips a re-gate that matches what shipped', () => {
+test('baseline order: newest raw Layer B, then the oldest gated version that differs, else no owner edits', () => {
   const st = fs.mkdtempSync(path.join(os.tmpdir(), 'gated-'));
   const d = path.join(st, 'e');
   fs.mkdirSync(d);
   const draft = 'The company acquired a rival in May. '.repeat(60);
   const published = 'The company bought a rival in May. '.repeat(60);
   const at = (f, body, t) => { fs.writeFileSync(path.join(d, f), body); fs.utimesSync(path.join(d, f), t, t); };
+  at('trimmed.gated.md', published, 500);                                 // oldest, but matches what shipped
   at('final.gated.md', draft, 1000);
   at('expanded.gated.md', `---\ntitle: "x"\n---\n\n${published}`, 3000); // re-gated after the owner's edits
   assert.equal(path.basename(gatedFile(st, 'e', published)), 'final.gated.md');
-  // Every gated version matches: no owner edits.
-  at('final.gated.md', published, 1000);
-  assert.deepEqual(gatedFile(st, 'e', published), { same: true, checked: 2 });
+  // Raw Layer B output wins, the newest whole one.
+  at('gated.layerb.md', draft, 200);
+  at('gated.layerb-raw.md', draft, 2000);
+  at('gated.layerb-snip.md', 'too short', 4000);
+  assert.equal(path.basename(gatedFile(st, 'e', published)), 'gated.layerb-raw.md');
+  // Every candidate matches: no owner edits.
+  for (const f of ['gated.layerb.md', 'gated.layerb-raw.md', 'final.gated.md']) at(f, published, 1000);
+  assert.deepEqual(gatedFile(st, 'e', published), { same: true, checked: 4 });
 });
 
 test('an essay whose gated versions all match is reported as having no owner edits', () => {
