@@ -6,7 +6,7 @@ import { checkPlagiarism } from './plagiarism.mjs';
 import { scanBrE, applySpellingFixes, scanAmbiguous } from './bre.mjs';
 import { inspectFile, cleanFile, serviceUp, summariseFindings } from './layera.mjs';
 import { splitFrontmatter, joinFrontmatter, BRE_FIELDS, SHIPPING_FIELDS } from './md.mjs';
-import { compareFacts, renderFacts } from './figures.mjs';
+import { compareFactsDetailed, renderFacts } from './figures.mjs';
 import { scanClaudish, claudishFails, renderClaudish } from './claudish.mjs';
 import { checkHumaniser, renderHumaniser, humaniserFails } from './humaniser.mjs';
 import { loadNeverList, neverListHits } from './queue.mjs';
@@ -36,13 +36,16 @@ export function serviceDownError() {
 // Layer B rewrites, each finding tagged with where it was found.
 export function factsPreserved(inPath, outPath) {
   const a = splitFrontmatter(fs.readFileSync(inPath, 'utf8')), b = splitFrontmatter(fs.readFileSync(outPath, 'utf8'));
-  const findings = compareFacts(a.body, b.body).map((f) => ({ ...f, field: 'body' }));
-  for (const k of SHIPPING_FIELDS) {
-    if (typeof a.meta[k] === 'string' || typeof b.meta[k] === 'string') {
-      findings.push(...compareFacts(String(a.meta[k] ?? ''), String(b.meta[k] ?? '')).map((f) => ({ ...f, field: k })));
-    }
+  const findings = [];
+  let unaligned = 0, sentences = 0;
+  for (const k of ['body', ...SHIPPING_FIELDS]) {
+    const x = k === 'body' ? a.body : a.meta[k], y = k === 'body' ? b.body : b.meta[k];
+    if (typeof x !== 'string' && typeof y !== 'string') continue;
+    const r = compareFactsDetailed(String(x ?? ''), String(y ?? ''));
+    findings.push(...r.findings.map((f) => ({ ...f, field: k })));
+    unaligned += r.unaligned; sentences += r.sentences;
   }
-  return { findings };
+  return { findings, unaligned, sentences };
 }
 
 export function runGate({ inPath, outPath, reportPath, skipLayerB = false, deps: injected = {} }) {

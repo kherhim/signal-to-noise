@@ -1,7 +1,7 @@
 // scripts/line/test/figures.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { extractFacts, compareFacts, renderFacts } from '../figures.mjs';
+import { extractFacts, compareFacts, compareFactsDetailed, renderFacts } from '../figures.mjs';
 
 const keys = (t) => extractFacts(t).flatMap((s) => s.figures.map((f) => f.key));
 const kinds = (a, b) => compareFacts(a, b).map((f) => f.kind);
@@ -64,6 +64,37 @@ test('spelled figures match their digits', () => {
 
 test('"up" beside a figure still counts after a contraction', () => {
   assert.deepEqual(kinds("Costs didn't move, but shares weren't flat: they were up 5%.", "Costs didn't move, but shares weren't flat: they were down 5%."), ['direction-flip']);
+});
+
+test('catches a direction word swapped onto another axis (narrowed → reduced)', () => {
+  const f = compareFacts(
+    'Northwind narrowed its 2026 capital budget to $135 to $145 billion.',
+    'Northwind reduced its 2026 capital budget range to $135 to $145 billion.');
+  assert.deepEqual(f.map((x) => x.kind), ['direction-change']);
+  assert.match(f[0].detail, /"narrowed" \(spread, down\) became "reduced" \(quantity, down\)/);
+});
+
+test('same-side swaps within one family pass; opposite sides across it do not', () => {
+  assert.deepEqual(kinds('Contoso booked more revenue in 2025.', 'Contoso booked higher revenue in 2025.'), []);
+  assert.deepEqual(kinds('Contoso booked more revenue in 2025.', 'Contoso booked lower revenue in 2025.'), ['direction-change']);
+});
+
+test('durations compare in months', () => {
+  assert.deepEqual(kinds('For twenty years these were the rules at Fabrikam.', 'For two decades these were the rules at Fabrikam.'), []);
+  assert.deepEqual(kinds('In the first half of 2026 margins held.', 'During the first six months of 2026 margins held.'), []);
+  assert.deepEqual(kinds('Results for H1 2026 were flat.', 'Results for the first six months of 2026 were flat.'), []);
+  assert.deepEqual(kinds('It took a quarter to close.', 'It took three months to close.'), []);
+  assert.deepEqual(kinds('Payback took a year.', 'Payback took twelve months.'), []);
+  assert.deepEqual(kinds('Payback took 18 months.', 'Payback took two years.').sort(), ['figure-added', 'figure-missing']);
+  assert.deepEqual(kinds('In the first half of 2026 margins held.', 'During the last six months of 2026 margins held.'), ['figure-added']);
+});
+
+test('reports draft sentences with no counterpart, without failing', () => {
+  const r = compareFactsDetailed('Revenue rose 6% in 2025.\n\nThe mood shifted.', 'Revenue grew 6% in 2025.\n\nSentiment turned.');
+  assert.deepEqual(r.findings, []);
+  assert.equal(r.unaligned, 1);
+  assert.equal(r.sentences, 2);
+  assert.match(renderFacts(r), /Unmatched: 1 of 2 draft sentences/);
 });
 
 test('"up" and "down" as particles do not count', () => {

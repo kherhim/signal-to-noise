@@ -82,8 +82,39 @@ function rawFigures(text) {
     if (!a.unit && b.unit) a.unit = b.unit;
     if (!b.cur && a.cur) b.cur = a.cur;
   }
-  return out.map((f) => ({ ...f, key: f.lit ?? `${f.cur}${Number((f.value * f.scale).toPrecision(12))}${f.unit}` }));
+  return out.map((f) => ({ ...f, key: f.lit ?? durationKey(text, f) ?? `${f.cur}${Number((f.value * f.scale).toPrecision(12))}${f.unit}` }));
 }
+
+// --- durations, compared in months (26 Oct 2026): "twenty years" == "two
+// decades", "the first half" == "the first six months" == H1 ---
+
+const MONTHS = { month: 1, months: 1, quarter: 3, quarters: 3, year: 12, years: 12, decade: 120, decades: 120 };
+
+function durationKey(text, f) {
+  if (f.cur || f.unit) return null;
+  const m = /^[\s-]+(months?|quarters?|years?|decades?)\b/i.exec(text.slice(f.end));
+  if (!m) return null;
+  const months = Number((f.value * f.scale * MONTHS[m[1].toLowerCase()]).toPrecision(12));
+  const before = text.slice(0, f.at);
+  if (/\bfirst\s+$/i.test(before) && months === 6) return 'H1';
+  if (/\b(?:second|last|final)\s+$/i.test(before) && months === 6) return 'H2';
+  if (/\bfirst\s+$/i.test(before) && months === 3) return 'Q1';
+  return `${months}mo`;
+}
+
+// Durations named without a number. They never raise a finding of their own,
+// because "a year ago" can fairly become "last year"; they only answer for a
+// numbered figure on the other side ("a decade" against "ten years").
+const SOFT = [
+  [/\b(?:a|one|the\s+(?:past|last|next|previous))\s+(?:full\s+)?year\b/gi, () => '12mo'],
+  [/\b(?:a|one|the\s+(?:past|last|next|previous))\s+decade\b/gi, () => '120mo'],
+  [/\b(?:a|one|the\s+(?:past|last|next|previous))\s+month\b/gi, () => '1mo'],
+  [/\bhalf(?:\s+a|-)\s*year\b|\bhalf\s+of\s+the\s+year\b/gi, () => '6mo'],
+  [/\ba\s+quarter\b(?!\s+of)/gi, () => '3mo'],
+  [/\b(first|second)\s+half\b/gi, (m) => (m[1].toLowerCase() === 'first' ? 'H1' : 'H2')],
+  [/\b(first|second|third|fourth)\s+quarter\b/gi, (m) => `Q${['first', 'second', 'third', 'fourth'].indexOf(m[1].toLowerCase()) + 1}`],
+];
+const softFigures = (text) => SOFT.flatMap(([re, key]) => [...text.matchAll(re)].map((m) => ({ raw: m[0], key: key(m) })));
 
 // --- sentences ---
 
@@ -98,7 +129,7 @@ function sentences(text) {
 }
 
 export function extractFacts(text) {
-  return sentences(text).map((s, i) => ({ index: i, text: s, figures: rawFigures(s) }));
+  return sentences(text).map((s, i) => ({ index: i, text: s, figures: rawFigures(s), soft: softFigures(s) }));
 }
 
 // --- direction lexicon: each axis has two opposed classes ---
@@ -115,6 +146,10 @@ export const AXES = [
   { axis: 'strength', up: forms('strengthen strengthened strengthens stronger'), down: forms('weaken weakened weakens weaker') },
   { axis: 'quality', up: forms('better best improve improved improves improving'), down: forms('worse worst worsen worsened deteriorate deteriorated') },
 ];
+// Axes in one family may stand in for each other on the same side ("more
+// revenue" == "higher revenue"); any other swap across axes is a change of
+// meaning ("narrowed the range" != "reduced the range", 26 Oct 2026).
+const FAMILY = { quantity: 'size', amount: 'size', position: 'size', strength: 'quality', quality: 'quality', sign: 'sign', spread: 'spread' };
 // "over" and "under" are left out: "over the year", "under pressure".
 // "up" and "down" count only beside a figure ("up 12%", "down by $3bn"):
 // as particles ("set up", "break down") they would flag constantly.
@@ -185,6 +220,13 @@ function align(draft, output) {
 const ctx = (s) => (s.length > 160 ? `${s.slice(0, 157)}…` : s);
 
 export function compareFacts(before, after) {
+  return compareFactsDetailed(before, after).findings;
+}
+
+// Words of `a` not matched in `b`, as a multiset.
+const without = (a, b) => { const r = [...b]; return a.filter((w) => { const i = r.indexOf(w); if (i < 0) return true; r.splice(i, 1); return false; }); };
+
+export function compareFactsDetailed(before, after) {
   const draft = extractFacts(before), output = extractFacts(after);
   const findings = [];
 
@@ -195,19 +237,34 @@ export function compareFacts(before, after) {
     return m;
   };
   const bd = bag(draft), bo = bag(output);
+  const softCount = (sents) => { const m = new Map(); for (const s of sents) for (const f of s.soft) m.set(f.key, (m.get(f.key) ?? 0) + 1); return m; };
+  const sd = softCount(draft), so = softCount(output);
   for (const [k, ds] of bd) {
     const os = bo.get(k) ?? [];
-    for (const d of ds.slice(os.length)) findings.push({ kind: 'figure-missing', draft: ctx(d.sentence), output: null, detail: `"${d.raw}" (${k}) is in the draft but not in the rewrite` });
+    for (const d of ds.slice(os.length + (so.get(k) ?? 0))) findings.push({ kind: 'figure-missing', draft: ctx(d.sentence), output: null, detail: `"${d.raw}" (${k}) is in the draft but not in the rewrite` });
   }
   for (const [k, os] of bo) {
     const ds = bd.get(k) ?? [];
-    for (const o of os.slice(ds.length)) findings.push({ kind: 'figure-added', draft: null, output: ctx(o.sentence), detail: `"${o.raw}" (${k}) is in the rewrite but not in the draft` });
+    for (const o of os.slice(ds.length + (sd.get(k) ?? 0))) findings.push({ kind: 'figure-added', draft: null, output: ctx(o.sentence), detail: `"${o.raw}" (${k}) is in the rewrite but not in the draft` });
   }
 
   // Direction and negation, per aligned sentence pair.
-  for (const { draft: d, output: o } of align(draft, output)) {
+  const pairs = align(draft, output);
+  for (const { draft: d, output: o } of pairs) {
     if (!o) continue;
     const pd = polarity(d.text), po = polarity(o.text);
+    // Across axes: a direction word lost on one axis and one gained on another.
+    const lost = [], gained = [];
+    for (const a of AXES) for (const side of ['up', 'down']) {
+      const x = pd[a.axis][`${side}Words`], y = po[a.axis][`${side}Words`];
+      for (const w of without(x, y)) lost.push({ axis: a.axis, side, w });
+      for (const w of without(y, x)) gained.push({ axis: a.axis, side, w });
+    }
+    const swap = lost.flatMap((l) => gained.filter((g) => g.axis !== l.axis && (FAMILY[g.axis] !== FAMILY[l.axis] || g.side !== l.side)).map((g) => [l, g]));
+    if (swap.length) {
+      findings.push({ kind: 'direction-change', draft: ctx(d.text), output: ctx(o.text),
+        detail: swap.map(([l, g]) => `"${l.w}" (${l.axis}, ${l.side}) became "${g.w}" (${g.axis}, ${g.side})`).filter((v, i, a) => a.indexOf(v) === i).join('; ') });
+    }
     for (const a of AXES) {
       const x = pd[a.axis], y = po[a.axis];
       // The rewrite gained one side of the axis and lost the other: a flip.
@@ -224,13 +281,16 @@ export function compareFacts(before, after) {
         detail: negatedNearFigure(d.text) ? 'a negation beside a figure was dropped' : 'a negation was added beside a figure' });
     }
   }
-  return findings;
+  // Draft sentences with no counterpart were not checked for direction or
+  // negation: reported for information, never a failure.
+  return { findings, unaligned: pairs.filter((p) => !p.output).length, sentences: draft.length };
 }
 
 export function renderFacts(facts) {
   if (!facts) return 'not reached';
   if (facts.skipped) return 'skipped (no Layer B rewrite to compare)';
-  if (!facts.findings.length) return 'Every figure, direction word and negation in the draft survives the rewrite.';
+  const note = facts.unaligned ? `\nUnmatched: ${facts.unaligned} of ${facts.sentences} draft sentences had no counterpart in the rewrite, so direction and negation were not checked for them (information only).` : '';
+  if (!facts.findings.length) return `Every figure, direction word and negation in the draft survives the rewrite.${note}`;
   return [`${facts.findings.length} change${facts.findings.length === 1 ? '' : 's'} of fact between the draft and the Layer B rewrite:`,
-    ...facts.findings.map((f) => `- ❌ ${f.kind}${f.field && f.field !== 'body' ? ` [${f.field}]` : ''}: ${f.detail}${f.draft ? `\n  draft: "${f.draft}"` : ''}${f.output ? `\n  rewrite: "${f.output}"` : ''}`)].join('\n');
+    ...facts.findings.map((f) => `- ❌ ${f.kind}${f.field && f.field !== 'body' ? ` [${f.field}]` : ''}: ${f.detail}${f.draft ? `\n  draft: "${f.draft}"` : ''}${f.output ? `\n  rewrite: "${f.output}"` : ''}`)].join('\n') + note;
 }
