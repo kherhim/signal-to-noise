@@ -148,12 +148,21 @@ export const AXES = [
 ];
 // Axes in one family may stand in for each other on the same side ("more
 // revenue" == "higher revenue"); any other swap across axes is a change of
-// meaning ("narrowed the range" != "reduced the range", 26 Oct 2026).
+// meaning ("narrowed the range" != "reduced the range", 26 Oct 2026). The
+// quality family is evaluative, not factual: it is left out of cross-axis
+// swaps ("worst day" may fairly become "steepest decline") and keeps only its
+// same-axis flip check.
 const FAMILY = { quantity: 'size', amount: 'size', position: 'size', strength: 'quality', quality: 'quality', sign: 'sign', spread: 'spread' };
 // "over" and "under" are left out: "over the year", "under pressure".
 // "up" and "down" count only beside a figure ("up 12%", "down by $3bn"):
 // as particles ("set up", "break down") they would flag constantly.
 const NEAR_FIGURE = /^(?:by\s+)?(?:(?:US)?[£$€])?\d/;
+// On the sign axis "gain" and "loss" count only as nouns ("a loss", "its
+// gains", "$2m loss", "gain of"): the verb in "gain share" is not a sign fact,
+// and the noun is not also counted as a quantity word.
+const SIGN_NOUNS = new Set(forms('gain gains loss losses'));
+const DETERMINERS = new Set(forms('a an the its their his her our my your this that these those no any each every net'));
+const isNoun = (toks, i) => (i > 0 && (DETERMINERS.has(toks[i - 1].w) || /\d/.test(toks[i - 1].w) || /['’]s$/.test(toks[i - 1].w))) || toks[i + 1]?.w === 'of';
 const NEG = new Set(forms('not no never nor none neither without cannot'));
 
 // Contractions become " not" before tokenising; offsets refer to lowered(s).
@@ -163,9 +172,11 @@ const tokens = (s) => [...lowered(s).matchAll(/[\p{L}]+(?:-[\p{L}]+)*|[£$€]?\
 function polarity(s) {
   const counts = {};
   for (const a of AXES) counts[a.axis] = { up: 0, down: 0, upWords: [], downWords: [] };
-  const lower = lowered(s);
-  for (const t of tokens(s)) {
+  const lower = lowered(s), toks = tokens(s);
+  for (const [i, t] of toks.entries()) {
     for (const a of AXES) {
+      // A noun "gain" is a sign fact only; the verb is quantity only.
+      if (SIGN_NOUNS.has(t.w) && (a.axis === 'sign') !== isNoun(toks, i)) continue;
       if (a.up.includes(t.w)) { counts[a.axis].up++; counts[a.axis].upWords.push(t.w); }
       if (a.down.includes(t.w)) { counts[a.axis].down++; counts[a.axis].downWords.push(t.w); }
     }
@@ -260,7 +271,9 @@ export function compareFactsDetailed(before, after) {
       for (const w of without(x, y)) lost.push({ axis: a.axis, side, w });
       for (const w of without(y, x)) gained.push({ axis: a.axis, side, w });
     }
-    const swap = lost.flatMap((l) => gained.filter((g) => g.axis !== l.axis && (FAMILY[g.axis] !== FAMILY[l.axis] || g.side !== l.side)).map((g) => [l, g]));
+    // Only in a factual sentence: the pair must share a figure.
+    const factual = (l) => o.shared > 0 && FAMILY[l.axis] !== 'quality';
+    const swap = lost.filter(factual).flatMap((l) => gained.filter(factual).filter((g) => g.axis !== l.axis && (FAMILY[g.axis] !== FAMILY[l.axis] || g.side !== l.side)).map((g) => [l, g]));
     if (swap.length) {
       findings.push({ kind: 'direction-change', draft: ctx(d.text), output: ctx(o.text),
         detail: swap.map(([l, g]) => `"${l.w}" (${l.axis}, ${l.side}) became "${g.w}" (${g.axis}, ${g.side})`).filter((v, i, a) => a.indexOf(v) === i).join('; ') });
@@ -283,13 +296,13 @@ export function compareFactsDetailed(before, after) {
   }
   // Draft sentences with no counterpart were not checked for direction or
   // negation: reported for information, never a failure.
-  return { findings, unaligned: pairs.filter((p) => !p.output).length, sentences: draft.length };
+  return { findings, unmatched: pairs.filter((p) => !p.output).length, sentences: draft.length };
 }
 
 export function renderFacts(facts) {
   if (!facts) return 'not reached';
   if (facts.skipped) return 'skipped (no Layer B rewrite to compare)';
-  const note = facts.unaligned ? `\nUnmatched: ${facts.unaligned} of ${facts.sentences} draft sentences had no counterpart in the rewrite, so direction and negation were not checked for them (information only).` : '';
+  const note = facts.unmatched ? `\nUnmatched: ${facts.unmatched} of ${facts.sentences} draft sentences had no counterpart in the rewrite, so direction and negation were not checked for them (information only).` : '';
   if (!facts.findings.length) return `Every figure, direction word and negation in the draft survives the rewrite.${note}`;
   return [`${facts.findings.length} change${facts.findings.length === 1 ? '' : 's'} of fact between the draft and the Layer B rewrite:`,
     ...facts.findings.map((f) => `- ❌ ${f.kind}${f.field && f.field !== 'body' ? ` [${f.field}]` : ''}: ${f.detail}${f.draft ? `\n  draft: "${f.draft}"` : ''}${f.output ? `\n  rewrite: "${f.output}"` : ''}`)].join('\n') + note;

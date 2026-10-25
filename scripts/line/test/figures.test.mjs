@@ -79,6 +79,18 @@ test('same-side swaps within one family pass; opposite sides across it do not', 
   assert.deepEqual(kinds('Contoso booked more revenue in 2025.', 'Contoso booked lower revenue in 2025.'), ['direction-change']);
 });
 
+test('evaluative and verb-only swaps do not count as a change of fact', () => {
+  assert.deepEqual(kinds('Shares had their worst day since June.', 'Shares had their steepest decline since June.'), []);
+  assert.deepEqual(kinds('The best business needs little capital and the worst needs a lot.', 'The strongest business needs little capital and the weakest needs a lot for growth.'), []);
+  assert.deepEqual(kinds('Litware cut prices by 5% to win share.', 'Litware lowered prices by 5% to gain market share.'), []);
+});
+
+test('a cross-axis swap needs a shared figure; same-axis flips do not', () => {
+  assert.deepEqual(kinds('Northwind narrowed its budget.', 'Northwind reduced its budget.'), []);
+  assert.deepEqual(kinds('Northwind raised its budget.', 'Northwind reduced its budget.'), ['direction-flip']);
+  assert.deepEqual(kinds('Litware booked a gain of $2m.', 'Litware booked a loss of $2m.'), ['direction-flip']);
+});
+
 test('durations compare in months', () => {
   assert.deepEqual(kinds('For twenty years these were the rules at Fabrikam.', 'For two decades these were the rules at Fabrikam.'), []);
   assert.deepEqual(kinds('In the first half of 2026 margins held.', 'During the first six months of 2026 margins held.'), []);
@@ -92,7 +104,7 @@ test('durations compare in months', () => {
 test('reports draft sentences with no counterpart, without failing', () => {
   const r = compareFactsDetailed('Revenue rose 6% in 2025.\n\nThe mood shifted.', 'Revenue grew 6% in 2025.\n\nSentiment turned.');
   assert.deepEqual(r.findings, []);
-  assert.equal(r.unaligned, 1);
+  assert.equal(r.unmatched, 1);
   assert.equal(r.sentences, 2);
   assert.match(renderFacts(r), /Unmatched: 1 of 2 draft sentences/);
 });
