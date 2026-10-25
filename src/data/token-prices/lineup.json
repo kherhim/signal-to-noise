@@ -1,0 +1,32 @@
+{
+  "note": "Hand-kept: each lab's premium, flagship and budget model, by OpenRouter id. Flagship = the lab's main general model. Premium = a stronger model sold above the flagship (a faster serving of the same model does not count). Budget = the cheapest current general model. null = the lab sells no model in that tier. Review monthly; token-prices.mjs warns when a lab lists a newer model.",
+  "reviewed": "2026-10-25",
+  "tiers": ["premium", "flagship", "budget"],
+  "labs": [
+    { "lab": "OpenAI", "premium": "openai/gpt-6-astra", "flagship": "openai/gpt-6.1-sol", "budget": "openai/gpt-6-luna" },
+    { "lab": "Anthropic", "premium": "anthropic/claude-fable-5.1", "flagship": "anthropic/claude-sonnet-5.5", "budget": "anthropic/claude-haiku-5.5" },
+    { "lab": "Google", "premium": null, "flagship": "google/gemini-4-argon", "budget": "google/gemini-3.5-flash-lite" },
+    { "lab": "xAI", "premium": null, "flagship": "x-ai/grok-4.7", "budget": null },
+    { "lab": "Alibaba (Qwen)", "premium": null, "flagship": "qwen/qwen3.8-max-0902", "budget": "qwen/qwen3.8-flash" },
+    { "lab": "Zhipu (GLM)", "premium": null, "flagship": "z-ai/glm-5.3", "budget": "z-ai/glm-5.3-flash" },
+    { "lab": "Moonshot (Kimi)", "premium": null, "flagship": "moonshotai/kimi-k3.1-pro", "budget": null },
+    { "lab": "DeepSeek", "premium": null, "flagship": "deepseek/deepseek-v4-pro-0813", "budget": "deepseek/deepseek-v4.1-flash-1017" },
+    { "lab": "Mistral", "premium": null, "flagship": "mistralai/mistral-medium-3-5", "budget": "mistralai/mistral-small-2603" }
+  ],
+  "reviewed_out": {
+    "openai/gpt-6.1-sol-pro": "same price as gpt-6.1-sol",
+    "qwen/qwen3.8-max-prime": "faster serving of Max at twice the price, not on Alibaba's own pages",
+    "qwen/qwen3.8-omni-flash": "multimodal variant of qwen3.8-flash, same price",
+    "z-ai/glm-5.3-prime": "faster serving of GLM-5.3, not on Z.ai's own pages",
+    "z-ai/glm-5.3-flashx": "sits between glm-5.3-flash and glm-5.3",
+    "mistralai/mistral-large-4-0": "public preview; Mistral recommends Medium 3.5 for most tasks"
+  },
+  "overrides": {
+    "z-ai/glm-5.3": {
+      "input": 1.4, "output": 4.4,
+      "source": "https://docs.z.ai/guides/overview/pricing",
+      "checked": "2026-10-25",
+      "why": "OpenRouter lists 0.079 / 1.40; Z.ai's own page lists 1.40 / 4.40"
+    }
+  }
+}

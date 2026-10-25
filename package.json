@@ -14,6 +14,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test:line": "LINE_NO_FILE_LOG=1 node --test scripts/line/test/*.mjs",
+    "test:trackers": "node --test scripts/trackers/test/*.mjs",
     "postbuild": "node scripts/build-search-index.mjs",
     "search:index": "node scripts/build-search-index.mjs",
     "humanise": "node scripts/humanise.mjs",
