@@ -49,6 +49,15 @@ test('divergence ignores figures, names, quotations and links, which are meant t
   assert.equal(r.rate, 0);
 });
 
+test('buildPrompt keeps the original register and lists formal words not to introduce (24 Oct 2026)', () => {
+  const p = buildPrompt('body');
+  assert.match(p, /Keep the original register: never swap a plain word for a more formal one/);
+  assert.match(p, /Do not introduce these words[^\n]*"expenditure"/);
+  const bare = buildPrompt('body', 'body', { pairs: [] });
+  assert.match(bare, /Keep the original register/);
+  assert.doesNotMatch(bare, /Do not introduce these words/);
+});
+
 test('the survival threshold is 35%', () => {
   assert.equal(LAYERB_MAX_SURVIVAL, 0.35);
 });

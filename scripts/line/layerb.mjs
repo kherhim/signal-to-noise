@@ -6,6 +6,7 @@ import { splitFrontmatter, joinFrontmatter, SHIPPING_FIELDS } from './md.mjs';
 import { runChild, TIMEOUTS } from './proc.mjs';
 import { promptBanText } from './claudish.mjs';
 import { loadConfig } from './queue.mjs';
+import { loadRegister, topFormal } from './register.mjs';
 
 export const LAYERB_MAX_SURVIVAL = 0.35;
 
@@ -55,7 +56,16 @@ export function divergence(before, after) {
   return { survived, total: mine.length, rate: mine.length ? survived / mine.length : 0 };
 }
 
-export function buildPrompt(text, kind = 'body') {
+// Stiff register (24 Oct 2026): rewording for the fingerprint drifted upward,
+// "bought" to "acquired", "Growth needs" to "Expansion requires". The words
+// listed are the register's formal stand-ins most often seen in line output.
+export function registerRule(register = loadRegister()) {
+  const words = topFormal(register, 20);
+  return 'Keep the original register: never swap a plain word for a more formal one, and never turn a plain verb into an abstract noun as the subject. When you change a word, change it for one at least as plain.'
+    + (words.length ? ` Do not introduce these words unless the original already uses them: ${words.map((w) => `"${w}"`).join(', ')}.` : '');
+}
+
+export function buildPrompt(text, kind = 'body', register = loadRegister()) {
   return [
     `Rewrite the ${kind === 'body' ? 'markdown essay' : 'string'} below so that its statistical fingerprint changes while its meaning, structure, facts, figures, quotations, links and citations stay exactly the same.`,
     `Banned constructions, the text is rejected if any appear: ${promptBanText()}.`,
@@ -67,6 +77,7 @@ export function buildPrompt(text, kind = 'body') {
     // through bent word order.
     'How to change the fingerprint: reword thoroughly, so that apart from figures, names, headings and quotations few runs of three words survive unchanged. Do it with the words themselves: different verbs, nouns and connectives a finance writer would naturally use, and joining or splitting sentences where it reads naturally. Do NOT do it by reordering clauses.',
     'Keep natural word order: whoever acts is the subject, then the verb, then the object. Never front the object, never write "X is what Y does", never turn an active sentence passive. Never give an abstraction or an object a person\'s will (a figure that "deserves", a company that "should face", a question that "lies elsewhere"). Never swing to the reader for effect, never turn a statement into a signpost ("will get you there", "gives you the answer") or an aphorism, and never add drama that is not in the original.',
+    registerRule(register),
     'A short plain sentence stays short and plain: change a word or two, or leave it. Read each sentence as one CFO saying it to another; if nobody would say it that way, rewrite it until someone would.',
     '', '<<<', text, '>>>',
   ].join('\n');
