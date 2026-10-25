@@ -57,6 +57,15 @@ test('catches opposites on the other axes', () => {
   assert.deepEqual(kinds('Shares were up 5% on the day.', 'Shares were down 5% on the day.'), ['direction-flip']);
 });
 
+test('spelled figures match their digits', () => {
+  assert.deepEqual(kinds('Returns were seventeen per cent in 2025.', 'Returns came to 17% in 2025.'), []);
+  assert.deepEqual(kinds('It took twenty-two years.', 'It took 22 years.'), []);
+});
+
+test('"up" beside a figure still counts after a contraction', () => {
+  assert.deepEqual(kinds("Costs didn't move, but shares weren't flat: they were up 5%.", "Costs didn't move, but shares weren't flat: they were down 5%."), ['direction-flip']);
+});
+
 test('"up" and "down" as particles do not count', () => {
   assert.deepEqual(kinds('They set up a fund of $5m.', 'They broke down a fund of $5m.'), []);
 });

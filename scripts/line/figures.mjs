@@ -33,7 +33,12 @@ function strip(text) {
 const SCALES = { k: 1e3, thousand: 1e3, m: 1e6, mn: 1e6, million: 1e6, b: 1e9, bn: 1e9, billion: 1e9, tn: 1e12, trn: 1e12, trillion: 1e12 };
 const UNITS = { '%': '%', 'per cent': '%', percent: '%', pp: 'pp', 'percentage points': 'pp', 'percentage point': 'pp', bps: 'bps', bp: 'bps', 'basis points': 'bps', 'basis point': 'bps' };
 // Spelled cardinals from two upwards: "one" is a pronoun as often as a number.
-const WORDS = { two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12 };
+// The owner spells some figures out ("seventeen per cent"), so a rewrite to
+// digits must match. "Twenty-two" is one figure.
+const ONES = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9 };
+const WORDS = { two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12,
+  thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19,
+  twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90 };
 const FRACTIONS = { 'one-third': '1/3', 'two-thirds': '2/3', 'one-quarter': '1/4', 'three-quarters': '3/4', 'one-fifth': '1/5', 'two-fifths': '2/5', 'three-fifths': '3/5', 'four-fifths': '4/5' };
 
 const SCALE_RE = String.raw`(?:(?:\s?(?:thousand|million|billion|trillion|mn|bn|tn|trn)\b)|(?:[kmb](?![\p{L}\p{N}])))`;
@@ -43,7 +48,7 @@ const FIG = new RegExp(
   String.raw`(?<![\p{L}\p{N}.,])(?:` +
   String.raw`(?<lit>Q[1-4]|H[12]|FY\s?\d{2,4})` +
   String.raw`|(?<frac>${Object.keys(FRACTIONS).join('|')})` +
-  String.raw`|(?<word>${Object.keys(WORDS).join('|')})(?<wscale>\s(?:thousand|million|billion|trillion))?` +
+  String.raw`|(?<word>${Object.keys(WORDS).join('|')})(?:-(?<w2>${Object.keys(ONES).join('|')}))?(?<wscale>\s(?:thousand|million|billion|trillion))?(?<wunit>${UNIT_RE})?` +
   String.raw`|${NUM_RE}(?<scale>${SCALE_RE})?(?<unit>${UNIT_RE})?` +
   String.raw`)(?![\p{L}\p{N}])`, 'giu');
 
@@ -56,7 +61,7 @@ function rawFigures(text) {
     const f = { raw: m[0].trim(), at: m.index, end: m.index + m[0].length, cur: '', value: null, scale: 1, unit: '', lit: null };
     if (g.lit) f.lit = g.lit.toUpperCase().replace(/\s/g, '');
     else if (g.frac) f.lit = FRACTIONS[g.frac.toLowerCase()];
-    else if (g.word) { f.value = WORDS[g.word.toLowerCase()]; if (g.wscale) f.scale = SCALES[norm(g.wscale)]; }
+    else if (g.word) { f.value = WORDS[g.word.toLowerCase()] + (g.w2 ? ONES[g.w2.toLowerCase()] : 0); if (g.wscale) f.scale = SCALES[norm(g.wscale)]; if (g.wunit) f.unit = UNITS[norm(g.wunit)] ?? norm(g.wunit); }
     else {
       f.cur = (g.cur ?? '').replace(/^US/, '');
       f.value = Number(g.int.replace(/,/g, '') + (g.dec ?? ''));
@@ -116,12 +121,14 @@ export const AXES = [
 const NEAR_FIGURE = /^(?:by\s+)?(?:(?:US)?[£$€])?\d/;
 const NEG = new Set(forms('not no never nor none neither without cannot'));
 
-const tokens = (s) => [...s.toLowerCase().replace(/n['’]t\b/g, ' not').matchAll(/[\p{L}]+(?:-[\p{L}]+)*|[£$€]?\d[\d,.]*%?/gu)].map((m) => ({ w: m[0], at: m.index }));
+// Contractions become " not" before tokenising; offsets refer to lowered(s).
+const lowered = (s) => s.toLowerCase().replace(/n['’]t\b/g, ' not');
+const tokens = (s) => [...lowered(s).matchAll(/[\p{L}]+(?:-[\p{L}]+)*|[£$€]?\d[\d,.]*%?/gu)].map((m) => ({ w: m[0], at: m.index }));
 
 function polarity(s) {
   const counts = {};
   for (const a of AXES) counts[a.axis] = { up: 0, down: 0, upWords: [], downWords: [] };
-  const lower = s.toLowerCase();
+  const lower = lowered(s);
   for (const t of tokens(s)) {
     for (const a of AXES) {
       if (a.up.includes(t.w)) { counts[a.axis].up++; counts[a.axis].upWords.push(t.w); }
