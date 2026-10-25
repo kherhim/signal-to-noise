@@ -27,8 +27,9 @@ import { scannableText } from './claudish.mjs';
 import { splitFrontmatter } from './md.mjs';
 import { loadConfig, loadLedger, loadNeverList, neverListHits } from './queue.mjs';
 import { STAGING } from './state.mjs';
+import { loadRegister, measureRates, ownerTexts, lineTexts, lineSlugs, pairRegex, OWNER_MAX } from './register.mjs';
 
-export const OWNER_MAX_PER_1K = 0.3;
+export const OWNER_MAX_PER_1K = OWNER_MAX; // register.mjs owns the limit
 export const LOOKBACK_DAYS = 8;
 const SHINGLE = 5;          // a run of this many unpublished words is a leak
 const MAX_HUNK_WORDS = 4;   // a changed-words hunk longer than this is described, not shown
@@ -39,6 +40,7 @@ const REL = {
   insights: 'src/content/insights',
   state: 'distribution/line/humaniser-learn-state.json',
   proposals: 'distribution/line/humaniser-proposals',
+  quiet: '_sources/humaniser-learn', // gitignored: no-PR weeks
   register: 'scripts/line/data/register.json',
   skill: '.claude/skills/essay-line/humaniser/SKILL.md',
 };
@@ -155,22 +157,6 @@ const neverList = (load) => [...new Set([...load(), 'Axi'])];
 
 // ---------- evidence ----------
 
-const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-// A word or phrase with its regular inflections: "purchase" also matches
-// purchases, purchased, purchasing. Irregular forms (keep/kept) do not.
-export function wordRe(phrase, flags = 'giu') {
-  const p = phrase.toLowerCase().trim();
-  const stem = p.endsWith('e') ? p.slice(0, -1) : p;
-  const tail = p.endsWith('e') ? '(?:e|es|ed|ing)' : '(?:s|es|ed|d|ing)?';
-  return new RegExp(`(?<![\\p{L}\\p{N}])${esc(stem).replace(/\s+/g, '\\s+')}${tail}(?![\\p{L}\\p{N}])`, flags);
-}
-export function per1k(phrase, corpus) {
-  const re = wordRe(phrase);
-  let hits = 0, total = 0;
-  for (const t of corpus) { hits += (t.match(re) ?? []).length; total += wordCount(t); }
-  return total ? Math.round((hits / total) * 1000 * 100) / 100 : 0;
-}
-
 function readEssays(dir) {
   return fs.readdirSync(dir).filter((f) => f.endsWith('.md')).sort().map((f) => {
     const md = fs.readFileSync(path.join(dir, f), 'utf8');
@@ -179,22 +165,18 @@ function readEssays(dir) {
   }).filter((e) => !e.draft);
 }
 
-// The owner's hand: insights minus the line's ledger. Sharpened: any slug with
-// a staging dir was gated line text too, ledger or not (two-banks shipped by
-// hand after the line was killed and never reached the ledger).
-export function corpora(essays, { lineSlugs }) {
-  const line = new Set(lineSlugs);
-  return {
-    owner: essays.filter((e) => !line.has(e.slug)).map((e) => e.text),
-    line: essays.filter((e) => line.has(e.slug)).map((e) => e.text),
-  };
-}
-
+// The gate output the owner edited from: the newest *.gated.md (by mtime),
+// else gated.md, else final.md. A gated snippet (a chart caption, a single
+// paragraph) under MIN_GATED_WORDS is not the essay and is passed over.
+const MIN_GATED_WORDS = 200;
 export function gatedFile(staging, slug) {
-  for (const f of ['final.gated.md', 'gated.md', 'final.md']) {
-    const p = path.join(staging, slug, f);
-    if (fs.existsSync(p)) return p;
-  }
+  const dir = path.join(staging, slug);
+  if (!fs.existsSync(dir)) return null;
+  const whole = fs.readdirSync(dir).filter((f) => /^.+\.gated\.md$/.test(f)).map((f) => path.join(dir, f))
+    .filter((f) => wordCount(fs.readFileSync(f, 'utf8')) >= MIN_GATED_WORDS)
+    .sort((x, y) => fs.statSync(y).mtimeMs - fs.statSync(x).mtimeMs);
+  if (whole.length) return whole[0];
+  for (const f of ['gated.md', 'final.md']) if (fs.existsSync(path.join(dir, f))) return path.join(dir, f);
   return null;
 }
 
@@ -214,7 +196,8 @@ const SCHEMA = {
   } } },
 };
 
-const has = (phrase, s) => wordRe(phrase, 'u').test(words(s).join(' '));
+// register.mjs's matcher, so a proposal is judged by the rule that will scan.
+const has = (phrase, s) => pairRegex({ formal: phrase }).test(s);
 
 // Keep only what the evidence supports: a real pair, a formal word the owner
 // removed and a plain word he put in, a short rule.
@@ -243,9 +226,11 @@ export function readJson(file) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return null; }
 }
 
-export function applyRegister(reg, { add, drop, today }) {
+// Kept pairs keep every field (forms, except, source); only their rates are
+// refreshed when re-measured.
+export function applyRegister(reg, { add, drop, rates = {}, today }) {
   const gone = new Set(drop.map((d) => d.formal));
-  return { ...reg, updated: today, pairs: [...reg.pairs.filter((p) => !gone.has(p.formal)),
+  return { ...reg, updated: today, pairs: [...reg.pairs.filter((p) => !gone.has(p.formal)).map((p) => ({ ...p, ...(rates[p.formal] ?? {}) })),
     ...add.map((a) => ({ formal: a.formal, plain: a.plain, owner_per_1k: a.owner_per_1k, line_per_1k: a.line_per_1k, source: 'learned' }))] };
 }
 
@@ -269,6 +254,7 @@ export function appendTells(skillMd, bullets) {
 
 // ---------- the run ----------
 
+const r2 = (x) => Math.round(x * 100) / 100;
 const isoDay = (d) => d.toISOString().slice(0, 10);
 const addDays = (day, n) => isoDay(new Date(Date.parse(`${day}T00:00:00Z`) + n * 86400000));
 
@@ -310,8 +296,7 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
 
     // 1. Published essays in the window, and the gated text that preceded them.
     const essays = readEssays(path.join(base, REL.insights)); // what is on main, not the checkout
-    const stagingSlugs = fs.existsSync(staging) ? fs.readdirSync(staging).filter((d) => fs.existsSync(path.join(staging, d)) && fs.statSync(path.join(staging, d)).isDirectory()) : [];
-    const lineSlugs = [...new Set([...deps.loadLedger().published.map((p) => p.slug), ...stagingSlugs])];
+    const lineWritten = lineSlugs({ staging, ledger: deps.loadLedger() });
     const notes = [], pairs = [], drafts = [];
     const inWindow = essays.filter((e) => e.date > from && e.date <= today);
     for (const e of inWindow) {
@@ -337,7 +322,7 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
 
     // 2. The model sorts the changes. Skipped in a dry run (no spend).
     const regPath = path.join(base, REL.register);
-    const reg = readJson(regPath);
+    const reg = fs.existsSync(regPath) ? loadRegister(regPath) : null;
     let vet = { tells: [], register: [], classes: { fact: 0, taste: 0, tell: 0 }, dropped: [] }, cost = 0;
     if (evidence.length && !dry) {
       const skill = fs.readFileSync(path.join(base, REL.skill), 'utf8');
@@ -348,17 +333,21 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
     }
 
     // 3. Evidence check on the owner's hand-written essays.
-    const { owner, line } = corpora(essays, { lineSlugs });
-    const known = new Set((reg?.pairs ?? []).map((p) => p.formal));
+    // Same corpora and matcher as `register.mjs measure`.
+    const owner = ownerTexts({ dir: path.join(base, REL.insights), exclude: lineWritten });
+    const line = lineTexts(path.dirname(staging));
+    const rate = (texts, pairs) => { const r = measureRates(texts, pairs); return (f) => r2(r[f] ?? 0); };
+    const covered = (f) => (reg?.pairs ?? []).some((p) => pairRegex(p).test(f));
     const addReg = [], rejected = [];
     for (const r of vet.register) {
-      if (known.has(r.formal) || addReg.some((a) => a.formal === r.formal)) continue;
-      const cand = { ...r, owner_per_1k: per1k(r.formal, owner), line_per_1k: per1k(r.formal, line) };
+      if (covered(r.formal) || addReg.some((a) => a.formal === r.formal)) continue;
+      const cand = { ...r, owner_per_1k: rate(owner, [r])(r.formal), line_per_1k: rate(line, [r])(r.formal) };
       if (!safe(`${r.formal} ${r.plain}`)) rejected.push({ formal: '(withheld)', why: 'privacy or never-list' });
       else if (cand.owner_per_1k > OWNER_MAX_PER_1K) rejected.push({ ...cand, why: `owner uses it ${cand.owner_per_1k}/1k (limit ${OWNER_MAX_PER_1K})` });
       else addReg.push(cand);
     }
-    const remeasured = (reg?.pairs ?? []).map((p) => ({ ...p, owner_now: per1k(p.formal, owner), line_now: per1k(p.formal, line) }));
+    const oNow = rate(owner, reg?.pairs ?? []), lNow = line.length ? rate(line, reg?.pairs ?? []) : null;
+    const remeasured = (reg?.pairs ?? []).map((p) => ({ ...p, owner_now: oNow(p.formal), line_now: lNow ? lNow(p.formal) : p.line_per_1k }));
     const dropReg = remeasured.filter((p) => p.owner_now > OWNER_MAX_PER_1K);
 
     const addTells = [], seenTell = new Set();
@@ -380,12 +369,14 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
     if (dry) return { dry: true, md, count, evidence: evidence.length, notes };
 
     const rel = path.join(REL.proposals, `${today}.md`);
-    const markers = () => inWindow.forEach((e) => { const d = path.join(staging, e.slug); if (gatedFile(staging, e.slug)) fs.writeFileSync(path.join(d, 'humaniser-learn.json'), JSON.stringify({ learned_at: today, proposals: rel }, null, 2) + '\n'); });
+    const markers = (where) => inWindow.forEach((e) => { const d = path.join(staging, e.slug); if (gatedFile(staging, e.slug)) fs.writeFileSync(path.join(d, 'humaniser-learn.json'), JSON.stringify({ learned_at: today, proposals: where }, null, 2) + '\n'); });
     if (!count) {
-      fs.mkdirSync(path.join(root, REL.proposals), { recursive: true });
-      fs.writeFileSync(path.join(root, rel), md);
-      markers();
-      log('learn', `nothing to propose (${evidence.length} changed sentences); wrote ${rel}, no PR`);
+      // No PR: the file goes to gitignored _sources, never loose in the checkout.
+      const local = path.join(REL.quiet, `${today}.md`);
+      fs.mkdirSync(path.join(root, REL.quiet), { recursive: true });
+      fs.writeFileSync(path.join(root, local), md);
+      markers(local);
+      log('learn', `nothing to propose (${evidence.length} changed sentences); wrote ${local}, no PR`);
       deps.notify(`Nothing to propose this week (${evidence.length} owner edits read).`);
       return { md, count, pr: null };
     }
@@ -395,7 +386,8 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
     fs.writeFileSync(path.join(wt, rel), md);
     const touched = [rel];
     if (reg && (addReg.length || dropReg.length)) {
-      fs.writeFileSync(regPath, JSON.stringify(applyRegister(reg, { add: addReg, drop: dropReg, today }), null, 2) + '\n');
+      const rates = Object.fromEntries(remeasured.map((p) => [p.formal, { owner_per_1k: p.owner_now, line_per_1k: p.line_now }]));
+      fs.writeFileSync(regPath, JSON.stringify(applyRegister(reg, { add: addReg, drop: dropReg, rates, today }), null, 2) + '\n');
       touched.push(REL.register);
     }
     if (addTells.length) {
@@ -413,7 +405,7 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
     deps.sh('git', ['-C', wt, 'commit', '-q', '-m', `${title}\n\n${body}`]);
     deps.sh('git', ['-C', wt, 'push', '-q', '-u', 'origin', branch]);
     prUrl = deps.sh('gh', ['pr', 'create', '--base', 'main', '--head', branch, '--title', title, '--body', body], { cwd: wt }).trim();
-    markers();
+    markers(rel);
     log('learn', `${count} proposals; PR ${prUrl} ($${cost.toFixed(3)})`);
     deps.notify(`${count} proposals to review: ${prUrl}`);
     return { md, count, pr: prUrl };

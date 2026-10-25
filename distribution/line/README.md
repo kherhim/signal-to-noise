@@ -180,13 +180,19 @@ npm run test:line   # node --test scripts/line/test/*.mjs — no network, no pai
 Every Monday at 07:45 (`infra/co.signal-to-noise.humaniser-learn.plist`)
 `scripts/line/humaniser-learn.mjs` reads the essays published since its last
 run, lines up each one against the gate output it shipped from
-(`_sources/staging-articles/<slug>/final.gated.md`, else `gated.md`, else
-`final.md`) and treats every sentence the owner changed as evidence. A model
+(the newest whole `*.gated.md` in `_sources/staging-articles/<slug>/`, else
+`gated.md`, else `final.md`) and treats every sentence the owner changed as evidence. A model
 sorts each change into fact fix, owner taste or machine tell. Machine tells
 become proposed register pairs (formal → plain, `source: "learned"`) and
 proposed humaniser tells. A register pair the owner himself uses more than
 0.3 times per 1,000 words in his hand-written essays is rejected, and an
 existing pair whose owner rate has risen above that is proposed for removal.
+Rates, inflections and the corpora come from `scripts/line/register.mjs`
+(the same code as `register.mjs measure`); a learned pair is written to
+`scripts/line/data/register.json` with `source: "learned"`, and existing
+pairs keep their `forms` and `except` fields. "Line-written" means every
+ledger slug plus any slug with a staging folder (`lineSlugs()` in
+`register.mjs`), for both.
 
 The job works in a throwaway git worktree off `origin/main`, writes
 `distribution/line/humaniser-proposals/YYYY-MM-DD.md`, and opens a PR titled
@@ -195,8 +201,8 @@ the link. It never merges.
 
 - **Approve:** merge the PR. Nothing changes the checker before that.
 - **Reject:** close the PR. Silence changes nothing either.
-- **Nothing to propose:** no PR; the proposals file is left untracked in the
-  checkout.
+- **Nothing to propose:** no PR; the proposals file goes to the gitignored
+  `_sources/humaniser-learn/YYYY-MM-DD.md`.
 
 The repo is public and the gated text is unpublished, so the proposals quote
 only the published sentence and show the changed words of the draft

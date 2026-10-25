@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {
-  sentences, alignSentences, describeChange, unpublishedShingles, leaks, per1k,
+  sentences, alignSentences, describeChange, unpublishedShingles, leaks, gatedFile,
   vetItems, appendTells, applyRegister, runLearn, OWNER_MAX_PER_1K,
 } from '../humaniser-learn.mjs';
 
@@ -37,10 +37,19 @@ test('describeChange shows changed words only, or describes a large rewrite', ()
   assert.match(describeChange('Every single word of this draft sentence is entirely different now.', 'Nothing matches at all.'), /^sentence rewritten \(\d+ of \d+ words changed\)$/);
 });
 
-test('register rates are per 1,000 words, plurals included', () => {
-  const corpus = ['expenditure '.repeat(1) + 'word '.repeat(999), 'expenditures ' + 'word '.repeat(999)];
-  assert.equal(per1k('expenditure', corpus), 1);
-  assert.equal(per1k('outlay', corpus), 0);
+test('the baseline is the newest whole *.gated.md, else gated.md, else final.md', () => {
+  const st = fs.mkdtempSync(path.join(os.tmpdir(), 'gated-'));
+  const d = path.join(st, 'e');
+  fs.mkdirSync(d);
+  const essay = 'word '.repeat(300);
+  fs.writeFileSync(path.join(d, 'final.md'), essay);
+  assert.equal(path.basename(gatedFile(st, 'e')), 'final.md');
+  fs.writeFileSync(path.join(d, 'gated.md'), essay);
+  assert.equal(path.basename(gatedFile(st, 'e')), 'gated.md');
+  const at = (f, t) => { fs.writeFileSync(path.join(d, f), f.startsWith('roe') ? 'a short caption' : essay); fs.utimesSync(path.join(d, f), t, t); };
+  at('final.gated.md', 1000); at('expanded.gated.md', 3000); at('roe-caption.gated.md', 4000);
+  assert.equal(path.basename(gatedFile(st, 'e')), 'expanded.gated.md'); // the newer snippet is passed over
+  assert.equal(gatedFile(st, 'missing'), null);
 });
 
 test('vetItems keeps only register pairs the owner actually made', () => {
@@ -51,9 +60,12 @@ test('vetItems keeps only register pairs the owner actually made', () => {
 });
 
 test('applyRegister adds learned pairs and drops the named ones', () => {
-  const reg = { updated: '2026-10-01', note: 'n', pairs: [{ formal: 'utilise', plain: 'use', owner_per_1k: 0, line_per_1k: 1, source: 'seed' }, { formal: 'commence', plain: 'start', owner_per_1k: 0, line_per_1k: 1, source: 'seed' }] };
-  const out = applyRegister(reg, { add: [{ formal: 'acquire', plain: 'buy', owner_per_1k: 0.1, line_per_1k: 2 }], drop: [{ formal: 'commence' }], today: '2026-10-26' });
+  const reg = { updated: '2026-10-01', note: 'n', pairs: [{ formal: 'utilise', plain: 'use', owner_per_1k: 0, line_per_1k: 1, source: 'seed', forms: ['utilise', 'utilize'], except: ['utilise the term'] }, { formal: 'commence', plain: 'start', owner_per_1k: 0, line_per_1k: 1, source: 'seed' }] };
+  const out = applyRegister(reg, { add: [{ formal: 'acquire', plain: 'buy', owner_per_1k: 0.1, line_per_1k: 2 }], drop: [{ formal: 'commence' }], rates: { utilise: { owner_per_1k: 0.2, line_per_1k: 0.5 } }, today: '2026-10-26' });
   assert.deepEqual(out.pairs.map((p) => [p.formal, p.source]), [['utilise', 'seed'], ['acquire', 'learned']]);
+  assert.deepEqual(out.pairs[0].forms, ['utilise', 'utilize']);          // optional fields survive
+  assert.deepEqual(out.pairs[0].except, ['utilise the term']);
+  assert.equal(out.pairs[0].owner_per_1k, 0.2);
   assert.equal(out.updated, '2026-10-26');
 });
 
@@ -89,10 +101,11 @@ function fixture({ ownerText = 'The owner writes plainly about money and mills. 
   const staging = path.join(root, '_sources/staging-articles');
   fs.mkdirSync(path.join(staging, 'line-essay'), { recursive: true });
   fs.writeFileSync(path.join(staging, 'line-essay', 'gated.md'), `---\ntitle: "Line"\n---\n\n${shared} ${SECRET} The company acquired a rival in May.\n`);
-  const base = { 'scripts/line/data/register.json': register ? JSON.stringify({ updated: '2026-10-01', note: 'n', pairs: [] }) : null, '.claude/skills/essay-line/humaniser/SKILL.md': SKILL };
-  const calls = [];
+  const base = { 'scripts/line/data/register.json': register ? JSON.stringify({ updated: '2026-10-01', note: 'n', pairs: [{ formal: 'utilise', plain: 'use', owner_per_1k: 0, line_per_1k: 0, source: 'seed', forms: ['utilise', 'utilize'] }, { formal: 'expenditure', plain: 'spending', owner_per_1k: 0, line_per_1k: 0, source: 'seed', except: ['capital expenditure'] }] }) : null, '.claude/skills/essay-line/humaniser/SKILL.md': SKILL };
+  const calls = [], snap = {};
   const sh = (cmd, args) => {
     calls.push([cmd, ...args]);
+    if (args.includes('commit')) { const wt = args[args.indexOf('-C') + 1]; const rp = path.join(wt, 'scripts/line/data/register.json'); if (fs.existsSync(rp)) snap.register = JSON.parse(fs.readFileSync(rp, 'utf8')); }
     if (args.includes('worktree') && args.includes('add')) {
       const wt = args[args.length - 2];
       for (const [rel, body] of Object.entries(base)) if (body !== null) { fs.mkdirSync(path.dirname(path.join(wt, rel)), { recursive: true }); fs.writeFileSync(path.join(wt, rel), body); }
@@ -108,7 +121,7 @@ function fixture({ ownerText = 'The owner writes plainly about money and mills. 
     loadLedger: () => ({ published: [] }), loadNeverList: () => ['Axi'], loadConfig: () => ({ models: {} }),
     runSkill: () => ({ json: { items }, cost_usd: 0 }),
   });
-  return { root, staging, calls, notes, deps };
+  return { root, staging, calls, notes, deps, snap };
 }
 
 const TELL_ITEMS = [
@@ -131,6 +144,12 @@ test('privacy: unpublished before-text never reaches the proposals file, the PR 
   assert.equal(leaks(out, unpublishedShingles([SECRET], PUBLISHED)), false);
   assert.match(r.md, /withheld tell/);                       // the leaking tell was rejected
   assert.match(r.md, /Deal-room verbs/);                      // the clean one survives
+  // The real register.json gets the learned pair; optional fields survive.
+  const reg = f.snap.register;
+  assert.deepEqual(reg.pairs.map((p) => [p.formal, p.source]), [['utilise', 'seed'], ['expenditure', 'seed'], ['acquired', 'learned']]);
+  assert.deepEqual(reg.pairs[0].forms, ['utilise', 'utilize']);
+  assert.deepEqual(reg.pairs[1].except, ['capital expenditure']);
+  assert.ok(!/NOT applied/.test(r.md));
   assert.ok(r.md.includes(`"${PUBLISHED}"`));                 // the published sentence may be quoted
   assert.ok(!/\bAxi\b/.test(out));
   // Applied on the branch, never merged, worktree cleaned up.
@@ -157,7 +176,8 @@ test('no proposals: the file says so, no branch is pushed and no PR opened', () 
   assert.equal(r.count, 0);
   assert.ok(!f.calls.some((c) => c[0] === 'gh' || c.includes('push') || c.includes('commit')));
   assert.ok(f.calls.some((c) => c.includes('branch') && c.includes('-D')));
-  const file = fs.readFileSync(path.join(f.root, 'distribution/line/humaniser-proposals/2026-10-26.md'), 'utf8');
+  assert.equal(fs.existsSync(path.join(f.root, 'distribution/line/humaniser-proposals')), false); // nothing loose in the checkout
+  const file = fs.readFileSync(path.join(f.root, '_sources/humaniser-learn/2026-10-26.md'), 'utf8');
   assert.match(file, /Nothing to propose\. No PR opened\./);
   assert.ok(!file.includes(SECRET));
   // A second run skips the essay it has already learned from.
@@ -189,6 +209,4 @@ test('register words in base form match their regular inflections', () => {
   const pairs = [{ before: 'They purchased a rival and were utilising cash.', after: 'They bought a rival and were using cash.' }];
   const v = vetItems([{ pair: 0, class: 'tell', register: [{ formal: 'purchase', plain: 'bought' }, { formal: 'utilise', plain: 'use' }] }], pairs);
   assert.deepEqual(v.register.map((r) => r.formal), ['purchase', 'utilise']);
-  assert.equal(per1k('purchase', ['purchases purchased purchasing ' + 'word '.repeat(997)]), 3);
-  assert.equal(per1k('purchase', ['purchaser ' + 'word '.repeat(999)]), 0);
 });
