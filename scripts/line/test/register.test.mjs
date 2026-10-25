@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { loadRegister, scanRegister, measureRates, ownerTexts, lineTexts, lineSlugs, lineFile, inflect, topFormal, OWNER_MAX, REGISTER } from '../register.mjs';
+import { STAGING } from '../state.mjs';
 
 const PAIRS = [
   { formal: 'expenditure', plain: 'spending', owner_per_1k: 0, line_per_1k: 1, source: 'seed', except: ['capital expenditure'] },
@@ -57,7 +58,11 @@ test('measureRates counts per 1,000 words, honouring exceptions', () => {
   assert.equal(r['prior to'], 0);
 });
 
-test('owner-rate guard: no kept pair flags the owner\'s own voice', () => {
+// Without _sources only the ledger is known, so gated essays outside it
+// (two-banks) would count as the owner's voice: skip, never pass on that.
+const noStaging = !fs.existsSync(STAGING) && `no ${path.relative(process.cwd(), STAGING) || STAGING}: line-written essays outside the ledger are unknown (set LINE_STAGING)`;
+
+test('owner-rate guard: no kept pair flags the owner\'s own voice', { skip: noStaging }, () => {
   const reg = loadRegister();
   const rates = measureRates(ownerTexts(), reg.pairs);
   const over = reg.pairs.filter((p) => rates[p.formal] > OWNER_MAX).map((p) => `${p.formal} ${rates[p.formal].toFixed(2)}`);

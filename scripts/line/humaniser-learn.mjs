@@ -165,17 +165,25 @@ function readEssays(dir) {
   }).filter((e) => !e.draft);
 }
 
-// The gate output the owner edited from: the newest *.gated.md (by mtime),
-// else gated.md, else final.md. A gated snippet (a chart caption, a single
-// paragraph) under MIN_GATED_WORDS is not the essay and is passed over.
+// The gate output the owner edited from: the newest *.gated.md (by mtime)
+// whose prose differs from the published essay. A re-gate run after the
+// owner's edits matches what shipped and teaches nothing, so it is passed
+// over; if every one matches, the essay had no owner edits ({ same: true }).
+// A gated snippet (a chart caption, a paragraph) under MIN_GATED_WORDS is not
+// the essay. With no whole *.gated.md: gated.md, else final.md.
 const MIN_GATED_WORDS = 200;
-export function gatedFile(staging, slug) {
+const prose = (md) => sentences(md).map(key).join('\n');
+export function gatedFile(staging, slug, publishedMd = null) {
   const dir = path.join(staging, slug);
   if (!fs.existsSync(dir)) return null;
   const whole = fs.readdirSync(dir).filter((f) => /^.+\.gated\.md$/.test(f)).map((f) => path.join(dir, f))
     .filter((f) => wordCount(fs.readFileSync(f, 'utf8')) >= MIN_GATED_WORDS)
     .sort((x, y) => fs.statSync(y).mtimeMs - fs.statSync(x).mtimeMs);
-  if (whole.length) return whole[0];
+  if (whole.length) {
+    if (publishedMd === null) return whole[0];
+    const pub = prose(publishedMd);
+    return whole.find((f) => prose(fs.readFileSync(f, 'utf8')) !== pub) ?? { same: true, checked: whole.length };
+  }
   for (const f of ['gated.md', 'final.md']) if (fs.existsSync(path.join(dir, f))) return path.join(dir, f);
   return null;
 }
@@ -302,8 +310,9 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
     for (const e of inWindow) {
       const marker = path.join(staging, e.slug, 'humaniser-learn.json');
       if (!since && fs.existsSync(marker)) { notes.push(`${e.slug}: already learned from (${path.basename(marker)}); pass --since to redo`); continue; }
-      const g = gatedFile(staging, e.slug);
+      const g = gatedFile(staging, e.slug, e.md);
       if (!g) { notes.push(`${e.slug}: no gate output in staging; skipped`); continue; }
+      if (g.same) { notes.push(`${e.slug}: no owner edits (all ${g.checked} gated versions match the published text)`); continue; }
       const gated = sentences(fs.readFileSync(g, 'utf8'));
       drafts.push(...gated);
       const a = alignSentences(gated, sentences(e.md));

@@ -52,6 +52,32 @@ test('the baseline is the newest whole *.gated.md, else gated.md, else final.md'
   assert.equal(gatedFile(st, 'missing'), null);
 });
 
+test('the baseline skips a re-gate that matches what shipped', () => {
+  const st = fs.mkdtempSync(path.join(os.tmpdir(), 'gated-'));
+  const d = path.join(st, 'e');
+  fs.mkdirSync(d);
+  const draft = 'The company acquired a rival in May. '.repeat(60);
+  const published = 'The company bought a rival in May. '.repeat(60);
+  const at = (f, body, t) => { fs.writeFileSync(path.join(d, f), body); fs.utimesSync(path.join(d, f), t, t); };
+  at('final.gated.md', draft, 1000);
+  at('expanded.gated.md', `---\ntitle: "x"\n---\n\n${published}`, 3000); // re-gated after the owner's edits
+  assert.equal(path.basename(gatedFile(st, 'e', published)), 'final.gated.md');
+  // Every gated version matches: no owner edits.
+  at('final.gated.md', published, 1000);
+  assert.deepEqual(gatedFile(st, 'e', published), { same: true, checked: 2 });
+});
+
+test('an essay whose gated versions all match is reported as having no owner edits', () => {
+  const f = fixture();
+  const essay = path.join(f.root, 'src/content/insights/line-essay.md');
+  const whole = `---\ntitle: "Line"\ndate: 2026-10-21\n---\n\n${'The company bought a rival in May. '.repeat(60)}\n`;
+  fs.writeFileSync(essay, whole);
+  fs.writeFileSync(path.join(f.staging, 'line-essay', 'final.gated.md'), whole);
+  const r = runLearn({ dry: true, root: f.root, staging: f.staging, deps: f.deps([]) });
+  assert.match(r.md, /line-essay: no owner edits \(all 1 gated versions match the published text\)/);
+  assert.equal(r.evidence, 0);
+});
+
 test('vetItems keeps only register pairs the owner actually made', () => {
   const pairs = [{ before: 'The company acquired a rival.', after: 'The company bought a rival.' }];
   const v = vetItems([{ pair: 0, class: 'tell', register: [{ formal: 'acquired', plain: 'bought' }, { formal: 'purchased', plain: 'bought' }] }, { pair: 9, class: 'tell' }], pairs);
