@@ -58,9 +58,9 @@ export function divergence(before, after) {
 
 // Stiff register (24 Oct 2026): rewording for the fingerprint drifted upward,
 // "bought" to "acquired", "Growth needs" to "Expansion requires". The words
-// listed are the register's formal stand-ins most often seen in line output.
+// listed are every formal stand-in in the register, most line-prone first.
 export function registerRule(register = loadRegister()) {
-  const words = topFormal(register, 20);
+  const words = topFormal(register, Infinity);
   return 'Keep the original register: never swap a plain word for a more formal one, and never turn a plain verb into an abstract noun as the subject. When you change a word, change it for one at least as plain.'
     + (words.length ? ` Do not introduce these words unless the original already uses them: ${words.map((w) => `"${w}"`).join(', ')}.` : '');
 }
