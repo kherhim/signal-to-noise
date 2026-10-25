@@ -15,6 +15,7 @@ import { ROOT } from './env.mjs';
 import { runSkill } from './claude.mjs';
 import { scannableText, scanClaudish, claudishFails } from './claudish.mjs';
 import { loadConfig, loadLedger } from './queue.mjs';
+import { scanRegister, loadRegister } from './register.mjs';
 
 const INSIGHTS = path.join(ROOT, 'src', 'content', 'insights');
 
@@ -63,15 +64,19 @@ const wordCount = (t) => t.split(/\s+/).filter(Boolean).length;
 export const humaniserRate = (flags, words) => (words ? (flags / words) * 1000 : 0);
 export const humaniserFails = (r) => r.rate > FAIL_PER_1K;
 
-export function checkHumaniser(text, { run = runSkill, voice = null, kind = 'essay' } = {}) {
+// Stiff register (24 Oct 2026): formal stand-ins from data/register.json go to
+// the reader as `register_hits`, which judges each one in context. A hit is not
+// a flag; only what the reader returns counts towards the rate.
+export function checkHumaniser(text, { run = runSkill, voice = null, kind = 'essay', register = loadRegister() } = {}) {
   const essay = scannableText(text);
   const line = loadLedger().published.map((p) => p.slug);
   const samples = voice ?? pickVoice({ exclude: line, seed: new Date().getUTCDate() });
   const cfg = loadConfig();
-  const out = run({ skill: 'humaniser', input: JSON.stringify({ kind, voice: samples, essay }, null, 2), schema: SCHEMA, maxTurns: 5, model: cfg.models?.humaniser ?? null });
+  const register_hits = scanRegister(essay, register);
+  const out = run({ skill: 'humaniser', input: JSON.stringify({ kind, voice: samples, essay, register_hits }, null, 2), schema: SCHEMA, maxTurns: 5, model: cfg.models?.humaniser ?? null });
   const { flags, dropped } = vetFlags(out.json?.flags ?? [], essay);
   const words = wordCount(essay);
-  return { flags, dropped: dropped.length, words, rate: humaniserRate(flags.length, words), cost_usd: out.cost_usd ?? 0 };
+  return { flags, dropped: dropped.length, register_hits: register_hits.length, words, rate: humaniserRate(flags.length, words), cost_usd: out.cost_usd ?? 0 };
 }
 
 export function renderHumaniser(r) {

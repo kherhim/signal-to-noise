@@ -1,0 +1,369 @@
+{
+  "updated": "2026-10-25",
+  "note": "formal stand-ins the owner rarely uses; rates per 1,000 words",
+  "pairs": [
+    {
+      "formal": "expenditure",
+      "plain": "spending",
+      "owner_per_1k": 0.09,
+      "line_per_1k": 0.27,
+      "source": "seed",
+      "except": [
+        "capital expenditure"
+      ]
+    },
+    {
+      "formal": "acquire",
+      "plain": "buy",
+      "owner_per_1k": 0.11,
+      "line_per_1k": 0.27,
+      "source": "seed"
+    },
+    {
+      "formal": "utilise",
+      "plain": "use",
+      "owner_per_1k": 0.16,
+      "line_per_1k": 0,
+      "source": "seed",
+      "forms": [
+        "utilise",
+        "utilises",
+        "utilised",
+        "utilising",
+        "utilize",
+        "utilizes",
+        "utilized",
+        "utilizing"
+      ]
+    },
+    {
+      "formal": "utilisation",
+      "plain": "use",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "commence",
+      "plain": "start",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "demonstrate",
+      "plain": "show",
+      "owner_per_1k": 0.25,
+      "line_per_1k": 0.27,
+      "source": "seed"
+    },
+    {
+      "formal": "assist",
+      "plain": "help",
+      "owner_per_1k": 0.11,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "facilitate",
+      "plain": "help",
+      "owner_per_1k": 0.05,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "sufficient",
+      "plain": "enough",
+      "owner_per_1k": 0.09,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "approximately",
+      "plain": "about",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "purchase",
+      "plain": "buy",
+      "owner_per_1k": 0.29,
+      "line_per_1k": 0.73,
+      "source": "seed"
+    },
+    {
+      "formal": "obtain",
+      "plain": "get",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "endeavour",
+      "plain": "try",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "regarding",
+      "plain": "about",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "subsequently",
+      "plain": "later",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0.18,
+      "source": "seed"
+    },
+    {
+      "formal": "prior to",
+      "plain": "before",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "in order to",
+      "plain": "to",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "numerous",
+      "plain": "many",
+      "owner_per_1k": 0.14,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "recognise",
+      "plain": "book",
+      "owner_per_1k": 0.05,
+      "line_per_1k": 0.18,
+      "source": "seed"
+    },
+    {
+      "formal": "generator",
+      "plain": "earner",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "assemble",
+      "plain": "build",
+      "owner_per_1k": 0.05,
+      "line_per_1k": 0.27,
+      "source": "seed"
+    },
+    {
+      "formal": "excessive",
+      "plain": "too big",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "expansion",
+      "plain": "growth",
+      "owner_per_1k": 0.16,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "finest",
+      "plain": "best",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "argue",
+      "plain": "say",
+      "owner_per_1k": 0.2,
+      "line_per_1k": 0.64,
+      "source": "seed"
+    },
+    {
+      "formal": "individuals",
+      "plain": "people",
+      "owner_per_1k": 0.25,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "terminate",
+      "plain": "end",
+      "owner_per_1k": 0.05,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "additional",
+      "plain": "more",
+      "owner_per_1k": 0.05,
+      "line_per_1k": 0.27,
+      "source": "seed"
+    },
+    {
+      "formal": "remainder",
+      "plain": "rest",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "ascertain",
+      "plain": "find out",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "possess",
+      "plain": "have",
+      "owner_per_1k": 0.16,
+      "line_per_1k": 0.09,
+      "source": "seed"
+    },
+    {
+      "formal": "constitute",
+      "plain": "make up",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "indicate",
+      "plain": "show",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0.09,
+      "source": "seed"
+    },
+    {
+      "formal": "solely",
+      "plain": "only",
+      "owner_per_1k": 0.16,
+      "line_per_1k": 0.09,
+      "source": "seed"
+    },
+    {
+      "formal": "thereby",
+      "plain": "so",
+      "owner_per_1k": 0.05,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "moreover",
+      "plain": "also",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "furthermore",
+      "plain": "also",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "nevertheless",
+      "plain": "still",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0.09,
+      "source": "seed"
+    },
+    {
+      "formal": "currently",
+      "plain": "now",
+      "owner_per_1k": 0.11,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "in excess of",
+      "plain": "over",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "a number of",
+      "plain": "some",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "with regard to",
+      "plain": "about",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "external funding",
+      "plain": "borrowing",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "respond to",
+      "plain": "move with",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "elevated",
+      "plain": "high",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.09,
+      "source": "seed"
+    },
+    {
+      "formal": "substantial",
+      "plain": "large",
+      "owner_per_1k": 0.05,
+      "line_per_1k": 0.27,
+      "source": "seed"
+    },
+    {
+      "formal": "diminish",
+      "plain": "shrink",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "sizeable",
+      "plain": "big",
+      "owner_per_1k": 0,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "modest",
+      "plain": "small",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0,
+      "source": "seed"
+    },
+    {
+      "formal": "undertake",
+      "plain": "do",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.09,
+      "source": "seed"
+    }
+  ]
+}
