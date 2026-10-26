@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { blended, priceOf, newerThanLineup, snapshot, staleOverrides } from '../token-prices.mjs';
+import { blended, priceOf, newerThanLineup, snapshot, staleOverrides, inDeepSeekPeak } from '../token-prices.mjs';
 
 const m = (id, input, output, created = 1) => ({ id, name: id, created, pricing: { prompt: String(input / 1e6), completion: String(output / 1e6) } });
 const lineup = {
@@ -28,6 +28,9 @@ test('snapshot fills each tier, applies overrides and lists missing ids', () => 
   assert.equal(acme.budget.source, 'https://acme.example/pricing');
   assert.equal(acme.budget.input, 0.2);
   assert.deepEqual(snapshot([m('acme/big', 2, 10)], lineup, 'T').labs[0].missing, ['acme/small']);
+  const labelled = snapshot([m('acme/big', 2, 10), m('acme/small', 1, 1)], { ...lineup, labels: { 'acme/big': 'previous generation' } }, 'T');
+  assert.equal(labelled.labs[0].flagship.label, 'previous generation');
+  assert.equal(labelled.labs[0].budget.label, undefined);
 });
 
 test('newerThanLineup flags unreviewed newer models only', () => {
@@ -38,4 +41,11 @@ test('newerThanLineup flags unreviewed newer models only', () => {
 test('staleOverrides reports overrides OpenRouter now matches', () => {
   assert.deepEqual(staleOverrides([m('acme/small', 0.01, 0.2)], lineup), []);
   assert.deepEqual(staleOverrides([m('acme/small', 0.2, 0.8)], lineup), ['acme/small']);
+});
+
+test('inDeepSeekPeak covers weekday 01-04 and 06-10 UTC only', () => {
+  assert.equal(inDeepSeekPeak(new Date('2026-10-26T08:54:00Z')), true); // Monday
+  assert.equal(inDeepSeekPeak(new Date('2026-10-26T10:00:00Z')), false);
+  assert.equal(inDeepSeekPeak(new Date('2026-10-26T05:30:00Z')), false);
+  assert.equal(inDeepSeekPeak(new Date('2026-11-01T08:00:00Z')), false); // Sunday
 });

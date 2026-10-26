@@ -30,7 +30,7 @@ NODE="$(command -v node || true)"
 
 mkdir -p "$AGENTS" "$HOME/Library/Logs"
 # label suffix and when it runs, for the closing message
-for job in "metrics:Mondays 07:30" "humaniser-learn:Mondays 07:45" "token-prices:1st of the month 08:00"; do
+for job in "metrics:Mondays 07:30" "humaniser-learn:Mondays 07:45" "token-prices:1st of the month 12:00"; do
   label="co.signal-to-noise.${job%%:*}"
   # The repo copy names the old Mac's paths; rewrite them for this one.
   sed -e "s#/Users/himanshu.kher/Documents/devProjects/signal2noise#$REPO#g" \
