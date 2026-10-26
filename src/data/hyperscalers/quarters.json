@@ -1,0 +1,765 @@
+{
+ "as_of": "2026-10-26",
+ "units": "USD billions",
+ "companies": [
+  {
+   "name": "Alphabet",
+   "ticker": "GOOGL",
+   "cik": "1652044",
+   "quarters": [
+    {
+     "q": "Q3 2024",
+     "period_end": "2024-09-30",
+     "ocf": 30.7,
+     "capex": 13.06,
+     "buybacks": 15.29,
+     "debt": 12.3,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 17.64,
+     "debt_current_portion": 1.0,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000091/"
+     ]
+    },
+    {
+     "q": "Q4 2024",
+     "period_end": "2024-12-31",
+     "ocf": 39.11,
+     "capex": 14.28,
+     "buybacks": 15.55,
+     "debt": 10.88,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 24.83,
+     "debt_current_portion": 1.0,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+     ]
+    },
+    {
+     "q": "Q1 2025",
+     "period_end": "2025-03-31",
+     "ocf": 36.15,
+     "capex": 17.2,
+     "buybacks": 15.07,
+     "debt": 10.89,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 18.95,
+     "debt_current_portion": 1.0,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000043/",
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000048/"
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "period_end": "2025-06-30",
+     "ocf": 27.75,
+     "capex": 22.45,
+     "buybacks": 13.24,
+     "debt": 23.61,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 5.3,
+     "debt_current_portion": 1.0,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000062/",
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000071/"
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "period_end": "2025-09-30",
+     "ocf": 48.41,
+     "capex": 23.95,
+     "buybacks": 11.9,
+     "debt": 21.61,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 24.46,
+     "debt_current_portion": 2.0,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000091/"
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "period_end": "2025-12-31",
+     "ocf": 52.4,
+     "capex": 27.85,
+     "buybacks": 5.5,
+     "debt": 46.55,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 24.55,
+     "debt_current_portion": 2.0,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/",
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000071/"
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "period_end": "2026-03-31",
+     "ocf": 45.79,
+     "capex": 35.67,
+     "buybacks": 0.0,
+     "debt": 77.5,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 10.12,
+     "debt_current_portion": 2.0,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000048/"
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "period_end": "2026-06-30",
+     "ocf": 39.07,
+     "capex": 44.92,
+     "buybacks": 0.0,
+     "debt": 98.17,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": -5.85,
+     "debt_current_portion": 2.0,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000071/"
+     ]
+    }
+   ],
+   "capex_guidance": {
+    "2026": "$195-205bn (raised 22 Jul 2026 from $180-190bn)",
+    "2027": "expected to 'increase significantly' (no figure)",
+    "source": "https://www.cnbc.com/2026/07/22/google-earnings-q2-goog-live-updates.html",
+    "source_type": "secondary (earnings call, reported by CNBC)"
+   }
+  },
+  {
+   "name": "Microsoft",
+   "ticker": "MSFT",
+   "cik": "789019",
+   "quarters": [
+    {
+     "q": "Q3 2024",
+     "period_end": "2024-09-30",
+     "ocf": 34.18,
+     "capex": 14.92,
+     "buybacks": 4.11,
+     "debt": 42.87,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 19.26,
+     "debt_current_portion": 2.25,
+     "fiscal_q": "FY25 Q1",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000095017024118967/",
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312525256321/"
+     ]
+    },
+    {
+     "q": "Q4 2024",
+     "period_end": "2024-12-31",
+     "ocf": 22.29,
+     "capex": 15.8,
+     "buybacks": 4.99,
+     "debt": 39.72,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 6.49,
+     "debt_current_portion": 5.25,
+     "fiscal_q": "FY25 Q2",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000095017025010491/",
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312526027207/"
+     ]
+    },
+    {
+     "q": "Q1 2025",
+     "period_end": "2025-03-31",
+     "ocf": 37.04,
+     "capex": 16.75,
+     "buybacks": 4.78,
+     "debt": 39.88,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 20.29,
+     "debt_current_portion": 3.0,
+     "fiscal_q": "FY25 Q3",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000095017025061046/",
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312526191507/"
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "period_end": "2025-06-30",
+     "ocf": 42.65,
+     "capex": 17.08,
+     "buybacks": 4.55,
+     "debt": 40.15,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 25.57,
+     "debt_current_portion": 3.0,
+     "fiscal_q": "FY25 Q4",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "period_end": "2025-09-30",
+     "ocf": 45.06,
+     "capex": 19.39,
+     "buybacks": 5.65,
+     "debt": 35.38,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 25.67,
+     "debt_current_portion": 7.83,
+     "fiscal_q": "FY26 Q1",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312525256321/"
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "period_end": "2025-12-31",
+     "ocf": 35.76,
+     "capex": 29.88,
+     "buybacks": 7.42,
+     "debt": 35.42,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 5.88,
+     "debt_current_portion": 4.84,
+     "fiscal_q": "FY26 Q2",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312526027207/"
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "period_end": "2026-03-31",
+     "ocf": 46.68,
+     "capex": 30.88,
+     "buybacks": 4.63,
+     "debt": 31.42,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 15.8,
+     "debt_current_portion": 8.84,
+     "fiscal_q": "FY26 Q3",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312526191507/"
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "period_end": "2026-06-30",
+     "ocf": 55.44,
+     "capex": 35.8,
+     "buybacks": 4.58,
+     "debt": 31.07,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 19.64,
+     "debt_current_portion": 9.23,
+     "fiscal_q": "FY26 Q4",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+     ]
+    }
+   ],
+   "capex_guidance": {
+    "2026": "~$175bn calendar 2026 incl. finance leases (was ~$190bn; cut reflects finance-to-operating lease reclassification after useful-life change, underlying plan 'unchanged')",
+    "2027": "FY27 (Jul 2026-Jun 2027) capex to 'grow year-over-year' (no figure); FY27 Q1 >$50bn per Investing.com",
+    "source": "https://www.microsoft.com/en-us/investor/events/fy-2026/earnings-fy-2026-q4",
+    "source_type": "earnings call 29 Jul 2026; quotes via call transcripts (Yahoo/Investing.com), secondary"
+   }
+  },
+  {
+   "name": "Amazon",
+   "ticker": "AMZN",
+   "cik": "1018724",
+   "quarters": [
+    {
+     "q": "Q3 2024",
+     "period_end": "2024-09-30",
+     "ocf": 25.97,
+     "capex": 22.62,
+     "buybacks": 0.0,
+     "debt": 54.89,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 3.35,
+     "debt_current_portion": 5.25,
+     "proceeds_ppe_sales_incentives": 1.342,
+     "capex_net_of_proceeds": 21.28,
+     "fcf_company_def": 4.69,
+     "finance_lease_principal": 0.4,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872424000161/",
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872425000123/"
+     ]
+    },
+    {
+     "q": "Q4 2024",
+     "period_end": "2024-12-31",
+     "ocf": 45.64,
+     "capex": 27.83,
+     "buybacks": 0.0,
+     "debt": 52.62,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 17.81,
+     "debt_current_portion": 5.02,
+     "proceeds_ppe_sales_incentives": 1.782,
+     "capex_net_of_proceeds": 26.05,
+     "fcf_company_def": 19.59,
+     "finance_lease_principal": 0.33,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/"
+     ]
+    },
+    {
+     "q": "Q1 2025",
+     "period_end": "2025-03-31",
+     "ocf": 17.02,
+     "capex": 25.02,
+     "buybacks": 0.0,
+     "debt": 53.37,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": -8.0,
+     "debt_current_portion": 5.01,
+     "proceeds_ppe_sales_incentives": 0.764,
+     "capex_net_of_proceeds": 24.26,
+     "fcf_company_def": -7.24,
+     "finance_lease_principal": 0.41,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872425000036/",
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000014/"
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "period_end": "2025-06-30",
+     "ocf": 32.52,
+     "capex": 32.18,
+     "buybacks": 0.0,
+     "debt": 50.72,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 0.34,
+     "debt_current_portion": 5.0,
+     "proceeds_ppe_sales_incentives": 0.815,
+     "capex_net_of_proceeds": 31.36,
+     "fcf_company_def": 1.16,
+     "finance_lease_principal": 0.41,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872425000086/",
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000026/"
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "period_end": "2025-09-30",
+     "ocf": 35.52,
+     "capex": 35.09,
+     "buybacks": 0.0,
+     "debt": 50.74,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 0.43,
+     "debt_current_portion": 4.0,
+     "proceeds_ppe_sales_incentives": 0.867,
+     "capex_net_of_proceeds": 34.22,
+     "fcf_company_def": 1.3,
+     "finance_lease_principal": 0.35,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872425000123/"
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "period_end": "2025-12-31",
+     "ocf": 54.46,
+     "capex": 39.52,
+     "buybacks": 0.0,
+     "debt": 65.65,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 14.94,
+     "debt_current_portion": 2.75,
+     "proceeds_ppe_sales_incentives": 1.053,
+     "capex_net_of_proceeds": 38.47,
+     "fcf_company_def": 15.99,
+     "finance_lease_principal": 0.39,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/",
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000026/"
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "period_end": "2026-03-31",
+     "ocf": 26.03,
+     "capex": 44.2,
+     "buybacks": 0.0,
+     "debt": 119.07,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": -18.17,
+     "debt_current_portion": 2.83,
+     "proceeds_ppe_sales_incentives": 0.969,
+     "capex_net_of_proceeds": 43.23,
+     "fcf_company_def": -17.2,
+     "finance_lease_principal": 0.47,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000014/"
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "period_end": "2026-06-30",
+     "ocf": 45.39,
+     "capex": 54.21,
+     "buybacks": 0.0,
+     "debt": 128.89,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": -8.82,
+     "debt_current_portion": 3.33,
+     "proceeds_ppe_sales_incentives": 1.132,
+     "capex_net_of_proceeds": 53.08,
+     "fcf_company_def": -7.69,
+     "finance_lease_principal": 0.4,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000026/"
+     ]
+    }
+   ],
+   "capex_guidance": {
+    "2026": "~$220bn cash capex (raised 30 Jul 2026 from ~$200bn)",
+    "2027": "no figure; Jassy said capacity will still lag demand in 2027",
+    "source": "https://www.cnbc.com/2026/07/30/amazon-amzn-q2-earnings-report-2026.html",
+    "source_type": "secondary (earnings call, reported by CNBC)"
+   }
+  },
+  {
+   "name": "Meta",
+   "ticker": "META",
+   "cik": "1326801",
+   "quarters": [
+    {
+     "q": "Q4 2024",
+     "period_end": "2024-12-31",
+     "ocf": 27.99,
+     "capex": 14.43,
+     "buybacks": 0.0,
+     "debt": 28.83,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 13.56,
+     "debt_current_portion": null,
+     "capex_incl_finance_leases": 14.84,
+     "fcf_company_def": 13.15,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+     ]
+    },
+    {
+     "q": "Q1 2025",
+     "period_end": "2025-03-31",
+     "ocf": 24.03,
+     "capex": 12.94,
+     "buybacks": 12.75,
+     "debt": 28.83,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 11.09,
+     "debt_current_portion": null,
+     "capex_incl_finance_leases": 13.69,
+     "fcf_company_def": 10.34,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1326801/000132680125000054/",
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026028526/"
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "period_end": "2025-06-30",
+     "ocf": 25.56,
+     "capex": 16.54,
+     "buybacks": 10.17,
+     "debt": 28.83,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 9.02,
+     "debt_current_portion": null,
+     "capex_incl_finance_leases": 17.01,
+     "fcf_company_def": 8.55,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828025036791/",
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026050705/"
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "period_end": "2025-09-30",
+     "ocf": 30.0,
+     "capex": 18.83,
+     "buybacks": 3.33,
+     "debt": 28.83,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 11.17,
+     "debt_current_portion": null,
+     "capex_incl_finance_leases": 19.38,
+     "fcf_company_def": 10.62,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828025047240/",
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066773/"
+     ]
+    },
+    {
+     "q": "Q4 2025",
+     "period_end": "2025-12-31",
+     "ocf": 36.21,
+     "capex": 21.38,
+     "buybacks": 0.0,
+     "debt": 58.74,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 14.83,
+     "debt_current_portion": 0.0,
+     "capex_incl_finance_leases": 22.13,
+     "fcf_company_def": 14.08,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/",
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066773/"
+     ]
+    },
+    {
+     "q": "Q1 2026",
+     "period_end": "2026-03-31",
+     "ocf": 32.23,
+     "capex": 19.0,
+     "buybacks": 0.0,
+     "debt": 58.75,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 13.23,
+     "debt_current_portion": null,
+     "capex_incl_finance_leases": 19.84,
+     "fcf_company_def": 12.39,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026028526/"
+     ]
+    },
+    {
+     "q": "Q2 2026",
+     "period_end": "2026-06-30",
+     "ocf": 31.86,
+     "capex": 30.12,
+     "buybacks": 0.0,
+     "debt": 83.66,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 1.74,
+     "debt_current_portion": null,
+     "capex_incl_finance_leases": 31.08,
+     "fcf_company_def": 0.78,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026050705/"
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "period_end": "2026-09-30",
+     "ocf": 32.78,
+     "capex": 33.94,
+     "buybacks": 0.0,
+     "debt": 80.92,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": -1.16,
+     "debt_current_portion": 2.75,
+     "capex_incl_finance_leases": 34.9,
+     "fcf_company_def": -2.12,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066773/"
+     ]
+    }
+   ],
+   "capex_guidance": {
+    "2026": "$135-145bn incl. principal payments on finance leases (narrowed 21 Oct 2026 from $130-145bn); YTD to Sep $85.8bn",
+    "2027": "no guidance given",
+    "source": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066700/meta-09302026xexhibit991.htm",
+    "source_type": "primary (8-K Ex 99.1 press release)"
+   }
+  },
+  {
+   "name": "Oracle",
+   "ticker": "ORCL",
+   "cik": "1341439",
+   "quarters": [
+    {
+     "q": "Q4 2024",
+     "fiscal_q": "FY25 Q2",
+     "period_end": "2024-11-30",
+     "ocf": 1.304,
+     "capex": 3.97,
+     "buybacks": 0.15,
+     "debt": 80.462,
+     "debt_basis": "notes payable and other borrowings, non-current (balance-sheet line)",
+     "fcf": -2.666,
+     "debt_current_portion": 8.162,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1341439/000095017024134973/",
+      "https://www.sec.gov/Archives/edgar/data/1341439/000095017024104905/"
+     ]
+    },
+    {
+     "q": "Q1 2025",
+     "fiscal_q": "FY25 Q3",
+     "period_end": "2025-02-28",
+     "ocf": 5.933,
+     "capex": 5.862,
+     "buybacks": 0.15,
+     "debt": 88.109,
+     "debt_basis": "notes payable and other borrowings, non-current (balance-sheet line)",
+     "fcf": 0.071,
+     "debt_current_portion": 8.167,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1341439/000095017025037143/",
+      "https://www.sec.gov/Archives/edgar/data/1341439/000095017024134973/"
+     ]
+    },
+    {
+     "q": "Q2 2025",
+     "fiscal_q": "FY25 Q4",
+     "period_end": "2025-05-31",
+     "ocf": 6.157,
+     "capex": 9.08,
+     "buybacks": 0.15,
+     "debt": 85.297,
+     "debt_basis": "notes payable and other borrowings, non-current (balance-sheet line)",
+     "fcf": -2.923,
+     "debt_current_portion": 7.271,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1341439/000095017025087926/",
+      "https://www.sec.gov/Archives/edgar/data/1341439/000095017025037143/"
+     ]
+    },
+    {
+     "q": "Q3 2025",
+     "fiscal_q": "FY26 Q1",
+     "period_end": "2025-08-31",
+     "ocf": 8.14,
+     "capex": 8.502,
+     "buybacks": 0.095,
+     "debt": 82.236,
+     "debt_basis": "notes payable and other borrowings, non-current (balance-sheet line)",
+     "fcf": -0.362,
+     "debt_current_portion": 9.079,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1341439/000119312525200095/"
+     ],
+     "capex_net_cash_outlay_company_def": 6.544
+    },
+    {
+     "q": "Q4 2025",
+     "fiscal_q": "FY26 Q2",
+     "period_end": "2025-11-30",
+     "ocf": 2.066,
+     "capex": 12.033,
+     "buybacks": 0.0,
+     "debt": 99.984,
+     "debt_basis": "notes payable and other borrowings, non-current (balance-sheet line)",
+     "fcf": -9.967,
+     "debt_current_portion": 8.091,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1341439/000119312525315925/",
+      "https://www.sec.gov/Archives/edgar/data/1341439/000119312525200095/"
+     ],
+     "capex_net_cash_outlay_company_def": 12.793
+    },
+    {
+     "q": "Q1 2026",
+     "fiscal_q": "FY26 Q3",
+     "period_end": "2026-02-28",
+     "ocf": 7.151,
+     "capex": 18.635,
+     "buybacks": 0.0,
+     "debt": 124.718,
+     "debt_basis": "notes payable and other borrowings, non-current (balance-sheet line)",
+     "fcf": -11.484,
+     "debt_current_portion": 9.887,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1341439/000119312526101045/",
+      "https://www.sec.gov/Archives/edgar/data/1341439/000119312525315925/"
+     ],
+     "capex_net_cash_outlay_company_def": 17.166
+    },
+    {
+     "q": "Q2 2026",
+     "fiscal_q": "FY26 Q4",
+     "period_end": "2026-05-31",
+     "ocf": 14.62,
+     "capex": 16.493,
+     "buybacks": 0.0,
+     "debt": 122.342,
+     "debt_basis": "notes payable and other borrowings, non-current (balance-sheet line)",
+     "fcf": -1.873,
+     "debt_current_portion": 7.199,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/",
+      "https://www.sec.gov/Archives/edgar/data/1341439/000119312526101045/"
+     ],
+     "capex_net_cash_outlay_company_def": 11.223
+    },
+    {
+     "q": "Q3 2026",
+     "fiscal_q": "FY27 Q1",
+     "period_end": "2026-08-31",
+     "ocf": 23.103,
+     "capex": 28.499,
+     "buybacks": 0.0,
+     "debt": 117.712,
+     "debt_basis": "notes payable and other borrowings, non-current (balance-sheet line)",
+     "fcf": -5.396,
+     "debt_current_portion": 7.625,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1341439/000119312526389274/"
+     ],
+     "capex_net_cash_outlay_company_def": 17.966,
+     "customer_prepayments_for_capex": 11.363,
+     "atm_equity_proceeds": 19.909
+    }
+   ],
+   "capex_guidance": {
+    "2027": "FY27 (Jun 2026-May 2027): $90-95bn reported capex, not more than ~$70bn net cash capex (after customer prepayments and supplier financing); reaffirmed 10 Sep 2026 on the Q1 FY27 call, first given June 2026",
+    "2026": "FY26 (Jun 2025-May 2026) actual: $55.66bn cash capex",
+    "source": "https://www.cnbc.com/2026/09/10/oracle-orcl-q1-earnings-report-2027.html",
+    "source_type": "secondary (earnings call remarks by CFO, reported by CNBC/MarketBeat); not in the 8-K press release"
+   },
+   "rpo": {
+    "value": 664.0,
+    "as_of": "2026-08-31",
+    "note": "up $209bn y/y; $638bn at 31 May 2026; $455.3bn at 31 Aug 2025; $137.8bn at 31 May 2025",
+    "sources": [
+     "https://www.sec.gov/Archives/edgar/data/1341439/000119312526389274/",
+     "https://www.sec.gov/Archives/edgar/data/1341439/000119312526387905/orcl-ex99_1.htm"
+    ]
+   },
+   "bond_issues": [
+    {
+     "date": "2025-02-03",
+     "amount": 7.75,
+     "detail": "six tranches, FRN 2028 to 6.125% 2065",
+     "source": "https://www.sec.gov/Archives/edgar/data/1341439/000119312525019281/d927919d8k.htm"
+    },
+    {
+     "date": "2025-09-26",
+     "amount": 18.0,
+     "detail": "six tranches, 4.45% 2030 to 6.10% 2065",
+     "source": "https://www.sec.gov/Archives/edgar/data/1341439/000119312525220445/d31817d8k.htm"
+    },
+    {
+     "date": "2026-02-04",
+     "amount": 25.0,
+     "detail": "eight tranches, FRN 2029 to 6.85% 2066; same week Oracle opened a $20bn at-the-market equity programme and issued ~$5bn mandatory convertible preferred",
+     "source": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526037840/d23732d8k.htm"
+    }
+   ],
+   "fiscal_calendar_note": "Fiscal year ends 31 May. Quarters ending Aug/Nov/Feb/May are labelled calendar Q3/Q4/Q1/Q2, so each Oracle quarter ends one month BEFORE the calendar quarter it sits beside."
+  }
+ ],
+ "notes": [
+  "All quarterly figures are from SEC EDGAR XBRL financial data (10-Q/10-K, primary). Where a company tags only year-to-date cash flows, the quarter is derived as YTD minus prior YTD; Q4 = full year minus 9M.",
+  "capex = GAAP cash-flow line 'Purchases of property and equipment' (cash), excluding finance leases. fcf = ocf - capex on that basis.",
+  "Meta headlines capex INCLUDING principal payments on finance leases (Q3 2026: $33.94bn + $0.96bn = $34.91bn); see capex_incl_finance_leases and fcf_company_def (Q3 2026 -$2.12bn vs +$10.63bn a year earlier, matching the press release).",
+  "Amazon headlines FCF using 'purchases of property and equipment, net of proceeds from sales and incentives' (capex_net_of_proceeds). TTM FCF to Jun 2026 = 161.403 - (173.028 - 4.021) = -$7.60bn; prior year 121.137 - (107.656 - 4.703) = +$18.18bn. Both match. Amazon also publishes FCF less principal repayments of finance leases and financing obligations; financing-obligation repayments were not extracted.",
+  "Microsoft's press releases headline capex INCLUDING finance leases (for example $41bn in FY26 Q4, secondary); the cash PP&E figure here ($35.8bn) is lower. Microsoft fiscal year ends 30 June: Q3 2024 = FY25 Q1 ... Q2 2026 = FY26 Q4 (see fiscal_q).",
+  "Debt is non-current long-term debt as shown on the balance sheet (consistent with the verified Alphabet and Meta figures); debt_current_portion is given separately. Alphabet Sep 2024 ($12.30bn) comes from the XBRL tag LongTermDebtAndCapitalLeaseObligations, which is the same balance-sheet line in that period.",
+  "Amazon made no share repurchases in any quarter covered (no buybacks since 2022; $6.1bn remains under the March 2022 programme per the Q2 2026 10-Q).",
+  "Q3 2026 (Sep quarter) for Microsoft, Alphabet and Amazon is not yet reported (they report 28-29 Oct), so their series run Q3 2024 to Q2 2026. Meta runs Q4 2024 to Q3 2026.",
+  "Alphabet raised $49.6bn of equity in June 2026 (including a $10bn Berkshire Hathaway placement), per secondary reporting; this is not checked against filings.",
+  "Capex guidance figures come from earnings calls (secondary reporting), except Meta's, which is in its 8-K press release (primary).",
+  "Oracle: fiscal year ends 31 May (FY27 Q1 = Jun-Aug 2026, plotted as Q3 2026). Each Oracle quarter ends a month before the calendar quarter it is labelled with. Series runs FY25 Q2 (Nov 2024, plotted Q4 2024) to FY27 Q1 (Aug 2026). Cash flows are YTD-differenced from 10-Q/10-K XBRL; derived FY26 quarters match Oracle's own quarterly FCF table in the Q1 FY27 release exactly. debt = 'Notes payable and other borrowings, non-current'. Buybacks: $0.095bn in FY26 Q1 only, none since; FY27 Q1 cash-flow statement has no repurchase line (recorded as 0). FY27 Q1 OCF ($23.1bn) is inflated by $11.36bn of customer prepayments for capex booked in operating cash flow; Oracle's 'net cash outlay for capex' nets these off (capex_net_cash_outlay_company_def)."
+ ]
+}
