@@ -12,6 +12,7 @@
  *
  * Blended price = (3 × input + 1 × output) / 4, the usual 3:1 convention.
  *
+ * `labels` attaches a reader-facing caveat to a model (e.g. previous generation).
  * Where OpenRouter's price is wrong, lineup.json `overrides` holds the lab's
  * own price and source; the run warns once OpenRouter agrees again.
  */
@@ -22,6 +23,14 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DATA = path.join(ROOT, 'src', 'data', 'token-prices');
 const DRY = process.argv.includes('--dry');
+const FORCE = process.argv.includes('--force');
+
+// DeepSeek charges double in weekday peak hours (01:00-04:00 and 06:00-10:00 UTC)
+// and OpenRouter passes the live rate through; the index shows off-peak.
+export function inDeepSeekPeak(d) {
+  const day = d.getUTCDay(), h = d.getUTCHours();
+  return day >= 1 && day <= 5 && ((h >= 1 && h < 4) || (h >= 6 && h < 10));
+}
 
 export const blended = (input, output) => (3 * input + output) / 4;
 
@@ -62,7 +71,10 @@ export function snapshot(models, lineup, fetchedAt) {
   const byId = new Map(models.map((m) => [m.id, m]));
   const labs = lineup.labs.map((l) => ({
     lab: l.lab,
-    ...Object.fromEntries(lineup.tiers.map((t) => [t, l[t] && byId.has(l[t]) ? priceOf(byId.get(l[t]), lineup.overrides?.[l[t]]) : null])),
+    ...Object.fromEntries(lineup.tiers.map((t) => {
+      const p = l[t] && byId.has(l[t]) ? priceOf(byId.get(l[t]), lineup.overrides?.[l[t]]) : null;
+      return [t, p && lineup.labels?.[l[t]] ? { ...p, label: lineup.labels[l[t]] } : p];
+    })),
     missing: ids(l, lineup.tiers).filter((id) => !byId.has(id)),
   }));
   return { fetched_at: fetchedAt, source: 'https://openrouter.ai/api/v1/models', basis: 'USD per million tokens, list price; blended = (3 input + 1 output) / 4', labs };
@@ -84,6 +96,7 @@ async function main() {
   const stale = staleOverrides(models, lineup);
   if (stale.length) console.log(`\nOpenRouter now matches these overrides (drop them from lineup.json):\n  ${stale.join('\n  ')}`);
   if (DRY) return;
+  if (inDeepSeekPeak(now) && !FORCE) throw new Error('DeepSeek peak hours (weekdays 01-04 and 06-10 UTC): prices above are peak rates, nothing written. Run after 10:00 UTC.');
   const out = path.join(DATA, 'snapshots', `${now.toISOString().slice(0, 7)}.json`);
   fs.writeFileSync(out, JSON.stringify(snap, null, 2) + '\n');
   console.log(`\nwrote ${path.relative(ROOT, out)}`);

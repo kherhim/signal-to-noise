@@ -4,7 +4,8 @@
 <dict>
   <key>Label</key><string>co.signal-to-noise.token-prices</string>
   <!-- Monthly token price snapshot: opens a PR with the new month's prices,
-       never merges. caffeinate as in the humaniser-learn plist: a missed wake
+       never merges. 12:00 keeps clear of DeepSeek's weekday peak pricing
+       (to 10:00 UTC), which the snapshot refuses. caffeinate as in the humaniser-learn plist: a missed wake
        fires inside a short dark wake. -->
   <key>ProgramArguments</key>
   <array>
@@ -20,7 +21,7 @@
   <key>StartCalendarInterval</key>
   <dict>
     <key>Day</key><integer>1</integer>
-    <key>Hour</key><integer>8</integer>
+    <key>Hour</key><integer>12</integer>
     <key>Minute</key><integer>0</integer>
   </dict>
   <key>StandardOutPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-token-prices.log</string>

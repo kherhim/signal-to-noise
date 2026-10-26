@@ -91,7 +91,15 @@
         "blended": 3,
         "source": "openrouter"
       },
-      "budget": null,
+      "budget": {
+        "id": "x-ai/grok-4.3",
+        "name": "SpaceXAI: Grok 4.3",
+        "input": 1.25,
+        "output": 2.5,
+        "blended": 1.5625,
+        "source": "openrouter",
+        "label": "previous generation; xAI sells no current-generation budget model"
+      },
       "missing": []
     },
     {

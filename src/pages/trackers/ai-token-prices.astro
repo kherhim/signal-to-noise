@@ -93,7 +93,7 @@ const ylog = (v) => T3 + ((Math.log10(100) - Math.log10(v)) / (Math.log10(100) -
             {present(l).length > 1 && <line x1={xp(Math.min(...present(l).map((t) => l[t.key].blended)))} x2={xp(Math.max(...present(l).map((t) => l[t.key].blended)))} y1={yr(i)} y2={yr(i)} class="span" />}
             {present(l).map((t) => {
               const p = l[t.key], x = xp(p.blended), y = yr(i);
-              const tip = `${l.lab} ${t.label.toLowerCase()}: ${p.name} · in ${money(p.input)} / out ${money(p.output)} · blended ${money(p.blended)}`;
+              const tip = `${l.lab} ${t.label.toLowerCase()}: ${p.name} · in ${money(p.input)} / out ${money(p.output)} · blended ${money(p.blended)}${p.label ? ` · ${p.label.split(';')[0]}` : ''}`;
               return t.shape === 'circle' ? <circle cx={x} cy={y} r="5.5" fill={t.color} class="ring hit" data-tip={tip} />
                 : t.shape === 'square' ? <rect x={x - 5} y={y - 5} width="10" height="10" rx="1.5" fill={t.color} class="ring hit" data-tip={tip} />
                 : <rect x={x - 5} y={y - 5} width="10" height="10" rx="1.5" fill={t.color} class="ring hit" transform={`rotate(45 ${x} ${y})`} data-tip={tip} />;
@@ -104,7 +104,7 @@ const ylog = (v) => T3 + ((Math.log10(100) - Math.log10(v)) / (Math.log10(100) -
       <details><summary>View the data</summary>
         <div class="scroll"><table><thead><tr><th>Lab</th><th>Tier</th><th>Model</th><th>In / out</th><th>Blended</th></tr></thead>
           <tbody>{rows.flatMap((l) => present(l).map((t, j) => (
-            <tr class={j === 0 ? 'first' : ''}><td>{j === 0 ? l.lab : ''}</td><td>{t.label}</td><td>{l[t.key].name}</td><td>{money(l[t.key].input)} / {money(l[t.key].output)}</td><td>{money(l[t.key].blended)}</td></tr>
+            <tr class={j === 0 ? 'first' : ''}><td>{j === 0 ? l.lab : ''}</td><td>{t.label}</td><td>{l[t.key].name}{l[t.key].label && <span class="caveat"> ({l[t.key].label.split(';')[0]})</span>}</td><td>{money(l[t.key].input)} / {money(l[t.key].output)}</td><td>{money(l[t.key].blended)}</td></tr>
           )))}</tbody></table></div>
       </details>
     </figure>
@@ -180,6 +180,7 @@ const ylog = (v) => T3 + ((Math.log10(100) - Math.log10(v)) / (Math.log10(100) -
   .legend i.circle { border-radius: 50%; }
   .legend i.diamond { transform: rotate(45deg) scale(.85); }
   .scroll { overflow-x: auto; }
+  .caveat { color: #6c7078; }
   tr.first td { border-top: 1px solid #3f3f46; }
   details { margin-top: 10px; font-size: 13px; color: var(--ink2); }
   details summary { cursor: pointer; }
