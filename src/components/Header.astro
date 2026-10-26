@@ -1,12 +1,13 @@
 ---
 const pathname = Astro.url.pathname;
-/* Below `sm` the five links + brand overflow a 375px viewport, so the inline
+/* Below `sm` the six links + brand overflow a 375px viewport, so the inline
    list collapses into a hamburger panel — which also restores Subscribe on
    mobile (it now carries the LinkedIn-first CTA and shouldn't be hidden). */
 const links = [
   { href: '/insights', label: 'Insights' },
   { href: '/topics', label: 'Topics' },
   { href: '/buffett', label: 'Buffett' },
+  { href: '/trackers/ai-token-prices', label: 'Tracker' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
   { href: '/subscribe', label: 'Subscribe', accent: true },
