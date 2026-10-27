@@ -31,6 +31,9 @@ export function spokenForm(text, pron = {}) {
   t = t.replace(/<[^>]+>/g, '');
   t = decodeEntities(t);
   t = t.replace(/\*\*|\*|_/g, '');
+  t = t.replace(/\uD83D\uDD1F/g, '10').replace(/(\d)\uFE0F?\u20E3/g, '$1'); // keycap emoji: 4️⃣ -> 4, 🔟 -> 10
+  t = t.replace(/\p{Extended_Pictographic}\uFE0F?/gu, '');
+  t = t.replace(/\bvs\.?(?=\s)/gi, 'versus');
   const unitRe = new RegExp(String.raw`([$£€])(${NUM})\s*(trillion|billion|million|bn|m)\b`, 'gi');
   t = t.replace(unitRe, (_, c, n, u) => `${n} ${UNITS[u.toLowerCase()]} ${CURRENCY[c]}`);
   const decRe = new RegExp(String.raw`([$£€])(\d[\d,]*)\.(\d\d)\b`, 'g');
