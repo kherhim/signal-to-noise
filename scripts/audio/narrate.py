@@ -19,6 +19,7 @@ import tempfile
 import numpy as np
 
 from check import THRESHOLD, match_score
+from speak import say_numbers
 
 SR = 24000
 GAP_SENTENCE, GAP_PARAGRAPH, GAP_HEADING = 0.25, 0.55, 0.8
@@ -55,7 +56,7 @@ def main():
     asr = whisper.load_model("base.en", device="cpu")
 
     def speak(sentence):
-        wav = tts.generate(sentence, exaggeration=0.4, cfg_weight=0.5)
+        wav = tts.generate(say_numbers(sentence), exaggeration=0.4, cfg_weight=0.5)
         return wav.squeeze(0).cpu().numpy().astype(np.float32)
 
     def hear(audio):

@@ -88,6 +88,33 @@ _STOP = {"a", "an", "the", "is", "are", "was", "and", "of", "to", "it"}
 _CURRENCY = {"dollars", "dollar", "pounds", "pound", "euros", "euro"}
 
 
+def _mark_points(words):
+    """"seventeen point six" -> seventeen, ".6" (digits after "point" are read one by one)."""
+    out, i = [], 0
+    while i < len(words):
+        if words[i] == "point" and out and (_is_num(out[-1]) or out[-1].isdigit()) and i + 1 < len(words) and (words[i + 1] in _UNITS and _UNITS[words[i + 1]] < 10 or words[i + 1].isdigit()):
+            digits, j = "", i + 1
+            while j < len(words) and (words[j] in _UNITS and _UNITS[words[j]] < 10 or (words[j].isdigit() and len(words[j]) == 1)):
+                digits += str(_UNITS.get(words[j], words[j]))
+                j += 1
+            out.append("." + digits)
+            i = j
+        else:
+            out.append(words[i])
+            i += 1
+    return out
+
+
+def _join_points(words):
+    out = []
+    for w in words:
+        if w.startswith(".") and w[1:].isdigit() and out and out[-1].isdigit():
+            out[-1] += w
+        else:
+            out.append(w)
+    return out
+
+
 def normalise(text: str) -> list[str]:
     t = text.lower()
     # Script says "6 dollars 60"; Whisper writes "$6.60". Both become 6.60.
@@ -99,7 +126,7 @@ def normalise(text: str) -> list[str]:
     t = re.sub(r"[-‐-―]", " ", t)    # thirty-one -> thirty one
     t = re.sub(r"[^a-z0-9.\s]", " ", t)
     t = re.sub(r"(?<!\d)\.|\.(?!\d)", " ", t)  # drop full stops, keep decimals
-    words = [ALIASES.get(w, w) for w in _merge_numbers(t.split())]
+    words = [ALIASES.get(w, w) for w in _join_points(_merge_numbers(_mark_points(t.split())))]
     return [w for w in words if w not in _STOP and w not in _CURRENCY]
 
 
