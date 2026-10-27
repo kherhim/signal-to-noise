@@ -135,7 +135,7 @@ def normalise(text: str) -> list[str]:
 def _us(w):
     """Whisper writes American spellings; fold both sides to one form (prioritise/prioritize)."""
     w = re.sub(r"is(e|ed|es|ing|ation|ations)$", r"iz\1", w)
-    return re.sub(r"our(s|ed|ing)?$", r"or\1", w) if len(w) > 4 else w
+    return w.replace("our", "or") if len(w) > 4 else w
 
 
 def _join_splits(words: list[str], vocab: set[str]) -> list[str]:

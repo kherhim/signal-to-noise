@@ -69,3 +69,8 @@ test('hashtag-only paragraphs are skipped', () => {
 test('amounts under one unit are read as cents or pence', () => {
   assert.equal(spokenForm('it cost $0.06 and £0.50'), 'it cost 6 cents and 50 pence');
 });
+test('emoji dropped, keycaps become numbers, vs. read as versus', () => {
+  assert.equal(spokenForm('4️⃣ Cross-functional trust 🚀'), '4 Cross-functional trust');
+  assert.equal(spokenForm('🔟 Why scaling requires stopping'), '10 Why scaling requires stopping');
+  assert.equal(spokenForm('Quarterly forecasts vs. Life'), 'Quarterly forecasts versus Life');
+});
