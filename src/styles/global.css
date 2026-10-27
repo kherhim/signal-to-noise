@@ -175,26 +175,6 @@
   }
 }
 
-/* ─── Hero solar system ──────────────────────────────────────
-   Live orbital mark: the eight planets at their real current
-   positions (Kepler ephemeris), drawn monochrome on a canvas by
-   Hero.astro's script. Distances log-compressed to fit. */
-
-.galaxy-wrap {
-  width: 100%;
-  max-width: 420px;
-  margin-inline: auto;
-}
-
-.solar {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1;
-  pointer-events: none;
-  filter: drop-shadow(0 0 30px color-mix(in srgb, var(--color-accent) 25%, transparent));
-}
-
 /* ─── Space background ───────────────────────────────────────
    Site-wide deep-space backdrop: a still star field with faint
    galaxy smudges (SpaceBackground). Static by design — the hero's
