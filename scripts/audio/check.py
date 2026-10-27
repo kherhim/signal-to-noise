@@ -125,6 +125,8 @@ def normalise(text: str) -> list[str]:
     t = t.replace("&", " and ").replace("%", " per cent ")
     t = re.sub(r"\bpercent\b", "per cent", t)
     t = re.sub(r"(?<=\d),(?=\d{3})", "", t)   # 131,000 -> 131000
+    # Script says "250 thousand"; Whisper writes "$250,000" or "250k". All become 250000.
+    t = re.sub(r"\b(\d+)(?: thousand|k)\b", lambda m: str(int(m.group(1)) * 1000), t)
     t = re.sub(r"[-‐-―]", " ", t)    # thirty-one -> thirty one
     t = re.sub(r"[^a-z0-9.\s]", " ", t)
     t = re.sub(r"(?<!\d)\.|\.(?!\d)", " ", t)  # drop full stops, keep decimals

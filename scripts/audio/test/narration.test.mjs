@@ -74,5 +74,7 @@ test('emoji dropped, keycaps become numbers, vs. read as versus', () => {
   assert.equal(spokenForm('🔟 Why scaling requires stopping'), '10 Why scaling requires stopping');
   assert.equal(spokenForm('🔟1. Thou shalt know thy audience'), '1. Thou shalt know thy audience');
   assert.equal(spokenForm('junior FP&A teams, M&A and P&L'), 'junior FP and A teams, M and A and P and L');
+  assert.equal(spokenForm('$250k a year, $2tn and £3m'), '250 thousand dollars a year, 2 trillion dollars and 3 million pounds');
+  assert.deepEqual(splitSentences('2. Methodology: it varies. Then 3 more.'), ['2. Methodology: it varies.', 'Then 3 more.']);
   assert.equal(spokenForm('Quarterly forecasts vs. Life'), 'Quarterly forecasts versus Life');
 });
