@@ -1,0 +1,234 @@
+---
+// Hyperscaler cash tracker: capital spending against operating cash flow, and how the gap is paid for.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import data from '../../data/hyperscalers/quarters.json';
+import { prepare, tiles, commonQuarters, combined, yMax, qLabel, qFull } from '../../lib/hyperscalers.mjs';
+
+const rows = prepare(data);
+const t = tiles(rows);
+const ymax = yMax(rows);
+const common = commonQuarters(rows);
+const buybacks = combined(rows, 'buybacks');
+const debt = combined(rows, 'debt');
+const allI = rows.flatMap((r) => r.qs.map((q) => q.i));
+const i0 = Math.min(...allI), i1 = Math.max(...allI);
+const bn = (v) => `${v < 0 ? '−' : ''}$${Math.abs(v).toFixed(1)}bn`;
+const qName = (q) => `${qFull(q.i)}${q.fiscal_q ? ` (${q.fiscal_q})` : ''}`;
+const asOf = new Date(data.as_of).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// The essay link appears once the essay is published.
+const essay = (await getCollection('insights', ({ id, data: d }) => id === 'the-cash-machines-are-borrowing' && !d.draft))[0];
+
+// Spending plans, each confirmed from the company's own release, call or filing.
+const GUIDE = {
+  // FY26 Q4 call, 29 Jul 2026: https://www.microsoft.com/en-us/investor/events/fy-2026/earnings-fy-2026-q4
+  Microsoft: 'About $175bn in calendar 2026, after some data-centre leases moved from finance to operating leases, which capex leaves out. Spending in the year to June 2027 to grow',
+  // Q2 2026 call, 22 Jul 2026: https://stockanalysis.com/stocks/googl/transcripts/657320-q2-2026/
+  Alphabet: '$195–205bn in 2026, raised in July from $180–190bn, and expected to increase significantly in 2027',
+  // Q2 2026 call, 30 Jul 2026: https://stockanalysis.com/stocks/amzn/transcripts/657334-q2-2026/
+  Amazon: 'About $220bn of cash capex in 2026, raised in July from about $200bn as memory costs rose',
+  // Q3 2026 results, 8-K Ex 99.1: https://www.sec.gov/Archives/edgar/data/1326801/000162828026066700/meta-09302026xexhibit991.htm
+  Meta: '$135–145bn in 2026, including finance-lease payments, narrowed in October from $130–145bn',
+  // FY27 Q1 call, 10 Sep 2026: https://stockanalysis.com/stocks/orcl/transcripts/689425-q1-2027/
+  Oracle: '$90–95bn in the year to May 2027, with no more than $70bn of net cash capex',
+};
+
+// Small multiples geometry
+const W = 300, H = 170, L = 34, R = 8, T = 10, B = 22;
+const xs = (i) => L + ((i - i0) / (i1 - i0)) * (W - L - R);
+const ys = (v) => T + (1 - v / ymax) * (H - T - B);
+const yTicks = Array.from({ length: ymax / 20 + 1 }, (_, k) => k * 20);
+const xTicks = []; for (let i = i0; i <= i1; i += 2) xTicks.push(i);
+// Shade where spending ran above cash flow, cutting at the crossing points.
+const gaps = (qs) => {
+  const out = [];
+  for (let k = 0; k < qs.length - 1; k++) {
+    const a = qs[k], b = qs[k + 1], da = a.capexShown - a.ocf, db = b.capexShown - b.ocf;
+    if (da <= 0 && db <= 0) continue;
+    let pts;
+    if (da > 0 && db > 0) pts = [[a.i, a.ocf], [b.i, b.ocf], [b.i, b.capexShown], [a.i, a.capexShown]];
+    else {
+      const f = da / (da - db), xi = a.i + f * (b.i - a.i), yi = a.ocf + f * (b.ocf - a.ocf);
+      pts = da > 0 ? [[a.i, a.ocf], [xi, yi], [a.i, a.capexShown]] : [[xi, yi], [b.i, b.ocf], [b.i, b.capexShown]];
+    }
+    out.push(pts.map(([i, v]) => `${xs(i)},${ys(v)}`).join(' '));
+  }
+  return out;
+};
+const line = (qs, k) => qs.map((q) => `${xs(q.i)},${ys(q[k])}`).join(' ');
+
+// Bar chart geometry
+const BW = 440, BH = 200, BL = 40, BR = 8, BT = 18, BB = 24;
+const bars = (series) => {
+  const max = Math.ceil(Math.max(...series.map((d) => d.v)) / 20) * 20 || 20;
+  const step = (BW - BL - BR) / series.length, y = (v) => BT + (1 - v / max) * (BH - BT - BB);
+  return {
+    ticks: [0, 1, 2, 3, 4].map((k) => ({ v: (max / 4) * k, y: y((max / 4) * k) })),
+    items: series.map((d, k) => {
+      const x = BL + k * step + step * 0.18, w = step * 0.64, top = y(d.v);
+      const path = d.v > 0 ? `M${x},${y(0)} V${top + 4} q0,-4 4,-4 H${x + w - 4} q4,0 4,4 V${y(0)} Z` : null;
+      return { ...d, x, w, top, path, hx: BL + k * step, hw: step, label: k % 2 === 0 || k === series.length - 1, ends: k === 0 || k === series.length - 1 };
+    }),
+    base: y(0),
+  };
+};
+const bb = bars(buybacks), db = bars(debt);
+---
+
+<BaseLayout
+  title="Hyperscaler cash tracker — signal-to-noise.co"
+  description="The tracker follows what the five largest builders of AI data centres spend, the cash their businesses generate and how they fund the gap. It is updated after every earnings season."
+  starsDim
+>
+  <section class="mx-auto max-w-[960px] px-6 py-16 sm:py-24 tracker">
+    <header class="mb-12 max-w-[720px]">
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Tracker</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">Hyperscaler cash</h1>
+      <p class="text-lg text-muted leading-relaxed">
+        This tracks spending by the five largest builders of AI data centres, the cash their businesses bring in and how they cover the gap. Updated after each earnings season.
+      </p>
+    </header>
+
+    <div class="tiles">
+      <div class="tile"><p class="k">Capex as a share of cash flow</p><p class="hero">{Math.round(t.capexShare * 100)}%</p><p class="sub">last four quarters, {rows.length} companies</p></div>
+      <div class="tile"><p class="k">Negative free cash flow</p><p class="hero">{t.negative.length} of {rows.length}</p><p class="sub">{t.negative.join(', ') || 'none'}</p></div>
+      <div class="tile"><p class="k">Still buying back shares</p><p class="hero">{t.buyingBack.length} of {rows.length}</p><p class="sub">{t.buyingBack.join(', ') || 'none'}</p></div>
+      <div class="tile"><p class="k">Long-term debt added</p><p class="hero">+${Math.round(t.debtAdded)}bn</p><p class="sub">in a year, to ${Math.round(t.debtNow)}bn</p></div>
+    </div>
+
+    <figure class="chart">
+      <figcaption class="title">Capital spending against operating cash flow, by quarter ($bn)</figcaption>
+      <p class="sub2">Every panel uses the same scale. Shading marks periods when spending exceeded the cash generated by the business.</p>
+      <p class="legend"><span><i style="background:#3F86D0"></i>Operating cash flow</span><span><i style="background:#C0822A"></i>Capital spending</span><span><i class="sw" style="background:#C0822A"></i>Spending above cash flow</span></p>
+      <div class="multiples">
+        {rows.map((r) => {
+          const e = r.qs.at(-1);
+          return (
+            <div class="panel">
+              <h3>{r.name}</h3>
+              <p>{qName(e)}, free cash flow <span class={e.fcf < 0 ? 'neg' : ''}>{bn(e.fcf)}</span></p>
+              <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${r.name}: operating cash flow and capital spending by quarter`}>
+                {yTicks.map((v) => <g><line x1={L} x2={W - R} y1={ys(v)} y2={ys(v)} class={v ? 'grid' : 'zero'} /><text x={L - 6} y={ys(v) + 3.5} text-anchor="end" class="axis">${v}</text></g>)}
+                {xTicks.map((i) => <text x={xs(i)} y={H - 6} text-anchor="middle" class="axis">{qLabel(i)}</text>)}
+                {gaps(r.qs).map((p) => <polygon points={p} fill="#C0822A" opacity="0.28" />)}
+                <polyline points={line(r.qs, 'ocf')} fill="none" stroke="#3F86D0" stroke-width="2" stroke-linejoin="round" />
+                <polyline points={line(r.qs, 'capexShown')} fill="none" stroke="#C0822A" stroke-width="2" stroke-linejoin="round" />
+                <circle cx={xs(e.i)} cy={ys(e.ocf)} r="3.5" fill="#3F86D0" class="ring" />
+                <circle cx={xs(e.i)} cy={ys(e.capexShown)} r="3.5" fill="#C0822A" class="ring" />
+                {r.qs.map((q) => <rect x={xs(q.i) - 10} y={T} width="20" height={H - T - B} fill="transparent" class="hit"
+                  data-tip={`${r.name} · ${qName(q)}\nOperating cash flow ${bn(q.ocf)}\nCapital spending ${bn(q.capexShown)}\nFree cash flow ${bn(q.fcf)}\nBuybacks ${bn(q.buybacks)}`} />)}
+              </svg>
+            </div>
+          );
+        })}
+      </div>
+      <details><summary>View the data</summary>
+        <div class="scroll"><table>
+          <thead><tr><th>Company</th><th>Quarter</th><th class="n">Op. cash flow</th><th class="n">Capex</th><th class="n">Free cash flow</th><th class="n">Buybacks</th><th class="n">LT debt</th></tr></thead>
+          <tbody>{rows.flatMap((r) => r.qs.map((q) => (
+            <tr><td>{r.name}</td><td>{qName(q)}</td><td class="n">{q.ocf.toFixed(1)}</td><td class="n">{q.capexShown.toFixed(1)}</td><td class="n">{q.fcf.toFixed(1)}</td><td class="n">{q.buybacks.toFixed(1)}</td><td class="n">{q.debt.toFixed(1)}</td></tr>
+          )))}</tbody>
+        </table></div>
+      </details>
+    </figure>
+
+    <div class="two">
+      {[
+        { title: 'Share buybacks, all companies combined ($bn a quarter)', sub: `All five have reported for ${qFull(common[0])} to ${qFull(common.at(-1))}.`, g: bb, color: '#3F86D0' },
+        { title: 'Long-term debt, all companies combined ($bn, quarter end)', sub: 'Non-current long-term debt at the same quarter ends.', g: db, color: '#C0822A' },
+      ].map(({ title, sub, g, color }) => (
+        <figure class="chart">
+          <figcaption class="title">{title}</figcaption>
+          <p class="sub2">{sub}</p>
+          <svg viewBox={`0 0 ${BW} ${BH}`} role="img" aria-label={title}>
+            {g.ticks.map((k) => <g><line x1={BL} x2={BW - BR} y1={k.y} y2={k.y} class={k.v ? 'grid' : 'zero'} /><text x={BL - 6} y={k.y + 3.5} text-anchor="end" class="axis">${Math.round(k.v)}</text></g>)}
+            {g.items.map((d) => (
+              <g>
+                {d.path ? <path d={d.path} fill={color} /> : <text x={d.x + d.w / 2} y={g.base - 6} text-anchor="middle" class="axis">0</text>}
+                {d.ends && d.path && <text x={d.x + d.w / 2} y={d.top - 6} text-anchor="middle" class="lbl">{bn(d.v)}</text>}
+                {d.label && <text x={d.x + d.w / 2} y={BH - 6} text-anchor="middle" class="axis">{qLabel(d.i)}</text>}
+                <rect x={d.hx} y={BT} width={d.hw} height={BH - BT - BB} fill="transparent" class="hit" data-tip={`${qFull(d.i)}: ${bn(d.v)}`} />
+              </g>
+            ))}
+          </svg>
+        </figure>
+      ))}
+    </div>
+
+    <section class="max-w-[720px] mt-4">
+      <h2 class="text-sm uppercase tracking-widest text-accent mb-6">What they plan to spend</h2>
+      <table class="guide">
+        {rows.filter((r) => GUIDE[r.name]).map((r) => <tr><td class="who">{r.name}</td><td>{GUIDE[r.name]}</td></tr>)}
+      </table>
+    </section>
+
+    <section class="max-w-[720px] mt-16">
+      <h2 class="text-sm uppercase tracking-widest text-accent mb-6">What to watch each quarter</h2>
+      <ul class="points">
+        <li>Capital spending against operating cash flow: a figure above one shows funding from outside the business.</li>
+        <li>Buybacks: a company that starts buying back shares again gives the clearest sign it sees the period of heavy spending as over.</li>
+        <li>New debt and equity in the financing section of the cash flow statement.</li>
+        <li>Depreciation growth against revenue growth, showing when spending moves into the income statement.</li>
+      </ul>
+      {essay && <p class="text-muted mt-6">The argument in full: <a href={`/insights/${essay.id}/`} class="underline">{essay.data.title}</a>.</p>}
+    </section>
+
+    <section class="max-w-[720px] mt-16 text-sm text-muted leading-relaxed">
+      <h2 class="text-sm uppercase tracking-widest text-accent mb-4">Method and sources</h2>
+      <p>The figures come from each company's quarterly filings with the US Securities and Exchange Commission, checked {asOf}. Free cash flow follows each company's own definition. Amazon calculates it as operating cash flow less purchases of property and equipment net of proceeds from sales and incentives, while Meta also deducts finance-lease payments. Capital spending equals operating cash flow less free cash flow, so the difference matches each company's reported figure. Microsoft's year ends in June, Oracle's ends in May and the labels use the calendar quarter in which they fall. Long-term debt covers the non-current portion. Oracle's operating cash flow for the quarter to August 2026 includes $11.4bn in customer prepayments towards data-centre equipment. Spending plans come from each company's results release or earnings call.</p>
+    </section>
+
+    <div id="tip" class="tip" hidden></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tracker { --rule: #3f3f46; --ink2: #94a3b8; }
+  .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 3rem; }
+  @media (max-width: 760px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .tile { border: 1px solid var(--rule); border-radius: 8px; padding: 16px; }
+  .tile .k { font-size: 11.5px; color: var(--ink2); text-transform: uppercase; letter-spacing: .06em; }
+  .tile .hero { font-size: 2.2rem; font-weight: 600; color: #f1f5f9; line-height: 1.1; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  .tile .sub { font-size: 13px; color: var(--ink2); }
+  .chart { margin: 0 0 3.5rem; }
+  .chart .title { font-size: 15px; font-weight: 600; color: #cbd0d6; margin-bottom: 4px; }
+  .sub2 { font-size: 13px; color: var(--ink2); margin-bottom: 10px; }
+  .chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .multiples { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px 22px; }
+  .panel h3 { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+  .panel p { font-size: 12.5px; color: var(--ink2); margin-bottom: 4px; }
+  .neg { color: #e59a8a; }
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+  @media (max-width: 760px) { .two { grid-template-columns: minmax(0, 1fr); } }
+  .grid { stroke: #26282b; stroke-width: 1; }
+  .zero { stroke: #3f3f46; stroke-width: 1; }
+  .axis { fill: #98a0a8; font-size: 10.5px; }
+  .lbl { fill: #cbd0d6; font-size: 11.5px; font-weight: 600; }
+  .ring { stroke: #0a0a0a; stroke-width: 2; }
+  .hit { cursor: default; }
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; font-size: 13px; color: var(--ink2); margin: 6px 0 12px; }
+  .legend i { display: inline-block; width: 14px; height: 3px; margin-right: 6px; vertical-align: 3px; border-radius: 2px; }
+  .legend i.sw { height: 10px; width: 10px; vertical-align: -1px; opacity: .35; }
+  details { margin-top: 12px; font-size: 13px; color: var(--ink2); }
+  details summary { cursor: pointer; }
+  .scroll { overflow-x: auto; }
+  table { margin-top: 8px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  td, th { padding: 4px 14px 4px 0; text-align: left; border-bottom: 1px solid #26282b; white-space: nowrap; }
+  td.n, th.n { text-align: right; }
+  .guide { width: 100%; font-size: 15px; }
+  .guide td { white-space: normal; padding: 8px 14px 8px 0; color: #cbd5e1; }
+  .guide td.who { width: 120px; color: #f1f5f9; font-weight: 600; }
+  .points { list-style: disc; padding-left: 1.2rem; color: #e2e8f0; line-height: 1.7; }
+  .points li { margin-bottom: .75rem; }
+  .tip { position: fixed; pointer-events: none; background: #1a1a19; border: 1px solid var(--rule); color: #f1f5f9; font-size: 12px; padding: 6px 8px; border-radius: 6px; z-index: 50; white-space: pre; }
+</style>
+
+<script>
+  const tip = document.getElementById('tip');
+  document.querySelectorAll('[data-tip]').forEach((el) => {
+    el.addEventListener('mouseenter', () => { tip.textContent = el.getAttribute('data-tip'); tip.hidden = false; });
+    el.addEventListener('mousemove', (e) => { tip.style.left = `${e.clientX + 12}px`; tip.style.top = `${e.clientY + 12}px`; });
+    el.addEventListener('mouseleave', () => { tip.hidden = true; });
+  });
+</script>
