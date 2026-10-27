@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "note": "formal stand-ins the owner rarely uses; rates per 1,000 words",
   "pairs": [
     {
@@ -364,6 +364,69 @@
       "owner_per_1k": 0,
       "line_per_1k": 0.09,
       "source": "seed"
+    },
+    {
+      "formal": "untouched",
+      "plain": "alone",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.27,
+      "source": "learned"
+    },
+    {
+      "formal": "annually",
+      "plain": "a year",
+      "owner_per_1k": 0.05,
+      "line_per_1k": 0.27,
+      "source": "learned"
+    },
+    {
+      "formal": "apparently superior",
+      "plain": "stronger",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.09,
+      "source": "learned"
+    },
+    {
+      "formal": "appear",
+      "plain": "look",
+      "owner_per_1k": 0.16,
+      "line_per_1k": 0.55,
+      "source": "learned"
+    },
+    {
+      "formal": "reduction",
+      "plain": "cut",
+      "owner_per_1k": 0.09,
+      "line_per_1k": 0.37,
+      "source": "learned"
+    },
+    {
+      "formal": "reduce",
+      "plain": "cut",
+      "owner_per_1k": 0.25,
+      "line_per_1k": 1.37,
+      "source": "learned"
+    },
+    {
+      "formal": "key distinction",
+      "plain": "difference",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.09,
+      "source": "learned"
+    },
+    {
+      "formal": "dismiss",
+      "plain": "fire",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.09,
+      "source": "learned"
+    },
+    {
+      "formal": "gradually",
+      "plain": "slowly",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0.18,
+      "source": "learned"
     }
   ]
 }

@@ -104,4 +104,10 @@ thing in plain British English, keeping every fact, figure and link; it must
 not use "rather than", "Here is", "deserves", "ledger", an em dash, or open
 with an instruction to the reader.
 
+## Learned tells
+
+Proposed by the weekly learn job from the owner's edits; each one is live because the owner merged it. Flag these as you flag the tells above.
+
+- **Management as stand-in subject for the company** (2026-10-26): Flag "management" as the subject of a company's decision where the company's name, or "it", would do the same work. Example, as published: "Citi built the supermarket at the top of the cycle and sold Smith Barney, a crown jewel, in the crisis to raise capital." (owner changed: Management assembled → Citi built; during → in)
+
 Return only the JSON described by the schema.
