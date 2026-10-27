@@ -62,3 +62,7 @@ test('paragraphs starting with html or images are kept', () => {
 test('nested parentheses in urls', () => {
   assert.equal(spokenForm('See [Foo](https://x.org/a_(b)) now ([Source](https://x.org/a_(b)))'), 'See Foo now');
 });
+test('hashtag-only paragraphs are skipped', () => {
+  const s = narrationScript('Real text here.\n\n#CFO #MergersAndAcquisitions #FinanceLeadership');
+  assert.deepEqual(s.items.map((i) => i.text), ['Real text here.']);
+});

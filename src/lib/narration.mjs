@@ -66,6 +66,7 @@ export function narrationScript(body, pron = {}) {
   for (const block of src.split(/\n\s*\n/)) {
     let lines = block.trim().split('\n');
     if (!lines[0] || /^(\||import |---+$)/.test(lines[0].trim())) continue;
+    if (/^(#\w+\s*)+$/.test(block.trim())) continue;
     if (/^#+\s/.test(lines[0])) {
       push('h', lines[0].replace(/^#+\s*/, ''));
       lines = lines.slice(1);
