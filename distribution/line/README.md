@@ -175,6 +175,16 @@ standalone CLI, so exercise them through `runner.mjs` or the test suite.
 npm run test:line   # node --test scripts/line/test/*.mjs — no network, no paid model, no spend
 ```
 
+## Essay audio
+
+Publish day: before the publish PR, run `node scripts/audio/audio.mjs publish <slug>`
+and commit `src/data/audio/<slug>.json` with the essay. It narrates, checks and
+uploads the m4a, and refuses a draft. Every Tuesday at 19:00
+(`infra/co.signal-to-noise.essay-audio.plist`) `scripts/audio/tuesday.mjs` prepares
+Wednesday's draft locally (never uploaded or committed), narrates any published
+essay whose audio is missing or stale, and opens a PR of the JSON. It never
+merges or deploys; a failure sends the owner one email.
+
 ## Humaniser weekly learn
 
 Every Monday at 07:45 (`infra/co.signal-to-noise.humaniser-learn.plist`)

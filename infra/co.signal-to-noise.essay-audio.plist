@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>co.signal-to-noise.essay-audio</string>
+  <!-- Weekly humaniser learn: reads the owner's edits, opens a PR of proposals,
+       never merges. caffeinate as in the essay-line plist: a missed wake fires
+       inside a short dark wake, too short for a headless Claude run. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/caffeinate</string>
+    <string>-s</string>
+    <string>-i</string>
+    <string>/opt/homebrew/bin/node</string>
+    <string>/Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/audio/tuesday.mjs</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/himanshu.kher/Documents/devProjects/signal2noise</string>
+  <!-- gh (in ~/.local/bin) and git are spawned by name; claude is not used. -->
+  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/Users/himanshu.kher/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key><integer>2</integer>
+    <key>Hour</key><integer>19</integer>
+    <key>Minute</key><integer>0</integer>
+  </dict>
+  <key>StandardOutPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-essay-audio.log</string>
+  <key>StandardErrorPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-essay-audio.log</string>
+</dict>
+</plist>
