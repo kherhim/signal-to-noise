@@ -6,7 +6,7 @@ seoDescription: "AI anxiety in historical context: what 600 years of technology 
 tags: ["ai", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/600-year-curve-why-your-ai-anxiety-actually-history-repeating-kher-sthge"
-coverImage: /img/600-year-curve.webp
+coverImage: /img/600-year-curve-why-your-ai-anxiety-actually-history-repeating.webp
 coverImageAlt: "Against a near-black background, a ticked baseline spans six centuries and one cream line climbs across it, nearly flat at first, then steepening twice towards the top right. Solid circles mark its start and end, an outline-drawn circle the bend between, each with a fine line dropped to the baseline. The lower rule reads 'BOTTLENECK, BROKEN'."
 coverAnimation: 600-year-curve-why-your-ai-anxiety-actually-history-repeating
 ---
