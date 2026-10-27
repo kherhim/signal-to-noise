@@ -17,7 +17,15 @@ import { planWork, parseFrontmatter } from './audio.mjs';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DATA_REL = 'src/data/audio';
 
+// Branch for the PR: audio-<date>, or audio-<date>-<HHMM> when a same-day rerun finds it on the remote.
+export function pickBranch(date, remoteHasBranch, hhmm) {
+  const base = `audio-${date}`;
+  return remoteHasBranch(base) ? `${base}-${hhmm}` : base;
+}
+
 export async function runTuesday(deps) {
+  // A mail failure must never mask the original error.
+  const mail = (m) => { try { deps.sendMail(m); } catch (e) { console.error(`sendMail failed: ${e.message}`); } };
   const prepared = [], published = [], failed = [];
   const errors = [];
   try {
@@ -37,11 +45,13 @@ export async function runTuesday(deps) {
       deps.log(`PR opened: ${url}`);
     } else deps.log('Nothing changed; no PR.');
   } catch (e) {
-    deps.sendMail({ subject: 'Essay audio: run failed', text: `The Tuesday essay-audio run stopped with an error.\n\n${e.message}\n` });
+    console.error(e.stack || e.message);
+    mail({ subject: 'Essay audio: run failed', text: `The Tuesday essay-audio run stopped with an error.\n\n${e.message}\n` });
     throw e;
   }
   if (failed.length) {
-    deps.sendMail({
+    console.error(errors.join('\n'));
+    mail({
       subject: `Essay audio: ${failed.length} failed`,
       text: `These essays did not get audio on the Tuesday run:\n\n${errors.map((x) => `- ${x}`).join('\n')}\n\nThe rest of the run carried on. See ~/Library/Logs/signal2noise-essay-audio.log.\n`,
     });
@@ -54,9 +64,11 @@ export async function realDeps() {
   const { sendMail } = await import('../line/mail.mjs');
   const today = new Date().toISOString().slice(0, 10);
   const wt = join(tmpdir(), `s2n-audio-${today}`);
-  const sh = (cmd, args, cwd = wt) => execFileSync(cmd, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 20 * 60e3 });
-  const audio = (...args) => sh(process.execPath, [join(wt, 'scripts/audio/audio.mjs'), ...args]);
-  const branch = `audio-${today}`;
+  const run = (cmd, args, cwd, timeout) => execFileSync(cmd, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout });
+  const sh = (cmd, args, cwd = wt) => run(cmd, args, cwd, 20 * 60e3);
+  // Narration and upload of a long essay can take over an hour.
+  const audio = (...args) => run(process.execPath, [join(wt, 'scripts/audio/audio.mjs'), ...args], wt, 90 * 60e3);
+  let branch = `audio-${today}`;
   return {
     today: () => today,
     cleanup() { try { sh('git', ['worktree', 'remove', '--force', wt], ROOT); } catch { /* best effort */ } },
@@ -66,8 +78,8 @@ export async function realDeps() {
       sh('git', ['fetch', '-q', 'origin', 'main'], ROOT);
       sh('git', ['worktree', 'prune'], ROOT);
       try { sh('git', ['worktree', 'remove', '--force', wt], ROOT); } catch { /* none left over */ }
-      try { sh('git', ['branch', '-D', branch], ROOT); } catch { /* none left over */ }
-      sh('git', ['worktree', 'add', '-q', '-b', branch, wt, 'origin/main'], ROOT);
+      try { sh('git', ['branch', '-D', `work-${today}`], ROOT); } catch { /* none left over */ }
+      sh('git', ['worktree', 'add', '-q', '-b', `work-${today}`, wt, 'origin/main'], ROOT);
     },
     plan() {
       const dir = join(wt, 'src/content/insights');
@@ -84,6 +96,9 @@ export async function realDeps() {
     publish: async (slug) => { audio('publish', slug); },
     changedFiles: () => sh('git', ['status', '--porcelain', '--', DATA_REL]).split('\n').filter(Boolean).map((l) => l.slice(3)),
     openPr({ date, published: pub, changed }) {
+      const now = new Date();
+      branch = pickBranch(date, (b) => sh('git', ['ls-remote', '--heads', 'origin', b]).trim() !== '', now.toISOString().slice(11, 16).replace(':', ''));
+      sh('git', ['checkout', '-q', '-b', branch]);
       sh('git', ['add', '--', DATA_REL]);
       sh('git', ['commit', '-q', '-m', `Essay audio: ${date}\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`]);
       sh('git', ['push', '-q', '-u', 'origin', branch]);

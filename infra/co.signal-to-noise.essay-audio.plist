@@ -15,7 +15,7 @@
     <string>/Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/audio/tuesday.mjs</string>
   </array>
   <key>WorkingDirectory</key><string>/Users/himanshu.kher/Documents/devProjects/signal2noise</string>
-  <!-- claude (in ~/.local/bin), git and gh are spawned by name. -->
+  <!-- gh (in ~/.local/bin) and git are spawned by name; claude is not used. -->
   <key>EnvironmentVariables</key><dict><key>PATH</key><string>/Users/himanshu.kher/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
   <key>StartCalendarInterval</key>
   <dict>

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { runTuesday } from '../tuesday.mjs';
+import { runTuesday, pickBranch } from '../tuesday.mjs';
 
 function fakes(o = {}) {
   const calls = { prepare: [], publish: [], mail: [], pr: [], pull: 0 };
@@ -64,4 +64,20 @@ test('one failure does not stop later essays', async () => {
   assert.deepEqual(r.failed, ['d1']);
   assert.deepEqual(r.published, ['s1', 'm1']);
   assert.equal(calls.mail.length, 1);
+});
+
+test('pickBranch suffixes the time only when the remote branch exists', () => {
+  assert.equal(pickBranch('2026-10-27', () => false, '1905'), 'audio-2026-10-27');
+  assert.equal(pickBranch('2026-10-27', (b) => b === 'audio-2026-10-27', '1905'), 'audio-2026-10-27-1905');
+});
+
+test('a sendMail failure does not mask the original error', async () => {
+  const { deps } = fakes({ deps: { plan: () => { throw new Error('git fell over'); }, sendMail: () => { throw new Error('smtp down'); } } });
+  await assert.rejects(runTuesday(deps), /git fell over/);
+});
+
+test('a sendMail failure on the failed path still returns the result', async () => {
+  const { deps } = fakes({ failPublish: 's1', deps: { sendMail: () => { throw new Error('smtp down'); } } });
+  const r = await runTuesday(deps);
+  assert.deepEqual(r.failed, ['s1']);
 });
