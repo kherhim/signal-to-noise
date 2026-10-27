@@ -32,3 +32,33 @@ test('hash ignores figures and link targets, tracks prose', () => {
 test('sentences', () => {
   assert.deepEqual(splitSentences('It fell 4.5%. Then it rose. Dr. No left.'), ['It fell 4.5%.', 'Then it rose.', 'Dr. No left.']);
 });
+
+test('lists become one item per line, markers stripped', () => {
+  const t = (b) => narrationScript(b).items.map((i) => i.text);
+  assert.deepEqual(t('- one\n- two'), ['one', 'two']);
+  assert.deepEqual(t('1. **First.** a\n2. Second'), ['First. a', 'Second']);
+  const s = narrationScript(read('two-banks-body.md'));
+  for (const i of s.items) assert.ok(!/^\d+\.|^- /.test(i.text), i.text);
+});
+test('heading line followed by text; markdown escapes', () => {
+  assert.deepEqual(narrationScript('## H\nText follows.').items, [{ kind: 'h', text: 'H' }, { kind: 'p', text: 'Text follows.' }]);
+  assert.equal(spokenForm('\\> a \\[b\\] 2\\. c'), '> a [b] 2. c');
+});
+test('sentence edge cases', () => {
+  assert.deepEqual(splitSentences('In the U.S. it rose, i.e. a lot. Then c. 1900 came. Vitamin C. Then it fell.'),
+    ['In the U.S. it rose, i.e. a lot.', 'Then c. 1900 came.', 'Vitamin C.', 'Then it fell.']);
+  assert.deepEqual(splitSentences('He said “stop.” Then left.'), ['He said “stop.”', 'Then left.']);
+});
+test('only en dash makes a range', () => {
+  assert.equal(spokenForm('2026-10-27, 13-month, 11-3, 3–4'), '2026-10-27, 13-month, 11-3, 3 to 4');
+});
+test('html entities decoded', () => {
+  assert.equal(spokenForm('it&#8217;s A&nbsp;B &amp; C'), 'it’s A B and C');
+});
+test('paragraphs starting with html or images are kept', () => {
+  const s = narrationScript('<em>Note</em> this matters.\n\n![alt](x.png)\n\n!Wow indeed.');
+  assert.deepEqual(s.items.map((i) => i.text), ['Note this matters.', '!Wow indeed.']);
+});
+test('nested parentheses in urls', () => {
+  assert.equal(spokenForm('See [Foo](https://x.org/a_(b)) now ([Source](https://x.org/a_(b)))'), 'See Foo now');
+});
