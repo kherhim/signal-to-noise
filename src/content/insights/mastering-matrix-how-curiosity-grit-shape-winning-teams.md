@@ -5,7 +5,7 @@ excerpt: "In a world where change is the only constant, the art of building grea
 tags: ["leadership", "strategy", "ai", "teams", "risk", "reflections"]
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/mastering-matrix-how-curiosity-grit-shape-winning-teams-himanshu-kher-q9osf"
-coverImage: /img/curiosity-vs-grit.webp
+coverImage: /img/mastering-matrix-how-curiosity-grit-shape-winning-teams.webp
 coverImageAlt: "Against a near-black background, two ash fine lines cross in the centre, short ticks along each axis, making four quadrants. One circle is placed in each: at upper right filled cream and largest, top-left outline-drawn, bottom-right outline-drawn and smaller, at lower left dashed. Nothing names the axes. The lower rule reads 'TRAITS, DURABLE'."
 coverAnimation: mastering-matrix-how-curiosity-grit-shape-winning-teams
 ---
