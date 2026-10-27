@@ -97,7 +97,7 @@ export async function realDeps() {
     changedFiles: () => sh('git', ['status', '--porcelain', '--', DATA_REL]).split('\n').filter(Boolean).map((l) => l.slice(3)),
     openPr({ date, published: pub, changed }) {
       const now = new Date();
-      branch = pickBranch(date, (b) => sh('git', ['ls-remote', '--heads', 'origin', b]).trim() !== '', now.toISOString().slice(11, 16).replace(':', ''));
+      branch = pickBranch(today, (b) => sh('git', ['ls-remote', '--heads', 'origin', b]).trim() !== '', now.toISOString().slice(11, 16).replace(':', ''));
       sh('git', ['checkout', '-q', '-b', branch]);
       sh('git', ['add', '--', DATA_REL]);
       sh('git', ['commit', '-q', '-m', `Essay audio: ${date}\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`]);
