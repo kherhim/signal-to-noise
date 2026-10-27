@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
 import { getRelatedPosts } from '../../lib/tags';
+import { audioFor } from '../../lib/audio.mjs';
 
 export async function getStaticPaths() {
   // In dev, generate routes for drafts too; in prod, drafts are excluded.
@@ -17,6 +18,13 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+/* Narration entries keyed by slug; the player shows only while the entry's
+   hash still matches the published text. */
+const audioFiles = import.meta.glob('../../data/audio/*.json', { eager: true, import: 'default' }) as Record<string, any>;
+const audioAll = Object.fromEntries(
+  Object.entries(audioFiles).map(([p, d]) => [p.split('/').pop()!.replace(/\.json$/, ''), d]),
+);
 
 /* Related insights — chosen by tag overlap, then recency. Suppressed for
    series children (their parent + sibling parts are already listed) and
@@ -70,6 +78,7 @@ if (post.data.series) {
   coverImage={post.data.coverImage}
   coverImageAlt={post.data.coverImageAlt}
   coverAnimation={post.data.coverAnimation}
+  audio={audioFor(post.id, post.body ?? '', audioAll)}
   seriesKicker={seriesKicker}
   seriesKickerHref={seriesKickerHref}
   seriesParts={seriesParts}
