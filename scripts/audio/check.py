@@ -151,9 +151,38 @@ def _join_splits(words: list[str], vocab: set[str]) -> list[str]:
     return out
 
 
+_DICT_PATH = "/usr/share/dict/words"
+_dict: set[str] | None = None
+
+
+def _known(word: str) -> bool:
+    global _dict
+    if _dict is None:
+        try:
+            with open(_DICT_PATH) as f:
+                _dict = {w.strip().lower() for w in f}
+        except OSError:
+            _dict = set()
+    return not _dict or word in _dict
+
+
+def _forgive_typos(expected: list[str], heard: set[str]) -> list[str]:
+    """A misspelt word in the essay ("artcile") is heard as the real word; let it match.
+    Only words missing from the system dictionary qualify, so "banking" heard as "baking" still fails."""
+    out = []
+    for w in expected:
+        if len(w) >= 6 and w not in heard and not w.isdigit() and not _known(w):
+            near = max(heard, key=lambda h: SequenceMatcher(None, w, h).ratio(), default=None)
+            if near and SequenceMatcher(None, w, near).ratio() >= 0.85:
+                w = near
+        out.append(w)
+    return out
+
+
 def match_score(expected: str, heard: str) -> float:
     a, b = normalise(expected), normalise(heard)
     a, b = _join_splits(a, set(b)), _join_splits(b, set(a))
+    a = _forgive_typos(a, set(b))
     if not a and not b:
         return 1.0
     return SequenceMatcher(None, a, b).ratio()

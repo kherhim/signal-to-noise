@@ -31,6 +31,7 @@ export function spokenForm(text, pron = {}) {
   t = t.replace(/<[^>]+>/g, '');
   t = decodeEntities(t);
   t = t.replace(/\*\*|\*|_/g, '');
+  t = t.replace(/(?:\uD83D\uDD1F|\d\uFE0F?\u20E3)(?=\s*\d)/g, ''); // decorative keycap before a number: 🔟1. -> 1.
   t = t.replace(/\uD83D\uDD1F/g, '10').replace(/(\d)\uFE0F?\u20E3/g, '$1'); // keycap emoji: 4️⃣ -> 4, 🔟 -> 10
   t = t.replace(/\p{Extended_Pictographic}\uFE0F?/gu, '');
   t = t.replace(/\bvs\.?(?=\s)/gi, 'versus');
@@ -46,7 +47,7 @@ export function spokenForm(text, pron = {}) {
   t = t.replace(new RegExp(String.raw`([$£€])(${NUM})`, 'g'), (_, c, n) => `${n} ${CURRENCY[c]}`);
   t = t.replace(/(\d)\s*–\s*(\d)/g, '$1 to $2');
   t = t.replace(/%/g, ' per cent');
-  t = t.replace(/S&P/g, 'S and P').replace(/&/g, 'and');
+  t = t.replace(/\b([A-Z]{1,3})&([A-Z]{1,3})\b/g, '$1 and $2').replace(/&/g, 'and'); // S&P, FP&A, M&A
   t = t.replace(/~/g, 'about ');
   t = t.replace(/\b(\d+(?:\.\d+)?)x\b/g, '$1 times');
   t = t.replace(/\bQ([1-4])\b/g, (_, q) => `${QUARTERS[q]} quarter`);
