@@ -1,0 +1,67 @@
+---
+// Trackers index: one card per living tracker, each with its headline number.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import hs from '../../data/hyperscalers/quarters.json';
+import { prepare, tiles } from '../../lib/hyperscalers.mjs';
+
+const snaps = import.meta.glob('../../data/token-prices/snapshots/*.json', { eager: true, import: 'default' });
+const snap = snaps[Object.keys(snaps).sort().at(-1)];
+const median = (xs) => { const v = [...xs].sort((a, b) => a - b); const m = Math.floor(v.length / 2); return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2; };
+const flagship = median(snap.labs.filter((l) => l.flagship).map((l) => l.flagship.blended));
+const money = (v) => `$${v.toFixed(2)}`;
+const capex = Math.round(tiles(prepare(hs)).capexShare * 100);
+
+const cards = [
+  {
+    href: '/trackers/ai-token-prices',
+    name: 'AI token price index',
+    blurb: 'A monthly update on what nine AI labs bill for each million tokens across their budget, flagship and premium models.',
+    value: money(flagship),
+    label: 'median flagship cost per million tokens',
+  },
+  {
+    href: '/trackers/hyperscaler-cash',
+    name: 'Hyperscaler cash tracker',
+    blurb: 'What the five largest AI data-centre builders spend, the cash their businesses produce and how they cover the gap, updated each earnings season.',
+    value: `${capex}%`,
+    label: 'capital spending as a proportion of operating cash flow',
+  },
+];
+---
+
+<BaseLayout
+  title="Trackers — signal-to-noise.co"
+  description="Live monitors of AI economics: the cost of using models and the sums the biggest companies put into building them."
+  starsDim
+>
+  <section class="mx-auto max-w-[960px] px-6 py-16 sm:py-24">
+    <header class="mb-12 max-w-[720px]">
+      <p class="text-sm uppercase tracking-widest text-accent mb-6">Trackers</p>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg mb-6">The figures supporting the essays</h1>
+      <p class="text-lg text-muted leading-relaxed">Live monitors of AI economics: the cost of using models and the sums the biggest companies put into building them.</p>
+    </header>
+    <div class="cards">
+      {cards.map((c) => (
+        <a href={c.href} class="card">
+          <h2>{c.name}</h2>
+          <p class="blurb">{c.blurb}</p>
+          <p class="v">{c.value}</p>
+          <p class="l">{c.label}</p>
+          <span class="go">Open the tracker →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  @media (max-width: 760px) { .cards { grid-template-columns: minmax(0, 1fr); } }
+  .card { display: flex; flex-direction: column; border: 1px solid #3f3f46; border-radius: 8px; padding: 22px; transition: border-color .2s; }
+  .card:hover, .card:focus-visible { border-color: #94a3b8; }
+  .card h2 { font-size: 1.35rem; font-weight: 600; color: #f1f5f9; margin-bottom: 8px; }
+  .blurb { color: #94a3b8; line-height: 1.55; margin-bottom: 20px; }
+  .v { font-size: 2.6rem; font-weight: 600; color: #f1f5f9; line-height: 1.05; font-variant-numeric: tabular-nums; margin-top: auto; }
+  .l { font-size: 13px; color: #94a3b8; margin-bottom: 18px; }
+  .go { font-size: 14px; color: #f1f5f9; }
+</style>
