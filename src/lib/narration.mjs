@@ -2,7 +2,7 @@
 // so it stays dependency-free (node:crypto only).
 import { createHash } from 'node:crypto';
 
-const UNITS = { trillion: 'trillion', billion: 'billion', million: 'million', bn: 'billion', m: 'million' };
+const UNITS = { trillion: 'trillion', billion: 'billion', million: 'million', thousand: 'thousand', tn: 'trillion', bn: 'billion', m: 'million', k: 'thousand' };
 const CURRENCY = { '$': 'dollars', '£': 'pounds', '€': 'euros' };
 const QUARTERS = { 1: 'first', 2: 'second', 3: 'third', 4: 'fourth' };
 const NUM = String.raw`\d[\d,]*(?:\.\d+)?`;
@@ -35,7 +35,7 @@ export function spokenForm(text, pron = {}) {
   t = t.replace(/\uD83D\uDD1F/g, '10').replace(/(\d)\uFE0F?\u20E3/g, '$1'); // keycap emoji: 4️⃣ -> 4, 🔟 -> 10
   t = t.replace(/\p{Extended_Pictographic}\uFE0F?/gu, '');
   t = t.replace(/\bvs\.?(?=\s)/gi, 'versus');
-  const unitRe = new RegExp(String.raw`([$£€])(${NUM})\s*(trillion|billion|million|bn|m)\b`, 'gi');
+  const unitRe = new RegExp(String.raw`([$£€])(${NUM})\s*(trillion|billion|million|thousand|tn|bn|m|k)\b`, 'gi');
   t = t.replace(unitRe, (_, c, n, u) => `${n} ${UNITS[u.toLowerCase()]} ${CURRENCY[c]}`);
   const decRe = new RegExp(String.raw`([$£€])(\d[\d,]*)\.(\d\d)\b`, 'g');
   const CENTS = { '$': 'cents', '£': 'pence', '€': 'cents' };
@@ -113,6 +113,7 @@ export function splitSentences(text) {
       if (word && isToken && ABBREV.has(word.toLowerCase())) continue;
       if (word === 'c' && isToken && /^\s+\d/.test(text.slice(m.index + m[0].length))) continue;
       if (/(^|[^A-Za-z])[A-Za-z]\.[A-Za-z]$/.test(before)) continue; // U.S., J.K., e.g., i.e.
+      if (/^\s*\d{1,2}$/.test(before)) continue; // list number: 2. Methodology
     }
     const end = m.index + m[0].length;
     out.push(text.slice(start, end).trim());

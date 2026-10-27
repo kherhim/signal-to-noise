@@ -24,3 +24,4 @@ def test_cents(): assert match_score("by late 2024 it cost 6 cents.", "by late 2
 def test_behavioural(): assert match_score("a form of behavioural engineering", "a form of behavioral engineering.") == 1.0
 def test_source_typos(): assert match_score("This artcile is targetted towards juniour staff", "This article is targeted towards junior staff.") == 1.0
 def test_real_word_misread_still_fails(): assert match_score("consumer banking", "consumer baking") < 0.85
+def test_thousands(): assert match_score("It cost 250 thousand dollars a year.", "It cost $250,000 a year.") >= 0.85
