@@ -387,13 +387,6 @@
       "source": "learned"
     },
     {
-      "formal": "produce",
-      "plain": "earn",
-      "owner_per_1k": 0.25,
-      "line_per_1k": 1.19,
-      "source": "learned"
-    },
-    {
       "formal": "appear",
       "plain": "look",
       "owner_per_1k": 0.16,
@@ -405,13 +398,6 @@
       "plain": "cut",
       "owner_per_1k": 0.09,
       "line_per_1k": 0.37,
-      "source": "learned"
-    },
-    {
-      "formal": "final",
-      "plain": "last",
-      "owner_per_1k": 0.18,
-      "line_per_1k": 0.27,
       "source": "learned"
     },
     {
@@ -432,20 +418,6 @@
       "formal": "dismiss",
       "plain": "fire",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
-      "source": "learned"
-    },
-    {
-      "formal": "aim",
-      "plain": "set out",
-      "owner_per_1k": 0.2,
-      "line_per_1k": 0.09,
-      "source": "learned"
-    },
-    {
-      "formal": "examine",
-      "plain": "ask",
-      "owner_per_1k": 0.09,
       "line_per_1k": 0.09,
       "source": "learned"
     },
