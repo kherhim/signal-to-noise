@@ -1,0 +1,872 @@
+[
+ {
+  "id": "two-banks-one-start-line",
+  "data": {
+   "tags": [
+    "cfo",
+    "capital-markets",
+    "strategy",
+    "risk",
+    "leadership"
+   ],
+   "date": "2026-10-21"
+  }
+ },
+ {
+  "id": "the-leash-problem",
+  "data": {
+   "tags": [
+    "ai",
+    "risk",
+    "strategy"
+   ],
+   "date": "2026-10-14"
+  }
+ },
+ {
+  "id": "buffett-on-moats-when-cognition-is-a-commodity",
+  "data": {
+   "tags": [
+    "cfo",
+    "buffett",
+    "strategy",
+    "ai",
+    "capital-markets"
+   ],
+   "date": "2026-10-07"
+  }
+ },
+ {
+  "id": "budgeting-for-deflation",
+  "data": {
+   "tags": [
+    "cfo",
+    "ai",
+    "budgeting",
+    "cost-structure"
+   ],
+   "date": "2026-09-30"
+  }
+ },
+ {
+  "id": "the-landlord-finances-the-tenant",
+  "data": {
+   "tags": [
+    "cfo",
+    "capital-markets",
+    "ipo",
+    "ai",
+    "risk"
+   ],
+   "date": "2026-09-23"
+  }
+ },
+ {
+  "id": "the-verification-premium",
+  "data": {
+   "tags": [
+    "cfo",
+    "ai",
+    "cost-structure",
+    "strategy",
+    "risk"
+   ],
+   "date": "2026-09-16"
+  }
+ },
+ {
+  "id": "the-ambidextrous-budget",
+  "data": {
+   "tags": [
+    "cfo",
+    "budgeting",
+    "capital-allocation",
+    "strategy",
+    "finance"
+   ],
+   "date": "2026-09-01"
+  }
+ },
+ {
+  "id": "the-cognitive-supply-chain",
+  "data": {
+   "tags": [
+    "cfo",
+    "ai",
+    "risk",
+    "strategy",
+    "procurement"
+   ],
+   "date": "2026-08-24"
+  }
+ },
+ {
+  "id": "bayesian-thinking-for-cfos",
+  "data": {
+   "tags": [
+    "cfo",
+    "risk",
+    "fp-and-a",
+    "ai",
+    "strategy"
+   ],
+   "date": "2026-07-28"
+  }
+ },
+ {
+  "id": "when-culture-eats-your-strategy",
+  "data": {
+   "tags": [
+    "culture",
+    "strategy",
+    "leadership",
+    "execution",
+    "cfo"
+   ],
+   "date": "2026-07-22"
+  }
+ },
+ {
+  "id": "when-cognition-becomes-metered",
+  "data": {
+   "tags": [
+    "cfo",
+    "ai",
+    "cost-structure",
+    "strategy",
+    "finance"
+   ],
+   "date": "2026-07-10"
+  }
+ },
+ {
+  "id": "buffett-on-the-fortress-balance-sheet",
+  "data": {
+   "tags": [
+    "cfo",
+    "capital-markets",
+    "buffett",
+    "strategy",
+    "leadership"
+   ],
+   "date": "2026-07-02"
+  }
+ },
+ {
+  "id": "ask-warren-buyback-multiple",
+  "data": {
+   "tags": [
+    "cfo",
+    "buffett",
+    "ask-warren",
+    "capital-markets"
+   ],
+   "date": "2026-06-25"
+  }
+ },
+ {
+  "id": "buffett-on-capital-allocation",
+  "data": {
+   "tags": [
+    "cfo",
+    "capital-markets",
+    "strategy",
+    "buffett",
+    "leadership"
+   ],
+   "date": "2026-06-18"
+  }
+ },
+ {
+  "id": "future-finance-talent-stack",
+  "data": {
+   "tags": [
+    "teams",
+    "cfo",
+    "leadership",
+    "ai",
+    "strategy"
+   ],
+   "date": "2026-06-09"
+  }
+ },
+ {
+  "id": "pricing-the-future-spacex-anthropic-openai-ipos",
+  "data": {
+   "tags": [
+    "ipo",
+    "ai",
+    "capital-markets",
+    "strategy"
+   ],
+   "date": "2026-05-31"
+  }
+ },
+ {
+  "id": "600-year-curve-why-your-ai-anxiety-actually-history-repeating",
+  "data": {
+   "tags": [
+    "ai",
+    "risk",
+    "reflections"
+   ],
+   "date": "2026-05-12"
+  }
+ },
+ {
+  "id": "where-wai",
+  "data": {
+   "tags": [
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams"
+   ],
+   "date": "2026-03-17"
+  }
+ },
+ {
+  "id": "every-cfo-greedy-just-what-theyre-real-question",
+  "data": {
+   "tags": [
+    "leadership",
+    "cfo",
+    "risk"
+   ],
+   "date": "2026-02-26"
+  }
+ },
+ {
+  "id": "10-scaling-stopping-adding",
+  "data": {
+   "tags": [
+    "leadership"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 10
+   },
+   "date": "2026-02-12"
+  }
+ },
+ {
+  "id": "9-resilience-optionality-toughness",
+  "data": {
+   "tags": [
+    "strategy",
+    "cfo",
+    "risk"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 9
+   },
+   "date": "2026-01-29"
+  }
+ },
+ {
+  "id": "8-biases-sitting-every-boardroom",
+  "data": {
+   "tags": [
+    "leadership",
+    "fp-and-a",
+    "cfo",
+    "teams"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 8
+   },
+   "date": "2026-01-19"
+  }
+ },
+ {
+  "id": "7-crisis-reveals-people-clearly",
+  "data": {
+   "tags": [
+    "leadership",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 7
+   },
+   "date": "2026-01-12"
+  }
+ },
+ {
+  "id": "6-great-leaders-explain-constraints-just",
+  "data": {
+   "tags": [
+    "leadership",
+    "teams"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 6
+   },
+   "date": "2026-01-05"
+  }
+ },
+ {
+  "id": "5-when-kpis-become-strategy-dies",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "cfo",
+    "teams"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 5
+   },
+   "date": "2025-12-29"
+  }
+ },
+ {
+  "id": "4-cross-functional-trust-superpower",
+  "data": {
+   "tags": [
+    "cfo",
+    "teams"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 4
+   },
+   "date": "2025-12-22"
+  }
+ },
+ {
+  "id": "3-culture-incentives-posters",
+  "data": {
+   "tags": [
+    "leadership",
+    "cfo",
+    "teams"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 3
+   },
+   "date": "2025-12-15"
+  }
+ },
+ {
+  "id": "2-most-expensive-decision-lets-wait",
+  "data": {
+   "tags": [
+    "leadership",
+    "cfo",
+    "risk"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 2
+   },
+   "date": "2025-12-08"
+  }
+ },
+ {
+  "id": "1-leadership-sum-your-trade-offs",
+  "data": {
+   "tags": [
+    "leadership",
+    "cfo",
+    "teams"
+   ],
+   "series": {
+    "id": "leadership-lessons",
+    "part": 1
+   },
+   "date": "2025-12-01"
+  }
+ },
+ {
+  "id": "leadership-lessons-i-wish-knew-earlier",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "series": {
+    "id": "leadership-lessons"
+   },
+   "date": "2025-11-27"
+  }
+ },
+ {
+  "id": "output-vs-outcome",
+  "data": {
+   "tags": [
+    "teams",
+    "reflections"
+   ],
+   "date": "2025-11-20"
+  }
+ },
+ {
+  "id": "having-view-vs-way",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "cfo"
+   ],
+   "date": "2025-09-04"
+  }
+ },
+ {
+  "id": "10-commandments-fpa-storytelling-part-2",
+  "data": {
+   "tags": [
+    "strategy",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2025-08-18"
+  }
+ },
+ {
+  "id": "10-commandments-fpa-storytelling",
+  "data": {
+   "tags": [
+    "strategy",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2025-06-04"
+  }
+ },
+ {
+  "id": "what-keeps-fintech-cfo-up-night-hint-its-just-burn-rate",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2025-05-08"
+  }
+ },
+ {
+  "id": "winning-chaos",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2025-02-12"
+  }
+ },
+ {
+  "id": "should-cfos-build-strategic-flexibility-opposed-plans",
+  "data": {
+   "tags": [
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2025-01-23"
+  }
+ },
+ {
+  "id": "reflecting-year-insights-final-thoughts-2024",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-12-19"
+  }
+ },
+ {
+  "id": "output-outcome-systems-approach-friday-focus-from-cfo",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "cfo",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-11-29"
+  }
+ },
+ {
+  "id": "how-cfos-should-think-ma-balancing-risk-opportunity",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2024-09-23"
+  }
+ },
+ {
+  "id": "trust-bridging-gap",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "teams",
+    "reflections"
+   ],
+   "date": "2024-08-30"
+  }
+ },
+ {
+  "id": "symphony-success-ideas-execution-consistency",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "teams",
+    "reflections"
+   ],
+   "date": "2024-08-16"
+  }
+ },
+ {
+  "id": "you-dont-sacrifice-what-want-becomes",
+  "data": {
+   "tags": [
+    "leadership",
+    "ai",
+    "reflections"
+   ],
+   "date": "2024-07-23"
+  }
+ },
+ {
+  "id": "enhancing-financial-data-storytelling-cfos-cheat-sheet",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-06-19"
+  }
+ },
+ {
+  "id": "using-llms-cheat-sheet-cfos",
+  "data": {
+   "tags": [
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-06-05"
+  }
+ },
+ {
+  "id": "oh-captainmy-captain",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "fp-and-a",
+    "teams",
+    "risk"
+   ],
+   "date": "2024-05-14"
+  }
+ },
+ {
+  "id": "shadows-light-dance-self-doubt-self-confidence",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-04-30"
+  }
+ },
+ {
+  "id": "mastering-matrix-how-curiosity-grit-shape-winning-teams",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-03-26"
+  }
+ },
+ {
+  "id": "crowdsourcing-financial-decisions-when-more-cooks-may",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2024-03-21"
+  }
+ },
+ {
+  "id": "how-plan-best-prep-rest-cfos-survival-guide-almost-anything",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "cfo",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-03-14"
+  }
+ },
+ {
+  "id": "importance-treasurers-finance",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2024-03-11"
+  }
+ },
+ {
+  "id": "cashing-cheers-cfos-guide-making-sports-sponsorships-pay",
+  "data": {
+   "tags": [
+    "strategy",
+    "fp-and-a",
+    "cfo",
+    "teams"
+   ],
+   "date": "2024-02-27"
+  }
+ },
+ {
+  "id": "bottomline-customer-happiness-3-cx-stories-cfo",
+  "data": {
+   "tags": [
+    "strategy",
+    "ai",
+    "cfo",
+    "teams",
+    "reflections"
+   ],
+   "date": "2024-02-14"
+  }
+ },
+ {
+  "id": "freud-finance-folly-cfos-perspective",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-02-08"
+  }
+ },
+ {
+  "id": "leadership-era-genai",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "teams",
+    "risk"
+   ],
+   "date": "2024-02-01"
+  }
+ },
+ {
+  "id": "future-gpt",
+  "data": {
+   "tags": [
+    "leadership",
+    "ai",
+    "fp-and-a",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-01-22"
+  }
+ },
+ {
+  "id": "evolving-financial-analytics-navigating-beyond-traditional",
+  "data": {
+   "tags": [
+    "leadership",
+    "ai",
+    "fp-and-a",
+    "risk",
+    "reflections"
+   ],
+   "date": "2024-01-11"
+  }
+ },
+ {
+  "id": "time-ticks-why-we-cant-embezzle-hours-from-father",
+  "data": {
+   "tags": [
+    "cfo",
+    "risk",
+    "reflections"
+   ],
+   "date": "2023-12-31"
+  }
+ },
+ {
+  "id": "power-precision-focus-success",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "cfo",
+    "risk"
+   ],
+   "date": "2023-12-07"
+  }
+ },
+ {
+  "id": "once-upon-balance-sheet-10-reasons-why-storytelling-cfos",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2023-11-29"
+  }
+ },
+ {
+  "id": "checkmate-boardroom-ballet-how-execution-pirouettes-past",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "reflections"
+   ],
+   "date": "2023-11-16"
+  }
+ },
+ {
+  "id": "high-wire-acts-high-finance-cfos-circus-growth-vs-cash",
+  "data": {
+   "tags": [
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "risk"
+   ],
+   "date": "2023-11-07"
+  }
+ },
+ {
+  "id": "from-bean-counting-bots",
+  "data": {
+   "tags": [
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams"
+   ],
+   "date": "2023-10-16"
+  }
+ },
+ {
+  "id": "10-commandments-experienced-cfo",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "ai",
+    "fp-and-a",
+    "cfo",
+    "teams",
+    "risk"
+   ],
+   "date": "2023-09-26"
+  }
+ },
+ {
+  "id": "10-commandments-newbie-cfo",
+  "data": {
+   "tags": [
+    "leadership",
+    "strategy",
+    "cfo",
+    "teams",
+    "reflections"
+   ],
+   "date": "2022-06-18"
+  }
+ }
+]

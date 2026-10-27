@@ -18,6 +18,8 @@ const insights = defineCollection({
     seoDescription: z.string().optional(),
     tags: z.array(z.string()).optional(),
     featured: z.boolean().default(false),
+    // Homepage theme override (src/lib/themes.mjs); otherwise derived from tags.
+    theme: z.enum(['ai', 'cap', 'fpa', 'lead']).optional(),
     draft: z.boolean().default(false),
     // Where the article originated (imported from LinkedIn). Optional.
     sourceUrl: z.string().url().optional(),
