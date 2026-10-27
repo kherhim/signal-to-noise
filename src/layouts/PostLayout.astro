@@ -4,8 +4,11 @@ import Prose from '../components/Prose.astro';
 import ShareLinks from '../components/ShareLinks.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
 import AnimatedCover from '../components/AnimatedCover.astro';
+import EssayAudio from '../components/EssayAudio.astro';
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+interface AudioData { voice: string; engine: string; hash: string; file: string; duration: number; chapters: [string, number][]; peaks: number[] }
 
 interface Props {
   title: string;
@@ -28,6 +31,8 @@ interface Props {
   /* Related insights — 2-3 posts sharing tags with this one, rendered
      at the article end. Computed at the page level. */
   related?: { href: string; title: string; excerpt: string; date: Date }[];
+  /* Narration entry, already hash-checked against the text; null hides the player. */
+  audio?: AudioData | null;
 }
 
 const {
@@ -43,6 +48,7 @@ const {
   seriesKickerHref,
   seriesParts,
   related = [],
+  audio = null,
 } = Astro.props;
 
 const fmt = (d: Date) =>
@@ -120,6 +126,8 @@ const formatted = date.toLocaleDateString('en-GB', {
         </ul>
       )}
     </header>
+
+    <div data-pagefind-ignore><EssayAudio data={audio} title={title} /></div>
 
     <Prose>
       <slot />
