@@ -83,18 +83,42 @@ def _merge_numbers(words):
     return out
 
 
+# Words Whisper often drops or that carry no meaning for the check.
+_STOP = {"a", "an", "the", "is", "are", "was", "and", "of", "to", "it"}
+_CURRENCY = {"dollars", "dollar", "pounds", "pound", "euros", "euro"}
+
+
 def normalise(text: str) -> list[str]:
-    t = text.lower().replace("&", " and ").replace("%", " per cent ")
+    t = text.lower()
+    # Script says "6 dollars 60"; Whisper writes "$6.60". Both become 6.60.
+    t = re.sub(r"\b(\d+) (?:dollars|pounds|euros) (\d{2})\b", r"\1.\2", t)
+    t = re.sub(r"[$£€]", " ", t)
+    t = t.replace("&", " and ").replace("%", " per cent ")
     t = re.sub(r"\bpercent\b", "per cent", t)
     t = re.sub(r"(?<=\d),(?=\d{3})", "", t)   # 131,000 -> 131000
     t = re.sub(r"[-‐-―]", " ", t)    # thirty-one -> thirty one
     t = re.sub(r"[^a-z0-9.\s]", " ", t)
     t = re.sub(r"(?<!\d)\.|\.(?!\d)", " ", t)  # drop full stops, keep decimals
-    return [ALIASES.get(w, w) for w in _merge_numbers(t.split())]
+    words = [ALIASES.get(w, w) for w in _merge_numbers(t.split())]
+    return [w for w in words if w not in _STOP and w not in _CURRENCY]
+
+
+def _join_splits(words: list[str], vocab: set[str]) -> list[str]:
+    """Merge neighbours the other side writes as one word: "jp morgan" -> "jpmorgan"."""
+    out, i = [], 0
+    while i < len(words):
+        if i + 1 < len(words) and words[i] + words[i + 1] in vocab:
+            out.append(words[i] + words[i + 1])
+            i += 2
+        else:
+            out.append(words[i])
+            i += 1
+    return out
 
 
 def match_score(expected: str, heard: str) -> float:
     a, b = normalise(expected), normalise(heard)
+    a, b = _join_splits(a, set(b)), _join_splits(b, set(a))
     if not a and not b:
         return 1.0
     return SequenceMatcher(None, a, b).ratio()

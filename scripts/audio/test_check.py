@@ -14,3 +14,8 @@ def test_year_pairs():
 def test_aliases(monkeypatch):
     monkeypatch.setattr(check, "ALIASES", {"frazier": "fraser"})
     assert match_score("Jane Fraser left", "Jane Frazier left") == 1.0
+def test_money_forms(): assert match_score("The dividend is now 6 dollars 60 a year.", "dividend now $6.60 a year.") == 1.0
+def test_money_scale(): assert match_score("about 13.5 billion dollars", "about $13.5 billion") == 1.0
+def test_split_names(): assert match_score("Dimon arrived at JPMorgan.", "Diamond arrived at JP Morgan.") == 1.0
+def test_compound_with_alias(): assert match_score("Citigroup looks like the clear choice.", "City Group looks like clear choice.") == 1.0
+def test_wrong_figure_fails(): assert match_score("The dividend is now 6 dollars 60.", "The dividend is now $9.40.") < 0.85
