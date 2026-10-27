@@ -34,7 +34,12 @@ export function spokenForm(text, pron = {}) {
   const unitRe = new RegExp(String.raw`([$£€])(${NUM})\s*(trillion|billion|million|bn|m)\b`, 'gi');
   t = t.replace(unitRe, (_, c, n, u) => `${n} ${UNITS[u.toLowerCase()]} ${CURRENCY[c]}`);
   const decRe = new RegExp(String.raw`([$£€])(\d[\d,]*)\.(\d\d)\b`, 'g');
-  t = t.replace(decRe, (_, c, n, p) => (p === '00' ? `${n} ${CURRENCY[c]}` : `${n} ${CURRENCY[c]} ${parseInt(p, 10)}`));
+  const CENTS = { '$': 'cents', '£': 'pence', '€': 'cents' };
+  t = t.replace(decRe, (_, c, n, p) => {
+    if (p === '00') return `${n} ${CURRENCY[c]}`;
+    if (n === '0') return `${parseInt(p, 10)} ${CENTS[c]}`;
+    return `${n} ${CURRENCY[c]} ${parseInt(p, 10)}`;
+  });
   t = t.replace(new RegExp(String.raw`([$£€])(${NUM})`, 'g'), (_, c, n) => `${n} ${CURRENCY[c]}`);
   t = t.replace(/(\d)\s*–\s*(\d)/g, '$1 to $2');
   t = t.replace(/%/g, ' per cent');
