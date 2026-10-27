@@ -1,8 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import InsightCard from '../components/InsightCard.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import TrackerStrip from '../components/home/TrackerStrip.astro';
+import ThemeRail from '../components/home/ThemeRail.astro';
+import { homepagePlan, themeOf } from '../lib/themes.mjs';
 
 // In dev, show drafts so you can preview them; in prod, drafts stay hidden.
 const allInsights = (await getCollection(
@@ -40,75 +42,27 @@ function pickFeatured(candidates: typeof homepageCandidates) {
 }
 
 const featured = pickFeatured(homepageCandidates);
-const recent = homepageCandidates.filter((i) => i.id !== featured?.id).slice(0, 3);
+const plan = homepagePlan(homepageCandidates, featured?.id);
+const href = (p: (typeof homepageCandidates)[number]) => `/insights/${p.id}`;
+const card = (p: (typeof homepageCandidates)[number]) => ({ href: href(p), title: p.data.title, date: p.data.date, cover: p.data.coverImage });
+// Map points: every homepage essay, newest first; the lead essay goes first so it gets the ring.
+const points = [plan.lead, ...homepageCandidates.filter((p) => p.id !== plan.lead.id)].map((p) => ({
+  s: p.id, t: p.data.title.replace(/^📌\s*/u, ''), d: p.data.date.toISOString(), c: themeOf(p.data),
+}));
 ---
 
 <BaseLayout
   title="Signal to Noise — Finance, AI, and Capital Strategy by Himanshu Kher"
   description="Pragmatic essays on finance, AI, and capital strategy from a CFO with 25+ years in the field. Signal, not noise."
-  stars
-  heroClear
 >
-  <Hero />
+  <HomeHero lead={{ href: href(plan.lead), title: plan.lead.data.title, excerpt: plan.lead.data.excerpt, date: plan.lead.data.date }} points={points} />
 
-  {featured && (
-    <section class="mx-auto max-w-[1100px] px-6 py-16" data-reveal>
-      <p class="text-xs uppercase tracking-widest text-muted mb-6">Featured</p>
-      <article class="border-l-2 border-accent pl-6 sm:pl-8 py-2">
-        <time
-          class="text-sm text-muted block mb-3"
-          datetime={featured.data.date.toISOString()}
-        >
-          {featured.data.date.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })}
-        </time>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-tight text-fg mb-4">
-          <a
-            href={`/insights/${featured.id}`}
-            class="hover:text-accent transition-colors"
-          >
-            {featured.data.title}
-          </a>
-        </h2>
-        <p class="text-lg text-muted leading-relaxed max-w-2xl mb-4">
-          {featured.data.excerpt}
-        </p>
-        <a
-          href={`/insights/${featured.id}`}
-          class="text-sm text-accent hover:text-accent-hover transition-colors"
-        >
-          Read →
-        </a>
-      </article>
-    </section>
-  )}
+  <TrackerStrip />
 
-  {recent.length > 0 && (
-    <section class="mx-auto max-w-[1100px] px-6 py-16" data-reveal>
-      <div class="flex items-end justify-between mb-8">
-        <h2 class="text-2xl font-semibold tracking-tight text-fg">Recent insights</h2>
-        <a
-          href="/insights"
-          class="text-sm text-muted hover:text-accent transition-colors"
-        >
-          All insights →
-        </a>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {recent.map((post) => (
-          <InsightCard
-            href={`/insights/${post.id}`}
-            title={post.data.title}
-            excerpt={post.data.excerpt}
-            date={post.data.date}
-          />
-        ))}
-      </div>
-    </section>
-  )}
+  <section class="mx-auto max-w-[1100px] px-6 py-14 grid gap-12">
+    <ThemeRail title="Latest" items={plan.latest.map(card)} allHref="/insights" />
+    {plan.rails.map((r) => <ThemeRail title={r.theme.label} color={r.theme.color} items={r.items.map(card)} allHref={r.theme.all} />)}
+  </section>
 
   <section class="mx-auto max-w-[1100px] px-6 py-16" data-reveal>
     <h2 class="text-2xl font-semibold tracking-tight text-fg mb-8">Reading the noise</h2>

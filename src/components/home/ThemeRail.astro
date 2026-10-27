@@ -1,0 +1,47 @@
+---
+/* One horizontally scrolling row of essay cards. Essays without a cover get
+   a text card of the same size, so nothing is dropped for lacking an image. */
+interface Item { href: string; title: string; date: Date; cover?: string }
+interface Props { title: string; color?: string; items: Item[]; allHref: string }
+const { title, color, items, allHref } = Astro.props;
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const clean = (t: string) => t.replace(/^📌\s*/u, '');
+---
+
+{items.length > 0 && (
+  <div class="rail" data-reveal>
+    <div class="head">
+      <h2>{color && <i style={`background:${color}`}></i>}{title}</h2>
+      <a href={allHref}>All →</a>
+    </div>
+    <div class="track">
+      {items.map((e) => (
+        <a class="card" href={e.href}>
+          <div class="cover">
+            {e.cover ? <img src={e.cover} alt="" loading="lazy" decoding="async" width="640" height="360" /> : <span class="text">{clean(e.title)}</span>}
+          </div>
+          <h3>{clean(e.title)}</h3>
+          <time datetime={e.date.toISOString()}>{fmt(e.date)}</time>
+        </a>
+      ))}
+    </div>
+  </div>
+)}
+
+<style>
+  .head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .head h2 { font-size: 22px; font-weight: 600; letter-spacing: -.01em; color: var(--color-fg); display: flex; align-items: center; gap: 10px; }
+  .head h2 i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .head a { font-size: 14px; color: var(--color-muted); white-space: nowrap; }
+  .head a:hover { color: var(--color-fg); }
+  .track { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, calc((100% - 72px) / 5)); gap: 18px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+  .card { scroll-snap-align: start; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .cover { aspect-ratio: 16 / 9; max-width: 100%; background: #141416; border: 1px solid #1f1f23; border-radius: 6px; overflow: hidden; display: flex; align-items: flex-end; }
+  .cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+  .card:hover .cover img { transform: scale(1.03); }
+  .text { font-family: var(--font-display); font-size: 17px; line-height: 1.2; color: #d8d2c4; padding: 14px; }
+  .card h3 { font-size: 16px; line-height: 1.3; font-weight: 600; color: var(--color-fg); text-wrap: balance; }
+  .card:hover h3 { color: var(--color-accent); }
+  time { font-size: 12.5px; color: #64707e; }
+  @media (prefers-reduced-motion: reduce) { .cover img { transition: none; } }
+</style>

@@ -1,0 +1,49 @@
+---
+/* Homepage hero: the promise and the latest essay on the left, the essay map
+   on the right (under the text below 900px). */
+import EssayMap from './EssayMap.astro';
+
+interface Props {
+  lead: { href: string; title: string; excerpt: string; date: Date };
+  points: { s: string; t: string; d: string; c: string }[];
+}
+const { lead, points } = Astro.props;
+const date = lead.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<section class="hero mx-auto max-w-[1100px] px-6">
+  <div class="text">
+    <p class="text-sm uppercase tracking-widest text-accent mb-6">Signal, not noise.</p>
+    <h1 class="text-5xl sm:text-6xl font-semibold tracking-tight leading-[1.04] text-fg">I find the signal where most people see noise.</h1>
+    <p class="promise">Pragmatic essays on finance, AI and capital strategy, for CFOs, finance leaders and operators. One new essay each Wednesday.</p>
+    <article class="latest">
+      <p class="k">Latest essay · <time datetime={lead.date.toISOString()}>{date}</time></p>
+      <h2><a href={lead.href}>{lead.title}</a></h2>
+      <p class="x">{lead.excerpt}</p>
+      <div class="ctas">
+        <a class="btn primary" href={lead.href}>Open the essay →</a>
+        <a class="btn ghost" href="/subscribe">Subscribe on LinkedIn</a>
+      </div>
+    </article>
+  </div>
+  <EssayMap points={points} />
+</section>
+
+<style>
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-block: 72px 56px; }
+  @media (max-width: 899px) { .hero { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-block: 40px 24px; } }
+  .text { min-width: 0; }
+  h1 { text-wrap: balance; margin-bottom: 18px; }
+  .promise { font-size: clamp(18px, 2vw, 21px); line-height: 1.55; color: var(--color-muted); margin-bottom: 36px; max-width: 34em; }
+  .latest { border-left: 2px solid var(--color-accent); padding-left: 20px; }
+  .k { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px; }
+  .latest h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(24px, 3vw, 30px); line-height: 1.15; color: var(--color-fg); margin-bottom: 10px; text-wrap: balance; }
+  .latest h2 a:hover { color: var(--color-accent-hover); }
+  .x { color: var(--color-muted); line-height: 1.6; margin-bottom: 20px; max-width: 36em; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; padding: 11px 18px; border-radius: 6px; font-weight: 600; transition: box-shadow .3s, border-color .3s; }
+  .btn.primary { background: var(--color-accent); color: var(--color-canvas); }
+  .btn.primary:hover { box-shadow: 0 0 28px rgba(255, 255, 255, .3); }
+  .btn.ghost { border: 1px solid var(--color-divider); color: var(--color-fg); }
+  .btn.ghost:hover { border-color: rgb(255 255 255 / .4); }
+</style>

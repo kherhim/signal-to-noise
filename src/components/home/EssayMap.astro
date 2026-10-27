@@ -1,0 +1,160 @@
+---
+/* Rotating map of every homepage essay, grouped by theme. Plain canvas, no
+   library. Stays inside its own column; the rails below carry every essay as
+   a normal link. Bound on astro:page-load and torn down on astro:before-swap
+   so view transitions never leave two loops running. */
+import { THEMES } from '../../lib/themes.mjs';
+
+interface Point { s: string; t: string; d: string; c: string }
+interface Props { points: Point[] }
+const { points } = Astro.props;
+const counts = Object.fromEntries(THEMES.map((t) => [t.key, points.filter((p) => p.c === t.key).length]));
+---
+
+<div class="map">
+  <canvas id="essay-map" tabindex="0" aria-label={`A map of ${points.length} essays, arranged by theme. Hover over a point for its title, then click to open it. You can also find the same essays below.`}></canvas>
+  <div class="tip" id="essay-map-tip" hidden></div>
+  <div class="legend">
+    {THEMES.map((t) => (
+      <button type="button" data-theme={t.key} aria-pressed="true"><i style={`background:${t.color}`}></i>{t.short} ({counts[t.key]})</button>
+    ))}
+  </div>
+  <p class="hint">{points.length} essays · drag to rotate · click a point to read</p>
+  <script type="application/json" id="essay-map-data" set:html={JSON.stringify({ points, themes: THEMES }).replace(/</g, '\\u003c')} />
+</div>
+
+<style>
+  .map { position: relative; min-width: 0; }
+  canvas { display: block; width: 100%; max-width: 100%; aspect-ratio: 1 / 1; cursor: grab; touch-action: pan-y; }
+  canvas:active { cursor: grabbing; }
+  canvas:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 3px; border-radius: 4px; }
+  @media (max-width: 899px) { canvas { aspect-ratio: 16 / 11; } }
+  .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-size: 13px; color: var(--color-muted); margin-top: 4px; }
+  .legend button { display: inline-flex; align-items: center; gap: 6px; padding: 2px 4px; border-radius: 4px; cursor: pointer; }
+  .legend button[aria-pressed='false'] { opacity: .4; }
+  .legend button:focus-visible { outline: 2px solid var(--color-fg); }
+  .legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .hint { text-align: center; font-size: 12px; color: #64707e; margin-top: 6px; }
+  .tip { position: absolute; pointer-events: none; background: #18181b; border: 1px solid var(--color-divider); border-radius: 6px; padding: 8px 10px; font-size: 13px; line-height: 1.35; max-width: 260px; z-index: 5; color: var(--color-fg); }
+  .tip :global(span) { display: block; color: var(--color-muted); font-size: 12px; }
+</style>
+
+<script>
+  import { navigate } from 'astro:transitions/client';
+
+  type Pt = { s: string; t: string; d: string; c: string };
+  type Theme = { key: string; short: string; color: string };
+  let stop: (() => void) | null = null;
+
+  function mount() {
+    stop?.();
+    const cv = document.getElementById('essay-map') as HTMLCanvasElement | null;
+    const raw = document.getElementById('essay-map-data');
+    if (!cv || !raw) return;
+    const { points, themes } = JSON.parse(raw.textContent || '{}') as { points: Pt[]; themes: Theme[] };
+    if (!points?.length) return;
+    const ctx = cv.getContext('2d')!;
+    const tip = document.getElementById('essay-map-tip')!;
+    const byKey = Object.fromEntries(themes.map((t) => [t.key, t]));
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    // Seeded layout: the map looks the same on every visit.
+    let seed = 7;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+    const CENTRES: Record<string, number[]> = { ai: [0.55, 0.1, 0.2], cap: [-0.5, 0.35, -0.2], fpa: [-0.15, -0.55, 0.35], lead: [0.05, 0.25, -0.6] };
+    const newest = Date.parse(points[0].d), oldest = Date.parse(points.at(-1)!.d);
+    const pts = points.map((e, i) => {
+      const c = CENTRES[e.c] ?? CENTRES.lead, age = (newest - Date.parse(e.d)) / Math.max(1, newest - oldest);
+      return { e, x: c[0] + gauss() * 0.2, y: c[1] + gauss() * 0.2, z: c[2] + gauss() * 0.2, r: 3 + (1 - age) * 4.5, latest: i === 0 };
+    });
+    const dust = Array.from({ length: 140 }, () => ({ x: gauss() * 0.7, y: gauss() * 0.7, z: gauss() * 0.7 }));
+    const on: Record<string, boolean> = Object.fromEntries(themes.map((t) => [t.key, true]));
+
+    let ay = 0.6, ax = -0.25, W = 0, H = 0, raf = 0;
+    let drag: { x: number; y: number; ay: number; ax: number; moved: boolean } | null = null;
+    let hover: (typeof pts)[number] | null = null;
+    let proj: { p: (typeof pts)[number]; sx: number; sy: number; f: number; z: number }[] = [];
+
+    const size = () => {
+      const dpr = devicePixelRatio || 1, r = cv.getBoundingClientRect();
+      W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    const project = (p: { x: number; y: number; z: number }) => {
+      const cy = Math.cos(ay), sy = Math.sin(ay), cx = Math.cos(ax), sx = Math.sin(ax);
+      const x1 = p.x * cy - p.z * sy, z1 = p.x * sy + p.z * cy, y2 = p.y * cx - z1 * sx, z2 = p.y * sx + z1 * cx;
+      const s = Math.min(W, H) * 0.55, f = 2.6 / (2.6 + z2);
+      return { sx: W / 2 + x1 * s * f, sy: H / 2 + y2 * s * f, f, z: z2 };
+    };
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (const d of dust) { const q = project(d); ctx.fillStyle = `rgba(241,245,249,${0.05 + 0.1 * (q.f - 0.6)})`; ctx.fillRect(q.sx, q.sy, 1.2, 1.2); }
+      proj = pts.filter((p) => on[p.e.c]).map((p) => ({ p, ...project(p) })).sort((a, b) => b.z - a.z);
+      for (const q of proj) {
+        const col = byKey[q.p.e.c]?.color ?? '#d8d2c4', rr = q.p.r * q.f;
+        ctx.globalAlpha = Math.max(0.35, Math.min(1, 0.45 + (q.f - 0.7) * 1.4));
+        if (q.p.latest || hover === q.p) { ctx.globalAlpha = 0.6; ctx.beginPath(); ctx.arc(q.sx, q.sy, rr + 6, 0, 7); ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.stroke(); ctx.globalAlpha = 1; }
+        ctx.beginPath(); ctx.arc(q.sx, q.sy, rr, 0, 7); ctx.fillStyle = col; ctx.fill();
+        ctx.lineWidth = 2; ctx.strokeStyle = '#0a0a0a'; ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    };
+    const loop = () => { if (!drag) ay += 0.0025; draw(); raf = requestAnimationFrame(loop); };
+    const pick = (mx: number, my: number) => {
+      let best = null, bd = 14;
+      for (const q of proj) { const d = Math.hypot(q.sx - mx, q.sy - my); if (d < bd + q.p.r * q.f * 0.5) { bd = d; best = q; } }
+      return best;
+    };
+
+    const onDown = (ev: PointerEvent) => { drag = { x: ev.clientX, y: ev.clientY, ay, ax, moved: false }; cv.setPointerCapture(ev.pointerId); };
+    const onMove = (ev: PointerEvent) => {
+      const r = cv.getBoundingClientRect(), mx = ev.clientX - r.left, my = ev.clientY - r.top;
+      if (drag) {
+        const dx = ev.clientX - drag.x, dy = ev.clientY - drag.y;
+        if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+        ay = drag.ay + dx * 0.008; ax = Math.max(-1.2, Math.min(1.2, drag.ax + dy * 0.008));
+        if (reduce) draw();
+        return;
+      }
+      const q = pick(mx, my);
+      hover = q ? q.p : null; cv.style.cursor = q ? 'pointer' : 'grab';
+      if (q) {
+        tip.replaceChildren(document.createTextNode(q.p.e.t), Object.assign(document.createElement('span'), { textContent: `${byKey[q.p.e.c]?.short} · ${fmt(q.p.e.d)}` }));
+        tip.hidden = false;
+        tip.style.left = `${Math.max(0, Math.min(q.sx + 14, W - 270))}px`; tip.style.top = `${q.sy + 14}px`;
+      } else tip.hidden = true;
+      if (reduce) draw();
+    };
+    const onUp = (ev: PointerEvent) => {
+      const was = drag; drag = null;
+      if (was && !was.moved) { const r = cv.getBoundingClientRect(); const q = pick(ev.clientX - r.left, ev.clientY - r.top); if (q) navigate(`/insights/${q.p.e.s}/`); }
+    };
+    const onLeave = () => { hover = null; tip.hidden = true; if (reduce) draw(); };
+    const onResize = () => { size(); draw(); };
+    const buttons = [...document.querySelectorAll<HTMLButtonElement>('.legend button[data-theme]')];
+    const onToggle = (ev: Event) => {
+      const b = ev.currentTarget as HTMLButtonElement, k = b.dataset.theme!;
+      on[k] = !on[k]; b.setAttribute('aria-pressed', String(on[k])); draw();
+    };
+
+    cv.addEventListener('pointerdown', onDown); cv.addEventListener('pointermove', onMove);
+    cv.addEventListener('pointerup', onUp); cv.addEventListener('pointerleave', onLeave);
+    addEventListener('resize', onResize);
+    buttons.forEach((b) => b.addEventListener('click', onToggle));
+    size(); draw();
+    if (!reduce) raf = requestAnimationFrame(loop);
+
+    stop = () => {
+      cancelAnimationFrame(raf);
+      cv.removeEventListener('pointerdown', onDown); cv.removeEventListener('pointermove', onMove);
+      cv.removeEventListener('pointerup', onUp); cv.removeEventListener('pointerleave', onLeave);
+      removeEventListener('resize', onResize);
+      buttons.forEach((b) => b.removeEventListener('click', onToggle));
+      stop = null;
+    };
+  }
+
+  document.addEventListener('astro:page-load', mount);
+  document.addEventListener('astro:before-swap', () => stop?.());
+</script>
