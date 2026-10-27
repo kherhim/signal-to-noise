@@ -63,14 +63,15 @@ The ssh test makes gcloud create and register this Mac's SSH key. Do not run
 
 ## 5. Cut over the scheduled jobs
 
-Two jobs are live: the Monday 07:30 metrics pull and the Monday 07:45 humaniser
-learn, which needs `claude`, `gh auth status` and git push working on the new Mac
+Three jobs are live: the Monday 07:30 metrics pull, the Monday 07:45 humaniser
+learn and the Tuesday 19:00 essay audio (run `scripts/audio/setup.sh` on the new
+Mac first, to build the narration venv), which needs `claude`, `gh auth status` and git push working on the new Mac
 (the essay line and the watermarks container were retired on 12 Oct 2026). Stop
 them on the old Mac **first**, then start them on the new:
 
 ```sh
 infra/migrate-agents.sh --stop    # on the OLD Mac
-infra/migrate-agents.sh           # on the NEW Mac: rewrites paths for this Mac, then loads both
+infra/migrate-agents.sh           # on the NEW Mac: rewrites paths for this Mac, then loads them
 ```
 
 ## 6. Afterwards
