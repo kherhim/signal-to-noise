@@ -19,7 +19,8 @@
     "search:index": "node scripts/build-search-index.mjs",
     "humanise": "node scripts/humanise.mjs",
     "humanise:posts": "node scripts/humanise.mjs --no-model distribution/ready-to-post/*.md distribution/linkedin-newsletter/*.md distribution/autopilot/queue/*.md",
-    "test:site": "node --test scripts/site/test/*.mjs"
+    "test:site": "node --test scripts/site/test/*.mjs",
+    "test:audio": "node --test scripts/audio/test/*.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.1",
