@@ -119,6 +119,8 @@ def normalise(text: str) -> list[str]:
     t = text.lower()
     # Script says "6 dollars 60"; Whisper writes "$6.60". Both become 6.60.
     t = re.sub(r"\b(\d+) (?:dollars|pounds|euros) (\d{2})\b", r"\1.\2", t)
+    # "6 cents" / "50 pence" and Whisper's "$0.06" both become 0.06.
+    t = re.sub(r"\b(\d{1,2}) (?:cents|pence|p)\b", lambda m: f"0.{int(m.group(1)):02d}", t)
     t = re.sub(r"[$£€]", " ", t)
     t = t.replace("&", " and ").replace("%", " per cent ")
     t = re.sub(r"\bpercent\b", "per cent", t)
@@ -127,7 +129,13 @@ def normalise(text: str) -> list[str]:
     t = re.sub(r"[^a-z0-9.\s]", " ", t)
     t = re.sub(r"(?<!\d)\.|\.(?!\d)", " ", t)  # drop full stops, keep decimals
     words = [ALIASES.get(w, w) for w in _join_points(_merge_numbers(_mark_points(t.split())))]
-    return [w for w in words if w not in _STOP and w not in _CURRENCY]
+    return [_us(w) for w in words if w not in _STOP and w not in _CURRENCY]
+
+
+def _us(w):
+    """Whisper writes American spellings; fold both sides to one form (prioritise/prioritize)."""
+    w = re.sub(r"is(e|ed|es|ing|ation|ations)$", r"iz\1", w)
+    return re.sub(r"our(s|ed|ing)?$", r"or\1", w) if len(w) > 4 else w
 
 
 def _join_splits(words: list[str], vocab: set[str]) -> list[str]:

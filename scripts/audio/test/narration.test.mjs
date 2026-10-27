@@ -66,3 +66,6 @@ test('hashtag-only paragraphs are skipped', () => {
   const s = narrationScript('Real text here.\n\n#CFO #MergersAndAcquisitions #FinanceLeadership');
   assert.deepEqual(s.items.map((i) => i.text), ['Real text here.']);
 });
+test('amounts under one unit are read as cents or pence', () => {
+  assert.equal(spokenForm('it cost $0.06 and £0.50'), 'it cost 6 cents and 50 pence');
+});
