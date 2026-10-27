@@ -22,3 +22,5 @@ def test_wrong_figure_fails(): assert match_score("The dividend is now 6 dollars
 def test_british_american(): assert match_score("What to prioritise", "What to prioritize.") == 1.0
 def test_cents(): assert match_score("by late 2024 it cost 6 cents.", "by late 2024 it cost $0.06.") == 1.0
 def test_behavioural(): assert match_score("a form of behavioural engineering", "a form of behavioral engineering.") == 1.0
+def test_source_typos(): assert match_score("This artcile is targetted towards juniour staff", "This article is targeted towards junior staff.") == 1.0
+def test_real_word_misread_still_fails(): assert match_score("consumer banking", "consumer baking") < 0.85
