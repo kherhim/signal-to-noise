@@ -53,7 +53,8 @@ export async function prepareOne(slug, { narrate, writeLocal }) {
 }
 
 // Upload first; the repo JSON is written only once the upload has succeeded.
-export async function publishOne(slug, { narrate, upload, writeJson }) {
+export async function publishOne(slug, { narrate, upload, writeJson, isDraft }) {
+  if (isDraft && isDraft(slug)) throw new Error(`${slug} is a draft: set draft: false in its frontmatter before publishing`);
   const r = await narrate(slug);
   if (!r) return null;
   const data = build(slug, r);
@@ -63,17 +64,19 @@ export async function publishOne(slug, { narrate, upload, writeJson }) {
 }
 
 // ---- real implementations ----
-function parseEssay(file) {
-  const raw = readFileSync(join(CONTENT, file), 'utf8');
+export function parseFrontmatter(raw) {
+  raw = raw.replace(/\r\n/g, '\n');
   const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
   const fm = m ? m[1] : '';
-  const get = (k) => (fm.match(new RegExp(`^${k}:\\s*(.+)$`, 'm')) || [])[1]?.trim().replace(/^["']|["']$/g, '');
-  return {
-    slug: file.replace(/\.mdx?$/, ''),
-    body: m ? m[2] : raw,
-    draft: get('draft') === 'true',
-    date: get('date') || '',
+  const get = (k) => {
+    const v = (fm.match(new RegExp(`^${k}:[ \\t]*(.*)$`, 'm')) || [])[1];
+    if (v === undefined) return undefined;
+    return v.replace(/\s+#.*$/, '').trim().replace(/^["']|["']$/g, '');
   };
+  return { body: m ? m[2] : raw, draft: get('draft') === 'true', date: get('date') || '' };
+}
+function parseEssay(file) {
+  return { slug: file.replace(/\.mdx?$/, ''), ...parseFrontmatter(readFileSync(join(CONTENT, file), 'utf8')) };
 }
 const loadEssays = () => readdirSync(CONTENT).filter((f) => /\.mdx?$/.test(f)).map(parseEssay);
 const loadAll = () =>
@@ -127,6 +130,7 @@ async function main(argv) {
     upload: uploadFiles,
     writeJson: writeRepoJson,
     writeLocal: writeLocalJson,
+    isDraft: (sl) => !!bySlug[sl]?.draft,
   });
   let failures = 0;
 
@@ -136,6 +140,7 @@ async function main(argv) {
       const plan = planWork(essays, loadAll(), new Date().toISOString().slice(0, 10), pronunciations());
       if (rest.includes('--missing')) slugs.push(...plan.missing);
       if (rest.includes('--stale')) slugs.push(...plan.stale);
+      if (plan.upcoming.length) console.log(`Upcoming (not narrated by this command): ${plan.upcoming.join(', ')}`);
     }
     for (const slug of [...new Set(slugs)]) {
       if (need(slug).draft) { console.error(`Skipping ${slug}: draft (use prepare)`); continue; }
@@ -153,7 +158,7 @@ async function main(argv) {
     if (!d) failures++;
   } else if (cmd === 'publish') {
     const slug = rest[0];
-    need(slug);
+    if (need(slug).draft) throw new Error(`${slug} is a draft: set draft: false in its frontmatter before publishing`);
     const d = await publishOne(slug, mk(slug));
     console.log(d ? `Published ${d.file}` : `Skipped ${slug}`);
     if (!d) failures++;

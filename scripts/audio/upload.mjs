@@ -13,6 +13,7 @@ const run = (args) => execFileSync('gcloud', args, { stdio: 'inherit', env });
 export async function uploadFiles(paths) {
   for (const p of paths) {
     const name = basename(p);
+    if (!/^[a-z0-9-]+\.[0-9a-f]{8}\.m4a$/.test(name)) throw new Error(`Refusing to upload unexpected filename: ${name}`);
     run(['compute', 'scp', `--zone=${ZONE}`, '--tunnel-through-iap', p, `${VM}:/tmp/${name}`]);
     run([
       'compute', 'ssh', VM, `--zone=${ZONE}`, '--tunnel-through-iap',

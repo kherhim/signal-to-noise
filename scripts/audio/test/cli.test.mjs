@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { planWork, publishOne, prepareOne } from '../audio.mjs';
+import { planWork, publishOne, prepareOne, parseFrontmatter } from '../audio.mjs';
 import { narrationScript, scriptHash } from '../../../src/lib/narration.mjs';
 
 const body = 'Opening paragraph here.\n\n## Heading\n\nSecond paragraph.';
@@ -60,4 +60,18 @@ test('prepareOne narrates and writes locally without uploading', async () => {
 test('narrate failure skips the essay', async () => {
   const deps = { narrate: async () => null, upload: async () => assert.fail(), writeJson: () => assert.fail() };
   assert.equal(await publishOne('a', deps), null);
+});
+
+test('publishOne refuses drafts and never narrates or uploads', async () => {
+  const deps = { isDraft: () => true, narrate: async () => assert.fail(), upload: async () => assert.fail(), writeJson: () => assert.fail() };
+  await assert.rejects(publishOne('a', deps), /draft/);
+});
+
+test('frontmatter tolerates CRLF and trailing comments', () => {
+  const raw = '---\r\ntitle: "x"\r\ndate: 2026-10-28 # tomorrow\r\ndraft: true # hold\r\n---\r\n\r\nBody.\r\n';
+  const f = parseFrontmatter(raw);
+  assert.equal(f.draft, true);
+  assert.equal(f.date, '2026-10-28');
+  assert.match(f.body, /Body\./);
+  assert.equal(parseFrontmatter('---\ndraft: false\n---\nx').draft, false);
 });
