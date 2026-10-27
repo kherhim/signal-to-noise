@@ -2,6 +2,8 @@
 
 THRESHOLD is the pass mark used by narrate.py (see the tuning note below).
 """
+import json
+import os
 import re
 from difflib import SequenceMatcher
 
@@ -18,6 +20,21 @@ _SCALES = {"thousand": 1_000, "million": 1_000_000, "billion": 1_000_000_000,
            "trillion": 1_000_000_000_000}
 
 
+_ALIASES_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "aliases.json")
+
+
+def _load_aliases(path=None):
+    try:
+        with open(path or _ALIASES_PATH) as f:
+            return {k.lower(): v.lower() for k, v in json.load(f).items()}
+    except (OSError, ValueError):
+        return {}
+
+
+ALIASES = _load_aliases()
+_YEAR_FIRST = {"thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"}
+
+
 def _is_num(w):
     return w in _UNITS or w in _TENS or w == "hundred" or w in _SCALES
 
@@ -30,6 +47,15 @@ def _merge_numbers(words):
         if not starts:
             out.append(w)
             i += 1
+            continue
+        if w in _YEAR_FIRST and i + 1 < n and words[i + 1] in _TENS:
+            year = _UNITS.get(w, 20) * 100 + _TENS[words[i + 1]]
+            j = i + 2
+            if j < n and words[j] in _UNITS and 1 <= _UNITS[words[j]] <= 9:
+                year += _UNITS[words[j]]
+                j += 1
+            out.append(str(year))
+            i = j
             continue
         total = current = 0
         j = i
@@ -64,7 +90,7 @@ def normalise(text: str) -> list[str]:
     t = re.sub(r"[-‐-―]", " ", t)    # thirty-one -> thirty one
     t = re.sub(r"[^a-z0-9.\s]", " ", t)
     t = re.sub(r"(?<!\d)\.|\.(?!\d)", " ", t)  # drop full stops, keep decimals
-    return _merge_numbers(t.split())
+    return [ALIASES.get(w, w) for w in _merge_numbers(t.split())]
 
 
 def match_score(expected: str, heard: str) -> float:

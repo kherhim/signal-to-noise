@@ -27,7 +27,7 @@ PEAKS = 200
 
 
 def is_heading(item):
-    return item.get("kind", "").lower() in ("h", "heading") or item.get("kind", "").lower().startswith("h")
+    return (item.get("kind") or "").lower() in ("h", "heading")
 
 
 def silence(seconds):
@@ -38,6 +38,10 @@ def main():
     script_path, out_path = sys.argv[1], sys.argv[2]
     script = json.load(open(script_path))
     items = script["items"]
+    if not any(s.strip() for it in items for s in it.get("sentences", [])):
+        print(json.dumps({"ok": False, "failed": [], "error": "empty script"}))
+        sys.exit(2)
+    os.makedirs(os.path.dirname(os.path.abspath(out_path)), exist_ok=True)
 
     real_stdout = sys.stdout
     sys.stdout = sys.stderr  # keep library chatter off the JSON channel
@@ -89,7 +93,8 @@ def main():
             if k < len(sentences) - 1:
                 add(silence(GAP_SENTENCE))
         nxt = next((n for n in items[idx + 1:] if n.get("sentences")), None)
-        add(silence(GAP_HEADING if nxt is not None and is_heading(nxt) else GAP_PARAGRAPH))
+        if nxt is not None:
+            add(silence(GAP_HEADING if is_heading(nxt) else GAP_PARAGRAPH))
 
     if failed:
         real_stdout.write(json.dumps({"ok": False, "failed": failed}) + "\n")
@@ -103,7 +108,12 @@ def main():
         sf.write(tmp, wav, SR)
         if os.path.exists(out_path):
             os.remove(out_path)
-        subprocess.run(["afconvert", "-f", "m4af", "-d", "aac", "-b", "64000", tmp, out_path], check=True)
+        try:
+            subprocess.run(["afconvert", "-f", "m4af", "-d", "aac", "-b", "64000", tmp, out_path], check=True, stdout=sys.stderr)
+        except Exception:
+            if os.path.exists(out_path):
+                os.remove(out_path)
+            raise
     finally:
         os.remove(tmp)
 
