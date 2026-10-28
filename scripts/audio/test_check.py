@@ -28,3 +28,5 @@ def test_thousands(): assert match_score("It cost 250 thousand dollars a year.",
 def test_homophones(): assert match_score("Hire, buy, amortise. Care about variance.", "Hire by amortize. Care about variants.") == 1.0
 def test_run_together(): assert match_score("Why high Grit? An outcome-focused team.", "Why Hygrit? An outcome focus team.") == 1.0
 def test_artefact_and_theyre(): assert match_score("They're a survey artefact.", "their a survey artifact.") == 1.0
+def test_gaap_serious(): assert match_score("faster than GAAP. The way serious operations function.", "faster than GAP. The way Sirius operations function.") == 1.0
+def test_respelt_word(): assert match_score("The ab-straction layer.", "The abstraction layer.") == 1.0
