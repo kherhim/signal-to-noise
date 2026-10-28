@@ -31,3 +31,4 @@ def test_artefact_and_theyre(): assert match_score("They're a survey artefact.",
 def test_gaap_serious(): assert match_score("faster than GAAP. The way serious operations function.", "faster than GAP. The way Sirius operations function.") == 1.0
 def test_respelt_word(): assert match_score("The ab-straction layer.", "The abstraction layer.") == 1.0
 def test_offence(): assert match_score("The fortress is o-fence, not just defence. Pause 11 roles on why", "The fortress is offense, not just defense. Pause 11 rolls on Y.") == 1.0
+def test_possessive(): assert match_score("Buffett's \"night's sleep\" test is the bar.", "Buffett's night sleep test is the bar.") == 1.0
