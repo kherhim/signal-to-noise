@@ -33,3 +33,4 @@ def test_respelt_word(): assert match_score("The ab-straction layer.", "The abst
 def test_offence(): assert match_score("The fortress is o-fence, not just defence. Pause 11 roles on why", "The fortress is offense, not just defense. Pause 11 rolls on Y.") == 1.0
 def test_possessive(): assert match_score("Buffett's \"night's sleep\" test is the bar.", "Buffett's night sleep test is the bar.") == 1.0
 def test_what_ifs(): assert match_score("Scenario planning (remember what if's?)", "Scenario planning, remember what ifs.") == 1.0
+def test_slideware(): assert match_score("Neat slideware on one side.", "Neat slide wear on one side.") == 1.0
