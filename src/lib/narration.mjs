@@ -50,6 +50,8 @@ export function spokenForm(text, pron = {}) {
   t = t.replace(/(\d)pp\b/g, '$1 percentage points');
   t = t.replace(/(^|[\s(“"])[−-](?=\d)/g, '$1minus ').replace(/(^|[\s(“"])\+(?=\d)/g, '$1plus ');
   t = t.replace(/\s=\s/g, ' equals ');
+  t = t.replace(/\s*[→⟶➔]\s*/g, ' to ');
+  t = t.replace(/\be\.g\.(?=[\s,])/gi, 'for example').replace(/\bi\.e\.(?=[\s,])/gi, 'that is');
   t = t.replace(/\b([A-Z]{1,3})&([A-Z]{1,3})\b/g, '$1 and $2').replace(/&/g, 'and'); // S&P, FP&A, M&A
   t = t.replace(/~/g, 'about ');
   t = t.replace(/\b(\d+(?:\.\d+)?)x\b/g, '$1 times');

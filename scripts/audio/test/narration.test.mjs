@@ -81,5 +81,6 @@ test('emoji dropped, keycaps become numbers, vs. read as versus', () => {
   assert.equal(spokenForm('Capex and capex', { Capex: 'Cap-ex', capex: 'cap-ex' }), 'Cap-ex and cap-ex');
   assert.equal(spokenForm('conv −1.5pp, delivery +1.2 days; Left = 3'), 'conv minus 1.5 percentage points, delivery plus 1.2 days; Left equals 3');
   assert.equal(spokenForm('a cost-cutting 3-4 plan'), 'a cost-cutting 3-4 plan');
+  assert.equal(spokenForm('markers (e.g., spend → pipeline), i.e. later'), 'markers (for example, spend to pipeline), that is later');
   assert.equal(spokenForm('Quarterly forecasts vs. Life'), 'Quarterly forecasts versus Life');
 });
