@@ -25,3 +25,4 @@ def test_behavioural(): assert match_score("a form of behavioural engineering", 
 def test_source_typos(): assert match_score("This artcile is targetted towards juniour staff", "This article is targeted towards junior staff.") == 1.0
 def test_real_word_misread_still_fails(): assert match_score("consumer banking", "consumer baking") < 0.85
 def test_thousands(): assert match_score("It cost 250 thousand dollars a year.", "It cost $250,000 a year.") >= 0.85
+def test_homophones(): assert match_score("Hire, buy, amortise. Care about variance.", "Hire by amortize. Care about variants.") == 1.0

@@ -76,5 +76,7 @@ test('emoji dropped, keycaps become numbers, vs. read as versus', () => {
   assert.equal(spokenForm('junior FP&A teams, M&A and P&L'), 'junior FP and A teams, M and A and P and L');
   assert.equal(spokenForm('$250k a year, $2tn and £3m'), '250 thousand dollars a year, 2 trillion dollars and 3 million pounds');
   assert.deepEqual(splitSentences('2. Methodology: it varies. Then 3 more.'), ['2. Methodology: it varies.', 'Then 3 more.']);
+  assert.deepEqual(splitSentences('In 1965, I. J. Good wrote a line. It stuck.'), ['In 1965, I. J. Good wrote a line.', 'It stuck.']);
+  assert.deepEqual(splitSentences('We chose plan B. Then it rained.'), ['We chose plan B.', 'Then it rained.']);
   assert.equal(spokenForm('Quarterly forecasts vs. Life'), 'Quarterly forecasts versus Life');
 });
