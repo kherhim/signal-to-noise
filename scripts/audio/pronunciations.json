@@ -1,3 +1,6 @@
 {
-  "GDPval": "GDP val"
+  "GDPval": "GDP val",
+  "Capex": "Cap-ex",
+  "capex": "cap-ex",
+  "CAPEX": "cap-ex"
 }

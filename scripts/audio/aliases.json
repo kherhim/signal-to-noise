@@ -11,5 +11,9 @@
   "by": "buy",
   "variants": "variance",
   "hygrit": "highgrit",
-  "focus": "focused"
+  "focus": "focused",
+  "artefact": "artifact",
+  "artefacts": "artifacts",
+  "their": "theyre",
+  "there": "theyre"
 }
