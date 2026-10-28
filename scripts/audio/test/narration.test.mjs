@@ -79,5 +79,7 @@ test('emoji dropped, keycaps become numbers, vs. read as versus', () => {
   assert.deepEqual(splitSentences('In 1965, I. J. Good wrote a line. It stuck.'), ['In 1965, I. J. Good wrote a line.', 'It stuck.']);
   assert.deepEqual(splitSentences('We chose plan B. Then it rained.'), ['We chose plan B.', 'Then it rained.']);
   assert.equal(spokenForm('Capex and capex', { Capex: 'Cap-ex', capex: 'cap-ex' }), 'Cap-ex and cap-ex');
+  assert.equal(spokenForm('conv −1.5pp, delivery +1.2 days; Left = 3'), 'conv minus 1.5 percentage points, delivery plus 1.2 days; Left equals 3');
+  assert.equal(spokenForm('a cost-cutting 3-4 plan'), 'a cost-cutting 3-4 plan');
   assert.equal(spokenForm('Quarterly forecasts vs. Life'), 'Quarterly forecasts versus Life');
 });

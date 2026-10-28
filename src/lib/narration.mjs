@@ -47,6 +47,9 @@ export function spokenForm(text, pron = {}) {
   t = t.replace(new RegExp(String.raw`([$£€])(${NUM})`, 'g'), (_, c, n) => `${n} ${CURRENCY[c]}`);
   t = t.replace(/(\d)\s*–\s*(\d)/g, '$1 to $2');
   t = t.replace(/%/g, ' per cent');
+  t = t.replace(/(\d)pp\b/g, '$1 percentage points');
+  t = t.replace(/(^|[\s(“"])[−-](?=\d)/g, '$1minus ').replace(/(^|[\s(“"])\+(?=\d)/g, '$1plus ');
+  t = t.replace(/\s=\s/g, ' equals ');
   t = t.replace(/\b([A-Z]{1,3})&([A-Z]{1,3})\b/g, '$1 and $2').replace(/&/g, 'and'); // S&P, FP&A, M&A
   t = t.replace(/~/g, 'about ');
   t = t.replace(/\b(\d+(?:\.\d+)?)x\b/g, '$1 times');
