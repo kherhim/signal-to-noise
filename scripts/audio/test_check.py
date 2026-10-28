@@ -26,3 +26,4 @@ def test_source_typos(): assert match_score("This artcile is targetted towards j
 def test_real_word_misread_still_fails(): assert match_score("consumer banking", "consumer baking") < 0.85
 def test_thousands(): assert match_score("It cost 250 thousand dollars a year.", "It cost $250,000 a year.") >= 0.85
 def test_homophones(): assert match_score("Hire, buy, amortise. Care about variance.", "Hire by amortize. Care about variants.") == 1.0
+def test_run_together(): assert match_score("Why high Grit? An outcome-focused team.", "Why Hygrit? An outcome focus team.") == 1.0
