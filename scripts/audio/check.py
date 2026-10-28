@@ -128,6 +128,7 @@ def normalise(text: str) -> list[str]:
     # Script says "250 thousand"; Whisper writes "$250,000" or "250k". All become 250000.
     t = re.sub(r"\b(\d+)(?: thousand|k)\b", lambda m: str(int(m.group(1)) * 1000), t)
     t = re.sub(r"[-‐-―]", " ", t)    # thirty-one -> thirty one
+    t = re.sub(r"(?<=[a-z])['’]s\b", "", t)  # possessive: night's -> night (Whisper often drops it)
     t = re.sub(r"(?<=[a-z])['’](?=[a-z])", "", t)  # they're -> theyre, one word on both sides
     t = re.sub(r"[^a-z0-9.\s]", " ", t)
     t = re.sub(r"(?<!\d)\.|\.(?!\d)", " ", t)  # drop full stops, keep decimals
