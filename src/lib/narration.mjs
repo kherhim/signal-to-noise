@@ -114,6 +114,8 @@ export function splitSentences(text) {
       if (word === 'c' && isToken && /^\s+\d/.test(text.slice(m.index + m[0].length))) continue;
       if (/(^|[^A-Za-z])[A-Za-z]\.[A-Za-z]$/.test(before)) continue; // U.S., J.K., e.g., i.e.
       if (/^\s*\d{1,2}$/.test(before)) continue; // list number: 2. Methodology
+      const after = text.slice(m.index + m[0].length);
+      if (/(^|\s)[A-Z]$/.test(before) && (/^\s+[A-Z]\./.test(after) || /[A-Z]\.\s+[A-Z]$/.test(before))) continue; // initials: I. J. Good
     }
     const end = m.index + m[0].length;
     out.push(text.slice(start, end).trim());
