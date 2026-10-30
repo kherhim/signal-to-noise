@@ -29,6 +29,8 @@ const clean = (t: string) => t.replace(/^📌\s*/u, '');
 )}
 
 <style>
+  /* A grid item defaults to min-width:auto, so six 220px cards stretched the rail past the section. */
+  .rail { min-width: 0; }
   .head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
   .head h2 { font-size: 22px; font-weight: 600; letter-spacing: -.01em; color: var(--color-fg); display: flex; align-items: center; gap: 10px; }
   .head h2 i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
