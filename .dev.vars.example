@@ -1,0 +1,5 @@
+# Copy to .dev.vars (gitignored) for `npx wrangler dev` only.
+# Production values are Worker secrets, not this file and not .env.
+# See README → Newsletter signup (Beehiiv).
+BEEHIIV_API_KEY=
+BEEHIIV_PUBLICATION_ID=

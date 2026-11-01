@@ -5,7 +5,7 @@ import SubscribeForm from '../components/SubscribeForm.astro';
 
 <BaseLayout
   title="Subscribe — signal-to-noise.co"
-  description="You can receive new Signal to Noise essays via the LinkedIn newsletter or subscribe to the RSS feed. Field notes on finance, AI, and capital strategy from a working CFO. No cadence, no noise."
+  description="One essay a week, on Wednesdays. Field notes on finance, AI, and capital strategy from a working CFO. Subscribe by email, or read it on LinkedIn or RSS."
 >
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
     <header class="mb-12">
@@ -17,20 +17,11 @@ import SubscribeForm from '../components/SubscribeForm.astro';
 
     <div class="space-y-8 text-lg text-fg leading-relaxed">
       <p>
-        New essays every couple of weeks — field notes on finance, AI, and
-        capital strategy from a working CFO. They appear in the
-        Signal to Noise newsletter on LinkedIn.
+        Field notes on finance, AI, and capital strategy from a working CFO.
+        One new essay every Wednesday.
       </p>
 
-      <SubscribeForm framed={false} />
-
-      <p class="text-muted pt-8 border-t border-divider text-base">
-        Prefer a feed reader? The full-text RSS feed lives at
-        <a
-          href="/rss.xml"
-          class="text-accent hover:text-accent-hover transition-colors"
-        >/rss.xml</a>.
-      </p>
+      <SubscribeForm location="subscribe-page" framed={false} />
     </div>
   </article>
 </BaseLayout>
