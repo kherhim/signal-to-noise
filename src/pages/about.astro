@@ -1,10 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { AUTHOR, SITE_URL, WEBSITE } from '../lib/schema';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  url: `${SITE_URL}/about/`,
+  isPartOf: { '@id': WEBSITE['@id'] },
+  mainEntity: AUTHOR,
+};
 ---
 
 <BaseLayout
   title="About Himanshu Kher — CFO, strategist, and writer on finance & AI"
   description="Himanshu Kher: 25+ years in finance and strategy across trading, fintech, and digital assets — IG Group, Barclays IB, BNP Paribas, BCG, and Nomura Securities. Now writing on the CFO function, AI, and capital strategy at signal-to-noise.co."
+  jsonLd={jsonLd}
 >
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
     <header class="mb-12 grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-8 sm:gap-10 items-center">

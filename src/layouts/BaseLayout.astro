@@ -4,6 +4,7 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SpaceBackground from '../components/SpaceBackground.astro';
+import { ogImagePath, serialiseJsonLd } from '../lib/schema';
 
 interface Props {
   title: string;
@@ -23,6 +24,8 @@ interface Props {
   /* LCP: preload the page's hero/cover image so the fetch starts with the
      head instead of waiting for body parse. Post pages pass their cover. */
   preloadImage?: string;
+  /* schema.org structured data; each object becomes its own ld+json block. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -34,19 +37,14 @@ const {
   heroClear = false,
   starsDim = false,
   preloadImage,
+  jsonLd,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-/* Crawlers get the JPEG twin from /og/, not the on-page WebP: LinkedIn's
-   preview crawler does not reliably render WebP, which leaves a shared
-   post as a bare link with no card. scripts/make-og-images.mjs generates
-   these. Pages with no cover of their own fall back to the default card
-   rather than sharing blank. */
-const ogImagePath = ogImage
-  ? ogImage.replace(/^\/img\//, '/og/').replace(/\.webp$/, '.jpg')
-  : '/og/default.jpg';
-const ogImageURL = new URL(ogImagePath, Astro.url);
+/* JPEG twin of the cover for crawlers; see ogImagePath in lib/schema. */
+const ogImageURL = new URL(ogImagePath(ogImage), Astro.url);
+const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
 <!doctype html>
@@ -83,6 +81,11 @@ const ogImageURL = new URL(ogImagePath, Astro.url);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL.toString()} />
+
+    {/* Structured data */}
+    {jsonLdBlocks.map((obj) => (
+      <script type="application/ld+json" is:inline set:html={serialiseJsonLd(obj)} />
+    ))}
 
     {/* RSS */}
     <link rel="alternate" type="application/rss+xml" title="signal-to-noise" href="/rss.xml" />

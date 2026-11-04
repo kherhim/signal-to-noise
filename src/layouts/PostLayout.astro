@@ -5,6 +5,7 @@ import ShareLinks from '../components/ShareLinks.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
 import AnimatedCover from '../components/AnimatedCover.astro';
 import EssayAudio from '../components/EssayAudio.astro';
+import { AUTHOR, SITE_URL, WEBSITE, ogImagePath } from '../lib/schema';
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
@@ -28,6 +29,8 @@ interface Props {
   seriesKicker?: string;
   seriesKickerHref?: string;
   seriesParts?: { href: string; label: string; part: number }[];
+  /* Series children only: the series this part belongs to, for JSON-LD. */
+  series?: { name: string; href?: string };
   /* Related insights — 2-3 posts sharing tags with this one, rendered
      at the article end. Computed at the page level. */
   related?: { href: string; title: string; excerpt: string; date: Date }[];
@@ -47,6 +50,7 @@ const {
   seriesKicker,
   seriesKickerHref,
   seriesParts,
+  series,
   related = [],
   audio = null,
 } = Astro.props;
@@ -59,6 +63,43 @@ const formatted = date.toLocaleDateString('en-GB', {
   month: 'long',
   year: 'numeric',
 });
+
+/* JSON-LD: the essay as a BlogPosting by the site's Person, plus a
+   Home → Insights → essay breadcrumb. */
+const dateModified = date;
+const isPartOf: Record<string, unknown>[] = [{ '@id': WEBSITE['@id'] }];
+if (series) {
+  isPartOf.push({
+    '@type': 'CreativeWorkSeries',
+    name: series.name,
+    ...(series.href ? { url: new URL(series.href, SITE_URL).toString() } : {}),
+  });
+}
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description: seoDescription ?? excerpt,
+    datePublished: date.toISOString(),
+    dateModified: dateModified.toISOString(),
+    author: { '@id': AUTHOR['@id'] },
+    publisher: { '@id': AUTHOR['@id'] },
+    image: new URL(ogImagePath(coverImage), SITE_URL).toString(),
+    mainEntityOfPage: canonicalUrl,
+    ...(tags.length > 0 ? { keywords: tags.join(', ') } : {}),
+    isPartOf: isPartOf.length === 1 ? isPartOf[0] : isPartOf,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+      { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_URL}/insights/` },
+      { '@type': 'ListItem', position: 3, name: title, item: canonicalUrl },
+    ],
+  },
+];
 ---
 
 <BaseLayout
@@ -68,6 +109,7 @@ const formatted = date.toLocaleDateString('en-GB', {
   ogType="article"
   starsDim
   preloadImage={coverAnimation ? undefined : coverImage}
+  jsonLd={jsonLd}
 >
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
     {coverAnimation ? (
