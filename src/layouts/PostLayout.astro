@@ -76,7 +76,7 @@ if (series) {
   isPartOf.push({
     '@type': 'CreativeWorkSeries',
     name: series.name,
-    ...(series.href ? { url: new URL(series.href, SITE_URL).toString() } : {}),
+    ...(series.href ? { url: new URL(series.href.replace(/\/?$/, '/'), SITE_URL).toString() } : {}),
   });
 }
 const jsonLd = [
