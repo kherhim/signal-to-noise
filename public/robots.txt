@@ -1,4 +1,25 @@
+# Everyone may crawl everything. The named AI crawlers below are already
+# covered by the * rule; they are listed so the policy is explicit:
+# signal-to-noise.co wants to be read, cited and linked by AI assistants.
+# Cloudflare's edge settings (AI Crawl Control, Bot Fight Mode, managed
+# robots.txt) can override this file; see infra/cloudflare-waf-rules.md.
+
 User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://signal-to-noise.co/sitemap-index.xml
