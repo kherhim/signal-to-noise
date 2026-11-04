@@ -9,6 +9,7 @@ series:
   part: 4
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/4-cross-functional-trust-superpower-himanshu-kher-uusuf"
+seoDescription: "Cross-functional trust and organisational speed: why companies scale on trust between functions rather than tools, and what the cost of mistrust looks like."
 ---
 
 The fastest scaling companies I've known aren’t the ones with the most talent. They’re the ones where functions genuinely trust each other.

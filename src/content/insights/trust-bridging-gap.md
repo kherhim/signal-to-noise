@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/trust-bridging-gap-himanshu-kher-hjtb
 coverImage: /img/trust-bridging-gap.webp
 coverImageAlt: "Against a near-black background, a cream fine line extends level across the upper half: what is said. From far beneath its left end an ash fine line, what is done, climbs on a long diagonal to meet it at a single filled cream circle three-quarters of the way across. Nothing is placed between them. The lower rule reads 'GAP, CLOSED'."
 coverAnimation: trust-bridging-gap
+seoDescription: "Building trust in the workplace: the trust equation of credibility, reliability, intimacy and self-orientation, and why gaps between words and actions erode it."
 ---
 
 Trust is the foundation of any meaningful relationship, whether personal or professional. In the workplace, it is the glue that binds teams together, fosters collaboration, and drives organizational success. However, trust is fragile and can be easily broken if there is a significant gap between what is said and what is done. This gap is often the most critical factor in determining whether trust is built or eroded.

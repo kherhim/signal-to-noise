@@ -9,6 +9,7 @@ series:
   part: 10
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/10-scaling-stopping-adding-himanshu-kher-euaue"
+seoDescription: "How to scale a company: why growth demands stopping pet projects, outdated processes and purposeless meetings, and why leaders win by choosing what not to do."
 ---
 
 When companies grow, the instinct is to do more: More projects. More hires. More initiatives.
