@@ -14,6 +14,8 @@ interface AudioData { voice: string; engine: string; hash: string; file: string;
 interface Props {
   title: string;
   date: Date;
+  /* Substantive revision date; shown and used for dateModified when later than date. */
+  updated?: Date;
   excerpt: string;
   /* Search-intent meta description; falls back to excerpt when absent. */
   seoDescription?: string;
@@ -41,6 +43,7 @@ interface Props {
 const {
   title,
   date,
+  updated,
   excerpt,
   seoDescription,
   tags = [],
@@ -66,7 +69,8 @@ const formatted = date.toLocaleDateString('en-GB', {
 
 /* JSON-LD: the essay as a BlogPosting by the site's Person, plus a
    Home → Insights → essay breadcrumb. */
-const dateModified = date;
+const revised = updated && updated.getTime() > date.getTime() ? updated : undefined;
+const dateModified = revised ?? date;
 const isPartOf: Record<string, unknown>[] = [{ '@id': WEBSITE['@id'] }];
 if (series) {
   isPartOf.push({
@@ -148,9 +152,15 @@ const jsonLd = [
         </p>
       )}
 
-      <time data-pagefind-ignore class="text-sm text-muted block mb-3" datetime={date.toISOString()}>
-        {formatted}
-      </time>
+      <p data-pagefind-ignore class="text-sm text-muted mb-3">
+        <time datetime={date.toISOString()}>{formatted}</time>
+        {revised && (
+          <>
+            <span aria-hidden="true"> · </span>
+            <span>Updated <time datetime={revised.toISOString()}>{fmt(revised)}</time></span>
+          </>
+        )}
+      </p>
       <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg">
         {title}
       </h1>

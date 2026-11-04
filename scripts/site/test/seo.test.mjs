@@ -63,3 +63,10 @@ test('llms.txt lists every published essay', { skip: !built && 'no dist/ build' 
   assert.equal(links.length, publishedCount());
   assert.equal(new Set(links.map((l) => l.match(/\((.+?)\)/)[1])).size, links.length, 'duplicate essay');
 });
+
+test('sitemap gives every essay a lastmod', { skip: !built && 'no dist/ build' }, () => {
+  const xml = fs.readFileSync(new URL('sitemap-0.xml', DIST), 'utf8');
+  const essays = [...xml.matchAll(/<url><loc>https:\/\/signal-to-noise\.co\/insights\/(?!tag\/)[^<]+\/<\/loc>(<lastmod>[^<]+<\/lastmod>)?/g)];
+  assert.equal(essays.length, publishedCount());
+  assert.ok(essays.every((m) => m[1]), 'essay without lastmod');
+});
