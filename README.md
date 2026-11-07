@@ -42,7 +42,9 @@ always publishes first.
 > **Beehiiv detour (June 2026) — reverted.** Email briefly moved to Beehiiv for
 > its Role/Company custom fields, then moved back to Substack on 2026-07-02
 > (commit `e069071`) before any subscribers accumulated there. The Beehiiv
-> account is dead; if you see Beehiiv referenced anywhere, it's stale.
+> account is dead; if you see Beehiiv referenced anywhere, it's stale. A second
+> attempt (a Beehiiv signup form behind a Cloudflare Worker, PR #45, Nov
+> 2026) was removed before it went live; the code is in git history.
 
 ### 1. Site (canonical) — first, always
 
