@@ -4,7 +4,7 @@
 |---|---|---|---|
 | The verification premium | metered cognition | | published 2026-09-16 |
 | Alignment is a capital-allocation problem | CFO mandate | | held |
-| The broken rung | metered cognition | | briefed |
+| The broken rung | metered cognition | | killed 2026-10-24 (owner: not great) |
 | Buffett on moats when cognition is a commodity | Buffett | | published 2026-10-07 |
 | The invisible balance sheet | metered cognition | | queued |
 | Two banks, one start line | capital allocation | JPMorgan / Citi Q3 results, mid-October 2026 | pen |
