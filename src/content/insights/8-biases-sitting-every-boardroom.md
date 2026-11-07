@@ -9,6 +9,7 @@ series:
   part: 8
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/8-biases-sitting-every-boardroom-himanshu-kher-av2nf"
+seoDescription: "Cognitive bias in boardroom decisions: optimism bias, anchoring and loss aversion, and why bias detection is part of the CFO's value to the leadership team."
 ---
 
 Even the smartest leaders fall prey to predictable biases. I've seen them often.

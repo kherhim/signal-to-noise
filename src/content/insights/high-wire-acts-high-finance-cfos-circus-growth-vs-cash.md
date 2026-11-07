@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/high-wire-acts-high-finance-cfos-circ
 coverImage: /img/high-wire-acts-high-finance-cfos-circus-growth-vs-cash.webp
 coverImageAlt: "Against a near-black background, a long level cream beam is pivoted on a small solid circle at its centre, like a balance at rest. At the left end is placed a filled cream circle, cash in hand; at the right end a larger outline-drawn circle, growth still hollow. The lower rule reads 'GROWTH, SOLVENT'."
 coverAnimation: high-wire-acts-high-finance-cfos-circus-growth-vs-cash
+seoDescription: "Balancing growth and cash flow: how CFOs weigh expansion against free cash flow and liquidity under uncertainty, and the role of agility and technology."
 ---
 
 As CFOs, we are often likened to navigators steering through the treacherous waters of corporate finance, where the twin beacons of growth and cash flow guide our journey. The pursuit of growth is a testament to a company’s vitality and ambition, yet it must be tempered by the prudent management of cash flow to ensure ongoing operations and financial health. This delicate balance poses a challenge that is as much an art as it is a science.

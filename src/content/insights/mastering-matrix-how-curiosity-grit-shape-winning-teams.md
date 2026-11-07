@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/mastering-matrix-how-curiosity-grit-s
 coverImage: /img/mastering-matrix-how-curiosity-grit-shape-winning-teams.webp
 coverImageAlt: "Against a near-black background, two ash fine lines cross in the centre, short ticks along each axis, making four quadrants. One circle is placed in each: at upper right filled cream and largest, top-left outline-drawn, bottom-right outline-drawn and smaller, at lower left dashed. Nothing names the axes. The lower rule reads 'TRAITS, DURABLE'."
 coverAnimation: mastering-matrix-how-curiosity-grit-shape-winning-teams
+seoDescription: "Building high-performing teams: a curiosity and grit matrix with four quadrants, why traits matter more than skills, and how leaders can cultivate both."
 ---
 
 * * *

@@ -72,6 +72,7 @@ if (post.data.series) {
 <PostLayout
   title={post.data.title}
   date={post.data.date}
+  updated={post.data.updated}
   excerpt={post.data.excerpt}
   seoDescription={post.data.seoDescription}
   tags={post.data.tags}
@@ -82,6 +83,7 @@ if (post.data.series) {
   seriesKicker={seriesKicker}
   seriesKickerHref={seriesKickerHref}
   seriesParts={seriesParts}
+  series={post.data.series?.part !== undefined ? { name: post.data.series.name, href: seriesKickerHref } : undefined}
   related={related.map((p) => ({
     href: `/insights/${p.id}`,
     title: p.data.title,

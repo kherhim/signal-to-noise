@@ -11,6 +11,7 @@ sourceUrl: "https://www.linkedin.com/pulse/leadership-lessons-i-wish-knew-earlie
 coverImage: /img/leadership-lessons-i-wish-knew-earlier.webp
 coverImageAlt: "Against a near-black background, ten filled cream circles sit in a horizontal row across the middle, and above each hangs a faint dashed ash ring, the ghost of the lesson before it was learned. A thin cream vertical fine line is positioned just to the right of the tenth circle. The lower rule reads 'LESSONS, LIVED'."
 coverAnimation: leadership-lessons-i-wish-knew-earlier
+seoDescription: "Leadership lessons for CFOs and executives: an introduction to a ten-part series on trade-offs, culture, trust, KPIs, crisis, bias, resilience and scaling."
 ---
 
 Over the last 25 years in finance - more recently as CFO - one thing has become clear to me:

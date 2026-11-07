@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/freud-finance-folly-cfos-perspective-
 coverImage: /img/freud-finance-folly-cfos-perspective.webp
 coverImageAlt: "Against a near-black background, a fine grey fine line crosses the upper third like a waterline. Above it floats a small outline-drawn cream circle, the decision as stated; beneath it a far larger solid ash circle, the motive, its crown almost touching the line. The lower rule reads 'MOTIVE, SUBMERGED'."
 coverAnimation: freud-finance-folly-cfos-perspective
+seoDescription: "Behavioural finance and the unconscious mind: what Freud's id, ego and superego reveal about impulsive financial decisions, and how CFOs can account for them."
 ---
 
 ### Introduction

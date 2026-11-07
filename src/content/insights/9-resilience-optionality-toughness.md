@@ -9,6 +9,7 @@ series:
   part: 9
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/9-resilience-optionality-toughness-himanshu-kher-ppwre"
+seoDescription: "Building business resilience: why it comes from optionality such as cash buffers, a flexible cost base and talent depth, built well before you need it."
 ---
 
 Resilience is often misunderstood as stubbornness or endurance.

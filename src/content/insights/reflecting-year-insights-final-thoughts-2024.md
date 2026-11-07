@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/reflecting-year-insights-final-though
 coverImage: /img/reflecting-year-insights-final-thoughts-2024.webp
 coverImageAlt: "Against a near-black background, a large outline-drawn cream ring is placed centred. Twelve small filled cream circles are spaced evenly around its rim like the hours of a clock. From each, a pale ash fine line extends inward to one filled cream circle in the centre, larger than any on the rim. The lower rule reads 'INSIGHT, COMPOUNDED'."
 coverAnimation: reflecting-year-insights-final-thoughts-2024
+seoDescription: "Lessons for finance leaders from 2024: a CFO's review of a year of essays on uncertainty, AI in finance, leadership, trust, resilience and continuous learning."
 ---
 
 As we approach the close of 2024, I find myself revisiting the series of articles I’ve shared here on LinkedIn over the past twelve months. When I began posting about a year ago, my intent was simple: to engage more openly with the finance and business community, to exchange insights, and to foster a dialogue around the challenges and opportunities reshaping our world. What I didn’t fully anticipate was how this process of writing and reflecting—on everything from macroeconomic shifts to the transformative power of AI, from the nuances of leadership to the human values underpinning our decisions—would also deepen my own perspective and practice.

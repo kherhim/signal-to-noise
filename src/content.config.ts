@@ -10,6 +10,11 @@ const insights = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    // Set only for a substantive revision (a changed argument, new figures,
+    // a corrected claim), not for typo fixes or cover swaps. Shown as
+    // "Updated <date>" on the essay, and used for the JSON-LD dateModified
+    // and the sitemap lastmod.
+    updated: z.coerce.date().optional(),
     excerpt: z.string(),
     // Optional search-intent meta description. When present it replaces the
     // excerpt in <meta name="description"> / og:description only — the

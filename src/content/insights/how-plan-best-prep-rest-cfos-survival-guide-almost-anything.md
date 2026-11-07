@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/how-plan-best-prep-rest-cfos-survival
 coverImage: /img/how-plan-best-prep-rest-cfos-survival-guide-almost-anything.webp
 coverImageAlt: "Against a near-black background, a filled cream dot is placed low-left on a ticked baseline and a dashed circle floats high-right. Between them a fan of nine fine lines spreads from the dot; most sag or wander off, while one climbs steadily and reaches the dashed circle. The lower rule reads 'FAITH, CLEAR-EYED'."
 coverAnimation: how-plan-best-prep-rest-cfos-survival-guide-almost-anything
+seoDescription: "The Stockdale Paradox for CFOs: how to combine faith in eventual success with confronting brutal facts, and how finance leaders can apply it under uncertainty."
 ---
 
 ### Introduction to the Stockdale paradox

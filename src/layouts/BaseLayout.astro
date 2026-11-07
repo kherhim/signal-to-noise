@@ -4,9 +4,13 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SpaceBackground from '../components/SpaceBackground.astro';
+import { ogImagePath, serialiseJsonLd } from '../lib/schema';
 
 interface Props {
   title: string;
+  /* og:title / twitter:title; defaults to title. Social cards already
+     show the domain, so essays pass the bare essay title. */
+  socialTitle?: string;
   description?: string;
   ogImage?: string;
   /* 'article' on post pages, 'website' everywhere else. */
@@ -23,10 +27,13 @@ interface Props {
   /* LCP: preload the page's hero/cover image so the fetch starts with the
      head instead of waiting for body parse. Post pages pass their cover. */
   preloadImage?: string;
+  /* schema.org structured data; each object becomes its own ld+json block. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title,
+  socialTitle = title,
   description = 'Pragmatic essays on finance, AI, and capital strategy from a CFO with 25+ years in the field. Signal, not noise.',
   ogImage,
   ogType = 'website',
@@ -34,19 +41,14 @@ const {
   heroClear = false,
   starsDim = false,
   preloadImage,
+  jsonLd,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-/* Crawlers get the JPEG twin from /og/, not the on-page WebP: LinkedIn's
-   preview crawler does not reliably render WebP, which leaves a shared
-   post as a bare link with no card. scripts/make-og-images.mjs generates
-   these. Pages with no cover of their own fall back to the default card
-   rather than sharing blank. */
-const ogImagePath = ogImage
-  ? ogImage.replace(/^\/img\//, '/og/').replace(/\.webp$/, '.jpg')
-  : '/og/default.jpg';
-const ogImageURL = new URL(ogImagePath, Astro.url);
+/* JPEG twin of the cover for crawlers; see ogImagePath in lib/schema. */
+const ogImageURL = new URL(ogImagePath(ogImage), Astro.url);
+const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
 <!doctype html>
@@ -72,7 +74,7 @@ const ogImageURL = new URL(ogImagePath, Astro.url);
     {/* Open Graph */}
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={socialTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL.toString()} />
     <meta property="og:image:width" content="1200" />
@@ -80,9 +82,14 @@ const ogImageURL = new URL(ogImagePath, Astro.url);
 
     {/* Twitter */}
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={socialTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL.toString()} />
+
+    {/* Structured data */}
+    {jsonLdBlocks.map((obj) => (
+      <script type="application/ld+json" is:inline set:html={serialiseJsonLd(obj)} />
+    ))}
 
     {/* RSS */}
     <link rel="alternate" type="application/rss+xml" title="signal-to-noise" href="/rss.xml" />

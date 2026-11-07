@@ -27,3 +27,22 @@ Verified after deploy: `/`, sitemap, robots, essays and `_astro` assets → 200;
 If a legitimate URL ever needs one of these substrings, edit the rule rather than
 disabling it. Bot Fight Mode deliberately NOT enabled: it cannot be scoped on the
 free plan and would challenge deploy.sh's curl checks.
+
+## AI crawlers — not blocked here; check the dashboard
+
+`public/robots.txt` explicitly allows GPTBot, ClaudeBot, PerplexityBot,
+Google-Extended and Applebot-Extended (Nov 2026). The site wants to be read
+and cited by AI assistants. None of the custom rules above match crawler
+user agents, but robots.txt has no effect if Cloudflare blocks these bots at
+the edge. Confirm, in the dashboard:
+
+- **AI Crawl Control** (formerly AI Audit): each crawler above is *Allow*,
+  not *Block*.
+- **Security → Bots**: "Block AI bots" / "Block AI Scrapers and Crawlers" is
+  off, and Bot Fight Mode stays off (see above).
+- **Managed robots.txt** is off, or it will prepend Disallow rules for AI
+  crawlers to the file the origin serves.
+
+Quick check: `curl -A "GPTBot/1.1" -I https://signal-to-noise.co/` should
+return 200, not 403, and `curl https://signal-to-noise.co/robots.txt` should
+match `public/robots.txt`.

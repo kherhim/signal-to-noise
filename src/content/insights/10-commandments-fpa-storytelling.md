@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/10-commandments-fpa-storytelling-hima
 coverImage: /img/10-commandments-fpa-storytelling.webp
 coverImageAlt: "Against a near-black background, one filled cream circle is placed in the centre, slightly above the midline, surrounded by the pale ash ghost of a twelve-by-twelve grid of tiny squares. The cells nearest the circle have gone entirely; the rings grow only faintly more present towards the edge. The lower rule reads 'STORY, DISTILLED'."
 coverAnimation: 10-commandments-fpa-storytelling
+seoDescription: "FP&A storytelling for finance teams: ten commandments for presenting numbers, from knowing your audience and leading with the so-what to ending on a decision."
 ---
 
 In November 2023, I had posted an [article](/insights/enhancing-financial-data-storytelling-cfos-cheat-sheet) about a storytelling cheat sheet for CFOs. This artcile is a continuation of that post, but targetted towards juniour FP&A professionals working hard to make a difference. It is a distillation of past experiences in consulting, and working in Finance over a decade.

@@ -6,6 +6,7 @@ import SubscribeForm from '../components/SubscribeForm.astro';
 import TrackerStrip from '../components/home/TrackerStrip.astro';
 import ThemeRail from '../components/home/ThemeRail.astro';
 import { homepagePlan, themeOf } from '../lib/themes.mjs';
+import { AUTHOR, WEBSITE } from '../lib/schema';
 
 // In dev, show drafts so you can preview them; in prod, drafts stay hidden.
 const allInsights = (await getCollection(
@@ -55,6 +56,10 @@ const points = [plan.lead, ...homepageCandidates.filter((p) => p.id !== plan.lea
 <BaseLayout
   title="Signal to Noise — Finance, AI, and Capital Strategy by Himanshu Kher"
   description="Pragmatic essays on finance, AI, and capital strategy from a CFO with 25+ years in the field. Signal, not noise."
+  jsonLd={[
+    { '@context': 'https://schema.org', ...WEBSITE },
+    { '@context': 'https://schema.org', ...AUTHOR },
+  ]}
 >
   <HomeHero lead={{ href: href(plan.lead), title: plan.lead.data.title, excerpt: plan.lead.data.excerpt, date: plan.lead.data.date }} points={points} />
 

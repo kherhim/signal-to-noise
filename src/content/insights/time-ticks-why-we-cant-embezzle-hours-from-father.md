@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/time-ticks-why-we-cant-embezzle-hours
 coverImage: /img/time-ticks-why-we-cant-embezzle-hours-from-father.webp
 coverImageAlt: "Against a near-black background, a ruler of thin ticks extends the full width at mid-height, a taller tick every fifth. A single filled cream circle is placed on the centre tick; every tick to its left is dull ash, every tick to its right is bright cream. The lower rule reads 'TIME, IRREVERSIBLE'."
 coverAnimation: time-ticks-why-we-cant-embezzle-hours-from-father
+seoDescription: "A CFO's year-end reflection on time: a light-hearted look at why hours cannot be accrued, carried forward or amortised, and why time is worth investing wisely."
 ---
 
 As we stand on the brink of another year-end, I find myself musing humorously over a question that's more philosophical than financial: Why do we move forwards in time and not backwards? After all, in the world of finance, we're quite adept at juggling past, present, and future numbers. Yet, when it comes to time, it's a one-way street. This is an attempt on a light-hearted exploration of this temporal conundrum, with a CFO's twist.

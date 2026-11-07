@@ -5,6 +5,7 @@ import ShareLinks from '../components/ShareLinks.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
 import AnimatedCover from '../components/AnimatedCover.astro';
 import EssayAudio from '../components/EssayAudio.astro';
+import { AUTHOR, SITE_URL, WEBSITE, ogImagePath } from '../lib/schema';
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
@@ -13,6 +14,8 @@ interface AudioData { voice: string; engine: string; hash: string; file: string;
 interface Props {
   title: string;
   date: Date;
+  /* Substantive revision date; shown and used for dateModified when later than date. */
+  updated?: Date;
   excerpt: string;
   /* Search-intent meta description; falls back to excerpt when absent. */
   seoDescription?: string;
@@ -28,6 +31,8 @@ interface Props {
   seriesKicker?: string;
   seriesKickerHref?: string;
   seriesParts?: { href: string; label: string; part: number }[];
+  /* Series children only: the series this part belongs to, for JSON-LD. */
+  series?: { name: string; href?: string };
   /* Related insights — 2-3 posts sharing tags with this one, rendered
      at the article end. Computed at the page level. */
   related?: { href: string; title: string; excerpt: string; date: Date }[];
@@ -38,6 +43,7 @@ interface Props {
 const {
   title,
   date,
+  updated,
   excerpt,
   seoDescription,
   tags = [],
@@ -47,6 +53,7 @@ const {
   seriesKicker,
   seriesKickerHref,
   seriesParts,
+  series,
   related = [],
   audio = null,
 } = Astro.props;
@@ -59,15 +66,55 @@ const formatted = date.toLocaleDateString('en-GB', {
   month: 'long',
   year: 'numeric',
 });
+
+/* JSON-LD: the essay as a BlogPosting by the site's Person, plus a
+   Home → Insights → essay breadcrumb. */
+const revised = updated && updated.getTime() > date.getTime() ? updated : undefined;
+const dateModified = revised ?? date;
+const isPartOf: Record<string, unknown>[] = [{ '@id': WEBSITE['@id'] }];
+if (series) {
+  isPartOf.push({
+    '@type': 'CreativeWorkSeries',
+    name: series.name,
+    ...(series.href ? { url: new URL(series.href.replace(/\/?$/, '/'), SITE_URL).toString() } : {}),
+  });
+}
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description: seoDescription ?? excerpt,
+    datePublished: date.toISOString(),
+    dateModified: dateModified.toISOString(),
+    author: { '@id': AUTHOR['@id'] },
+    publisher: { '@id': AUTHOR['@id'] },
+    image: new URL(ogImagePath(coverImage), SITE_URL).toString(),
+    mainEntityOfPage: canonicalUrl,
+    ...(tags.length > 0 ? { keywords: tags.join(', ') } : {}),
+    isPartOf: isPartOf.length === 1 ? isPartOf[0] : isPartOf,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+      { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_URL}/insights/` },
+      { '@type': 'ListItem', position: 3, name: title, item: canonicalUrl },
+    ],
+  },
+];
 ---
 
 <BaseLayout
-  title={`${title} — signal-to-noise.co`}
+  title={`${title} — Himanshu Kher`}
+  socialTitle={title}
   description={seoDescription ?? excerpt}
   ogImage={coverImage}
   ogType="article"
   starsDim
   preloadImage={coverAnimation ? undefined : coverImage}
+  jsonLd={jsonLd}
 >
   <article class="mx-auto max-w-[720px] px-6 py-16 sm:py-24">
     {coverAnimation ? (
@@ -105,12 +152,32 @@ const formatted = date.toLocaleDateString('en-GB', {
         </p>
       )}
 
-      <time data-pagefind-ignore class="text-sm text-muted block mb-3" datetime={date.toISOString()}>
-        {formatted}
-      </time>
+      <p data-pagefind-ignore class="text-sm text-muted mb-3">
+        <time datetime={date.toISOString()}>{formatted}</time>
+        {revised && (
+          <>
+            <span aria-hidden="true"> · </span>
+            <span>Updated <time datetime={revised.toISOString()}>{fmt(revised)}</time></span>
+          </>
+        )}
+      </p>
       <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight text-fg">
         {title}
       </h1>
+      <div data-pagefind-ignore class="flex items-center gap-3 mt-5 text-sm text-muted">
+        <img
+          src="/img/himanshu-portrait.webp"
+          alt="Himanshu Kher"
+          width="32"
+          height="32"
+          loading="eager"
+          class="w-8 h-8 rounded-full object-cover border border-divider/60 shrink-0"
+        />
+        <p class="leading-snug">
+          By <a href="/about/" rel="author" class="font-semibold text-fg hover:text-accent transition-colors">Himanshu Kher</a>
+          <span class="block text-xs">CFO · 25+ years in finance and strategy</span>
+        </p>
+      </div>
       {tags.length > 0 && (
         <ul data-pagefind-ignore class="flex flex-wrap gap-2 mt-6">
           {tags.map((t) => (

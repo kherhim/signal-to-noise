@@ -8,6 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/symphony-success-ideas-execution-cons
 coverImage: /img/symphony-success-ideas-execution-consistency.webp
 coverImageAlt: "Against a near-black background, one filled cream circle is placed alone in the upper left: the idea. Beneath it a long ash baseline fine line carries twenty-four evenly spaced ticks, and a small filled cream square is placed on every tick, the row running clean to the right edge in strict tempo. The lower rule reads 'EXECUTION, REPEATED'."
 coverAnimation: symphony-success-ideas-execution-consistency
+seoDescription: "Ideas, execution and consistency in business: why ideas alone rarely succeed, and how leaders turn innovation into impact through disciplined, repeated work."
 ---
 
 In November 23, I had posted a personal viewpoint on [strategy, culture, and execution](/insights/checkmate-boardroom-ballet-how-execution-pirouettes-past), in the context of a company. I took the stance that execution is the key differentiator. In continuation of that piece, this week's post is a personal reflection on the the notion of Ideas, Execution & Consistency (of execution).
