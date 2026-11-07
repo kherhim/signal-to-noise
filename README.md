@@ -1,10 +1,8 @@
 # signal-to-noise.co
 
 Personal site + insights blog. Astro · Tailwind · MDX. Live on a GCE VM
-behind Cloudflare. The owned list is email, via Beehiiv
-([setup](#newsletter-signup-beehiiv)). The
-[Signal to Noise newsletter on LinkedIn](https://www.linkedin.com/newsletters/signal-to-noise-7490249039209271296/)
-and `/rss.xml` stay as secondary links.
+behind Cloudflare. Subscriptions via the
+[Signal to Noise newsletter on LinkedIn](https://www.linkedin.com/newsletters/signal-to-noise-7490249039209271296/).
 
 - Original project brief & design intent: [`docs/specs/signal2noise.md`](./docs/specs/signal2noise.md)
 - Article conventions (linter-enforced): [`docs/specs/article-formatting.md`](./docs/specs/article-formatting.md)
@@ -27,91 +25,6 @@ npm run preview      # serve the production build locally
 Articles live in `src/content/insights/*.md`; frontmatter schema in
 `src/content.config.ts`. Cover images in `public/img/` (WebP, mode 644).
 
-## Newsletter signup (Beehiiv)
-
-The pages are static files on the VM (`deploy.sh`). Nothing in that build
-can hold an API key, and Cloudflare Pages Functions do not run here: the
-zone proxies a GCE origin, it is not a Pages project. Signup is a separate
-Worker, `signal-to-noise-subscribe`, routed only at
-`signal-to-noise.co/api/subscribe*` and the `www` host. `./deploy.sh` does
-not deploy the Worker. Deploy it yourself when `worker/` changes:
-
-```bash
-npx wrangler login
-npx wrangler deploy
-```
-
-`workers.dev` is off in `wrangler.jsonc`, so the route on this zone is the
-only public URL.
-
-### Secrets
-
-Add these on the Worker. Not in `.env` (that file is the cache-purge token),
-not in `wrangler.jsonc`, and not in the dashboard as plain variables.
-
-Dashboard: Workers & Pages → **signal-to-noise-subscribe** → Settings →
-Variables and Secrets → Add → type **Secret**. The Worker has to exist
-first, so run `npx wrangler deploy` once before the dashboard path works.
-From the repo, the prompts read the value from the terminal:
-
-```bash
-npx wrangler secret put BEEHIIV_API_KEY
-npx wrangler secret put BEEHIIV_PUBLICATION_ID
-```
-
-| Secret | Where the value comes from |
-| --- | --- |
-| `BEEHIIV_API_KEY` | Beehiiv → Settings → API. A key that can create subscriptions. |
-| `BEEHIIV_PUBLICATION_ID` | The `pub_…` id on that same API page. |
-
-In Beehiiv, add a text custom field named exactly `signup_location`. The
-form sends `post-footer`, `subscribe-page`, or `homepage` there. Beehiiv
-drops unknown custom fields and still creates the subscriber, so signup
-works before the field exists; the location is only stored once the field
-does. UTM parameters (`utm_source`, `utm_medium`, `utm_campaign`,
-`utm_term`, `utm_content`) are Beehiiv's own fields. The page copies them
-from the URL; with JavaScript off, the Worker reads them from the referrer.
-
-The list is held, not mailed: nothing is sent from Beehiiv for now, and the
-form says so. `send_welcome_email` is off. Leave double opt-in off in Beehiiv
-too, so a sign-up gets no email at all; if it is on, the page tells the reader
-to confirm and that nothing else follows.
-
-If either secret is missing or Beehiiv rejects the key, `POST /api/subscribe`
-returns HTTP 503 and the message "Email signup isn't configured yet." The
-pages still render. The LinkedIn and RSS links do not depend on the Worker.
-
-### Test
-
-```bash
-npm run test:site     # handler tests, no network, no secrets
-npm run build         # static site. The Worker is not part of this output.
-
-cp .dev.vars.example .dev.vars   # fill the two secrets; file is gitignored
-npx wrangler dev                 # http://127.0.0.1:8787
-```
-
-Secrets empty — expect HTTP 503 and the configured message, and no call to Beehiiv:
-
-```bash
-curl -sS -D - -X POST http://127.0.0.1:8787/api/subscribe \
-  -H 'Accept: application/json' \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  --data 'email=you@example.com&location=subscribe-page'
-```
-
-With the secrets filled, that curl creates a real subscriber. Use an address
-you control. A form post with no `Accept: application/json` header (what a
-browser does with JavaScript off) returns a small HTML result instead of JSON.
-
-`npm run dev` serves the pages only. The form posts to `/api/subscribe` on
-the Astro server, which has no such route. Use `wrangler dev` to hit the
-endpoint, or the tests. After `wrangler deploy` and the two secrets, repeat
-the curl against `https://signal-to-noise.co/api/subscribe`.
-
-A filled `company_website` field (the honeypot) is treated as success and
-is not sent to Beehiiv.
-
 ## Release routine
 
 The canonical order for shipping an article. The site is the canonical home;
@@ -126,11 +39,12 @@ always publishes first.
 > publication. Everything below that mentions Substack is history; the old
 > tooling is in git history before that date.
 
-> **Beehiiv detour (June 2026) — reverted, then started again.** Email briefly
-> moved to Beehiiv for its Role/Company custom fields, then moved back to
-> Substack on 2026-07-02 (commit `e069071`) before any subscribers accumulated
-> there. That account was abandoned. The owned list added in November 2026 is
-> a new Beehiiv publication; setup is [above](#newsletter-signup-beehiiv).
+> **Beehiiv detour (June 2026) — reverted.** Email briefly moved to Beehiiv for
+> its Role/Company custom fields, then moved back to Substack on 2026-07-02
+> (commit `e069071`) before any subscribers accumulated there. The Beehiiv
+> account is dead; if you see Beehiiv referenced anywhere, it's stale. A second
+> attempt (a Beehiiv signup form behind a Cloudflare Worker, PR #45, Nov
+> 2026) was removed before it went live; the code is in git history.
 
 ### 1. Site (canonical) — first, always
 
@@ -306,4 +220,4 @@ the code or git log, it doesn't need to be here.
 - **Voice and judgment are the moat, not keyword density.** SEO hygiene matters (titles, metadata, structure) but the real lift for a personal essay site comes from clear audience positioning and authority signals (named author, real bio, corpus depth).
 - **Pair every SEO change with measurement.** Without GSC, "did Phase 2 move impressions?" is unanswerable. With GSC, you have a feedback loop.
 - **Strip ceremony.** When the original LinkedIn imports had `[cite:N]` markers, the right call was "strip them, ship it" — perfect is the enemy of shipped.
-- *(Superseded 29 Sep 2026, updated Nov 2026: Substack is retired. The owned list is Beehiiv. LinkedIn newsletter subscribers still cannot be exported.)* **RSS subscribers aren't yours; emails are.** The email list is the portable asset. Full essays stay canonical on the domain.
+- *(Superseded 29 Sep 2026: Substack is retired, so there is no owned email list. LinkedIn newsletter subscribers cannot be exported.)* **RSS subscribers aren't yours; emails are.** The email list (on Substack) is the portable, monetisable asset — full content stays canonical on the domain; Substack sends the email and gets condensed summaries linking back to the canonical page.
