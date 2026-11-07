@@ -9,9 +9,8 @@ export const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term',
 
 const ALLOWED_HOSTS = new Set(['signal-to-noise.co', 'www.signal-to-noise.co', 'localhost', '127.0.0.1', '[::1]']);
 
-// The list is held, not mailed: nothing goes out from Beehiiv for now.
-const SUCCESS_ACTIVE = "You're on the list. No emails for now; the essays stay here and on LinkedIn.";
-const SUCCESS_CONFIRM = 'Check your inbox to confirm. After that, nothing else arrives for now.';
+const SUCCESS_ACTIVE = "You're in. One essay a week, on Wednesdays.";
+const SUCCESS_CONFIRM = 'Check your inbox to confirm. One essay a week, on Wednesdays.';
 const UNCONFIGURED = "Email signup isn't configured yet. You can still subscribe on LinkedIn or via RSS.";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -105,7 +104,7 @@ export function buildPayload({ email, location, utm, referring }) {
   const body = {
     email,
     reactivate_existing: false,
-    send_welcome_email: false,
+    send_welcome_email: true,
     referring_site: referring,
     custom_fields: [{ name: 'signup_location', value: location }],
   };

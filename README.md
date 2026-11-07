@@ -72,10 +72,9 @@ does. UTM parameters (`utm_source`, `utm_medium`, `utm_campaign`,
 `utm_term`, `utm_content`) are Beehiiv's own fields. The page copies them
 from the URL; with JavaScript off, the Worker reads them from the referrer.
 
-The list is held, not mailed: nothing is sent from Beehiiv for now, and the
-form says so. `send_welcome_email` is off. Leave double opt-in off in Beehiiv
-too, so a sign-up gets no email at all; if it is on, the page tells the reader
-to confirm and that nothing else follows.
+`send_welcome_email` is on. Double opt-in is whatever the publication
+already uses. If both a welcome and a confirmation go out, turn the welcome
+off in Beehiiv rather than in this repo.
 
 If either secret is missing or Beehiiv rejects the key, `POST /api/subscribe`
 returns HTTP 503 and the message "Email signup isn't configured yet." The

@@ -99,7 +99,7 @@ test('creates a subscription with utm params and signup location', async () => {
   assert.equal(res.status, 200);
   const body = await res.json();
   assert.equal(body.code, 'subscribed');
-  assert.match(body.message, /No emails for now/);
+  assert.match(body.message, /Wednesdays/);
   assert.equal(calls.length, 1);
   assert.equal(
     calls[0].url,
@@ -108,7 +108,7 @@ test('creates a subscription with utm params and signup location', async () => {
   assert.equal(calls[0].init.headers.Authorization, 'Bearer test-key');
   const sent = JSON.parse(calls[0].init.body);
   assert.equal(sent.email, 'reader@example.com');
-  assert.equal(sent.send_welcome_email, false);
+  assert.equal(sent.send_welcome_email, true);
   assert.equal(sent.reactivate_existing, false);
   assert.equal(sent.utm_source, 'linkedin');
   assert.equal(sent.utm_medium, 'newsletter');
@@ -184,7 +184,7 @@ test('a browser form post returns HTML', async () => {
   assert.equal(res.status, 200);
   assert.match(res.headers.get('content-type'), /text\/html/);
   const html = await res.text();
-  assert.match(html, /You're on the list/);
+  assert.match(html, /You're in/);
   assert.match(html, /href="\/subscribe"/);
   assert.equal(html.includes('<script'), false);
 });
