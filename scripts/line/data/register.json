@@ -1,12 +1,12 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-11-09",
   "note": "formal stand-ins the owner rarely uses; rates per 1,000 words",
   "pairs": [
     {
       "formal": "expenditure",
       "plain": "spending",
       "owner_per_1k": 0.09,
-      "line_per_1k": 0.46,
+      "line_per_1k": 0.42,
       "source": "seed",
       "except": [
         "capital expenditure"
@@ -16,7 +16,7 @@
       "formal": "acquire",
       "plain": "buy",
       "owner_per_1k": 0.11,
-      "line_per_1k": 0.37,
+      "line_per_1k": 0.33,
       "source": "seed"
     },
     {
@@ -40,7 +40,7 @@
       "formal": "utilisation",
       "plain": "use",
       "owner_per_1k": 0.02,
-      "line_per_1k": 0.18,
+      "line_per_1k": 0.17,
       "source": "seed"
     },
     {
@@ -54,7 +54,7 @@
       "formal": "demonstrate",
       "plain": "show",
       "owner_per_1k": 0.25,
-      "line_per_1k": 0.37,
+      "line_per_1k": 0.33,
       "source": "seed"
     },
     {
@@ -89,7 +89,7 @@
       "formal": "purchase",
       "plain": "buy",
       "owner_per_1k": 0.29,
-      "line_per_1k": 0.82,
+      "line_per_1k": 0.83,
       "source": "seed"
     },
     {
@@ -117,7 +117,7 @@
       "formal": "subsequently",
       "plain": "later",
       "owner_per_1k": 0.02,
-      "line_per_1k": 0.18,
+      "line_per_1k": 0.17,
       "source": "seed"
     },
     {
@@ -145,49 +145,49 @@
       "formal": "recognise",
       "plain": "book",
       "owner_per_1k": 0.05,
-      "line_per_1k": 0.18,
+      "line_per_1k": 0.17,
       "source": "seed"
     },
     {
       "formal": "generator",
       "plain": "earner",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "assemble",
       "plain": "build",
       "owner_per_1k": 0.05,
-      "line_per_1k": 0.37,
+      "line_per_1k": 0.33,
       "source": "seed"
     },
     {
       "formal": "excessive",
       "plain": "too big",
       "owner_per_1k": 0.07,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "expansion",
       "plain": "growth",
       "owner_per_1k": 0.16,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "finest",
       "plain": "best",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "argue",
       "plain": "say",
       "owner_per_1k": 0.2,
-      "line_per_1k": 0.82,
+      "line_per_1k": 0.83,
       "source": "seed"
     },
     {
@@ -208,7 +208,7 @@
       "formal": "additional",
       "plain": "more",
       "owner_per_1k": 0.05,
-      "line_per_1k": 0.37,
+      "line_per_1k": 0.33,
       "source": "seed"
     },
     {
@@ -229,7 +229,7 @@
       "formal": "possess",
       "plain": "have",
       "owner_per_1k": 0.16,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
@@ -243,14 +243,14 @@
       "formal": "indicate",
       "plain": "show",
       "owner_per_1k": 0.02,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "solely",
       "plain": "only",
       "owner_per_1k": 0.16,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
@@ -278,7 +278,7 @@
       "formal": "nevertheless",
       "plain": "still",
       "owner_per_1k": 0.02,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
@@ -313,28 +313,28 @@
       "formal": "external funding",
       "plain": "borrowing",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "respond to",
       "plain": "move with",
       "owner_per_1k": 0.07,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "elevated",
       "plain": "high",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "substantial",
       "plain": "large",
       "owner_per_1k": 0.05,
-      "line_per_1k": 0.46,
+      "line_per_1k": 0.42,
       "source": "seed"
     },
     {
@@ -362,70 +362,224 @@
       "formal": "undertake",
       "plain": "do",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "seed"
     },
     {
       "formal": "untouched",
       "plain": "alone",
       "owner_per_1k": 0,
-      "line_per_1k": 0.27,
+      "line_per_1k": 0.25,
       "source": "learned"
     },
     {
       "formal": "annually",
       "plain": "a year",
       "owner_per_1k": 0.05,
-      "line_per_1k": 0.27,
+      "line_per_1k": 0.25,
       "source": "learned"
     },
     {
       "formal": "apparently superior",
       "plain": "stronger",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "learned"
     },
     {
       "formal": "appear",
       "plain": "look",
       "owner_per_1k": 0.16,
-      "line_per_1k": 0.55,
+      "line_per_1k": 0.5,
       "source": "learned"
     },
     {
       "formal": "reduction",
       "plain": "cut",
       "owner_per_1k": 0.09,
-      "line_per_1k": 0.37,
+      "line_per_1k": 0.33,
       "source": "learned"
     },
     {
       "formal": "reduce",
       "plain": "cut",
       "owner_per_1k": 0.25,
-      "line_per_1k": 1.37,
+      "line_per_1k": 1.25,
       "source": "learned"
     },
     {
       "formal": "key distinction",
       "plain": "difference",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "learned"
     },
     {
       "formal": "dismiss",
       "plain": "fire",
       "owner_per_1k": 0,
-      "line_per_1k": 0.09,
+      "line_per_1k": 0.08,
       "source": "learned"
     },
     {
       "formal": "gradually",
       "plain": "slowly",
       "owner_per_1k": 0.02,
-      "line_per_1k": 0.18,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "deploy",
+      "plain": "spend",
+      "owner_per_1k": 0.14,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "overlook",
+      "plain": "miss",
+      "owner_per_1k": 0.14,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "underlying",
+      "plain": "underneath",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0.25,
+      "source": "learned"
+    },
+    {
+      "formal": "repeatedly",
+      "plain": "many times",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "limited",
+      "plain": "little",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "since",
+      "plain": "because",
+      "owner_per_1k": 0.16,
+      "line_per_1k": 1.08,
+      "source": "learned"
+    },
+    {
+      "formal": "consume",
+      "plain": "eat",
+      "owner_per_1k": 0.09,
+      "line_per_1k": 0.33,
+      "source": "learned"
+    },
+    {
+      "formal": "roughly",
+      "plain": "about",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 1.25,
+      "source": "learned"
+    },
+    {
+      "formal": "flow through",
+      "plain": "reach",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "difference",
+      "plain": "gap",
+      "owner_per_1k": 0.14,
+      "line_per_1k": 0.75,
+      "source": "learned"
+    },
+    {
+      "formal": "lower",
+      "plain": "cut",
+      "owner_per_1k": 0.18,
+      "line_per_1k": 0.58,
+      "source": "learned"
+    },
+    {
+      "formal": "gain",
+      "plain": "win",
+      "owner_per_1k": 0.16,
+      "line_per_1k": 0.58,
+      "source": "learned"
+    },
+    {
+      "formal": "incur",
+      "plain": "carry",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.33,
+      "source": "learned"
+    },
+    {
+      "formal": "unused",
+      "plain": "idle",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "assume",
+      "plain": "carry",
+      "owner_per_1k": 0.09,
+      "line_per_1k": 0.58,
+      "source": "learned"
+    },
+    {
+      "formal": "previously",
+      "plain": "used to",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "disappear",
+      "plain": "gone",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0.25,
+      "source": "learned"
+    },
+    {
+      "formal": "sentiment",
+      "plain": "mood",
+      "owner_per_1k": 0.18,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "scheduled to",
+      "plain": "due to",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "followed by",
+      "plain": "and",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "figure",
+      "plain": "number",
+      "owner_per_1k": 0.09,
+      "line_per_1k": 2.16,
+      "source": "learned"
+    },
+    {
+      "formal": "expand",
+      "plain": "grow",
+      "owner_per_1k": 0.25,
+      "line_per_1k": 0.17,
       "source": "learned"
     }
   ]
