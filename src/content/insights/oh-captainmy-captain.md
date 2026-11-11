@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/oh-captainmy-captain-himanshu-kher-2k
 coverImage: /img/oh-captainmy-captain.webp
 coverImageAlt: "Against a near-black background, two horizontal fine lines, stacked. The upper climbs into a sharp spike mid-frame with a filled cream circle at its apex; the lower extends dead straight, and above it at the same point a faint dashed circle marks the storm that never came. The lower rule reads 'CRISIS, AVERTED'."
 coverAnimation: oh-captainmy-captain
-seoDescription: "Crisis leadership vs preventative leadership: why organisations celebrate heroic firefighters over leaders who quietly avert crises, and why both need credit."
+seoDescription: "Crisis leadership vs preventative leadership: why organisations praise heroic firefighters over leaders who quietly prevent crises, and why both should get credit."
 ---
 
 In a society that reveres stories of heroism and dramatic success, the image of a decisive, action-oriented leader dominates our collective imagination. This leader, lets call him(or her) Captain A, is the archetype of the celebrated hero—the individual whose bold actions and daring decisions guide their team through crises and challenges. In stark contrast, there's Captain B—methodical, strategic, and often overlooked despite their consistent success. These contrasting figures symbolize the divergence in leadership styles that exist within the modern workplace, and they invite us to question which type truly merits acclaim.

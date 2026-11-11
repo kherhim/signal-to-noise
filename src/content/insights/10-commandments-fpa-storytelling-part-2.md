@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/10-commandments-fpa-storytelling-part
 coverImage: /img/10-commandments-fpa-storytelling-part-2.webp
 coverImageAlt: "Against a near-black background, a monochrome waterfall chart. A tall filled cream column is positioned at the left; four floating pale step-bars descend towards the right, each joined to the next by a thin ash connector; a shorter filled cream column lands at the right. A ruler-ticked baseline extends beneath them. The lower rule reads 'DELTA, BRIDGED'."
 coverAnimation: 10-commandments-fpa-storytelling-part-2
-seoDescription: "FP&A storytelling examples: the ten commandments revisited with what works and what does not, plus input from SaaS and fintech CFOs and three short war stories."
+seoDescription: "FP&A storytelling examples: a fresh look at the ten commandments, covering what lands and what fails, with views from SaaS and fintech CFOs plus three brief war stories."
 ---
 
 Two months ago, I posted [an article](/insights/10-commandments-fpa-storytelling) on what I thought were the 10 commandments of FP&A story telling. It was born out of the some of my past frustrations of working with FP&A professionals, and a small attempt in making FP&A at my current company better. Following the post, two well-wishers suggested a deep-dive on the commandments with examples. Thank you for the challenge.

@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/shadows-light-dance-self-doubt-self-c
 coverImage: /img/shadows-light-dance-self-doubt-self-confidence.webp
 coverImageAlt: "Against a near-black background, on the left a large ring drawn as a thin, faint cream outline, hollow and slightly off centre; on the right a smaller filled cream disc, perfectly still, holding a faint dashed circle inside it. No other feature is present. The lower rule reads 'CONFIDENCE, QUIET'."
 coverAnimation: shadows-light-dance-self-doubt-self-confidence
-seoDescription: "Self-doubt and self-confidence at work: why genuine confidence needs no external validation, and how a learn-it-all mindset turns doubt into career growth."
+seoDescription: "Self-doubt and self-confidence at work: why real confidence does not rely on external validation, and how a learn-it-all mindset turns doubt into career growth."
 ---
 
 ### Introduction

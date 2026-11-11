@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/having-view-vs-way-himanshu-kher-ebj8
 coverImage: /img/having-view-vs-way.webp
 coverImageAlt: "Against a near-black background, a small filled cream circle is placed at lower left and a large filled cream circle at upper right. Between them a staircase of small cream squares climbs the diagonal, riser by tread, until the last square touches the large circle; a pale ash fine line traces the diagonal beneath. The lower rule reads 'CONVICTION, ROUTED'."
 coverAnimation: having-view-vs-way
-seoDescription: "Strategy execution for leaders: the difference between having a view and having a way, and why the best CFOs pair conviction with a method to deliver results."
+seoDescription: "Strategy execution for leaders: how having a view differs from having a way, and why the strongest CFOs combine conviction with a method for delivering results."
 ---
 
 ### 1\. Having a view

@@ -9,7 +9,7 @@ series:
   part: 3
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/3-culture-incentives-posters-himanshu-kher-2hm3f"
-seoDescription: "Company culture and incentives: why people do what is rewarded, tolerated or ignored, and how a CFO sees culture in spend patterns and decision speed first."
+seoDescription: "Company culture and incentives: why people follow what gets rewarded, tolerated or ignored, and how a CFO spots culture first in spending patterns and decision speed."
 ---
 
 Many companies talk endlessly about culture. Very few design it.

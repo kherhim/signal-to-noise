@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/output-outcome-systems-approach-frida
 coverImage: /img/output-outcome-systems-approach-friday-focus-from-cfo.webp
 coverImageAlt: "Against a near-black background, a large outline-drawn ash ring encloses a filled cream circle and, above it, a short row of five small cream squares whose head square feeds the circle by a single thin fine line. One small solid marker rests at the top of the ring. The lower rule reads 'SUCCESS, REPEATABLE'."
 coverAnimation: output-outcome-systems-approach-friday-focus-from-cfo
-seoDescription: "Output vs outcome vs systems thinking: three ways to measure performance, their strengths and risks, and a CFO checklist for balancing them for lasting results."
+seoDescription: "Output vs outcome vs systems thinking: three approaches to measuring performance, their benefits and risks, and a CFO checklist for balancing them to sustain results."
 ---
 
 I often find myself reflecting on how companies, teams, and even individuals measure success. In my opinion there are three distinct approaches : output focus, outcome focus, and systems focus. Each approach represents a unique lens to view performance, with its own strengths, risks, and applications.
