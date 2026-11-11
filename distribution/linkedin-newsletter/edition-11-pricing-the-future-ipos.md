@@ -1,4 +1,4 @@
-# Signal to Noise — Edition 10
+# Signal to Noise — Edition 11
 
 **Title:** Pricing the future: how CFOs should read the SpaceX, Anthropic and OpenAI IPOs
 
