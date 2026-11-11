@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/where-wai-himanshu-kher-drr3e"
 coverImage: /img/where-wai.webp
 coverImageAlt: "Against a near-black background, a staircase of seven ash-outline-drawn squares climbs diagonally from at lower left to at upper right. A dashed circle is placed below and behind the first step, and a filled cream circle rests on the top step, the intermediate steps untouched. The lower rule reads 'LEGACY, SKIPPED'."
 coverAnimation: where-wai
-seoDescription: "Agentic AI in the finance function: why little legacy tech is a head start for finance, letting CFOs leapfrog old automation to a self-healing back office."
+seoDescription: "Agentic AI in the finance function: why limited legacy technology gives finance a head start, allowing CFOs to leapfrog old automation towards a self-healing back office."
 ---
 
 There’s a massive, hidden advantage to the fact that Finance has been the "under-invested child" of the fintech world for the last decade.

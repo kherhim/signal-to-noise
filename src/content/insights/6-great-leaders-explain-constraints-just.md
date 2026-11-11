@@ -9,7 +9,7 @@ series:
   part: 6
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/6-great-leaders-explain-constraints-just-himanshu-kher-uwmlf"
-seoDescription: "How leaders should communicate constraints: why explaining the reasons behind a no, a delay or a budget cut keeps teams aligned, and why silence erodes morale."
+seoDescription: "How leaders communicate constraints: why teams stay aligned when leaders explain a no, a delay or a budget cut, and why silence damages morale."
 ---
 
 Every leader has to decline ideas, delay projects, or tighten resources.

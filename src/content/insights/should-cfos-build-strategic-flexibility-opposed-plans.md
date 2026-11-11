@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/should-cfos-build-strategic-flexibili
 coverImage: /img/should-cfos-build-strategic-flexibility-opposed-plans.webp
 coverImageAlt: "Against a near-black background, a filled cream circle is placed at left-centre. One straight ash fine line extends right from it to a dashed outline-drawn circle: the plan. Above and below, seven cream fine lines fan from the same origin at increasing angles, each ending in a small outline-drawn cream circle. The lower rule reads 'FUTURES, PLURAL'."
 coverAnimation: should-cfos-build-strategic-flexibility-opposed-plans
-seoDescription: "Strategic planning vs strategic preparation for CFOs: how the two differ in focus, method and assumptions, and why building flexibility often matters more."
+seoDescription: "Strategic planning vs strategic preparation for CFOs: how the two differ in focus, method and assumptions, and why flexibility often matters more."
 ---
 
 Strategic planning and strategic preparation, while closely related, offer distinct approaches to achieving organizational success. For a CFO, understanding the nuances between the two is critical for navigating challenges and driving performance. While planning provides direction (actions given an expected outcome), preparation ensures adaptability (actions given deviations from expected outcome) - a vital trait in today’s unpredictable business landscape. This discussion unpacks the differences and highlights why preparation often has the upper hand.

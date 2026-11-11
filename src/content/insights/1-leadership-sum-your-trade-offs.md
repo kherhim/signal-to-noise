@@ -9,7 +9,7 @@ series:
   part: 1
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/1-leadership-sum-your-trade-offs-himanshu-kher-ppjof"
-seoDescription: "Leadership trade-offs and decision making: why people judge leaders by what they prioritise, delay and stop, and how a CFO sees those choices in the numbers."
+seoDescription: "Leadership choices and decision-making: why people assess leaders through what they back, defer and end, and how a CFO reads those decisions in the figures."
 ---
 
 Having worked for 25+ years, here’s one thing I’ve learned:

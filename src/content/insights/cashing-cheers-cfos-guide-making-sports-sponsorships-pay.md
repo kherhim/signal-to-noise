@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/cashing-cheers-cfos-guide-making-spor
 coverImage: /img/cashing-cheers-cfos-guide-making-sports-sponsorships-pay.webp
 coverImageAlt: "Against a near-black background, a ticked baseline across the lower third, with a dashed horizontal fine line above it marking the outlay. A filled cream line starts below the dash at the left, dips, then climbs and crosses it late, where a filled cream circle is placed at the crossing. The lower rule reads 'RETURN, MEASURED'."
 coverAnimation: cashing-cheers-cfos-guide-making-sports-sponsorships-pay
-seoDescription: "Measuring sports sponsorship ROI: a CFO framework for setting objectives, agreeing financial and qualitative metrics up front and weighing opportunity cost."
+seoDescription: "Measuring sports sponsorship ROI: a CFO framework for setting aims, agreeing financial and qualitative measures at the start, and judging opportunity cost."
 ---
 
 ### Introduction

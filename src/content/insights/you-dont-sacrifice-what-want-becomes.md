@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/you-dont-sacrifice-what-want-becomes-
 coverImage: /img/you-dont-sacrifice-what-want-becomes.webp
 coverImageAlt: "Against a near-black background, a filled cream circle is placed high on the right: the goal. From the lower left a short staircase of eight small squares climbs towards it; the lower five are cream outlines, spent, the top three still solid. A faint fine line links the top square to the circle. The lower rule reads 'SACRIFICE, CHOSEN'."
 coverAnimation: you-dont-sacrifice-what-want-becomes
-seoDescription: "Sacrifice and achieving long-term goals: why success requires giving up short-term comforts, with practical steps and examples from Edison, Rowling and Jordan."
+seoDescription: "Sacrifice and achieving long-term goals: why success means giving up short-term comforts, with practical steps and examples from Edison, Rowling and Jordan."
 ---
 
 ### Introduction
