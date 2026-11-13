@@ -15,7 +15,7 @@
  * alone. Exits 0 when jobs are unhealthy (the issues are the alert); non-zero
  * only for its own errors.
  *
- * Usage: node scripts/ops/watchdog.mjs   (env: GH_TOKEN, VARS_JSON, PRETEND_NOW)
+ * Usage: node scripts/ops/watchdog.mjs   (env: GH_TOKEN, PRETEND_NOW, one HEARTBEAT_* per Mac job)
  */
 import { execFileSync } from 'node:child_process';
 import { loadJobs } from './jobs.mjs';
@@ -25,7 +25,11 @@ import { isMain } from '../lib/is-main.mjs';
 export const ISSUE_PREFIX = 'Scheduled job needs attention: ';
 export const SELF = 'watchdog';
 const HOUR = 3600e3;
-const MARKER_RE = /<!-- watchdog-state: ([^\s]*) -->/;
+const STATE_RE = /<!-- watchdog-state: (\S*) -->/g;
+const JOB_RE = /^<!-- watchdog-job: ([a-z0-9-]+) -->/;
+/** Accounts whose issues and comments the watchdog trusts (gh JSON shows app authors as app/<name>). */
+export const BOT_LOGINS = new Set(['github-actions', 'app/github-actions', 'github-actions[bot]']);
+export const DRY_RUN_TAG = '(dry run)';
 const GH_TIMEOUT_MS = 30_000;
 
 export const issueTitle = (job) => `${ISSUE_PREFIX}${job}`;
@@ -80,18 +84,30 @@ export function assess(jobs, now, evidence = {}) {
     if (lastOk && lastOk.getTime() >= due.getTime()) return { job: job.name, status: 'ok', detail: okLine };
 
     const dueLine = `Due ${formatWhen(due)}, with ${hours(job.grace_hours)} grace.`;
-    if (lastFailed && (!lastOk || lastFailed.at.getTime() > lastOk.getTime())) {
-      const raw = String(lastFailed.reason ?? '').trim();
-      // A run URL stays bare so it is clickable; any other text goes in a code
-      // span so `@name` or `#12` in an error never pings or cross-links.
-      const why = !raw ? 'no reason recorded' : /^https:\/\/\S+$/.test(raw) ? raw : `\`${raw.replace(/`/g, "'")}\``;
-      return { job: job.name, status: 'failed', detail: `${dueLine} The latest run failed: ${why} ${okLine}` };
+    // A failure counts as this slot's outcome only if it happened at or after
+    // the due time; an older failure with nothing since is simply overdue.
+    if (lastFailed && lastFailed.at.getTime() >= due.getTime()) {
+      return { job: job.name, status: 'failed', detail: `${dueLine} The latest run failed: ${reasonText(lastFailed.reason)} ${okLine}` };
     }
     if (!lastOk && !lastFailed) {
       return { job: job.name, status: 'never-run', detail: `${dueLine} No run on record since it was added.` };
     }
-    return { job: job.name, status: 'overdue', detail: `${dueLine} ${okLine}` };
+    const earlier = lastFailed && (!lastOk || lastFailed.at.getTime() > lastOk.getTime())
+      ? ` No run since an earlier failure: ${reasonText(lastFailed.reason)}` : '';
+    return { job: job.name, status: 'overdue', detail: `${dueLine} ${okLine}${earlier}` };
   });
+}
+
+/**
+ * Render a failure reason for a public issue. Whitespace is flattened; a run
+ * URL stays bare so it is clickable; any other text goes in a code span so
+ * `@name` or `#12` in an error never pings or cross-links.
+ */
+function reasonText(reason) {
+  const raw = String(reason ?? '').replace(/\s+/g, ' ').trim();
+  if (!raw) return 'no reason recorded.';
+  if (/^https:\/\/\S+$/.test(raw)) return raw;
+  return `\`${raw.replace(/`/g, "'")}\``;
 }
 
 const stateKey = (r) => encodeURIComponent(`${r.status}|${r.detail}`);
@@ -101,6 +117,7 @@ const LABEL = { overdue: 'is overdue', failed: 'is failing', 'never-run': 'has n
 
 function openBody(r) {
   return [
+    `<!-- watchdog-job: ${r.job} -->`,
     `The scheduled job \`${r.job}\` ${LABEL[r.status]}.`,
     '',
     r.detail,
@@ -114,22 +131,46 @@ function openBody(r) {
 const commentBody = (r) => [`Still unhealthy: \`${r.job}\` ${LABEL[r.status]}.`, '', r.detail, '', marker(r)].join('\n');
 const closeBody = (r) => [`Recovered: \`${r.job}\` is healthy again.`, '', r.detail, '', marker(r)].join('\n');
 
+/** The last state marker in a body (ours is always at the end; earlier ones may be quoted text). */
+export function lastStateKey(body) {
+  return [...String(body ?? '').matchAll(STATE_RE)].at(-1)?.[1];
+}
+
+const isBot = (author) => !!author && BOT_LOGINS.has(author.login);
+
 /**
- * Keep one issue per unhealthy job. gh: { listOpen(prefix) -> [{number, title, lastBody?}],
- * open(title, body), comment(n, body), close(n, body) }. `lastBody` is the newest
- * issue or comment body carrying a watchdog marker, when the adapter knows it.
+ * Turn gh's issue JSON ({number, title, body, author}) plus that issue's full
+ * comment list ({author, body}[]) into what syncIssues needs, or null when the
+ * issue is not one of ours. Only bot-authored issues count, the job comes from
+ * the hidden job marker at the top of the opening body (the title is display
+ * only), and state is read only from bot-authored bodies.
+ */
+export function toOpenIssue(issue, comments = []) {
+  if (!isBot(issue.author)) return null;
+  const job = JOB_RE.exec(String(issue.body ?? '').trimStart())?.[1];
+  if (!job) return null;
+  const bodies = [issue.body ?? '', ...comments.filter((c) => isBot(c.author)).map((c) => c.body ?? '')];
+  return { number: issue.number, title: issue.title, job, lastBody: bodies.filter((b) => lastStateKey(b) !== undefined).at(-1) };
+}
+
+/**
+ * Keep one issue per unhealthy job. gh: { listOpen(prefix) -> [{number, title, job?, lastBody?}],
+ * open(title, body), comment(n, body), close(n, body) }. An issue belongs to a
+ * job by its `job` (from the hidden marker); fixtures without one match on the
+ * exact title. `lastBody` is the newest bot body carrying a state marker.
  */
 export async function syncIssues(results, gh) {
   const open = await gh.listOpen(ISSUE_PREFIX);
   for (const r of results) {
     if (r.job === SELF || r.status === 'paused') continue;
     const title = issueTitle(r.job);
-    const issue = open.filter((i) => i.title === title).sort((a, b) => a.number - b.number)[0];
+    const issue = open
+      .filter((i) => (i.job !== undefined ? i.job === r.job : i.title === title))
+      .sort((a, b) => a.number - b.number)[0];
     if (UNHEALTHY.has(r.status)) {
       if (!issue) await gh.open(title, openBody(r));
       else {
-        const prev = MARKER_RE.exec(issue.lastBody ?? '')?.[1];
-        if (prev !== stateKey(r)) await gh.comment(issue.number, commentBody(r));
+        if (lastStateKey(issue.lastBody) !== stateKey(r)) await gh.comment(issue.number, commentBody(r));
       }
     } else if (r.status === 'ok' && issue) {
       await gh.close(issue.number, closeBody(r));
@@ -137,18 +178,29 @@ export async function syncIssues(results, gh) {
   }
 }
 
-/** Parse the `${{ toJSON(vars) }}` value. Throws rather than treating every Mac job as never run. */
-export function parseVarsJson(text) {
-  if (typeof text !== 'string' || text.trim() === '') throw new Error('VARS_JSON is not set');
-  let v;
-  try { v = JSON.parse(text); } catch { throw new Error('VARS_JSON is not valid JSON'); }
-  if (!v || typeof v !== 'object' || Array.isArray(v)) throw new Error('VARS_JSON must be a JSON object');
-  return v;
+/**
+ * Build the heartbeat values from the environment: one env entry per
+ * heartbeat.variable in ops/jobs.json (the workflow passes each explicitly).
+ * An entry missing altogether is a wiring fault and throws, rather than
+ * making a Mac job look as if it never ran; an empty value is no evidence.
+ */
+export function varsFromEnv(jobs, env) {
+  const vars = {};
+  for (const job of jobs) {
+    const name = job.heartbeat?.variable;
+    if (!name) continue;
+    if (!Object.hasOwn(env, name)) throw new Error(`${name} is not passed to the watchdog`);
+    vars[name] = env[name];
+  }
+  return vars;
 }
 
+const latestReal = (runs) => runs.find((r) => !String(r.displayTitle ?? '').includes(DRY_RUN_TAG));
+
 /**
- * Collect evidence. gh: { listRuns(workflow, 'success' | 'failure') -> [{createdAt, url}] newest first,
- * vars: Record<string, string> }. Only the named heartbeat variables are read.
+ * Collect evidence. gh: { listRuns(workflow, 'success' | 'failure') -> [{createdAt, url, displayTitle}]
+ * newest first, vars: Record<string, string> }. Runs titled "(dry run)" are not
+ * evidence. Only the named heartbeat variables are read.
  */
 export async function gatherEvidence(jobs, gh) {
   const out = {};
@@ -156,8 +208,8 @@ export async function gatherEvidence(jobs, gh) {
     if (job.paused) continue;
     const ev = {};
     if (job.heartbeat.workflow) {
-      const [ok] = await gh.listRuns(job.heartbeat.workflow, 'success');
-      const [bad] = await gh.listRuns(job.heartbeat.workflow, 'failure');
+      const ok = latestReal(await gh.listRuns(job.heartbeat.workflow, 'success'));
+      const bad = latestReal(await gh.listRuns(job.heartbeat.workflow, 'failure'));
       if (ok) ev.lastOk = new Date(ok.createdAt);
       if (bad) ev.lastFailed = { at: new Date(bad.createdAt), reason: bad.url };
     } else {
@@ -182,19 +234,28 @@ export function cliEvidenceGh(vars) {
   return {
     vars,
     async listRuns(workflow, status) {
-      return JSON.parse(gh(['run', 'list', '--workflow', workflow, '--status', status, '--limit', '1', '--json', 'createdAt,url']));
+      // A window of 20 so a few dry runs cannot hide the last real one.
+      return JSON.parse(gh(['run', 'list', '--workflow', workflow, '--branch', 'main', '--status', status,
+        '--limit', '20', '--json', 'createdAt,url,displayTitle']));
     },
   };
 }
 
 export function cliIssueGh() {
   return {
-    async listOpen(prefix) {
-      const issues = JSON.parse(gh(['issue', 'list', '--state', 'open', '--limit', '200', '--json', 'number,title,body,comments']));
-      return issues.filter((i) => i.title.startsWith(prefix)).map((i) => {
-        const bodies = [i.body ?? '', ...(i.comments ?? []).map((c) => c.body ?? '')];
-        return { number: i.number, title: i.title, lastBody: bodies.filter((b) => MARKER_RE.test(b)).at(-1) };
-      });
+    async listOpen() {
+      const issues = JSON.parse(gh(['issue', 'list', '--state', 'open', '--author', 'app/github-actions',
+        '--limit', '200', '--json', 'number,title,body,author']));
+      const out = [];
+      for (const i of issues) {
+        if (!toOpenIssue(i)) continue;
+        // `gh issue list --json comments` returns only the first 100 comments;
+        // `gh issue view` returns them all, so the newest is never missed.
+        const { comments } = JSON.parse(gh(['issue', 'view', String(i.number), '--json', 'comments']));
+        const mine = toOpenIssue(i, comments);
+        if (mine) out.push(mine);
+      }
+      return out;
     },
     async open(title, body) { gh(['issue', 'create', '--title', title, '--body', body]); },
     async comment(n, body) { gh(['issue', 'comment', String(n), '--body', body]); },
@@ -212,7 +273,7 @@ export function resolveNow(pretend) {
 async function main() {
   const now = resolveNow(process.env.PRETEND_NOW);
   const jobs = loadJobs();
-  const vars = parseVarsJson(process.env.VARS_JSON);
+  const vars = varsFromEnv(jobs, process.env);
   const evidence = await gatherEvidence(jobs, cliEvidenceGh(vars));
   const results = assess(jobs, now, evidence);
   console.log(`[watchdog] checked at ${formatWhen(now)}`);

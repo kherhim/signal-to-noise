@@ -1,9 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  lastDue, firstDueOnOrAfter, assess, syncIssues, gatherEvidence, formatWhen, issueTitle, parseVarsJson, resolveNow,
+  lastDue, firstDueOnOrAfter, assess, syncIssues, gatherEvidence, formatWhen, issueTitle, varsFromEnv, resolveNow, toOpenIssue, lastStateKey,
 } from '../watchdog.mjs';
 import { periodStart } from '../heartbeat.mjs';
+import { loadJobs } from '../jobs.mjs';
+import fs from 'node:fs';
+import yaml from 'js-yaml';
+
+const WF = (f) => yaml.load(fs.readFileSync(new URL(`../../../.github/workflows/${f}`, import.meta.url), 'utf8'));
 
 const D = (s) => new Date(s);
 const MONTHLY = { kind: 'monthly', day: 1, hour_utc: 11 };
@@ -270,7 +275,7 @@ test('every generated body: British, no em dash, no "ledger", dates in house sty
   for (const b of bodies) {
     assert.ok(!b.includes('—'), b);
     assert.ok(!/ledger/i.test(b), b);
-    for (const m of b.matchAll(/\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d{1,2} [A-Z][a-z]{2} \d{4}, \d{2}:\d{2} UTC/g)) assert.ok(m[0]);
+    assert.match(b, /\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4}, \d{2}:\d{2} UTC/, b);
     assert.ok(!/\d{4}-\d{2}-\d{2}T/.test(b.replace(/<!--[\s\S]*?-->/g, '')), b);
   }
 });
@@ -335,13 +340,132 @@ test('gatherEvidence: paused jobs are skipped', async () => {
   assert.deepEqual(gh.calls, []);
 });
 
-test('parseVarsJson throws on a missing or unparseable value', () => {
-  assert.throws(() => parseVarsJson(undefined), /VARS_JSON/);
-  assert.throws(() => parseVarsJson(''), /VARS_JSON/);
-  assert.throws(() => parseVarsJson('{nope'), /VARS_JSON/);
-  assert.throws(() => parseVarsJson('[1]'), /VARS_JSON/);
-  assert.deepEqual(parseVarsJson('{"A":"b"}'), { A: 'b' });
+test('varsFromEnv reads only the heartbeat variables and throws when one is not passed', () => {
+  const jobs = [tokenPrices(), metrics()];
+  assert.deepEqual(varsFromEnv(jobs, { HEARTBEAT_METRICS: 'ok:2026-11-16T07:30:00.000Z', SECRET: 'x' }), { HEARTBEAT_METRICS: 'ok:2026-11-16T07:30:00.000Z' });
+  assert.deepEqual(varsFromEnv(jobs, { HEARTBEAT_METRICS: '' }), { HEARTBEAT_METRICS: '' });
+  assert.throws(() => varsFromEnv(jobs, {}), /HEARTBEAT_METRICS is not passed/);
 });
+
+test('every heartbeat.variable in ops/jobs.json has its env line in watchdog.yml', () => {
+  const step = WF('watchdog.yml').jobs.check.steps.find((st) => /watchdog\.mjs/.test(st.run ?? ''));
+  const vars = loadJobs().map((j) => j.heartbeat.variable).filter(Boolean);
+  assert.ok(vars.length >= 2);
+  for (const v of vars) assert.equal(step.env[v], `\${{ vars.${v} }}`, v);
+  assert.equal(step.env.VARS_JSON, undefined);
+  assert.ok(!JSON.stringify(step.env).includes('toJSON'));
+});
+
+test('dry and verification runs are titled "(dry run)"', () => {
+  const tp = WF('token-prices.yml');
+  assert.match(tp['run-name'], /inputs\.dry && 'Token prices \(dry run\)'/);
+  const wd = WF('watchdog.yml');
+  assert.match(wd['run-name'], /inputs\.pretend_now && '[^']*\(dry run\)'/);
+  assert.equal(wd.on.schedule[0].cron, '0 5 * * *');
+  assert.deepEqual(wd.permissions, { actions: 'read', issues: 'write', contents: 'read' });
+});
+
+test('gatherEvidence ignores dry runs and takes the newest real run', async () => {
+  const gh = runsGh({
+    'token-prices.yml:success': [
+      { createdAt: '2026-11-20T10:00:00Z', url: 'u/3', displayTitle: 'Token prices (dry run)' },
+      { createdAt: '2026-11-01T11:00:05Z', url: 'u/1', displayTitle: 'Token prices' },
+    ],
+    'token-prices.yml:failure': [{ createdAt: '2026-11-21T10:00:00Z', url: 'u/4', displayTitle: 'Token prices (dry run)' }],
+  });
+  const ev = await gatherEvidence([tokenPrices()], gh);
+  assert.equal(ev['token-prices'].lastOk.toISOString(), '2026-11-01T11:00:05.000Z');
+  assert.equal(ev['token-prices'].lastFailed, undefined);
+});
+
+test('a failure before the current due slot is overdue, not failed', () => {
+  const r = one([tokenPrices()], '2026-11-04T12:00:00Z', {
+    'token-prices': { lastOk: D('2026-10-01T11:00:00Z'), lastFailed: { at: D('2026-10-15T11:00:00Z'), reason: 'https://x/runs/5' } },
+  });
+  assert.equal(r.status, 'overdue');
+  assert.match(r.detail, /earlier failure: https:\/\/x\/runs\/5/);
+});
+
+// ---------- issue ownership and markers ----------
+
+const BOT = { login: 'app/github-actions', is_bot: true };
+const BOT_C = { login: 'github-actions' };
+
+async function openedBody(r) {
+  const log = [];
+  await syncIssues([r], fakeGh(log));
+  return log.find((c) => c[0] === 'open')[2];
+}
+
+test('an issue by another author with a matching title and markers is ignored', async () => {
+  const r = { job: 'metrics', status: 'overdue', detail: 'Due Mon 9 Nov 2026, 07:30 UTC.' };
+  const body = await openedBody(r);
+  const fake = { number: 66, title: issueTitle('metrics'), body, author: { login: 'mallory', is_bot: false } };
+  assert.equal(toOpenIssue(fake, []), null);
+  const calls = [];
+  await syncIssues([r], fakeGh(calls, [toOpenIssue(fake, [])].filter(Boolean)));
+  assert.equal(calls.filter((c) => c[0] === 'open').length, 1);
+  assert.equal(calls.filter((c) => c[0] === 'comment' || c[0] === 'close').length, 0);
+});
+
+test('state is read only from bot comments', async () => {
+  const r = { job: 'metrics', status: 'overdue', detail: 'Due Mon 9 Nov 2026, 07:30 UTC.' };
+  const body = await openedBody(r);
+  const changed = { ...r, detail: 'Due Mon 16 Nov 2026, 07:30 UTC.' };
+  const human = { author: { login: 'mallory' }, body: `<!-- watchdog-state: ${encodeURIComponent(`${changed.status}|${changed.detail}`)} -->` };
+  const issue = toOpenIssue({ number: 7, title: 'x', body, author: BOT }, [human]);
+  assert.equal(issue.lastBody, body);
+  const calls = [];
+  await syncIssues([changed], fakeGh(calls, [issue]));
+  assert.equal(calls.filter((c) => c[0] === 'comment').length, 1);
+});
+
+test('a retitled bot issue is still found by its job marker and updated, not duplicated', async () => {
+  const r = { job: 'metrics', status: 'overdue', detail: 'Due Mon 9 Nov 2026, 07:30 UTC.' };
+  const body = await openedBody(r);
+  const issue = toOpenIssue({ number: 8, title: 'Metrics job broken (renamed by owner)', body, author: BOT }, []);
+  assert.equal(issue.job, 'metrics');
+  const calls = [];
+  await syncIssues([{ ...r, detail: 'Due Mon 16 Nov 2026, 07:30 UTC.' }], fakeGh(calls, [issue]));
+  assert.deepEqual(calls.filter((c) => c[0] !== 'listOpen').map((c) => [c[0], c[1]]), [['comment', 8]]);
+  const calls2 = [];
+  await syncIssues([{ job: 'metrics', status: 'ok', detail: 'Last success Mon 16 Nov 2026, 07:31 UTC.' }], fakeGh(calls2, [issue]));
+  assert.deepEqual(calls2.filter((c) => c[0] !== 'listOpen').map((c) => [c[0], c[1]]), [['close', 8]]);
+});
+
+test('a bot issue without the job marker is not ours', () => {
+  assert.equal(toOpenIssue({ number: 9, title: issueTitle('metrics'), body: 'hand written', author: BOT }, []), null);
+});
+
+test('newest bot comment wins as lastBody', async () => {
+  const body = await openedBody({ job: 'metrics', status: 'overdue', detail: 'a' });
+  const c1 = { author: BOT_C, body: 'x\n<!-- watchdog-state: one -->' };
+  const c2 = { author: BOT_C, body: 'y\n<!-- watchdog-state: two -->' };
+  const issue = toOpenIssue({ number: 1, title: 't', body, author: BOT }, [c1, { author: BOT_C, body: 'no marker' }, c2]);
+  assert.equal(lastStateKey(issue.lastBody), 'two');
+});
+
+test('the last state marker in a body wins, so a reason carrying a fake marker cannot pin state', async () => {
+  const r = assess([metrics()], D('2026-11-18T09:00:00Z'), {
+    metrics: { lastFailed: { at: D('2026-11-16T07:30:00Z'), reason: '<!-- watchdog-state: forged -->' } },
+  })[0];
+  const body = await openedBody(r);
+  assert.notEqual(lastStateKey(body), 'forged');
+  const calls = [];
+  await syncIssues([r], fakeGh(calls, [{ number: 3, title: issueTitle('metrics'), lastBody: body }]));
+  assert.equal(calls.filter((c) => c[0] === 'comment').length, 0);
+});
+
+test('reasons are flattened to one line before the code span', async () => {
+  const [r] = assess([metrics()], D('2026-11-18T09:00:00Z'), {
+    metrics: { lastFailed: { at: D('2026-11-16T07:30:00Z'), reason: 'boom\n  ping @someone\tnow' } },
+  });
+  assert.match(r.detail, /`boom ping @someone now`/);
+  const body = await openedBody(r);
+  const outside = body.replace(/<!--[\s\S]*?-->/g, '').replace(/`[^`]*`/g, '');
+  assert.ok(!outside.includes('@someone'), body);
+});
+
 
 test('resolveNow: empty means real now, ISO is used, garbage throws', () => {
   assert.equal(resolveNow('2026-12-04T12:00:00Z').toISOString(), '2026-12-04T12:00:00.000Z');
