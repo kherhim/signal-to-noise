@@ -9,7 +9,7 @@
  *
  *   ok:<ISO>            on time
  *   ok:<ISO>:late       more than LATE_HOURS after the slot
- *   failed:<ISO>:<why>  the job threw (reason flattened, max 100 chars)
+ *   failed:<ISO>:<why>  the job threw (reason redacted, flattened, max 100 chars)
  *
  * The heartbeat never decides the job's result: an unreadable variable means
  * the job runs, and a failed write is logged and ignored.
@@ -18,6 +18,7 @@
  * parseHeartbeat from here.
  */
 import { execFileSync } from 'node:child_process';
+import os from 'node:os';
 import { loadJobs } from './jobs.mjs';
 
 export const REPO = 'kherhim/signal-to-noise';
@@ -78,12 +79,26 @@ export function parseHeartbeat(value) {
   return { status: 'failed', at, late: false, reason: m[3] ?? '' };
 }
 
-const flatten = (s) => String(s ?? '').replace(/\s*[\r\n]+\s*/g, ' ').trim().slice(0, REASON_MAX);
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-export function formatHeartbeat({ status, at, late, reason }) {
+/**
+ * Make an error message safe for a heartbeat that may end up in public issues:
+ * flatten newlines, home directory to ~, mask credential-looking values and any
+ * long token-like run. Not truncated here; formatHeartbeat caps it afterwards.
+ */
+export function redactReason(text, { homedir = os.homedir() } = {}) {
+  let s = String(text ?? '').replace(/\s*[\r\n]+\s*/g, ' ').trim();
+  if (homedir && homedir.length > 1) s = s.replace(new RegExp(escapeRe(homedir.replace(/\/+$/, '')), 'g'), '~');
+  s = s.replace(/\b(Bearer|Basic)\s+[^\s"',;]+/gi, '$1 [redacted]');
+  s = s.replace(/\b([A-Za-z_]*(?:token|password|passwd|secret|api[_-]?key)[A-Za-z_]*)(\s*[=:]\s*)("[^"]*"|'[^']*'|[^\s&"',;]+)/gi, '$1$2[redacted]');
+  s = s.replace(/[A-Za-z0-9_-]{20,}/g, '[redacted]');
+  return s;
+}
+
+export function formatHeartbeat({ status, at, late, reason }, opts = {}) {
   const iso = at.toISOString();
   if (status === 'ok') return `ok:${iso}${late ? ':late' : ''}`;
-  if (status === 'failed') return `failed:${iso}:${flatten(reason)}`;
+  if (status === 'failed') return `failed:${iso}:${redactReason(reason, opts).slice(0, REASON_MAX)}`;
   throw new Error(`unknown heartbeat status ${status}`);
 }
 
@@ -116,8 +131,10 @@ const errText = (e) => (e && e.message) || String(e);
 
 /**
  * Run `fn` unless this period's heartbeat already says ok.
- * Resolves 'skipped' or 'ok'; if `fn` throws, the failure is written and the
- * original error rethrown (that is the 'failed' outcome).
+ * Resolves only 'skipped' or 'ok'; 'failed' is never a resolved value. If `fn`
+ * throws, a failed heartbeat is written (unless an ok for this period is
+ * already recorded, which is kept) and the original error is rethrown.
+ * @returns {Promise<'skipped' | 'ok'>}
  */
 export async function runWithHeartbeat(jobName, fn, deps = {}) {
   const {
@@ -159,6 +176,16 @@ export async function runWithHeartbeat(jobName, fn, deps = {}) {
     await fn();
   } catch (e) {
     error = e ?? new Error('job failed');
+  }
+  if (error) {
+    // Never downgrade an ok already recorded this period (the first read may
+    // have failed, or another run succeeded meanwhile).
+    let current = null;
+    try { current = parseHeartbeat(await readVar(variable)); } catch { /* unknown: write failed */ }
+    if (current && current.status === 'ok' && current.at.getTime() >= start.getTime()) {
+      say(`failed (${redactReason(errText(error)).slice(0, REASON_MAX)}), keeping this period's ok heartbeat ${current.at.toISOString()}`);
+      throw error;
+    }
   }
   const value = error
     ? formatHeartbeat({ status: 'failed', at: now, late, reason: errText(error) })

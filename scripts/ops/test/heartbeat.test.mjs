@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  periodStart, parseHeartbeat, formatHeartbeat, runWithHeartbeat, ghReadVar, ghWriteVar, LATE_HOURS,
+  periodStart, parseHeartbeat, formatHeartbeat, runWithHeartbeat, ghReadVar, ghWriteVar, LATE_HOURS, redactReason,
 } from '../heartbeat.mjs';
 
 const D = (s) => new Date(s);
@@ -76,7 +76,7 @@ test('a reason containing a newline is flattened and capped at 100 characters', 
   const v = formatHeartbeat({ status: 'failed', at, late: false, reason: 'line one\nline two\r\nthree' });
   assert.equal(v, 'failed:2026-11-16T06:30:00.000Z:line one line two three');
   assert.ok(!/[\r\n]/.test(v));
-  const long = formatHeartbeat({ status: 'failed', at, late: false, reason: 'x'.repeat(300) });
+  const long = formatHeartbeat({ status: 'failed', at, late: false, reason: 'ab '.repeat(100) });
   assert.equal(parseHeartbeat(long).reason.length, 100);
 });
 
@@ -85,6 +85,25 @@ test('parseHeartbeat tolerates the trailing newline gh prints and rejects junk',
   for (const v of [undefined, null, '', '   ', 'ok', 'ok:yesterday', 'done:2026-11-16T06:30:00.000Z', 'ok:2026-11-16T06:30:00.000Z:early', 'ok:2026-13-45T99:99:99.000Z']) {
     assert.equal(parseHeartbeat(v), null, String(v));
   }
+});
+
+test('failure reasons are redacted before truncation', () => {
+  const home = '/Users/x';
+  const r = (t) => redactReason(t, { homedir: home });
+  assert.equal(r('ENOENT: open /Users/x/Documents/s2n/.env'), 'ENOENT: open ~/Documents/s2n/.env');
+  assert.equal(r('401 from api: Authorization: Bearer abc.def-123'), '401 from api: Authorization: Bearer [redacted]');
+  assert.equal(r('GET /q?token=s3cr3t&x=1 failed'), 'GET /q?token=[redacted]&x=1 failed');
+  assert.equal(r('login password: hunter2 rejected'), 'login password: [redacted] rejected');
+  const tok = 'aB3_'.repeat(10); // 40 chars
+  assert.equal(r(`bad key ${tok} used`), 'bad key [redacted] used');
+  assert.equal(r('cloudflare down\nretry later'), 'cloudflare down retry later');
+  assert.equal(r('HTTP 503 from api.cloudflare.com'), 'HTTP 503 from api.cloudflare.com');
+  // Redaction happens before the 100-char cap, so a secret straddling the cap never leaks a prefix.
+  const v = formatHeartbeat({ status: 'failed', at: D('2026-11-16T06:30:00.000Z'), late: false, reason: 'x '.repeat(45) + 'Bearer ' + 'z'.repeat(60) }, { homedir: home });
+  assert.ok(!/zzzz/.test(v), v);
+  assert.ok(parseHeartbeat(v).reason.length <= 100);
+  // The home directory is redacted through formatHeartbeat too.
+  assert.match(formatHeartbeat({ status: 'failed', at: D('2026-11-16T06:30:00.000Z'), late: false, reason: 'at /Users/x/a.mjs' }, { homedir: home }), /:at ~\/a\.mjs$/);
 });
 
 // ---------- runWithHeartbeat ----------
@@ -146,6 +165,16 @@ test('heartbeat failure never masks the job result', async () => {
   const err = new Error('cloudflare down\nretry later');
   await assert.rejects(runWithHeartbeat('metrics', async () => { throw err; }, bad.deps), (e) => e === err);
   assert.equal(bad.store.HEARTBEAT_METRICS, 'failed:2026-11-16T07:00:00.000Z:cloudflare down retry later');
+
+  // fn throws after an ok was recorded this period (first read failed, or a
+  // concurrent run): the ok is kept, not downgraded to failed.
+  const kept = harness({ value: 'ok:2026-11-16T07:30:00.000Z', now: D('2026-11-16T08:00:00Z') });
+  let reads = 0;
+  kept.deps.readVar = async (name) => { reads++; if (reads === 1) throw new Error('network blip'); return kept.store[name]; };
+  await assert.rejects(runWithHeartbeat('metrics', async () => { throw err; }, kept.deps), (e) => e === err);
+  assert.equal(kept.writes.length, 0);
+  assert.equal(kept.store.HEARTBEAT_METRICS, 'ok:2026-11-16T07:30:00.000Z');
+  assert.ok(kept.logs.some((m) => /keeping/i.test(m)), kept.logs.join('\n'));
 
   // fn throws and the write throws too: still the job's error that surfaces.
   const both = harness({ value: undefined, now: D('2026-11-16T07:00:00Z'), writeThrows: true });
