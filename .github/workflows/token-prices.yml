@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      # The wrapper's temp worktree relies on checkout@v4 storing the token in .git/config (extraheader); re-check auth before upgrading checkout.
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
