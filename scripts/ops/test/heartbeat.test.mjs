@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  periodStart, parseHeartbeat, formatHeartbeat, runWithHeartbeat, ghReadVar, ghWriteVar, LATE_HOURS, redactReason, okCoversSlot,
+  periodStart, parseHeartbeat, formatHeartbeat, runWithHeartbeat, ghReadVar, ghWriteVar, LATE_HOURS, redactReason, okCoversSlot, macLogPath,
 } from '../heartbeat.mjs';
 
 const D = (s) => new Date(s);
@@ -164,7 +164,7 @@ test('heartbeat failure never masks the job result', async () => {
   const bad = harness({ value: undefined, now: D('2026-11-16T07:00:00Z') });
   const err = new Error('cloudflare down\nretry later');
   await assert.rejects(runWithHeartbeat('metrics', async () => { throw err; }, bad.deps), (e) => e === err);
-  assert.equal(bad.store.HEARTBEAT_METRICS, 'failed:2026-11-16T07:00:00.000Z:cloudflare down retry later');
+  assert.equal(bad.store.HEARTBEAT_METRICS, 'failed:2026-11-16T07:00:00.000Z:failed; see ~/Library/Logs/signal2noise-metrics.log');
 
   // fn throws after an ok was recorded this period (first read failed, or a
   // concurrent run): the ok is kept, not downgraded to failed.
@@ -292,4 +292,18 @@ test('okCoversSlot: at or after the slot, or within LATE_HOURS before it', () =>
   assert.equal(okCoversSlot(D('2026-11-16T01:45:00Z'), slot), true);
   assert.equal(okCoversSlot(D('2026-11-16T01:44:59Z'), slot), false);
   assert.equal(okCoversSlot(undefined, slot), false);
+});
+
+// ---------- failure reasons stay local (M6) ----------
+
+test('a failed heartbeat carries a fixed reason and the log path, never the error text', async () => {
+  assert.equal(macLogPath('humaniser-learn'), '~/Library/Logs/signal2noise-humaniser-learn.log');
+  const h = hlHarness(undefined);
+  const err = new Error('claude -p exited 1: model said "Draft: the quarterly envelope" token=abc123\n at /Users/x/a.mjs');
+  await assert.rejects(runWithHeartbeat('humaniser-learn', async () => { throw err; }, h.deps('2026-11-16T07:45:00Z')), (e) => e === err);
+  // Stored literally: the log path is not mangled by token redaction.
+  assert.equal(h.store.HEARTBEAT_HUMANISER_LEARN, 'failed:2026-11-16T07:45:00.000Z:failed; see ~/Library/Logs/signal2noise-humaniser-learn.log');
+  assert.equal(parseHeartbeat(h.store.HEARTBEAT_HUMANISER_LEARN).reason, 'failed; see ~/Library/Logs/signal2noise-humaniser-learn.log');
+  // The full error goes to the local log (launchd sends stdout there).
+  assert.ok(h.logs.some((m) => m.includes('model said "Draft: the quarterly envelope"')), h.logs.join('\n'));
 });

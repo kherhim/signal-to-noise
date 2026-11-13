@@ -3,13 +3,14 @@
  *
  * A Mac job fires at its weekly slot and again at a daily catch-up slot (and
  * at load). runWithHeartbeat runs the job at most once per cadence period: if
- * the job's repo variable already holds an ok heartbeat stamped at or after the
- * start of the current period, the run is skipped. Otherwise the job runs and
+ * the job's repo variable already holds an ok heartbeat that covers the start
+ * of the current period (stamped at or after it, or less than LATE_HOURS
+ * before it; see okCoversSlot), the run is skipped. Otherwise the job runs and
  * the outcome is written back as
  *
- *   ok:<ISO>            on time
- *   ok:<ISO>:late       more than LATE_HOURS after the slot
- *   failed:<ISO>:<why>  the job threw (reason redacted, flattened, max 100 chars)
+ *   ok:<ISO>                      on time
+ *   ok:<ISO>:late                 more than LATE_HOURS after the slot
+ *   failed:<ISO>:failed; see <log>  the job threw; the error stays in the local log
  *
  * The heartbeat never decides the job's result: an unreadable variable means
  * the job runs, and a failed write is logged and ignored.
@@ -89,6 +90,13 @@ export function parseHeartbeat(value) {
   }
   return { status: 'failed', at, late: false, reason: m[3] ?? '' };
 }
+
+/**
+ * Where a Mac job's launchd plist sends its output (StandardOutPath and
+ * StandardErrorPath, checked by ops/test/plists.test.mjs). A failed heartbeat
+ * points here instead of carrying the error, which may hold model output.
+ */
+export const macLogPath = (jobName) => `~/Library/Logs/signal2noise-${jobName}.log`;
 
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -198,8 +206,13 @@ export async function runWithHeartbeat(jobName, fn, deps = {}) {
       throw error;
     }
   }
+  // The heartbeat is public (the watchdog quotes it in an issue), so a failure
+  // records only a fixed category and the log path; the error itself stays in
+  // the local log. The fixed text is stored as is: redaction would mask the
+  // long file name.
+  if (error) say(`failed: ${errText(error)}`);
   const value = error
-    ? formatHeartbeat({ status: 'failed', at: now, late, reason: errText(error) })
+    ? `failed:${now.toISOString()}:failed; see ${macLogPath(jobName)}`
     : formatHeartbeat({ status: 'ok', at: now, late });
   try {
     await writeVar(variable, value);
