@@ -44,12 +44,17 @@ Confirm, in the dashboard:
 
 - **AI Crawl Control** (formerly AI Audit): the search and answer assistants
   above are *Allow*, not *Block*.
-- **Security → Settings → AI Crawler and Agent access policies**: Search,
-  Training and Agents all "Allow (do not block)" as of 13 Nov 2026 (training
-  crawlers are refused by robots.txt, not at the edge).
-- **Bot Fight Mode was found ON on 13 Nov 2026**, contrary to the note above.
-  Allowed bots and normal browsers still got 200 that day; left as is pending
-  the owner's decision.
+- **Security → Settings → AI Crawler and Agent access policies** (set 13 Nov
+  2026, owner: "my instructions prevail over Cloudflare's"): Search **Allow**,
+  Training **Block**, Agents **Allow**, every personal agent Allow. Bot
+  Preference Sync stays **off** so Cloudflare never rewrites robots.txt.
+  Training crawlers are now refused twice: by robots.txt and at the edge.
+- **Bot Fight Mode**: found ON on 13 Nov 2026 and switched OFF the same day to
+  match the decision above.
+
+Verified 13 Nov 2026 after these changes: GPTBot, ClaudeBot, CCBot, Bytespider
+→ 403; OAI-SearchBot, ChatGPT-User, Claude-SearchBot, PerplexityBot, Googlebot
+and a normal Safari UA → 200; live robots.txt identical to `public/robots.txt`.
 - **Managed robots.txt** is off, or it will prepend Disallow rules for AI
   crawlers to the file the origin serves.
 
