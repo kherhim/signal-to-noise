@@ -30,5 +30,13 @@
     "cadence": { "kind": "weekly", "weekday": 1, "hour_utc": 7, "minute": 45 },
     "grace_hours": 24,
     "heartbeat": { "variable": "HEARTBEAT_HUMANISER_LEARN" }
+  },
+  {
+    "name": "watchdog",
+    "runs_on": "actions",
+    "since": "2026-11-13",
+    "cadence": { "kind": "daily", "hour_utc": 5 },
+    "grace_hours": 48,
+    "heartbeat": { "workflow": "watchdog.yml" }
   }
 ]

@@ -1,0 +1,37 @@
+name: watchdog
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      pretend_now:
+        description: 'Verification only: judge the jobs as if it were this ISO time (e.g. 2026-12-04T12:00:00Z). Leave empty for now.'
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  actions: read
+  issues: write
+  contents: read
+
+concurrency:
+  group: watchdog
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - name: Check scheduled jobs and sync issues
+        run: node scripts/ops/watchdog.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VARS_JSON: ${{ toJSON(vars) }}
+          PRETEND_NOW: ${{ inputs.pretend_now }}
