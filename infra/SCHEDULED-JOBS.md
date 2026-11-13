@@ -161,8 +161,9 @@ it runs the job straight away.
   (`~/Documents/devProjects/signal2noise`). Keep it on an up-to-date branch, or
   the jobs run stale code. The plist guard stops them outright only on a branch
   that predates the heartbeat code.
-- If `humaniser-learn` pushes its branch and then fails to open the PR, a later
-  scheduled fire that day sees the branch, records ok and opens no PR. Check
-  the log, and open the PR by hand from the pushed branch.
+- If `humaniser-learn` pushes its branch and then fails to open the PR, later
+  scheduled fires that day fail too (the branch exists but has no PR), so the
+  watchdog raises it. To recover, open the PR by hand from the pushed branch,
+  or delete the branch and let the next catch-up run again.
 - The watchdog cannot see a Mac that is switched off for longer than the grace
   period; that shows as overdue, which is correct.

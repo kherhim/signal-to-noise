@@ -246,14 +246,32 @@ test('register words in base form match their regular inflections', () => {
 test("scheduled: today's branch already existing counts as done (no throw, no model, no failure note)", () => {
   const f = fixture();
   let modelCalls = 0;
-  const sh = (cmd, args) => { f.calls.push([cmd, ...args]); return args.includes('ls-remote') ? 'abc123\trefs/heads/humaniser-learn-2026-10-26\n' : ''; };
+  const sh = (cmd, args) => {
+    f.calls.push([cmd, ...args]);
+    if (args.includes('ls-remote')) return 'abc123\trefs/heads/humaniser-learn-2026-10-26\n';
+    if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'list') return 'https://github.com/x/y/pull/7\n';
+    return '';
+  };
   const deps = { ...f.deps([]), sh, runSkill: () => { modelCalls++; return { json: { items: [] } }; } };
   const r = runLearn({ scheduled: true, root: f.root, staging: f.staging, deps });
   assert.equal(r.already, true);
-  assert.equal(r.pr, null);
+  assert.equal(r.pr, 'https://github.com/x/y/pull/7');
   assert.equal(modelCalls, 0);
   assert.deepEqual(f.notes, []);
   assert.ok(!f.calls.some((c) => c.includes('worktree') && c.includes('add')));
+  const prList = f.calls.find((c) => c[0] === 'gh' && c[1] === 'pr' && c[2] === 'list');
+  assert.ok(prList.includes('--head') && prList.includes('humaniser-learn-2026-10-26'));
+  assert.ok(prList.includes('--state') && prList.includes('all'));
   // A manual run still refuses loudly.
   assert.throws(() => runLearn({ root: f.root, staging: f.staging, deps }), /already exists/);
+});
+
+test("scheduled: today's branch without a PR is a failure, not done (no model call)", () => {
+  const f = fixture();
+  let modelCalls = 0;
+  const sh = (cmd, args) => { f.calls.push([cmd, ...args]); return args.includes('ls-remote') ? 'abc123\trefs/heads/humaniser-learn-2026-10-26\n' : ''; };
+  const deps = { ...f.deps([]), sh, runSkill: () => { modelCalls++; return { json: { items: [] } }; } };
+  assert.throws(() => runLearn({ scheduled: true, root: f.root, staging: f.staging, deps }), /exists but has no PR/);
+  assert.equal(modelCalls, 0);
+  assert.ok(!f.calls.some((c) => c.includes('worktree') && c.includes('add')));
 });
