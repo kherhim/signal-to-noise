@@ -49,3 +49,23 @@ test('fails loudly when the snapshot file was not written', () => {
   assert.ok(!f.calls.some((c) => /^git -C \S+ add /.test(c)));
   assert.match(f.notes[0], /failed/);
 });
+
+import { makeNotify } from '../token-prices-monthly.mjs';
+
+test('prBody notes CI did not run only under GitHub Actions', () => {
+  const line = 'CI does not run on PRs opened by the workflow; tracker tests and the build passed before this PR was opened.';
+  assert.ok(prBody('2026-11', 'x\n', { actions: true }).includes(line));
+  assert.ok(!prBody('2026-11', 'x\n').includes(line));
+  assert.ok(!prBody('2026-11', 'x\n', { actions: false }).includes(line));
+});
+
+test('notify uses osascript on macOS and only logs elsewhere', () => {
+  const calls = [];
+  const sh = (cmd, args) => { calls.push([cmd, args]); return ''; };
+  makeNotify({ platform: 'darwin', sh })('hello');
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0][0], 'osascript');
+  makeNotify({ platform: 'linux', sh })('hello');
+  assert.equal(calls.length, 1);
+  assert.doesNotThrow(() => makeNotify({ platform: 'darwin', sh: () => { throw new Error('x'); } })('hello'));
+});
