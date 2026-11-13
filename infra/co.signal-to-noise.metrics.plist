@@ -3,19 +3,32 @@
 <plist version="1.0">
 <dict>
   <key>Label</key><string>co.signal-to-noise.metrics</string>
+  <!-- Weekly Monday 07:30, plus a daily 10:00 catch-up and a run at load.
+       --scheduled makes the script run at most once per week and write
+       HEARTBEAT_METRICS; extra fires in the same week skip. -->
   <key>ProgramArguments</key>
   <array>
     <string>/opt/homebrew/bin/node</string>
     <string>/Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/metrics-pull.mjs</string>
     <string>--linkedin</string>
+    <string>--scheduled</string>
   </array>
   <key>WorkingDirectory</key><string>/Users/himanshu.kher/Documents/devProjects/signal2noise</string>
+  <!-- gh (in ~/.local/bin) is spawned by name for the heartbeat. -->
+  <key>EnvironmentVariables</key><dict><key>PATH</key><string>/Users/himanshu.kher/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
+  <key>RunAtLoad</key><true/>
   <key>StartCalendarInterval</key>
-  <dict>
-    <key>Weekday</key><integer>1</integer>
-    <key>Hour</key><integer>7</integer>
-    <key>Minute</key><integer>30</integer>
-  </dict>
+  <array>
+    <dict>
+      <key>Weekday</key><integer>1</integer>
+      <key>Hour</key><integer>7</integer>
+      <key>Minute</key><integer>30</integer>
+    </dict>
+    <dict>
+      <key>Hour</key><integer>10</integer>
+      <key>Minute</key><integer>0</integer>
+    </dict>
+  </array>
   <key>StandardOutPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-metrics.log</string>
   <key>StandardErrorPath</key><string>/Users/himanshu.kher/Library/Logs/signal2noise-metrics.log</string>
 </dict>
