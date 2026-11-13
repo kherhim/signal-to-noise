@@ -15,7 +15,8 @@
 //
 // --dry: no model call, no git, no files written; prints the proposals file.
 // --scheduled: launchd only; skips if this week's run already succeeded and
-// writes the HEARTBEAT_HUMANISER_LEARN repo variable.
+// writes the HEARTBEAT_HUMANISER_LEARN repo variable. If today's branch already
+// exists it logs that and exits 0 (a manual run treats that as an error).
 // The repo is public. Gated text is unpublished drafting, so the output only
 // ever quotes the published sentence and shows the changed words of the
 // before; a shingle filter and the never-list check enforce that.
@@ -289,7 +290,7 @@ function notify(msg) {
 // Every side-effecting collaborator, so tests reach no network, model or git.
 export const LEARN_DEPS = { runSkill, sh, notify, loadLedger, loadNeverList, neverListHits, loadConfig, now: () => new Date() };
 
-export function runLearn({ dry = false, since = null, root = ROOT, staging = STAGING, deps: injected = {} } = {}) {
+export function runLearn({ dry = false, since = null, scheduled = false, root = ROOT, staging = STAGING, deps: injected = {} } = {}) {
   const deps = { ...LEARN_DEPS, ...injected };
   const today = isoDay(deps.now());
   const branch = `humaniser-learn-${today}`;
@@ -300,8 +301,15 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
     let base = root;
     if (!dry) {
       deps.sh('git', ['-C', root, 'fetch', '-q', 'origin', 'main']);
-      if (deps.sh('git', ['-C', root, 'branch', '--list', branch]).trim() || deps.sh('git', ['-C', root, 'ls-remote', '--heads', 'origin', branch]).trim())
+      if (deps.sh('git', ['-C', root, 'branch', '--list', branch]).trim() || deps.sh('git', ['-C', root, 'ls-remote', '--heads', 'origin', branch]).trim()) {
+        // A scheduled fire on a day that already made its proposals (a catch-up
+        // raced the slot) has nothing to do; only a manual run treats it as an error.
+        if (scheduled) {
+          log('learn', `branch ${branch} already exists; today's proposals were already made, nothing to do`);
+          return { md: null, count: 0, pr: null, already: true };
+        }
         throw new Error(`branch ${branch} already exists; today's proposals were already made`);
+      }
       wt = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'humaniser-learn-')), 'wt');
       deps.sh('git', ['-C', root, 'worktree', 'prune']); // a crashed run's registration
       deps.sh('git', ['-C', root, 'worktree', 'add', '-q', '-b', branch, wt, 'origin/main']);
@@ -472,8 +480,9 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
   if (since && !/^\d{4}-\d{2}-\d{2}$/.test(since)) { console.error('--since takes YYYY-MM-DD'); process.exit(2); }
   const dry = process.argv.includes('--dry');
   const learn = async () => {
-    const r = runLearn({ dry, since });
+    const r = runLearn({ dry, since, scheduled: process.argv.includes('--scheduled') });
     if (r.dry) console.log(r.md);
+    else if (r.already) console.log("Today's proposals were already made; nothing to do.");
     else console.log(r.pr ? `PR: ${r.pr}` : 'Nothing to propose; no PR.');
   };
   // --scheduled is passed only by the launchd job: at most one run per weekly

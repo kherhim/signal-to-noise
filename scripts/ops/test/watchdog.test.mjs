@@ -97,6 +97,19 @@ test('a success at or after the due time is ok even after a later failure', () =
   assert.equal(r.status, 'ok');
 });
 
+test('a Mac catch-up stamped just before the slot covers that slot (no false overdue)', () => {
+  // Missed week, then the BST 07:45 local fire ran at 07:00Z, before the 07:30Z slot.
+  // The 07:30Z slot fire then skips, so 07:00Z is the only stamp this week.
+  const ev = { metrics: { lastOk: D('2026-11-16T07:00:00Z') } };
+  assert.equal(one([metrics()], '2026-11-18T09:00:00Z', ev).status, 'ok');
+  assert.equal(one([metrics()], '2026-11-22T23:00:00Z', ev).status, 'ok');
+  // More than LATE_HOURS before the slot does not count.
+  assert.equal(one([metrics()], '2026-11-18T09:00:00Z', { metrics: { lastOk: D('2026-11-16T01:29:00Z') } }).status, 'overdue');
+  // Workflow jobs keep the strict rule: a run before the slot is not that slot's run.
+  const early = { 'token-prices': { lastOk: D('2026-11-01T10:00:00Z') } };
+  assert.equal(one([tokenPrices()], '2026-11-04T12:00:00Z', early).status, 'overdue');
+});
+
 test('new job is not overdue before its first due time', () => {
   const job = tokenPrices({ since: '2026-11-13' });
   // First due is 1 Dec 11:00; still ok inside the grace window.
@@ -474,10 +487,10 @@ test('resolveNow: empty means real now, ISO is used, garbage throws', () => {
   assert.throws(() => resolveNow('not a date'), /PRETEND_NOW/);
 });
 
-test('the real registry lists the watchdog last, daily 05:00 with 48 h grace', async () => {
+test('the real registry lists the watchdog, daily 05:00 with 48 h grace (order does not matter)', async () => {
   const { loadJobs } = await import('../jobs.mjs');
   const jobs = loadJobs();
-  assert.deepEqual(jobs.at(-1), {
+  assert.deepEqual(jobs.find((j) => j.name === 'watchdog'), {
     name: 'watchdog', runs_on: 'actions', since: '2026-11-13', cadence: { kind: 'daily', hour_utc: 5 }, grace_hours: 48, heartbeat: { workflow: 'watchdog.yml' },
   });
 });

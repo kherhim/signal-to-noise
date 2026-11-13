@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  periodStart, parseHeartbeat, formatHeartbeat, runWithHeartbeat, ghReadVar, ghWriteVar, LATE_HOURS, redactReason,
+  periodStart, parseHeartbeat, formatHeartbeat, runWithHeartbeat, ghReadVar, ghWriteVar, LATE_HOURS, redactReason, okCoversSlot,
 } from '../heartbeat.mjs';
 
 const D = (s) => new Date(s);
@@ -235,4 +235,61 @@ test('ghWriteVar passes the value as --body to the right repo', async () => {
   await ghWriteVar('HEARTBEAT_METRICS', 'ok:x', { exec: (cmd, args, opts) => { calls.push([cmd, args, opts]); return ''; } });
   assert.deepEqual(calls[0][1], ['variable', 'set', 'HEARTBEAT_METRICS', '--repo', 'kherhim/signal-to-noise', '--body', 'ok:x']);
   assert.ok(calls[0][2].timeout > 0);
+});
+
+// ---------- a catch-up just before the slot covers it (I1) ----------
+
+const HL = [{
+  name: 'humaniser-learn', runs_on: 'mac', since: '2026-11-13', cadence: { kind: 'weekly', weekday: 1, hour_utc: 7, minute: 45 }, grace_hours: 24,
+  heartbeat: { variable: 'HEARTBEAT_HUMANISER_LEARN' },
+}];
+
+function hlHarness(value) {
+  const store = { HEARTBEAT_HUMANISER_LEARN: value };
+  const writes = [];
+  const logs = [];
+  const deps = (now) => ({
+    now: D(now), jobs: HL, log: (m) => logs.push(m),
+    readVar: async (name) => store[name],
+    writeVar: async (name, v) => { writes.push([name, v]); store[name] = v; },
+  });
+  return { store, writes, logs, deps };
+}
+
+test('a catch-up before the slot covers that slot: the slot fire skips and never writes failed', async () => {
+  // A missed week: last ok was two Mondays ago. 2026-11-16 is a Monday.
+  const h = hlHarness('ok:2026-11-02T07:46:00.000Z');
+  let calls = 0;
+  // The fn would throw on a second run, as humaniser-learn does when today's branch exists.
+  const fn = async () => { calls++; if (calls > 1) throw new Error('branch humaniser-learn-2026-11-16 already exists'); };
+  assert.equal(await runWithHeartbeat('humaniser-learn', fn, h.deps('2026-11-16T07:00:00Z')), 'ok');
+  assert.equal(h.store.HEARTBEAT_HUMANISER_LEARN, 'ok:2026-11-16T07:00:00.000Z:late');
+  assert.equal(await runWithHeartbeat('humaniser-learn', fn, h.deps('2026-11-16T07:45:00Z')), 'skipped');
+  assert.equal(await runWithHeartbeat('humaniser-learn', fn, h.deps('2026-11-17T09:00:00Z')), 'skipped');
+  assert.equal(calls, 1);
+  assert.equal(h.writes.length, 1);
+  assert.ok(!h.writes.some(([, v]) => v.startsWith('failed')));
+});
+
+test('an ok more than LATE_HOURS before the slot does not cover it', async () => {
+  const h = hlHarness('ok:2026-11-16T01:44:00.000Z');
+  let calls = 0;
+  assert.equal(await runWithHeartbeat('humaniser-learn', async () => { calls++; }, h.deps('2026-11-16T07:45:00Z')), 'ok');
+  assert.equal(calls, 1);
+});
+
+test('a failed stamp just before the slot still re-runs at the slot', async () => {
+  const h = hlHarness('failed:2026-11-16T07:00:00.000Z:failed; see the log');
+  let calls = 0;
+  assert.equal(await runWithHeartbeat('humaniser-learn', async () => { calls++; }, h.deps('2026-11-16T07:45:00Z')), 'ok');
+  assert.equal(calls, 1);
+  assert.equal(h.store.HEARTBEAT_HUMANISER_LEARN, 'ok:2026-11-16T07:45:00.000Z');
+});
+
+test('okCoversSlot: at or after the slot, or within LATE_HOURS before it', () => {
+  const slot = D('2026-11-16T07:45:00Z');
+  assert.equal(okCoversSlot(D('2026-11-16T07:45:00Z'), slot), true);
+  assert.equal(okCoversSlot(D('2026-11-16T01:45:00Z'), slot), true);
+  assert.equal(okCoversSlot(D('2026-11-16T01:44:59Z'), slot), false);
+  assert.equal(okCoversSlot(undefined, slot), false);
 });

@@ -63,6 +63,17 @@ export function periodStart(cadence, now) {
   }
 }
 
+/**
+ * Does an ok stamped at `okAt` cover the slot at `slot`? It does when it is at
+ * or after the slot, or less than LATE_HOURS before it: a catch-up run that
+ * close to the next slot (in BST the 07:45 local fire lands at 06:45Z, before
+ * a 07:45Z slot) has done that slot's work too.
+ */
+export function okCoversSlot(okAt, slot) {
+  if (!(okAt instanceof Date)) return false;
+  return okAt.getTime() >= slot.getTime() - LATE_HOURS * 3600e3;
+}
+
 const HB_RE = /^(ok|failed):(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z)(?::([\s\S]*))?$/;
 
 /** Parse a heartbeat variable. Returns null when absent or malformed. */
@@ -165,7 +176,7 @@ export async function runWithHeartbeat(jobName, fn, deps = {}) {
   } catch (e) {
     say(`could not read ${variable} (${errText(e)}); running anyway`);
   }
-  if (hb && hb.status === 'ok' && hb.at.getTime() >= start.getTime()) {
+  if (hb && hb.status === 'ok' && okCoversSlot(hb.at, start)) {
     say(`already ran this period (${hb.at.toISOString()}, period from ${start.toISOString()}); skipping`);
     return 'skipped';
   }
@@ -182,7 +193,7 @@ export async function runWithHeartbeat(jobName, fn, deps = {}) {
     // have failed, or another run succeeded meanwhile).
     let current = null;
     try { current = parseHeartbeat(await readVar(variable)); } catch { /* unknown: write failed */ }
-    if (current && current.status === 'ok' && current.at.getTime() >= start.getTime()) {
+    if (current && current.status === 'ok' && okCoversSlot(current.at, start)) {
       say(`failed (${redactReason(errText(error)).slice(0, REASON_MAX)}), keeping this period's ok heartbeat ${current.at.toISOString()}`);
       throw error;
     }
