@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { loadJobs, validateJob } from '../../scripts/ops/jobs.mjs';
+import yaml from 'js-yaml';
+import { loadJobs, validateJob, scheduleProblems } from '../../scripts/ops/jobs.mjs';
+
+const WORKFLOWS = new URL('../../.github/workflows/', import.meta.url);
 
 const good = () => ({
   name: 'token-prices', runs_on: 'actions', since: '2026-11-13',
@@ -76,4 +79,45 @@ test('loadJobs throws naming the bad job and field, and rejects duplicates', () 
   assert.throws(() => loadJobs(write([good(), good()])), /duplicate.*token-prices/i);
   assert.throws(() => loadJobs(write({})), /array/);
   assert.equal(loadJobs(write([good(), mac()])).length, 2);
+});
+
+// ---------- workflow heartbeats point at real, matching workflows (I3) ----------
+
+test('every heartbeat.workflow exists under .github/workflows/', () => {
+  for (const j of loadJobs().filter((x) => x.heartbeat.workflow)) {
+    assert.ok(fs.existsSync(new URL(j.heartbeat.workflow, WORKFLOWS)), `${j.name}: .github/workflows/${j.heartbeat.workflow} is missing`);
+  }
+});
+
+test("each workflow's schedule crons match the job's cadence", () => {
+  for (const j of loadJobs().filter((x) => x.heartbeat.workflow)) {
+    const wf = yaml.load(fs.readFileSync(new URL(j.heartbeat.workflow, WORKFLOWS), 'utf8'));
+    assert.deepEqual(scheduleProblems(j, wf), [], j.name);
+  }
+});
+
+test('scheduleProblems catches a missing schedule and every mismatched cron field', () => {
+  const wf = (...crons) => ({ on: { schedule: crons.map((cron) => ({ cron })), workflow_dispatch: null } });
+  const has = (list, re) => assert.ok(list.some((p) => re.test(p)), `${re} in ${JSON.stringify(list)}`);
+  const monthly = good();
+  assert.deepEqual(scheduleProblems(monthly, wf('0 11 1 * *')), []);
+  has(scheduleProblems(monthly, { on: { workflow_dispatch: null } }), /no schedule/);
+  has(scheduleProblems(monthly, wf('5 11 1 * *')), /minute/);
+  has(scheduleProblems(monthly, wf('0 10 1 * *')), /hour/);
+  has(scheduleProblems(monthly, wf('0 11 2 * *')), /day of month/);
+  has(scheduleProblems(monthly, wf('0 11 1 * *', '0 12 1 * *')), /hour/);
+  has(scheduleProblems(monthly, wf('0 11 1 * 1')), /weekday/);
+  const q = { ...good(), cadence: { kind: 'quarterly', months: [2, 5, 8, 11], day: 1, hour_utc: 9 } };
+  assert.deepEqual(scheduleProblems(q, wf('0 9 1 11,2,8,5 *')), []);
+  has(scheduleProblems(q, wf('0 9 1 2,5,8 *')), /month/);
+  has(scheduleProblems(q, wf('0 9 1 * *')), /month/);
+  const weekly = { ...good(), cadence: { kind: 'weekly', weekday: 7, hour_utc: 6, minute: 30 } };
+  assert.deepEqual(scheduleProblems(weekly, wf('30 6 * * 0')), []);
+  assert.deepEqual(scheduleProblems(weekly, wf('30 6 * * 7')), []);
+  has(scheduleProblems(weekly, wf('30 6 * * 1')), /weekday/);
+  has(scheduleProblems(weekly, wf('30 6 1 * 0')), /day of month/);
+  const daily = { ...good(), cadence: { kind: 'daily', hour_utc: 5 } };
+  assert.deepEqual(scheduleProblems(daily, wf('0 5 * * *')), []);
+  has(scheduleProblems(daily, wf('0 5 * * 1-5')), /weekday/);
+  has(scheduleProblems(daily, wf('0 5 * *')), /five fields/);
 });

@@ -242,3 +242,18 @@ test('register words in base form match their regular inflections', () => {
   const v = vetItems([{ pair: 0, class: 'tell', register: [{ formal: 'purchase', plain: 'bought' }, { formal: 'utilise', plain: 'use' }] }], pairs);
   assert.deepEqual(v.register.map((r) => r.formal), ['purchase', 'utilise']);
 });
+
+test("scheduled: today's branch already existing counts as done (no throw, no model, no failure note)", () => {
+  const f = fixture();
+  let modelCalls = 0;
+  const sh = (cmd, args) => { f.calls.push([cmd, ...args]); return args.includes('ls-remote') ? 'abc123\trefs/heads/humaniser-learn-2026-10-26\n' : ''; };
+  const deps = { ...f.deps([]), sh, runSkill: () => { modelCalls++; return { json: { items: [] } }; } };
+  const r = runLearn({ scheduled: true, root: f.root, staging: f.staging, deps });
+  assert.equal(r.already, true);
+  assert.equal(r.pr, null);
+  assert.equal(modelCalls, 0);
+  assert.deepEqual(f.notes, []);
+  assert.ok(!f.calls.some((c) => c.includes('worktree') && c.includes('add')));
+  // A manual run still refuses loudly.
+  assert.throws(() => runLearn({ root: f.root, staging: f.staging, deps }), /already exists/);
+});

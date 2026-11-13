@@ -65,3 +65,39 @@ export function loadJobs(file = JOBS_FILE) {
   });
   return jobs;
 }
+
+/** A cron field as a sorted list of numbers, or '*'. Ranges and steps are left as text so they never match. */
+function cronField(f) {
+  if (f === '*') return '*';
+  if (!/^\d+(,\d+)*$/.test(f)) return f;
+  return [...new Set(f.split(',').map(Number))].sort((a, b) => a - b).join(',');
+}
+
+/**
+ * Check a parsed workflow (js-yaml output) against a workflow job's cadence:
+ * it needs at least one on.schedule cron, and every cron must fire exactly at
+ * the cadence's slots (UTC). Returns a list of problems; empty means it matches.
+ */
+export function scheduleProblems(job, workflow) {
+  const crons = (workflow?.on?.schedule ?? []).map((s) => String(s?.cron ?? '').trim());
+  if (!crons.length) return [`${job.heartbeat.workflow} has no schedule trigger`];
+  const c = job.cadence;
+  const want = {
+    minute: String(c.minute ?? 0),
+    hour: String(c.hour_utc),
+    'day of month': c.kind === 'monthly' || c.kind === 'quarterly' ? String(c.day) : '*',
+    month: c.kind === 'quarterly' ? cronField(c.months.join(',')) : '*',
+    weekday: c.kind === 'weekly' ? String(c.weekday % 7) : '*',
+  };
+  const p = [];
+  for (const cron of crons) {
+    const f = cron.split(/\s+/);
+    if (f.length !== 5) { p.push(`cron "${cron}" must have five fields`); continue; }
+    const got = { minute: cronField(f[0]), hour: cronField(f[1]), 'day of month': cronField(f[2]), month: cronField(f[3]), weekday: cronField(f[4]) };
+    if (got.weekday === '7') got.weekday = '0'; // cron allows 0 or 7 for Sunday
+    for (const [field, v] of Object.entries(want)) {
+      if (got[field] !== v) p.push(`cron "${cron}": ${field} is ${got[field]}, cadence needs ${v}`);
+    }
+  }
+  return p;
+}

@@ -8,14 +8,15 @@
        inside a short dark wake, too short for a headless Claude run.
        Monday 07:45, plus a daily 10:00 catch-up and a run at load; --scheduled
        runs it at most once per week and writes HEARTBEAT_HUMANISER_LEARN. -->
+  <!-- launchd runs whatever branch the checkout is on. The guard refuses to
+       start (exit 1, one line in the log) when scripts/ops/heartbeat.mjs is
+       absent, since an older branch would ignore --scheduled and run at every
+       fire; otherwise it execs the command unchanged. -->
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/bin/caffeinate</string>
-    <string>-s</string>
-    <string>-i</string>
-    <string>/opt/homebrew/bin/node</string>
-    <string>/Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/line/humaniser-learn.mjs</string>
-    <string>--scheduled</string>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>test -f /Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/ops/heartbeat.mjs || { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) co.signal-to-noise.humaniser-learn: not run; scripts/ops/heartbeat.mjs is missing in /Users/himanshu.kher/Documents/devProjects/signal2noise, so the checkout is on a branch older than the heartbeat work and --scheduled would be ignored. Check out main there."; exit 1; }; exec /usr/bin/caffeinate -s -i /opt/homebrew/bin/node /Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/line/humaniser-learn.mjs --scheduled</string>
   </array>
   <key>WorkingDirectory</key><string>/Users/himanshu.kher/Documents/devProjects/signal2noise</string>
   <!-- claude (in ~/.local/bin), git and gh are spawned by name. -->

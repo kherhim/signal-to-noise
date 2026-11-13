@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { healthLines, launchdLines, readVars, runHealth, UNREACHABLE } from '../health-line.mjs';
+import { healthLines, launchdLines, readVars, runHealth, UNREACHABLE, WORKFLOW_MISSING } from '../health-line.mjs';
 
 const D = (s) => new Date(s);
 const NOW = D('2026-12-08T09:00:00Z');
@@ -15,12 +15,12 @@ const line = (jobs, results, issues = [], now = NOW) => healthLines(results, iss
 
 test('ok line: last ok and next due', () => {
   const r = [{ job: 'token-prices', status: 'ok', detail: 'Last success Tue 1 Dec 2026, 11:02 UTC.' }];
-  assert.deepEqual(line([tp], r), ['✅ token-prices: last ok 1 Dec 11:02, next due 1 Jan']);
+  assert.deepEqual(line([tp], r), ['✅ token-prices: last ok 1 Dec 11:02 UTC, next due 1 Jan']);
 });
 
 test('ok line for a weekly job uses a weekday', () => {
   const r = [{ job: 'metrics', status: 'ok', detail: 'Last success Mon 7 Dec 2026, 07:31 UTC.' }];
-  assert.deepEqual(line([metrics], r), ['✅ metrics: last ok 7 Dec 07:31, next due Mon 14 Dec']);
+  assert.deepEqual(line([metrics], r), ['✅ metrics: last ok 7 Dec 07:31 UTC, next due Mon 14 Dec']);
 });
 
 test('ok but not due yet', () => {
@@ -31,7 +31,7 @@ test('ok but not due yet', () => {
 test('overdue line carries the issue number', () => {
   const r = [{ job: 'metrics', status: 'overdue', detail: 'Due Mon 7 Dec 2026, 07:30 UTC, with 24 hours grace. No success on record.' }];
   assert.deepEqual(line([metrics], r, [{ number: 61, title: 'Scheduled job needs attention: metrics', job: 'metrics' }]),
-    ['❌ metrics: overdue since Mon 7 Dec 07:30 (issue #61)']);
+    ['❌ metrics: overdue since Mon 7 Dec 07:30 UTC (issue #61)']);
 });
 
 test('issue matched by exact title when no job field; other jobs ignored', () => {
@@ -42,17 +42,17 @@ test('issue matched by exact title when no job field; other jobs ignored', () =>
 
 test('overdue with no open issue omits the suffix', () => {
   const r = [{ job: 'metrics', status: 'overdue', detail: 'Due Mon 7 Dec 2026, 07:30 UTC, with 24 hours grace. x' }];
-  assert.deepEqual(line([metrics], r), ['❌ metrics: overdue since Mon 7 Dec 07:30']);
+  assert.deepEqual(line([metrics], r), ['❌ metrics: overdue since Mon 7 Dec 07:30 UTC']);
 });
 
 test('failed line', () => {
   const r = [{ job: 'token-prices', status: 'failed', detail: 'Due Tue 1 Dec 2026, 11:00 UTC, with 48 hours grace. The latest run failed: x' }];
-  assert.deepEqual(line([tp], r, [{ number: 9, title: '', job: 'token-prices' }]), ['❌ token-prices: failing since Tue 1 Dec 11:00 (issue #9)']);
+  assert.deepEqual(line([tp], r, [{ number: 9, title: '', job: 'token-prices' }]), ['❌ token-prices: failing since Tue 1 Dec 11:00 UTC (issue #9)']);
 });
 
 test('never-run line', () => {
   const r = [{ job: 'metrics', status: 'never-run', detail: 'Due Mon 7 Dec 2026, 07:30 UTC, with 24 hours grace. No run on record since it was added.' }];
-  assert.deepEqual(line([metrics], r), ['❌ metrics: never run, due since Mon 7 Dec 07:30']);
+  assert.deepEqual(line([metrics], r), ['❌ metrics: never run, due since Mon 7 Dec 07:30 UTC']);
 });
 
 test('paused line', () => {
@@ -62,7 +62,7 @@ test('paused line', () => {
 
 test('watchdog gets a line like any job (it never has an issue)', () => {
   const r = [{ job: 'watchdog', status: 'overdue', detail: 'Due Sun 6 Dec 2026, 05:00 UTC, with 48 hours grace. Last success Fri 4 Dec 2026, 05:00 UTC.' }];
-  assert.deepEqual(line([wd], r), ['❌ watchdog: overdue since Sun 6 Dec 05:00']);
+  assert.deepEqual(line([wd], r), ['❌ watchdog: overdue since Sun 6 Dec 05:00 UTC']);
 });
 
 test('launchd section: loaded and missing, mac jobs only, via injected exec', () => {
@@ -118,6 +118,57 @@ test('runHealth: happy path prints job lines then launchd section', async () => 
     exec: () => {},
   });
   assert.equal(out.code, 0);
-  assert.equal(out.lines[0], '✅ metrics: last ok 7 Dec 07:31, next due Mon 14 Dec');
+  assert.equal(out.lines[0], '✅ metrics: last ok 7 Dec 07:31 UTC, next due Mon 14 Dec');
   assert.deepEqual(out.lines.slice(1), ['launchd:', '✅ co.signal-to-noise.metrics: loaded']);
+});
+
+test('runHealth: a workflow GitHub does not know is named as such, not as unreachable', async () => {
+  const bad = { ...tp, heartbeat: { workflow: 'token-price.yml' } };
+  const out = await runHealth({
+    jobs: [bad], now: NOW, uid: 501,
+    readVar: () => '',
+    evidenceGh: (vars) => ({
+      vars,
+      listRuns: async (wf) => {
+        const e = new Error('Command failed: gh run list');
+        e.stderr = `HTTP 404: workflow ${wf} not found on the default branch (https://api.github.com/repos/o/r/actions/workflows/${wf})`;
+        throw e;
+      },
+    }),
+    issueGh: { listOpen: async () => [] },
+    exec: () => {},
+  });
+  assert.equal(out.code, 1);
+  assert.equal(out.lines.length, 1);
+  assert.equal(out.lines[0], `${WORKFLOW_MISSING} token-prices: token-price.yml. Fix heartbeat.workflow in ops/jobs.json.`);
+  assert.ok(!out.lines[0].includes(UNREACHABLE));
+});
+
+test('runHealth: a network failure listing runs is still "could not reach GitHub"', async () => {
+  const out = await runHealth({
+    jobs: [tp], now: NOW, uid: 501,
+    readVar: () => '',
+    evidenceGh: (vars) => ({ vars, listRuns: async () => { const e = new Error('x'); e.stderr = 'dial tcp: lookup api.github.com: no such host'; throw e; } }),
+    issueGh: { listOpen: async () => [] },
+    exec: () => {},
+  });
+  assert.equal(out.code, 1);
+  assert.match(out.lines[0], new RegExp(`^${UNREACHABLE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+});
+
+test('an ok heartbeat flagged late shows (late) on the line', async () => {
+  const r = [{ job: 'metrics', status: 'ok', detail: 'Last success Mon 7 Dec 2026, 13:31 UTC.' }];
+  assert.deepEqual(healthLines(r, [], NOW, [metrics], { metrics: { lastOk: D('2026-12-07T13:31:00Z'), lastOkLate: true } }),
+    ['✅ metrics: last ok 7 Dec 13:31 UTC (late), next due Mon 14 Dec']);
+  assert.deepEqual(healthLines(r, [], NOW, [metrics], { metrics: { lastOk: D('2026-12-07T13:31:00Z') } }),
+    ['✅ metrics: last ok 7 Dec 13:31 UTC, next due Mon 14 Dec']);
+  // End to end from the heartbeat variable.
+  const out = await runHealth({
+    jobs: [metrics], now: NOW, uid: 501,
+    readVar: () => 'ok:2026-12-07T13:31:00.000Z:late\n',
+    evidenceGh: (vars) => ({ vars, listRuns: async () => [] }),
+    issueGh: { listOpen: async () => [] },
+    exec: () => {},
+  });
+  assert.equal(out.lines[0], '✅ metrics: last ok 7 Dec 13:31 UTC (late), next due Mon 14 Dec');
 });

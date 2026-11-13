@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  periodStart, parseHeartbeat, formatHeartbeat, runWithHeartbeat, ghReadVar, ghWriteVar, LATE_HOURS, redactReason,
+  periodStart, parseHeartbeat, formatHeartbeat, runWithHeartbeat, ghReadVar, ghWriteVar, LATE_HOURS, redactReason, okCoversSlot, macLogPath,
 } from '../heartbeat.mjs';
 
 const D = (s) => new Date(s);
@@ -164,7 +164,7 @@ test('heartbeat failure never masks the job result', async () => {
   const bad = harness({ value: undefined, now: D('2026-11-16T07:00:00Z') });
   const err = new Error('cloudflare down\nretry later');
   await assert.rejects(runWithHeartbeat('metrics', async () => { throw err; }, bad.deps), (e) => e === err);
-  assert.equal(bad.store.HEARTBEAT_METRICS, 'failed:2026-11-16T07:00:00.000Z:cloudflare down retry later');
+  assert.equal(bad.store.HEARTBEAT_METRICS, 'failed:2026-11-16T07:00:00.000Z:failed; see ~/Library/Logs/signal2noise-metrics.log');
 
   // fn throws after an ok was recorded this period (first read failed, or a
   // concurrent run): the ok is kept, not downgraded to failed.
@@ -235,4 +235,75 @@ test('ghWriteVar passes the value as --body to the right repo', async () => {
   await ghWriteVar('HEARTBEAT_METRICS', 'ok:x', { exec: (cmd, args, opts) => { calls.push([cmd, args, opts]); return ''; } });
   assert.deepEqual(calls[0][1], ['variable', 'set', 'HEARTBEAT_METRICS', '--repo', 'kherhim/signal-to-noise', '--body', 'ok:x']);
   assert.ok(calls[0][2].timeout > 0);
+});
+
+// ---------- a catch-up just before the slot covers it (I1) ----------
+
+const HL = [{
+  name: 'humaniser-learn', runs_on: 'mac', since: '2026-11-13', cadence: { kind: 'weekly', weekday: 1, hour_utc: 7, minute: 45 }, grace_hours: 24,
+  heartbeat: { variable: 'HEARTBEAT_HUMANISER_LEARN' },
+}];
+
+function hlHarness(value) {
+  const store = { HEARTBEAT_HUMANISER_LEARN: value };
+  const writes = [];
+  const logs = [];
+  const deps = (now) => ({
+    now: D(now), jobs: HL, log: (m) => logs.push(m),
+    readVar: async (name) => store[name],
+    writeVar: async (name, v) => { writes.push([name, v]); store[name] = v; },
+  });
+  return { store, writes, logs, deps };
+}
+
+test('a catch-up before the slot covers that slot: the slot fire skips and never writes failed', async () => {
+  // A missed week: last ok was two Mondays ago. 2026-11-16 is a Monday.
+  const h = hlHarness('ok:2026-11-02T07:46:00.000Z');
+  let calls = 0;
+  // The fn would throw on a second run, as humaniser-learn does when today's branch exists.
+  const fn = async () => { calls++; if (calls > 1) throw new Error('branch humaniser-learn-2026-11-16 already exists'); };
+  assert.equal(await runWithHeartbeat('humaniser-learn', fn, h.deps('2026-11-16T07:00:00Z')), 'ok');
+  assert.equal(h.store.HEARTBEAT_HUMANISER_LEARN, 'ok:2026-11-16T07:00:00.000Z:late');
+  assert.equal(await runWithHeartbeat('humaniser-learn', fn, h.deps('2026-11-16T07:45:00Z')), 'skipped');
+  assert.equal(await runWithHeartbeat('humaniser-learn', fn, h.deps('2026-11-17T09:00:00Z')), 'skipped');
+  assert.equal(calls, 1);
+  assert.equal(h.writes.length, 1);
+  assert.ok(!h.writes.some(([, v]) => v.startsWith('failed')));
+});
+
+test('an ok more than LATE_HOURS before the slot does not cover it', async () => {
+  const h = hlHarness('ok:2026-11-16T01:44:00.000Z');
+  let calls = 0;
+  assert.equal(await runWithHeartbeat('humaniser-learn', async () => { calls++; }, h.deps('2026-11-16T07:45:00Z')), 'ok');
+  assert.equal(calls, 1);
+});
+
+test('a failed stamp just before the slot still re-runs at the slot', async () => {
+  const h = hlHarness('failed:2026-11-16T07:00:00.000Z:failed; see the log');
+  let calls = 0;
+  assert.equal(await runWithHeartbeat('humaniser-learn', async () => { calls++; }, h.deps('2026-11-16T07:45:00Z')), 'ok');
+  assert.equal(calls, 1);
+  assert.equal(h.store.HEARTBEAT_HUMANISER_LEARN, 'ok:2026-11-16T07:45:00.000Z');
+});
+
+test('okCoversSlot: at or after the slot, or within LATE_HOURS before it', () => {
+  const slot = D('2026-11-16T07:45:00Z');
+  assert.equal(okCoversSlot(D('2026-11-16T07:45:00Z'), slot), true);
+  assert.equal(okCoversSlot(D('2026-11-16T01:45:00Z'), slot), true);
+  assert.equal(okCoversSlot(D('2026-11-16T01:44:59Z'), slot), false);
+  assert.equal(okCoversSlot(undefined, slot), false);
+});
+
+// ---------- failure reasons stay local (M6) ----------
+
+test('a failed heartbeat carries a fixed reason and the log path, never the error text', async () => {
+  assert.equal(macLogPath('humaniser-learn'), '~/Library/Logs/signal2noise-humaniser-learn.log');
+  const h = hlHarness(undefined);
+  const err = new Error('claude -p exited 1: model said "Draft: the quarterly envelope" token=abc123\n at /Users/x/a.mjs');
+  await assert.rejects(runWithHeartbeat('humaniser-learn', async () => { throw err; }, h.deps('2026-11-16T07:45:00Z')), (e) => e === err);
+  // Stored literally: the log path is not mangled by token redaction.
+  assert.equal(h.store.HEARTBEAT_HUMANISER_LEARN, 'failed:2026-11-16T07:45:00.000Z:failed; see ~/Library/Logs/signal2noise-humaniser-learn.log');
+  assert.equal(parseHeartbeat(h.store.HEARTBEAT_HUMANISER_LEARN).reason, 'failed; see ~/Library/Logs/signal2noise-humaniser-learn.log');
+  // The full error goes to the local log (launchd sends stdout there).
+  assert.ok(h.logs.some((m) => m.includes('model said "Draft: the quarterly envelope"')), h.logs.join('\n'));
 });

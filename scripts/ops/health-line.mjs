@@ -7,7 +7,8 @@
  * gets an issue, so this line is how its own outage is seen.
  *
  * Usage: node scripts/ops/health-line.mjs   (needs the gh CLI signed in; read-only)
- * Exits 1 with a single line when GitHub cannot be reached.
+ * Exits 1 with a single line when GitHub cannot be reached, or when a job's
+ * heartbeat.workflow names a workflow GitHub does not have.
  */
 import { execFileSync } from 'node:child_process';
 import { loadJobs } from './jobs.mjs';
@@ -16,13 +17,33 @@ import { assess, gatherEvidence, cliEvidenceGh, cliIssueGh, firstDueOnOrAfter, i
 import { isMain } from '../lib/is-main.mjs';
 
 export const UNREACHABLE = 'Health check could not reach GitHub (gh failed). Check `gh auth status` and the network, then run it again.';
+export const WORKFLOW_MISSING = 'Health check: GitHub has no workflow for job';
 export const LABEL_PREFIX = 'co.signal-to-noise.';
+
+/** gh's error for an unknown workflow file (HTTP 404 "workflow x.yml not found ..."). */
+const NOT_FOUND_RE = /HTTP 404|could not find any workflows|workflow \S+ not found/i;
+
+/** Wrap listRuns so a failure says which job and workflow it was about. */
+function tagWorkflowErrors(gh, jobs) {
+  return {
+    ...gh,
+    async listRuns(workflow, status) {
+      try {
+        return await gh.listRuns(workflow, status);
+      } catch (e) {
+        if (e && typeof e === 'object') e.workflow = { workflow, job: jobs.find((j) => j.heartbeat?.workflow === workflow)?.name };
+        throw e;
+      }
+    },
+  };
+}
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const pad = (n) => String(n).padStart(2, '0');
 const dm = (d) => `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
-const dmTime = (d) => `${dm(d)} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+// Every clock time printed is UTC and says so; the registry slots are UTC.
+const dmTime = (d) => `${dm(d)} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`;
 const dayDmTime = (d) => `${DAYS[d.getUTCDay()]} ${dmTime(d)}`;
 
 /** "Mon 7 Dec 2026, 07:30 UTC" (watchdog's formatWhen) back to a Date. */
@@ -49,7 +70,8 @@ function nextDue(cadence, now) {
 
 const dayOnly = (cadence, d) => (cadence.kind === 'weekly' || cadence.kind === 'daily' ? `${DAYS[d.getUTCDay()]} ${dm(d)}` : dm(d));
 
-export function healthLines(results, openIssues, now, jobs = loadJobs()) {
+/** `evidence` (from gatherEvidence) is optional; it supplies the late flag of a Mac job's last ok. */
+export function healthLines(results, openIssues, now, jobs = loadJobs(), evidence = {}) {
   const byName = new Map(jobs.map((j) => [j.name, j]));
   return results.map((r) => {
     const cadence = byName.get(r.job)?.cadence;
@@ -63,7 +85,8 @@ export function healthLines(results, openIssues, now, jobs = loadJobs()) {
         const ok = after(r.detail, 'Last success ');
         if (ok) {
           const next = cadence ? nextDue(cadence, now) : undefined;
-          return `✅ ${r.job}: last ok ${dmTime(ok)}${next ? `, next due ${dayOnly(cadence, next)}` : ''}`;
+          const late = evidence[r.job]?.lastOkLate ? ' (late)' : '';
+          return `✅ ${r.job}: last ok ${dmTime(ok)}${late}${next ? `, next due ${dayOnly(cadence, next)}` : ''}`;
         }
         const first = after(r.detail, 'First due ');
         return `✅ ${r.job}: not run yet${first ? `, first due ${dm(first)}` : ''}`;
@@ -111,10 +134,14 @@ export async function runHealth({ jobs, now, readVar, evidenceGh, issueGh, exec,
   let lines;
   try {
     const vars = readVars(jobs, readVar);
-    const evidence = await gatherEvidence(jobs, evidenceGh(vars));
+    const evidence = await gatherEvidence(jobs, tagWorkflowErrors(evidenceGh(vars), jobs));
     const results = assess(jobs, now, evidence);
-    lines = healthLines(results, await issueGh.listOpen(), now, jobs);
+    lines = healthLines(results, await issueGh.listOpen(), now, jobs, evidence);
   } catch (e) {
+    const raw = `${e?.stderr ?? ''} ${e?.message ?? ''}`;
+    if (e?.workflow && NOT_FOUND_RE.test(raw)) {
+      return { lines: [`${WORKFLOW_MISSING} ${e.workflow.job}: ${e.workflow.workflow}. Fix heartbeat.workflow in ops/jobs.json.`], code: 1 };
+    }
     const why = String(e?.stderr || e?.message || '').replace(/\s+/g, ' ').trim().slice(0, 120);
     return { lines: [why ? `${UNREACHABLE} (${why})` : UNREACHABLE], code: 1 };
   }

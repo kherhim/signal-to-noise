@@ -8,7 +8,8 @@
  *
  * A job is judged against the latest slot whose grace has already expired,
  * lastDue(cadence, now - grace). It is unhealthy when that slot is on or after
- * the job's first due time and there is no success at or after it.
+ * the job's first due time and there is no success at or after it (for a Mac
+ * job, an ok less than LATE_HOURS before the slot also counts; see okCoversSlot).
  *
  * The watchdog job itself is assessed but never gets an issue; the Monday
  * health line reports it. Paused jobs never alert and their issues are left
@@ -19,7 +20,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { loadJobs } from './jobs.mjs';
-import { periodStart, parseHeartbeat, REPO } from './heartbeat.mjs';
+import { periodStart, parseHeartbeat, okCoversSlot, REPO } from './heartbeat.mjs';
 import { isMain } from '../lib/is-main.mjs';
 
 export const ISSUE_PREFIX = 'Scheduled job needs attention: ';
@@ -64,7 +65,8 @@ export function formatWhen(d) {
 const hours = (n) => `${n} hour${n === 1 ? '' : 's'}`;
 
 /**
- * Judge each job. `evidence[name]` may hold lastOk (Date) and lastFailed ({at, reason}).
+ * Judge each job. `evidence[name]` may hold lastOk (Date), lastOkLate (true when
+ * a Mac heartbeat carries :late; the health line shows it) and lastFailed ({at, reason}).
  * The detail text depends only on the slot and the evidence, never on `now`
  * itself, so an unchanged state gives an identical detail day after day.
  */
@@ -81,7 +83,10 @@ export function assess(jobs, now, evidence = {}) {
     if (due.getTime() < first.getTime()) {
       return { job: job.name, status: 'ok', detail: lastOk ? okLine : `Not due yet. First due ${formatWhen(first)}.` };
     }
-    if (lastOk && lastOk.getTime() >= due.getTime()) return { job: job.name, status: 'ok', detail: okLine };
+    // A Mac job's catch-up can land just before the slot (in BST its 07:45
+    // local fire is 06:45Z) and then cover it, as runWithHeartbeat does.
+    const covered = job.heartbeat.variable ? okCoversSlot(lastOk, due) : lastOk && lastOk.getTime() >= due.getTime();
+    if (covered) return { job: job.name, status: 'ok', detail: okLine };
 
     const dueLine = `Due ${formatWhen(due)}, with ${hours(job.grace_hours)} grace.`;
     // A failure counts as this slot's outcome only if it happened at or after
@@ -214,7 +219,7 @@ export async function gatherEvidence(jobs, gh) {
       if (bad) ev.lastFailed = { at: new Date(bad.createdAt), reason: bad.url };
     } else {
       const hb = parseHeartbeat(gh.vars?.[job.heartbeat.variable]);
-      if (hb?.status === 'ok') ev.lastOk = hb.at;
+      if (hb?.status === 'ok') { ev.lastOk = hb.at; if (hb.late) ev.lastOkLate = true; }
       else if (hb?.status === 'failed') ev.lastFailed = { at: hb.at, reason: hb.reason };
     }
     out[job.name] = ev;
