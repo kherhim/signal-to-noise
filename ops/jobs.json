@@ -14,5 +14,21 @@
     "cadence": { "kind": "quarterly", "months": [2, 5, 8, 11], "day": 1, "hour_utc": 9 },
     "grace_hours": 48,
     "heartbeat": { "workflow": "hyperscalers-reminder.yml" }
+  },
+  {
+    "name": "metrics",
+    "runs_on": "mac",
+    "since": "2026-11-13",
+    "cadence": { "kind": "weekly", "weekday": 1, "hour_utc": 7, "minute": 30 },
+    "grace_hours": 24,
+    "heartbeat": { "variable": "HEARTBEAT_METRICS" }
+  },
+  {
+    "name": "humaniser-learn",
+    "runs_on": "mac",
+    "since": "2026-11-13",
+    "cadence": { "kind": "weekly", "weekday": 1, "hour_utc": 7, "minute": 45 },
+    "grace_hours": 24,
+    "heartbeat": { "variable": "HEARTBEAT_HUMANISER_LEARN" }
   }
 ]

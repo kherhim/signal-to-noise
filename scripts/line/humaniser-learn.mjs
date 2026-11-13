@@ -11,9 +11,11 @@
 // Nothing changes the checker until the owner merges the PR this opens. It
 // runs in a throwaway git worktree so the owner's checkout is never touched.
 //
-//   node scripts/line/humaniser-learn.mjs [--dry] [--since YYYY-MM-DD]
+//   node scripts/line/humaniser-learn.mjs [--dry] [--since YYYY-MM-DD] [--scheduled]
 //
 // --dry: no model call, no git, no files written; prints the proposals file.
+// --scheduled: launchd only; skips if this week's run already succeeded and
+// writes the HEARTBEAT_HUMANISER_LEARN repo variable.
 // The repo is public. Gated text is unpublished drafting, so the output only
 // ever quotes the published sentence and shows the changed words of the
 // before; a shingle filter and the never-list check enforce that.
@@ -27,6 +29,7 @@ import { scannableText } from './claudish.mjs';
 import { splitFrontmatter } from './md.mjs';
 import { loadConfig, loadLedger, loadNeverList, neverListHits } from './queue.mjs';
 import { STAGING } from './state.mjs';
+import { runWithHeartbeat } from '../ops/heartbeat.mjs';
 import { loadRegister, measureRates, ownerTexts, lineTexts, lineSlugs, pairRegex, OWNER_MAX } from './register.mjs';
 
 export const OWNER_MAX_PER_1K = OWNER_MAX; // register.mjs owns the limit
@@ -467,9 +470,17 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
   const si = process.argv.indexOf('--since');
   const since = si > 0 ? process.argv[si + 1] : null;
   if (since && !/^\d{4}-\d{2}-\d{2}$/.test(since)) { console.error('--since takes YYYY-MM-DD'); process.exit(2); }
-  try {
-    const r = runLearn({ dry: process.argv.includes('--dry'), since });
+  const dry = process.argv.includes('--dry');
+  const learn = async () => {
+    const r = runLearn({ dry, since });
     if (r.dry) console.log(r.md);
     else console.log(r.pr ? `PR: ${r.pr}` : 'Nothing to propose; no PR.');
+  };
+  // --scheduled is passed only by the launchd job: at most one run per weekly
+  // period (catch-up after a missed slot), recorded in HEARTBEAT_HUMANISER_LEARN.
+  // A dry run never touches the heartbeat; manual runs behave as before.
+  try {
+    if (process.argv.includes('--scheduled') && !dry) await runWithHeartbeat('humaniser-learn', learn);
+    else await learn();
   } catch { process.exit(1); }
 }
