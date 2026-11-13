@@ -81,7 +81,10 @@ export function assess(jobs, now, evidence = {}) {
 
     const dueLine = `Due ${formatWhen(due)}, with ${hours(job.grace_hours)} grace.`;
     if (lastFailed && (!lastOk || lastFailed.at.getTime() > lastOk.getTime())) {
-      const why = String(lastFailed.reason ?? '').trim() || 'no reason recorded';
+      const raw = String(lastFailed.reason ?? '').trim();
+      // A run URL stays bare so it is clickable; any other text goes in a code
+      // span so `@name` or `#12` in an error never pings or cross-links.
+      const why = !raw ? 'no reason recorded' : /^https:\/\/\S+$/.test(raw) ? raw : `\`${raw.replace(/`/g, "'")}\``;
       return { job: job.name, status: 'failed', detail: `${dueLine} The latest run failed: ${why} ${okLine}` };
     }
     if (!lastOk && !lastFailed) {

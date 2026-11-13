@@ -357,3 +357,33 @@ test('the real registry lists the watchdog last, daily 05:00 with 48 h grace', a
     name: 'watchdog', runs_on: 'actions', since: '2026-11-13', cadence: { kind: 'daily', hour_utc: 5 }, grace_hours: 48, heartbeat: { workflow: 'watchdog.yml' },
   });
 });
+
+test('failure reasons cannot mention people or issues in public bodies', async () => {
+  const [r] = assess([metrics()], D('2026-11-18T09:00:00Z'), {
+    metrics: { lastFailed: { at: D('2026-11-16T07:30:00Z'), reason: 'Cannot find module @scope/pkg, see #12 and `x`' } },
+  });
+  const calls = [];
+  await syncIssues([r], fakeGh(calls));
+  await syncIssues([r], fakeGh(calls, [{ number: 2, title: issueTitle('metrics') }]));
+  const bodies = calls.filter((c) => c[0] === 'open' || c[0] === 'comment').map((c) => c[2]);
+  assert.equal(bodies.length, 2);
+  for (const b of bodies) {
+    const outside = b.replace(/<!--[\s\S]*?-->/g, '').replace(/`[^`]*`/g, '');
+    assert.ok(!/@scope|#12/.test(outside), b);
+    assert.ok(b.includes("`Cannot find module @scope/pkg, see #12 and 'x'`"), b);
+  }
+});
+
+test('a run URL reason stays bare and clickable', () => {
+  const [r] = assess([tokenPrices()], D('2026-11-04T12:00:00Z'), {
+    'token-prices': { lastFailed: { at: D('2026-11-01T11:00:00Z'), reason: 'https://github.com/o/r/actions/runs/9' } },
+  });
+  assert.equal(r.status, 'failed');
+  assert.match(r.detail, / https:\/\/github\.com\/o\/r\/actions\/runs\/9 /);
+});
+
+test('a Mac failure alerts the next morning, inside grace (the failed stamp replaces the ok)', () => {
+  // Monday 16 Nov 07:30 run failed; the heartbeat now holds only the failure.
+  const r = one([metrics()], '2026-11-17T05:00:00Z', { metrics: { lastFailed: { at: D('2026-11-16T07:30:00Z'), reason: 'x' } } });
+  assert.equal(r.status, 'failed');
+});
