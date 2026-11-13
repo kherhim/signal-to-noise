@@ -1,0 +1,53 @@
+name: token-prices
+
+on:
+  schedule:
+    - cron: '0 11 1 * *'
+  workflow_dispatch:
+    inputs:
+      dry:
+        description: 'Print the price table only; write nothing and open no PR'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: token-prices
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # The wrapper's temp worktree relies on checkout@v4 storing the token in .git/config (extraheader); re-check auth before upgrading checkout.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - name: Dry run (price table only)
+        if: ${{ inputs.dry }}
+        run: node scripts/trackers/token-prices.mjs --dry
+      - name: Set git identity
+        if: ${{ !inputs.dry }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Tracker tests
+        if: ${{ !inputs.dry }}
+        run: npm run test:trackers
+      - name: Build
+        if: ${{ !inputs.dry }}
+        run: npm run build
+      - name: Snapshot and open PR
+        if: ${{ !inputs.dry }}
+        run: node scripts/trackers/token-prices-monthly.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
