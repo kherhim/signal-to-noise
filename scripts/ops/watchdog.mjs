@@ -224,13 +224,24 @@ export async function gatherEvidence(jobs, gh) {
 
 // ---------- CLI adapters ----------
 
-function gh(args) {
-  return execFileSync('gh', [...args, '--repo', REPO], {
+const ghExec = (cmd, args, opts) => execFileSync(cmd, args, opts);
+
+function makeGh(exec = ghExec) {
+  return (args) => exec('gh', [...args, '--repo', REPO], {
     encoding: 'utf8', timeout: GH_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'],
   });
 }
 
-export function cliEvidenceGh(vars) {
+/**
+ * gh passes --author to GraphQL `createdBy`, which only matches the bot login
+ * `github-actions[bot]` (`app/github-actions` and `github-actions` return
+ * nothing). The JSON then reports the author as `app/github-actions`, which
+ * toOpenIssue checks again on the client side.
+ */
+export const ISSUE_AUTHOR = 'github-actions[bot]';
+
+export function cliEvidenceGh(vars, { exec } = {}) {
+  const gh = makeGh(exec);
   return {
     vars,
     async listRuns(workflow, status) {
@@ -241,10 +252,11 @@ export function cliEvidenceGh(vars) {
   };
 }
 
-export function cliIssueGh() {
+export function cliIssueGh({ exec } = {}) {
+  const gh = makeGh(exec);
   return {
     async listOpen() {
-      const issues = JSON.parse(gh(['issue', 'list', '--state', 'open', '--author', 'app/github-actions',
+      const issues = JSON.parse(gh(['issue', 'list', '--state', 'open', '--author', ISSUE_AUTHOR,
         '--limit', '200', '--json', 'number,title,body,author']));
       const out = [];
       for (const i of issues) {

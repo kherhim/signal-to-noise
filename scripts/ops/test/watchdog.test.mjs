@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  lastDue, firstDueOnOrAfter, assess, syncIssues, gatherEvidence, formatWhen, issueTitle, varsFromEnv, resolveNow, toOpenIssue, lastStateKey,
+  lastDue, firstDueOnOrAfter, assess, syncIssues, gatherEvidence, formatWhen, issueTitle, varsFromEnv, resolveNow, toOpenIssue, lastStateKey, cliIssueGh, cliEvidenceGh,
 } from '../watchdog.mjs';
 import { periodStart } from '../heartbeat.mjs';
 import { loadJobs } from '../jobs.mjs';
@@ -510,4 +510,46 @@ test('a Mac failure alerts the next morning, inside grace (the failed stamp repl
   // Monday 16 Nov 07:30 run failed; the heartbeat now holds only the failure.
   const r = one([metrics()], '2026-11-17T05:00:00Z', { metrics: { lastFailed: { at: D('2026-11-16T07:30:00Z'), reason: 'x' } } });
   assert.equal(r.status, 'failed');
+});
+
+// ---------- CLI adapters (exec injected; no network) ----------
+
+function recordingExec(replies) {
+  const calls = [];
+  const exec = (cmd, args) => {
+    calls.push([cmd, ...args]);
+    const key = `${args[0]} ${args[1]}`;
+    return replies[key] ?? '[]';
+  };
+  return { calls, exec };
+}
+
+test('cliIssueGh.listOpen asks gh for issues by github-actions[bot], then reads each bot issue\'s comments', async () => {
+  const body = '<!-- watchdog-job: metrics -->\nx\n<!-- watchdog-state: s1 -->';
+  const { calls, exec } = recordingExec({
+    'issue list': JSON.stringify([
+      { number: 4, title: 't', body, author: { login: 'app/github-actions', is_bot: true } },
+      { number: 5, title: 't', body, author: { login: 'mallory', is_bot: false } },
+    ]),
+    'issue view': JSON.stringify({ comments: [{ author: { login: 'github-actions' }, body: '<!-- watchdog-state: s2 -->' }] }),
+  });
+  const open = await cliIssueGh({ exec }).listOpen();
+  const list = calls.find((c) => c[1] === 'issue' && c[2] === 'list');
+  const i = list.indexOf('--author');
+  assert.ok(i > 0);
+  assert.equal(list[i + 1], 'github-actions[bot]');
+  assert.deepEqual(list.slice(-2), ['--repo', 'kherhim/signal-to-noise']);
+  assert.deepEqual(calls.filter((c) => c[2] === 'view').map((c) => c[3]), ['4']);
+  assert.equal(open.length, 1);
+  assert.equal(open[0].job, 'metrics');
+  assert.equal(lastStateKey(open[0].lastBody), 's2');
+});
+
+test('cliEvidenceGh.listRuns reads main only, a 20-run window, with displayTitle', async () => {
+  const { calls, exec } = recordingExec({});
+  await cliEvidenceGh({}, { exec }).listRuns('token-prices.yml', 'success');
+  const a = calls[0];
+  assert.equal(a[a.indexOf('--branch') + 1], 'main');
+  assert.equal(a[a.indexOf('--limit') + 1], '20');
+  assert.equal(a[a.indexOf('--json') + 1], 'createdAt,url,displayTitle');
 });

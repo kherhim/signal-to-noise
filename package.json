@@ -34,6 +34,7 @@
     "tailwindcss": "4.1.18"
   },
   "devDependencies": {
+    "js-yaml": "^4.1.1",
     "pagefind": "^1.5.2",
     "turndown": "^7.2.4"
   }
