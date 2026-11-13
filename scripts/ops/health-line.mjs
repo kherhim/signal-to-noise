@@ -42,7 +42,8 @@ const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const pad = (n) => String(n).padStart(2, '0');
 const dm = (d) => `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
-const dmTime = (d) => `${dm(d)} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+// Every clock time printed is UTC and says so; the registry slots are UTC.
+const dmTime = (d) => `${dm(d)} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`;
 const dayDmTime = (d) => `${DAYS[d.getUTCDay()]} ${dmTime(d)}`;
 
 /** "Mon 7 Dec 2026, 07:30 UTC" (watchdog's formatWhen) back to a Date. */
@@ -69,7 +70,8 @@ function nextDue(cadence, now) {
 
 const dayOnly = (cadence, d) => (cadence.kind === 'weekly' || cadence.kind === 'daily' ? `${DAYS[d.getUTCDay()]} ${dm(d)}` : dm(d));
 
-export function healthLines(results, openIssues, now, jobs = loadJobs()) {
+/** `evidence` (from gatherEvidence) is optional; it supplies the late flag of a Mac job's last ok. */
+export function healthLines(results, openIssues, now, jobs = loadJobs(), evidence = {}) {
   const byName = new Map(jobs.map((j) => [j.name, j]));
   return results.map((r) => {
     const cadence = byName.get(r.job)?.cadence;
@@ -83,7 +85,8 @@ export function healthLines(results, openIssues, now, jobs = loadJobs()) {
         const ok = after(r.detail, 'Last success ');
         if (ok) {
           const next = cadence ? nextDue(cadence, now) : undefined;
-          return `✅ ${r.job}: last ok ${dmTime(ok)}${next ? `, next due ${dayOnly(cadence, next)}` : ''}`;
+          const late = evidence[r.job]?.lastOkLate ? ' (late)' : '';
+          return `✅ ${r.job}: last ok ${dmTime(ok)}${late}${next ? `, next due ${dayOnly(cadence, next)}` : ''}`;
         }
         const first = after(r.detail, 'First due ');
         return `✅ ${r.job}: not run yet${first ? `, first due ${dm(first)}` : ''}`;
@@ -133,7 +136,7 @@ export async function runHealth({ jobs, now, readVar, evidenceGh, issueGh, exec,
     const vars = readVars(jobs, readVar);
     const evidence = await gatherEvidence(jobs, tagWorkflowErrors(evidenceGh(vars), jobs));
     const results = assess(jobs, now, evidence);
-    lines = healthLines(results, await issueGh.listOpen(), now, jobs);
+    lines = healthLines(results, await issueGh.listOpen(), now, jobs, evidence);
   } catch (e) {
     const raw = `${e?.stderr ?? ''} ${e?.message ?? ''}`;
     if (e?.workflow && NOT_FOUND_RE.test(raw)) {

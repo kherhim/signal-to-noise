@@ -340,6 +340,13 @@ test('gatherEvidence: variable jobs parse the named heartbeat only', async () =>
   assert.equal(ev['humaniser-learn'].lastOk.toISOString(), '2026-11-16T07:45:00.000Z');
 });
 
+test('gatherEvidence: a late ok heartbeat is flagged lastOkLate; an on-time one is not', async () => {
+  const late = await gatherEvidence([metrics()], runsGh({}, { HEARTBEAT_METRICS: 'ok:2026-11-16T14:00:00.000Z:late' }));
+  assert.deepEqual(late.metrics, { lastOk: D('2026-11-16T14:00:00.000Z'), lastOkLate: true });
+  const onTime = await gatherEvidence([metrics()], runsGh({}, { HEARTBEAT_METRICS: 'ok:2026-11-16T07:31:00.000Z' }));
+  assert.deepEqual(onTime.metrics, { lastOk: D('2026-11-16T07:31:00.000Z') });
+});
+
 test('gatherEvidence: missing or malformed heartbeat variable is no evidence', async () => {
   const ev = await gatherEvidence([metrics()], runsGh({}, { HEARTBEAT_METRICS: 'garbage' }));
   assert.deepEqual(ev.metrics ?? {}, {});

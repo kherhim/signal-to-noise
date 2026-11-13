@@ -65,7 +65,8 @@ export function formatWhen(d) {
 const hours = (n) => `${n} hour${n === 1 ? '' : 's'}`;
 
 /**
- * Judge each job. `evidence[name]` may hold lastOk (Date) and lastFailed ({at, reason}).
+ * Judge each job. `evidence[name]` may hold lastOk (Date), lastOkLate (true when
+ * a Mac heartbeat carries :late; the health line shows it) and lastFailed ({at, reason}).
  * The detail text depends only on the slot and the evidence, never on `now`
  * itself, so an unchanged state gives an identical detail day after day.
  */
@@ -218,7 +219,7 @@ export async function gatherEvidence(jobs, gh) {
       if (bad) ev.lastFailed = { at: new Date(bad.createdAt), reason: bad.url };
     } else {
       const hb = parseHeartbeat(gh.vars?.[job.heartbeat.variable]);
-      if (hb?.status === 'ok') ev.lastOk = hb.at;
+      if (hb?.status === 'ok') { ev.lastOk = hb.at; if (hb.late) ev.lastOkLate = true; }
       else if (hb?.status === 'failed') ev.lastFailed = { at: hb.at, reason: hb.reason };
     }
     out[job.name] = ev;
