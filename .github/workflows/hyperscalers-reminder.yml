@@ -1,0 +1,24 @@
+name: hyperscalers-reminder
+
+on:
+  schedule:
+    - cron: '0 9 1 2,5,8,11 *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      # Node built-ins only (plus the gh CLI on the runner), so no npm ci.
+      - run: node scripts/trackers/hyperscalers-reminder.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
