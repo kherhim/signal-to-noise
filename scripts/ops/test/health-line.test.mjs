@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { healthLines, launchdLines, readVars, runHealth, UNREACHABLE } from '../health-line.mjs';
+import { healthLines, launchdLines, readVars, runHealth, UNREACHABLE, WORKFLOW_MISSING } from '../health-line.mjs';
 
 const D = (s) => new Date(s);
 const NOW = D('2026-12-08T09:00:00Z');
@@ -120,4 +120,38 @@ test('runHealth: happy path prints job lines then launchd section', async () => 
   assert.equal(out.code, 0);
   assert.equal(out.lines[0], '✅ metrics: last ok 7 Dec 07:31, next due Mon 14 Dec');
   assert.deepEqual(out.lines.slice(1), ['launchd:', '✅ co.signal-to-noise.metrics: loaded']);
+});
+
+test('runHealth: a workflow GitHub does not know is named as such, not as unreachable', async () => {
+  const bad = { ...tp, heartbeat: { workflow: 'token-price.yml' } };
+  const out = await runHealth({
+    jobs: [bad], now: NOW, uid: 501,
+    readVar: () => '',
+    evidenceGh: (vars) => ({
+      vars,
+      listRuns: async (wf) => {
+        const e = new Error('Command failed: gh run list');
+        e.stderr = `HTTP 404: workflow ${wf} not found on the default branch (https://api.github.com/repos/o/r/actions/workflows/${wf})`;
+        throw e;
+      },
+    }),
+    issueGh: { listOpen: async () => [] },
+    exec: () => {},
+  });
+  assert.equal(out.code, 1);
+  assert.equal(out.lines.length, 1);
+  assert.equal(out.lines[0], `${WORKFLOW_MISSING} token-prices: token-price.yml. Fix heartbeat.workflow in ops/jobs.json.`);
+  assert.ok(!out.lines[0].includes(UNREACHABLE));
+});
+
+test('runHealth: a network failure listing runs is still "could not reach GitHub"', async () => {
+  const out = await runHealth({
+    jobs: [tp], now: NOW, uid: 501,
+    readVar: () => '',
+    evidenceGh: (vars) => ({ vars, listRuns: async () => { const e = new Error('x'); e.stderr = 'dial tcp: lookup api.github.com: no such host'; throw e; } }),
+    issueGh: { listOpen: async () => [] },
+    exec: () => {},
+  });
+  assert.equal(out.code, 1);
+  assert.match(out.lines[0], new RegExp(`^${UNREACHABLE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
 });
