@@ -28,21 +28,42 @@ If a legitimate URL ever needs one of these substrings, edit the rule rather tha
 disabling it. Bot Fight Mode deliberately NOT enabled: it cannot be scoped on the
 free plan and would challenge deploy.sh's curl checks.
 
-## AI crawlers — not blocked here; check the dashboard
+## AI crawlers: policy lives in robots.txt; check the dashboard
 
-`public/robots.txt` explicitly allows GPTBot, ClaudeBot, PerplexityBot,
-Google-Extended and Applebot-Extended (Nov 2026). The site wants to be read
-and cited by AI assistants. None of the custom rules above match crawler
-user agents, but robots.txt has no effect if Cloudflare blocks these bots at
-the edge. Confirm, in the dashboard:
+Owner decision, 13 Nov 2026: AI search and answer assistants are allowed
+(OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot,
+Perplexity-User), because they quote and link back. AI training crawlers are
+disallowed in `public/robots.txt` (GPTBot, ClaudeBot, anthropic-ai,
+Google-Extended, Applebot-Extended, CCBot, Meta-ExternalAgent,
+cohere-training-data-crawler, Bytespider). Google-Extended and
+Applebot-Extended are opt-out tokens, not separate crawlers, so they can only
+be handled in robots.txt; never block Googlebot or Applebot at the edge.
 
-- **AI Crawl Control** (formerly AI Audit): each crawler above is *Allow*,
-  not *Block*.
+robots.txt has no effect if Cloudflare blocks the allowed bots at the edge.
+Confirm, in the dashboard:
+
+- **AI Crawl Control** (formerly AI Audit): the search and answer assistants
+  above are *Allow*, not *Block*.
 - **Security → Bots**: "Block AI bots" / "Block AI Scrapers and Crawlers" is
   off, and Bot Fight Mode stays off (see above).
 - **Managed robots.txt** is off, or it will prepend Disallow rules for AI
   crawlers to the file the origin serves.
 
-Quick check: `curl -A "GPTBot/1.1" -I https://signal-to-noise.co/` should
+Quick check: `curl -A "OAI-SearchBot/1.0" -I https://signal-to-noise.co/` should
 return 200, not 403, and `curl https://signal-to-noise.co/robots.txt` should
 match `public/robots.txt`.
+
+## 2. Block non-compliant scrapers (proposed 13 Nov 2026, owner approved; not yet deployed)
+
+Action Block. For scrapers known to ignore robots.txt and send no readers:
+
+```
+(http.user_agent contains "Bytespider") or
+(http.user_agent contains "ImagesiftBot") or
+(http.user_agent contains "PetalBot") or
+(http.user_agent contains "Scrapy")
+```
+
+Needs a dashboard edit (the tokens in `.env` can only purge cache and read
+analytics). Verify after deploy: `curl -A "Bytespider" -I` an essay returns
+403, and `curl -A "OAI-SearchBot/1.0" -I` returns 200.
