@@ -9,6 +9,7 @@ const fakeDeps = (over = {}) => {
     deps: {
       now: () => new Date('2026-11-01T08:00:00Z'),
       notify: (m) => notes.push(m),
+      exists: over.exists || (() => true),
       sh: (cmd, args) => {
         calls.push([cmd, ...args].join(' '));
         if (over.sh) { const r = over.sh(cmd, args); if (r !== undefined) return r; }
@@ -40,4 +41,11 @@ test('refuses a second run in the same month', () => {
 test('PR body asks for a lineup review only when the run warned', () => {
   assert.match(prBody('2026-11', 'x\n'), /No lineup warnings/);
   assert.match(prBody('2026-11', 'Newer than the lineup (review lineup.json):\n  OpenAI: openai/gpt-7\n'), /Lineup review needed/);
+});
+
+test('fails loudly when the snapshot file was not written', () => {
+  const f = fakeDeps({ exists: () => false });
+  assert.throws(() => runMonthly({ root: '/repo', deps: f.deps }), /snapshot .*2026-11\.json was not written/);
+  assert.ok(!f.calls.some((c) => /^git -C \S+ add /.test(c)));
+  assert.match(f.notes[0], /failed/);
 });

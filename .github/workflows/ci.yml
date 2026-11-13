@@ -30,4 +30,5 @@ jobs:
       - run: npm run test:trackers
       - run: npm run test:site
       - run: npm run test:audio
+      - run: npm run test:lib
       - run: npm run build

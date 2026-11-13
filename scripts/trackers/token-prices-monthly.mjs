@@ -15,6 +15,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { isMain } from '../lib/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -24,7 +25,7 @@ const notify = (msg) => {
 };
 const log = (msg) => console.log(`${new Date().toISOString()} ${msg}`);
 
-export const DEPS = { sh, notify, now: () => new Date() };
+export const DEPS = { sh, notify, now: () => new Date(), exists: fs.existsSync };
 
 export function prBody(month, output) {
   const warn = output.split('\n').filter((l) => /MISSING|Newer than|OpenRouter now matches|^ {2}\S/.test(l));
@@ -48,6 +49,7 @@ export function runMonthly({ root = ROOT, deps: injected = {} } = {}) {
     deps.sh('git', ['-C', root, 'worktree', 'add', '-q', '-b', branch, wt, 'origin/main']);
     const output = deps.sh('node', [path.join(wt, 'scripts', 'trackers', 'token-prices.mjs')], { cwd: wt });
     const rel = path.join('src', 'data', 'token-prices', 'snapshots', `${month}.json`);
+    if (!deps.exists(path.join(wt, rel))) throw new Error(`snapshot ${rel} was not written`);
     const title = `Token price index snapshot ${month}`;
     const body = prBody(month, output);
     deps.sh('git', ['-C', wt, 'add', rel]);
@@ -70,6 +72,6 @@ export function runMonthly({ root = ROOT, deps: injected = {} } = {}) {
   }
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url, process.argv[1])) {
   try { runMonthly(); } catch { process.exit(1); }
 }
