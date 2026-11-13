@@ -6,12 +6,15 @@
   <!-- Weekly Monday 07:30, plus a daily 10:00 catch-up and a run at load.
        --scheduled makes the script run at most once per week and write
        HEARTBEAT_METRICS; extra fires in the same week skip. -->
+  <!-- launchd runs whatever branch the checkout is on. The guard refuses to
+       start (exit 1, one line in the log) when scripts/ops/heartbeat.mjs is
+       absent, since an older branch would ignore --scheduled and run at every
+       fire; otherwise it execs the command unchanged. -->
   <key>ProgramArguments</key>
   <array>
-    <string>/opt/homebrew/bin/node</string>
-    <string>/Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/metrics-pull.mjs</string>
-    <string>--linkedin</string>
-    <string>--scheduled</string>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>test -f /Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/ops/heartbeat.mjs || { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) co.signal-to-noise.metrics: not run; scripts/ops/heartbeat.mjs is missing in /Users/himanshu.kher/Documents/devProjects/signal2noise, so the checkout is on a branch older than the heartbeat work and --scheduled would be ignored. Check out main there."; exit 1; }; exec /opt/homebrew/bin/node /Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/metrics-pull.mjs --linkedin --scheduled</string>
   </array>
   <key>WorkingDirectory</key><string>/Users/himanshu.kher/Documents/devProjects/signal2noise</string>
   <!-- gh (in ~/.local/bin) is spawned by name for the heartbeat. -->
