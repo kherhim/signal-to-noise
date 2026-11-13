@@ -187,7 +187,9 @@ merges or deploys; a failure sends the owner one email.
 
 ## Humaniser weekly learn
 
-Every Monday at 07:45 (`infra/co.signal-to-noise.humaniser-learn.plist`)
+Every Monday at 07:45 (`infra/co.signal-to-noise.humaniser-learn.plist`, with a daily
+10:00 catch-up and a run at load; `--scheduled` runs it at most once per week and records
+the `HEARTBEAT_HUMANISER_LEARN` repo variable)
 `scripts/line/humaniser-learn.mjs` reads the essays published since its last
 run, lines up each one against the gate output it shipped from
 (in `_sources/staging-articles/<slug>/`: the newest raw Layer B output

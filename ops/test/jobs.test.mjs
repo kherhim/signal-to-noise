@@ -48,6 +48,8 @@ test('bad fields are reported by field name', () => {
   has(problems((j) => { j.paused = 'yes'; }), /paused/);
   has(problems((j) => { j.cadence.kind = 'yearly'; }), /cadence\.kind/);
   has(problems((j) => { j.cadence.day = 29; }), /cadence\.day/);
+  has(problems((j) => { j.cadence = { kind: 'quarterly', months: [1, 4, 7, 10], day: 29, hour_utc: 9 }; }), /cadence\.day/);
+  has(problems((j) => { j.cadence = { kind: 'monthly', day: 31, hour_utc: 9 }; }), /cadence\.day/);
   has(problems((j) => { j.cadence.hour_utc = 24; }), /cadence\.hour_utc/);
   has(problems((j) => { j.cadence.minute = 60; }), /cadence\.minute/);
   has(problems((j) => { j.cadence = { kind: 'weekly', weekday: 8, hour_utc: 1 }; }), /cadence\.weekday/);
