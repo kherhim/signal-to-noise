@@ -304,9 +304,14 @@ export function runLearn({ dry = false, since = null, scheduled = false, root = 
       if (deps.sh('git', ['-C', root, 'branch', '--list', branch]).trim() || deps.sh('git', ['-C', root, 'ls-remote', '--heads', 'origin', branch]).trim()) {
         // A scheduled fire on a day that already made its proposals (a catch-up
         // raced the slot) has nothing to do; only a manual run treats it as an error.
+        // The branch only counts as done if its PR exists (open, merged or closed):
+        // a pushed branch whose `gh pr create` failed, or a local branch left by a
+        // killed run, must stay a failure so the watchdog raises it.
         if (scheduled) {
-          log('learn', `branch ${branch} already exists; today's proposals were already made, nothing to do`);
-          return { md: null, count: 0, pr: null, already: true };
+          const pr = deps.sh('gh', ['pr', 'list', '--head', branch, '--state', 'all', '--json', 'url', '--jq', '.[0].url']).trim();
+          if (!pr) throw new Error(`branch ${branch} exists but has no PR; open one from the pushed branch or delete the branch`);
+          log('learn', `branch ${branch} already has its PR (${pr}); today's proposals were already made, nothing to do`);
+          return { md: null, count: 0, pr, already: true };
         }
         throw new Error(`branch ${branch} already exists; today's proposals were already made`);
       }
