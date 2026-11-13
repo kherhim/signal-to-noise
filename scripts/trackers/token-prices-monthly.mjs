@@ -30,12 +30,12 @@ const notify = makeNotify();
 
 export const DEPS = { sh, notify, now: () => new Date(), exists: fs.existsSync };
 
-export function prBody(month, output, { actions = process.env.GITHUB_ACTIONS === 'true' } = {}) {
+export function prBody(month, output, { env = process.env } = {}) {
   const warn = output.split('\n').filter((l) => /MISSING|Newer than|OpenRouter now matches|^ {2}\S/.test(l));
   return [`Monthly snapshot of list prices for the AI token price index, ${month}.`, '',
     '```', output.trim(), '```', '',
     warn.length ? 'Lineup review needed: see the warnings above, then edit `src/data/token-prices/lineup.json` on this branch.' : 'No lineup warnings this month.', '',
-    ...(actions ? ['CI does not run on PRs opened by the workflow; tracker tests and the build passed before this PR was opened.', ''] : []),
+    ...(env.GITHUB_ACTIONS === 'true' ? ['CI does not run on PRs opened by the workflow; tracker tests and the build passed before this PR was opened.', ''] : []),
     'Merge to publish at the next deploy. Close to drop. Nothing changes until this is merged.'].join('\n');
 }
 

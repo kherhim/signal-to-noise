@@ -54,9 +54,9 @@ import { makeNotify } from '../token-prices-monthly.mjs';
 
 test('prBody notes CI did not run only under GitHub Actions', () => {
   const line = 'CI does not run on PRs opened by the workflow; tracker tests and the build passed before this PR was opened.';
-  assert.ok(prBody('2026-11', 'x\n', { actions: true }).includes(line));
-  assert.ok(!prBody('2026-11', 'x\n').includes(line));
-  assert.ok(!prBody('2026-11', 'x\n', { actions: false }).includes(line));
+  assert.ok(prBody('2026-11', 'x\n', { env: { GITHUB_ACTIONS: 'true' } }).includes(line));
+  assert.ok(!prBody('2026-11', 'x\n', { env: {} }).includes(line));
+  assert.ok(!prBody('2026-11', 'x\n', { env: { GITHUB_ACTIONS: 'false' } }).includes(line));
 });
 
 test('notify uses osascript on macOS and only logs elsewhere', () => {
