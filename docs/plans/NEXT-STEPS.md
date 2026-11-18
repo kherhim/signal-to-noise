@@ -28,8 +28,13 @@ Tick an item (`- [x]`) when it is done; add new ones under a dated heading.
 - [ ] Search Console: request indexing for the 10 most recent essays.
 
 ### Habits from now on
-- [ ] Publish on signal-to-noise.co first; post to LinkedIn about a day later, linking to the canonical URL. (Follow-up idea: make the LinkedIn posting flow check the essay URL returns 200 first.)
+- [x] Publish on signal-to-noise.co first; post the LinkedIn edition the SAME DAY once the essay URL returns 200 (owner rule 15 Sep 2026, replaces the earlier day-later habit).
 - [ ] When an essay gets a substantive revision, add `updated: YYYY-MM-DD` to its frontmatter.
 
 ### Later
 - [ ] Around mid-December 2026 (4–6 weeks after deploy): search "Himanshu Kher" and "Signal to Noise Himanshu Kher" and note where the site ranks.
+
+## Essay pipeline (18 Nov 2026)
+
+- [ ] Pick the essay for Wed 25 Nov. Candidates: Pricing the future (Edition 12, needs rewrite + news peg), Alignment is a capital-allocation problem (held, over the 1,050-word cap), The invisible balance sheet (staging folder exists), or a queued topic in `distribution/line/queue.md`.
+- [ ] Review the weekly humaniser proposals PR each Monday within the week (unmerged PRs stack up and conflict).
