@@ -14,7 +14,7 @@
   <array>
     <string>/bin/sh</string>
     <string>-c</string>
-    <string>test -f /Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/ops/heartbeat.mjs || { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) co.signal-to-noise.metrics: not run; scripts/ops/heartbeat.mjs is missing in /Users/himanshu.kher/Documents/devProjects/signal2noise, so the checkout is on a branch older than the heartbeat work and --scheduled would be ignored. Check out main there."; exit 1; }; CLOUDFLARE_ANALYTICS_TOKEN="$(/usr/bin/security find-generic-password -a himanshu.kher -s cloudflare-analytics-token -w)" exec /opt/homebrew/bin/node /Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/metrics-pull.mjs --linkedin --scheduled</string>
+    <string>test -f /Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/ops/heartbeat.mjs || { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) co.signal-to-noise.metrics: not run; scripts/ops/heartbeat.mjs is missing in /Users/himanshu.kher/Documents/devProjects/signal2noise, so the checkout is on a branch older than the heartbeat work and --scheduled would be ignored. Check out main there."; exit 1; }; export CLOUDFLARE_ANALYTICS_TOKEN="$(/usr/bin/security find-generic-password -a himanshu.kher -s cloudflare-analytics-token -w)"; exec /opt/homebrew/bin/node /Users/himanshu.kher/Documents/devProjects/signal2noise/scripts/metrics-pull.mjs --linkedin --scheduled</string>
   </array>
   <key>WorkingDirectory</key><string>/Users/himanshu.kher/Documents/devProjects/signal2noise</string>
   <!-- CLOUDFLARE_ANALYTICS_TOKEN is read from the macOS Keychain (service
