@@ -44,8 +44,17 @@ Confirm, in the dashboard:
 
 - **AI Crawl Control** (formerly AI Audit): the search and answer assistants
   above are *Allow*, not *Block*.
-- **Security → Bots**: "Block AI bots" / "Block AI Scrapers and Crawlers" is
-  off, and Bot Fight Mode stays off (see above).
+- **Security → Settings → AI Crawler and Agent access policies** (set 13 Nov
+  2026, owner: "my instructions prevail over Cloudflare's"): Search **Allow**,
+  Training **Block**, Agents **Allow**, every personal agent Allow. Bot
+  Preference Sync stays **off** so Cloudflare never rewrites robots.txt.
+  Training crawlers are now refused twice: by robots.txt and at the edge.
+- **Bot Fight Mode**: found ON on 13 Nov 2026 and switched OFF the same day to
+  match the decision above.
+
+Verified 13 Nov 2026 after these changes: GPTBot, ClaudeBot, CCBot, Bytespider
+→ 403; OAI-SearchBot, ChatGPT-User, Claude-SearchBot, PerplexityBot, Googlebot
+and a normal Safari UA → 200; live robots.txt identical to `public/robots.txt`.
 - **Managed robots.txt** is off, or it will prepend Disallow rules for AI
   crawlers to the file the origin serves.
 
@@ -53,7 +62,7 @@ Quick check: `curl -A "OAI-SearchBot/1.0" -I https://signal-to-noise.co/` should
 return 200, not 403, and `curl https://signal-to-noise.co/robots.txt` should
 match `public/robots.txt`.
 
-## 2. Block non-compliant scrapers (proposed 13 Nov 2026, owner approved; not yet deployed)
+## 2. Block non-compliant scrapers — deployed 13 Nov 2026, action Block, Active
 
 Action Block. For scrapers known to ignore robots.txt and send no readers:
 
@@ -64,6 +73,9 @@ Action Block. For scrapers known to ignore robots.txt and send no readers:
 (http.user_agent contains "Scrapy")
 ```
 
-Needs a dashboard edit (the tokens in `.env` can only purge cache and read
-analytics). Verify after deploy: `curl -A "Bytespider" -I` an essay returns
-403, and `curl -A "OAI-SearchBot/1.0" -I` returns 200.
+Added in the dashboard (the tokens in `.env` can only purge cache and read
+analytics). The dashboard preview showed 1.99k matching requests (3.2% of all
+traffic) in the 30 days before deploy.
+
+Verified after deploy: Bytespider, PetalBot, Scrapy and ImagesiftBot user
+agents → 403; OAI-SearchBot, Claude-User, Googlebot and a normal Safari UA → 200.
