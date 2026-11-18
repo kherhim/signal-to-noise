@@ -6,8 +6,6 @@ import Attribution from '../../components/buffett/Attribution.astro';
 import { letters, topics, liveTopics, YEAR_MIN, YEAR_MAX } from '../../lib/buffett';
 
 const annual = letters.filter((l) => l.kind === 'annual').length;
-// Topic pages go live one at a time, after the owner's edit pass.
-const pending = topics.length - liveTopics.length;
 const partnership = letters.filter((l) => l.kind === 'partnership').length;
 ---
 
@@ -44,12 +42,8 @@ const partnership = letters.filter((l) => l.kind === 'partnership').length;
           ))}
         </ul>
       )}
-      {pending > 0 && (
-        <p class={`text-muted${liveTopics.length > 0 ? ' mt-6' : ''}`}>
-          {liveTopics.length > 0
-            ? `${liveTopics.length} of ${topics.length} topic pages ${liveTopics.length === 1 ? 'is' : 'are'} live, with another arriving every week.`
-            : `${topics.length} topic pages, each covering a question finance leaders return to, will go live weekly from late November.`}
-        </p>
+      {liveTopics.length === 0 && (
+        <p class="text-muted">{topics.length} topic pages, each covering a question finance leaders return to, will go live weekly from late November.</p>
       )}
     </section>
 
