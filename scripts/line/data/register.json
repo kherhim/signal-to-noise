@@ -599,5 +599,43 @@
       "line_per_1k": 0.07,
       "source": "learned"
     }
+  ],
+  "rejected": [
+    {
+      "formal": "since",
+      "plain": "because",
+      "rejected": "2026-11-18",
+      "why": "temporal 'since 2013' is correct; causal use is his voice"
+    },
+    {
+      "formal": "lower",
+      "plain": "cut",
+      "rejected": "2026-11-18",
+      "why": "'13% lower' is a comparison, not an action"
+    },
+    {
+      "formal": "gain",
+      "plain": "win",
+      "rejected": "2026-11-18",
+      "why": "finance term (capital gain, gains)"
+    },
+    {
+      "formal": "underlying",
+      "plain": "underneath",
+      "rejected": "2026-11-18",
+      "why": "'underlying profit' is a term of art"
+    },
+    {
+      "formal": "assume",
+      "plain": "carry",
+      "rejected": "2026-11-18",
+      "why": "one-off edit; 'assume risk' is standard"
+    },
+    {
+      "formal": "disappear",
+      "plain": "gone",
+      "rejected": "2026-11-18",
+      "why": "verb to adjective is not a swap"
+    }
   ]
 }

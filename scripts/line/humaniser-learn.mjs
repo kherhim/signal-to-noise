@@ -368,9 +368,14 @@ export function runLearn({ dry = false, since = null, scheduled = false, root = 
     const line = lineTexts(path.dirname(staging));
     const rate = (texts, pairs) => { const r = measureRates(texts, pairs); return (f) => r2(r[f] ?? 0); };
     const covered = (f) => (reg?.pairs ?? []).some((p) => pairRegex(p).test(f));
+    // Swaps the owner turned down at review (register.json `rejected`) are
+    // never proposed again, in any inflection.
+    const vetoed = (f) => (reg?.rejected ?? []).find((x) => pairRegex(x).test(f));
     const addReg = [], rejected = [];
     for (const r of vet.register) {
       if (covered(r.formal) || addReg.some((a) => a.formal === r.formal)) continue;
+      const veto = vetoed(r.formal);
+      if (veto) { rejected.push({ formal: r.formal, plain: r.plain, why: `owner rejected it on ${veto.rejected}${veto.why ? ` (${veto.why})` : ''}` }); continue; }
       const cand = { ...r, owner_per_1k: rate(owner, [r])(r.formal), line_per_1k: rate(line, [r])(r.formal) };
       if (!safe(`${r.formal} ${r.plain}`)) rejected.push({ formal: '(withheld)', why: 'privacy or never-list' });
       else if (cand.owner_per_1k > OWNER_MAX_PER_1K) rejected.push({ ...cand, why: `owner uses it ${cand.owner_per_1k}/1k (limit ${OWNER_MAX_PER_1K})` });
@@ -429,7 +434,8 @@ export function runLearn({ dry = false, since = null, scheduled = false, root = 
     touched.push(REL.state);
     const title = `Humaniser weekly proposals ${today}`;
     const body = [`Proposals from the owner's edits to essays published ${from} to ${today}: ${addReg.length} register additions, ${dropReg.length} register drops, ${addTells.length} new tells.`, '',
-      `Evidence and rejected candidates: \`${rel}\`.`, '', 'Merge to approve. Close to reject. Nothing changes the checker until this is merged; silence changes nothing.'].join('\n');
+      `Evidence and rejected candidates: \`${rel}\`.`, '', 'Merge to approve. Close to reject. Nothing changes the checker until this is merged; silence changes nothing.', '',
+      'To turn down one swap and keep the rest: on this branch, move it from `pairs` to `rejected` in scripts/line/data/register.json (with `rejected` date and `why`). A rejected swap is never proposed again.'].join('\n');
     if (!safe(body)) throw new Error('privacy check failed on the PR body');
     deps.sh('git', ['-C', wt, 'add', ...touched]);
     deps.sh('git', ['-C', wt, 'commit', '-q', '-m', `${title}\n\n${body}`]);
