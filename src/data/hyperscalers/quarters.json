@@ -1,5 +1,5 @@
 {
- "as_of": "2026-10-26",
+ "as_of": "2026-11-13",
  "units": "USD billions",
  "companies": [
   {
@@ -120,6 +120,21 @@
      "debt_current_portion": 2.0,
      "sources": [
       "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000071/"
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "period_end": "2026-09-30",
+     "ocf": 42.29,
+     "capex": 51.36,
+     "buybacks": 0.0,
+     "debt": 125.1,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": -9.07,
+     "debt_current_portion": 1.02,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/",
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000080/googexhibit991q32026.htm"
      ]
     }
    ],
@@ -256,6 +271,22 @@
      "fiscal_q": "FY26 Q4",
      "sources": [
       "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "period_end": "2026-09-30",
+     "ocf": 58.0,
+     "capex": 39.37,
+     "buybacks": 4.38,
+     "debt": 31.09,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": 18.63,
+     "debt_current_portion": 4.39,
+     "fiscal_q": "FY27 Q1",
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312526436133/",
+      "https://www.sec.gov/Archives/edgar/data/789019/000119312526436122/msft-ex99_1.htm"
      ]
     }
    ],
@@ -417,6 +448,25 @@
      "finance_lease_principal": 0.4,
      "sources": [
       "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000026/"
+     ]
+    },
+    {
+     "q": "Q3 2026",
+     "period_end": "2026-09-30",
+     "ocf": 42.42,
+     "capex": 77.26,
+     "buybacks": 0.0,
+     "debt": 173.13,
+     "debt_basis": "long-term debt, non-current (balance-sheet line)",
+     "fcf": -34.84,
+     "debt_current_portion": 6.83,
+     "proceeds_ppe_sales_incentives": 1.381,
+     "capex_net_of_proceeds": 75.88,
+     "fcf_company_def": -33.46,
+     "finance_lease_principal": 0.43,
+     "sources": [
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000040/",
+      "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000038/amzn-20260930xex991.htm"
      ]
     }
    ],
@@ -753,12 +803,12 @@
   "All quarterly figures are from SEC EDGAR XBRL financial data (10-Q/10-K, primary). Where a company tags only year-to-date cash flows, the quarter is derived as YTD minus prior YTD; Q4 = full year minus 9M.",
   "capex = GAAP cash-flow line 'Purchases of property and equipment' (cash), excluding finance leases. fcf = ocf - capex on that basis.",
   "Meta headlines capex INCLUDING principal payments on finance leases (Q3 2026: $33.94bn + $0.96bn = $34.91bn); see capex_incl_finance_leases and fcf_company_def (Q3 2026 -$2.12bn vs +$10.63bn a year earlier, matching the press release).",
-  "Amazon headlines FCF using 'purchases of property and equipment, net of proceeds from sales and incentives' (capex_net_of_proceeds). TTM FCF to Jun 2026 = 161.403 - (173.028 - 4.021) = -$7.60bn; prior year 121.137 - (107.656 - 4.703) = +$18.18bn. Both match. Amazon also publishes FCF less principal repayments of finance leases and financing obligations; financing-obligation repayments were not extracted.",
-  "Microsoft's press releases headline capex INCLUDING finance leases (for example $41bn in FY26 Q4, secondary); the cash PP&E figure here ($35.8bn) is lower. Microsoft fiscal year ends 30 June: Q3 2024 = FY25 Q1 ... Q2 2026 = FY26 Q4 (see fiscal_q).",
+  "Amazon headlines FCF using 'purchases of property and equipment, net of proceeds from sales and incentives' (capex_net_of_proceeds). TTM FCF to Sep 2026 = 168.300 - (215.192 - 4.535) = -$42.36bn; prior year 130.691 - (120.131 - 4.228) = +$14.79bn. Both match the Q3 2026 press release. Amazon also publishes FCF less principal repayments of finance leases and financing obligations; financing-obligation repayments were not extracted.",
+  "Microsoft's press releases headline capex INCLUDING finance leases (for example $41bn in FY26 Q4, secondary); the cash PP&E figure here ($35.8bn) is lower. Microsoft fiscal year ends 30 June: Q3 2024 = FY25 Q1 ... Q3 2026 = FY27 Q1 (see fiscal_q). The FY27 Q1 press release gives no capex figure including finance leases, so none is recorded for that quarter.",
   "Debt is non-current long-term debt as shown on the balance sheet (consistent with the verified Alphabet and Meta figures); debt_current_portion is given separately. Alphabet Sep 2024 ($12.30bn) comes from the XBRL tag LongTermDebtAndCapitalLeaseObligations, which is the same balance-sheet line in that period.",
-  "Amazon made no share repurchases in any quarter covered (no buybacks since 2022; $6.1bn remains under the March 2022 programme per the Q2 2026 10-Q).",
-  "Q3 2026 (Sep quarter) for Microsoft, Alphabet and Amazon is not yet reported (they report 28-29 Oct), so their series run Q3 2024 to Q2 2026. Meta runs Q4 2024 to Q3 2026.",
-  "Alphabet raised $49.6bn of equity in June 2026 (including a $10bn Berkshire Hathaway placement), per secondary reporting; this is not checked against filings.",
+  "Amazon made no share repurchases in any quarter covered (no buybacks since 2022; $6.1bn remains under the March 2022 programme per the Q3 2026 10-Q).",
+  "Microsoft, Alphabet and Amazon series run Q3 2024 to Q3 2026 (Q3 2026 added 13 Nov 2026 from the 10-Qs filed 28-30 Oct; the page shows the latest eight quarters). Meta runs Q4 2024 to Q3 2026.",
+  "Alphabet raised $49.5bn net in June 2026, per Note 11 of its Q3 2026 10-Q: $20.5bn public share offering, $10.0bn private placement with an affiliate of Berkshire Hathaway and $19.0bn of mandatory convertible preferred stock. In Q3 2026 it also raised $12.4bn net through its at-the-market share programme and $28.7bn net of senior notes (Q3 2026 press release).",
   "Capex guidance figures come from earnings calls (secondary reporting), except Meta's, which is in its 8-K press release (primary).",
   "Oracle: fiscal year ends 31 May (FY27 Q1 = Jun-Aug 2026, plotted as Q3 2026). Each Oracle quarter ends a month before the calendar quarter it is labelled with. Series runs FY25 Q2 (Nov 2024, plotted Q4 2024) to FY27 Q1 (Aug 2026). Cash flows are YTD-differenced from 10-Q/10-K XBRL; derived FY26 quarters match Oracle's own quarterly FCF table in the Q1 FY27 release exactly. debt = 'Notes payable and other borrowings, non-current'. Buybacks: $0.095bn in FY26 Q1 only, none since; FY27 Q1 cash-flow statement has no repurchase line (recorded as 0). FY27 Q1 OCF ($23.1bn) is inflated by $11.36bn of customer prepayments for capex booked in operating cash flow; Oracle's 'net cash outlay for capex' nets these off (capex_net_cash_outlay_company_def)."
  ]

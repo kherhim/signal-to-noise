@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/evolving-financial-analytics-navigati
 coverImage: /img/evolving-financial-analytics-navigating-beyond-traditional.webp
 coverImageAlt: "Against a near-black background, two tall ash-outline-drawn columns of equal height stand on a thin baseline. The left column is filled filled cream almost to its top; the right holds only a shallow band of cream at its foot, the rest empty outline. The lower rule reads 'VALUE, UNRECORDED'."
 coverAnimation: evolving-financial-analytics-navigating-beyond-traditional
-seoDescription: "Limitations of traditional financial statements: why historical snapshots miss intangibles, alternative data and liquidity risk, and how analysis must evolve."
+seoDescription: "Limitations of traditional financial statements: why past snapshots overlook intangibles, alternative data and liquidity risk, and why analysis has to change."
 ---
 
 In this age of information, the significance and usefulness of traditional financial statements, for assessing a company’s wellbeing have become a topic of intense debate. As a finance leader, entrenched in the financial dynamics of corporate operations, I propose a controversial yet necessary introspection into the relevance of these time-honoured documents in today’s rapidly evolving digital economy.

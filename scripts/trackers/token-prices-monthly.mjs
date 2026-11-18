@@ -15,22 +15,27 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { isMain } from '../lib/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 const sh = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts });
-const notify = (msg) => {
-  try { sh('osascript', ['-e', `display notification ${JSON.stringify(msg)} with title "Token price index"`]); } catch { /* a notification must never fail the job */ }
-};
 const log = (msg) => console.log(`${new Date().toISOString()} ${msg}`);
+/** macOS notification on the owner's Mac; on any other platform (Actions) the job log is the record. */
+export const makeNotify = ({ platform = process.platform, sh: run = sh } = {}) => (msg) => {
+  if (platform !== 'darwin') { log(`notify: ${msg}`); return; }
+  try { run('osascript', ['-e', `display notification ${JSON.stringify(msg)} with title "Token price index"`]); } catch { /* a notification must never fail the job */ }
+};
+const notify = makeNotify();
 
-export const DEPS = { sh, notify, now: () => new Date() };
+export const DEPS = { sh, notify, now: () => new Date(), exists: fs.existsSync };
 
-export function prBody(month, output) {
+export function prBody(month, output, { env = process.env } = {}) {
   const warn = output.split('\n').filter((l) => /MISSING|Newer than|OpenRouter now matches|^ {2}\S/.test(l));
   return [`Monthly snapshot of list prices for the AI token price index, ${month}.`, '',
     '```', output.trim(), '```', '',
     warn.length ? 'Lineup review needed: see the warnings above, then edit `src/data/token-prices/lineup.json` on this branch.' : 'No lineup warnings this month.', '',
+    ...(env.GITHUB_ACTIONS === 'true' ? ['CI does not run on PRs opened by the workflow; tracker tests and the build passed before this PR was opened.', ''] : []),
     'Merge to publish at the next deploy. Close to drop. Nothing changes until this is merged.'].join('\n');
 }
 
@@ -48,6 +53,7 @@ export function runMonthly({ root = ROOT, deps: injected = {} } = {}) {
     deps.sh('git', ['-C', root, 'worktree', 'add', '-q', '-b', branch, wt, 'origin/main']);
     const output = deps.sh('node', [path.join(wt, 'scripts', 'trackers', 'token-prices.mjs')], { cwd: wt });
     const rel = path.join('src', 'data', 'token-prices', 'snapshots', `${month}.json`);
+    if (!deps.exists(path.join(wt, rel))) throw new Error(`snapshot ${rel} was not written`);
     const title = `Token price index snapshot ${month}`;
     const body = prBody(month, output);
     deps.sh('git', ['-C', wt, 'add', rel]);
@@ -70,6 +76,6 @@ export function runMonthly({ root = ROOT, deps: injected = {} } = {}) {
   }
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url, process.argv[1])) {
   try { runMonthly(); } catch { process.exit(1); }
 }

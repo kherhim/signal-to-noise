@@ -1,0 +1,40 @@
+name: watchdog
+run-name: ${{ inputs.pretend_now && 'Watchdog (dry run)' || 'Watchdog' }}
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      pretend_now:
+        description: 'Verification only: judge the jobs as if it were this ISO time (e.g. 2026-12-04T12:00:00Z). The run is titled (dry run) and is not evidence. Leave empty for now.'
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  actions: read
+  issues: write
+  contents: read
+
+concurrency:
+  group: watchdog
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - name: Check scheduled jobs and sync issues
+        run: node scripts/ops/watchdog.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # One line per heartbeat.variable in ops/jobs.json (a test checks this).
+          HEARTBEAT_METRICS: ${{ vars.HEARTBEAT_METRICS }}
+          HEARTBEAT_HUMANISER_LEARN: ${{ vars.HEARTBEAT_HUMANISER_LEARN }}
+          PRETEND_NOW: ${{ inputs.pretend_now }}

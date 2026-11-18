@@ -5,6 +5,7 @@
  *   node scripts/metrics-pull.mjs            # LinkedIn subscribers + Cloudflare, print table, write snapshot
  *   node scripts/metrics-pull.mjs --linkedin # also print the LinkedIn browser runbook
  *   node scripts/metrics-pull.mjs --json     # JSON only, no table
+ *   node scripts/metrics-pull.mjs --scheduled # launchd only: once per week, with heartbeat
  *
  * Sources
  *   LinkedIn newsletter subscribers — owner-reported, latest row of
@@ -22,6 +23,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { runWithHeartbeat } from './ops/heartbeat.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const OUT_DIR = path.join(ROOT, 'distribution', 'metrics');
@@ -193,40 +195,56 @@ function linkedinRunbook() {
 }
 
 // ---------- main ----------
-const ls = linkedinSubscribers();
-const cf = await cloudflare();
-const snapshot = { date: today, linkedin_newsletter: ls, cloudflare: cf };
+async function main() {
+  const ls = linkedinSubscribers();
+  const cf = await cloudflare();
+  const snapshot = { date: today, linkedin_newsletter: ls, cloudflare: cf };
 
-fs.mkdirSync(OUT_DIR, { recursive: true });
-const outFile = path.join(OUT_DIR, `${today}.json`);
-fs.writeFileSync(outFile, JSON.stringify(snapshot, null, 2) + '\n');
+  fs.mkdirSync(OUT_DIR, { recursive: true });
+  const outFile = path.join(OUT_DIR, `${today}.json`);
+  fs.writeFileSync(outFile, JSON.stringify(snapshot, null, 2) + '\n');
 
-if (jsonOnly) {
-  console.log(JSON.stringify(snapshot, null, 2));
-} else {
-  const row = (n, metric, value, note = '') => `| ${n} | ${metric} | ${value} | ${note} |`;
-  const out = [];
-  out.push(`Readout — ${today}`);
-  out.push('');
-  out.push('| # | Metric | Value | Note |');
-  out.push('|---|---|---|---|');
-  if (ls.error) {
-    out.push(row(2, 'LinkedIn newsletter subscribers', '_error_', ls.error));
+  if (jsonOnly) {
+    console.log(JSON.stringify(snapshot, null, 2));
   } else {
-    out.push(row(2, 'LinkedIn newsletter subscribers', `**${ls.subscribers}**`, `as of ${ls.as_of}${ls.change != null ? `; ${ls.change >= 0 ? '+' : ''}${ls.change} since ${ls.prev_date}` : ''} (owner-reported)`));
-  }
-  if (cf.error) {
-    out.push(row(6, 'Cloudflare percent cached (30d)', '_error_', cf.error + (cf.hint ? ` — ${cf.hint}` : '')));
-  } else {
-    const burst = cf.burst_days.length ? `bot-burst days excluded: ${cf.burst_days.join(', ')} → **${cf.pct_cached_excl_bursts}%** clean` : 'no bot-burst days detected';
-    out.push(row(6, 'Cloudflare percent cached (30d)', `**${cf.pct_cached_30d}%** (${cf.cached_30d.toLocaleString()} / ${cf.requests_30d.toLocaleString()})`, burst));
-    out.push(row('6b', 'Cache hit rate, non-404 responses (7d)', `**${cf.hit_rate_non404_7d}%**`, `the real Cache Rule read; ${cf.not_found_7d.toLocaleString()} 404s in 7d (scanner probes, not audience)`));
-  }
-  out.push('');
-  out.push(`Snapshot written: ${path.relative(ROOT, outFile)}`);
-  if (wantLinkedIn) {
+    const row = (n, metric, value, note = '') => `| ${n} | ${metric} | ${value} | ${note} |`;
+    const out = [];
+    out.push(`Readout — ${today}`);
     out.push('');
-    out.push(linkedinRunbook());
+    out.push('| # | Metric | Value | Note |');
+    out.push('|---|---|---|---|');
+    if (ls.error) {
+      out.push(row(2, 'LinkedIn newsletter subscribers', '_error_', ls.error));
+    } else {
+      out.push(row(2, 'LinkedIn newsletter subscribers', `**${ls.subscribers}**`, `as of ${ls.as_of}${ls.change != null ? `; ${ls.change >= 0 ? '+' : ''}${ls.change} since ${ls.prev_date}` : ''} (owner-reported)`));
+    }
+    if (cf.error) {
+      out.push(row(6, 'Cloudflare percent cached (30d)', '_error_', cf.error + (cf.hint ? ` — ${cf.hint}` : '')));
+    } else {
+      const burst = cf.burst_days.length ? `bot-burst days excluded: ${cf.burst_days.join(', ')} → **${cf.pct_cached_excl_bursts}%** clean` : 'no bot-burst days detected';
+      out.push(row(6, 'Cloudflare percent cached (30d)', `**${cf.pct_cached_30d}%** (${cf.cached_30d.toLocaleString()} / ${cf.requests_30d.toLocaleString()})`, burst));
+      out.push(row('6b', 'Cache hit rate, non-404 responses (7d)', `**${cf.hit_rate_non404_7d}%**`, `the real Cache Rule read; ${cf.not_found_7d.toLocaleString()} 404s in 7d (scanner probes, not audience)`));
+    }
+    out.push('');
+    out.push(`Snapshot written: ${path.relative(ROOT, outFile)}`);
+    if (wantLinkedIn) {
+      out.push('');
+      out.push(linkedinRunbook());
+    }
+    console.log(out.join('\n'));
   }
-  console.log(out.join('\n'));
+}
+
+// --scheduled is passed only by the launchd job: it runs at most once per
+// weekly period (catch-up after a missed slot) and records HEARTBEAT_METRICS.
+// Manual runs, with or without --linkedin/--json, behave as before.
+if (args.has('--scheduled')) {
+  try {
+    await runWithHeartbeat('metrics', main);
+  } catch (e) {
+    console.error(`metrics-pull failed: ${e && e.message ? e.message : e}`);
+    process.exitCode = 1;
+  }
+} else {
+  await main();
 }

@@ -24,8 +24,11 @@ from HTTP Traffic cached/total, which bot bursts distort — read the per-day co
 ## Weekly schedule (installed 9 Sep 2026)
 
 launchd agent `co.signal-to-noise.metrics` runs the script every **Monday 07:30 local**
-with `--linkedin`, logging to `~/Library/Logs/signal2noise-metrics.log`. A missed run
-(machine asleep) fires at next wake; a powered-off Monday is skipped. Snapshot JSONs
+with `--linkedin --scheduled`, logging to `~/Library/Logs/signal2noise-metrics.log`. It also
+fires daily at 10:00 local and at load; `--scheduled` runs the pull at most once per week
+(slot Monday 07:30 UTC in `ops/jobs.json`) and records the `HEARTBEAT_METRICS` repo
+variable, so a missed or powered-off Monday is caught up the next time the Mac is on. Manual
+runs without `--scheduled` behave as before. Snapshot JSONs
 land in this folder untracked — commit them with the Monday readout.
 
 ```

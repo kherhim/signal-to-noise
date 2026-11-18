@@ -20,7 +20,9 @@
     "humanise": "node scripts/humanise.mjs",
     "humanise:posts": "node scripts/humanise.mjs --no-model distribution/ready-to-post/*.md distribution/linkedin-newsletter/*.md distribution/autopilot/queue/*.md",
     "test:site": "node --test scripts/site/test/*.mjs",
-    "test:audio": "node --test scripts/audio/test/*.mjs"
+    "test:audio": "node --test scripts/audio/test/*.mjs",
+    "test:lib": "node --test scripts/lib/test/*.mjs",
+    "test:ops": "node --test ops/test/*.mjs scripts/ops/test/*.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.1",
@@ -32,6 +34,7 @@
     "tailwindcss": "4.1.18"
   },
   "devDependencies": {
+    "js-yaml": "^4.1.1",
     "pagefind": "^1.5.2",
     "turndown": "^7.2.4"
   }

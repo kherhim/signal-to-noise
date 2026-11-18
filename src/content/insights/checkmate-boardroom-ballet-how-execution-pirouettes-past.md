@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/checkmate-boardroom-ballet-how-execut
 coverImage: /img/checkmate-boardroom-ballet-how-execution-pirouettes-past.webp
 coverImageAlt: "Against a near-black background, a dashed ash line climbs diagonally from at lower left to at upper right, the plan on paper. A filled cream line lies exactly over it from the origin to two-thirds of the way along, ending in a filled cream circle; beyond that point, only dashes remain. The lower rule reads 'EXECUTION, UNSUNG'."
 coverAnimation: checkmate-boardroom-ballet-how-execution-pirouettes-past
-seoDescription: "Strategy vs culture vs execution: why execution is the real differentiator, and what CFOs and finance leaders can do to help their organisations execute better."
+seoDescription: "Strategy vs culture vs execution: why execution makes the difference, and how CFOs and finance leaders can help their organisations deliver better."
 ---
 
 In the grand symphony of corporate management, the perennial debate between strategy and culture often takes center stage. As CFOs, while we may be inclined to lean towards strategy with its tangible targets and measurable returns, we must acknowledge that culture is the bedrock upon which any strategy is built. However, the unsung hero, often overlooked in this debate, is execution. Execution is the powerful undercurrent that turns the wheels of both strategy and culture, propelling a company toward success.

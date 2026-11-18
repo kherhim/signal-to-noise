@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/enhancing-financial-data-storytelling
 coverImage: /img/enhancing-financial-data-storytelling-cfos-cheat-sheet.webp
 coverImageAlt: "Against a near-black background, a centred grid of small squares, twelve across by eight down, is drawn in ash outline. One cream fine line enters from the left, climbs across the grid in three straight segments and exits right; the seven squares it passes through are filled cream, the only bright marks. The lower rule reads 'NUMBERS, NARRATED'."
 coverAnimation: enhancing-financial-data-storytelling-cfos-cheat-sheet
-seoDescription: "Financial data storytelling for CFOs: a cheat sheet covering audience, context, simplifying complex data, visuals and aligning the story with strategic goals."
+seoDescription: "Financial data storytelling for CFOs: a cheat sheet on audience, context, making complex data simpler, visuals and matching the story to strategic aims."
 ---
 
 In November 2023, I had written a post explaining why storytelling is a [CFO’s secret superpower](/insights/once-upon-balance-sheet-10-reasons-why-storytelling-cfos). Having seen firsthand how compelling narratives can transform dry numbers into insightful stories that drive decisions, I thought writing a cheat-cheat would help finance professionals in becoming better story tellers.

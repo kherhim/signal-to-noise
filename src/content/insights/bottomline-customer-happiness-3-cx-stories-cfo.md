@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/bottomline-customer-happiness-3-cx-st
 coverImage: /img/bottomline-customer-happiness-3-cx-stories-cfo.webp
 coverImageAlt: "Against a near-black background, a ticked baseline with a fine line above it at the mean. Fourteen small squares run from left towards right, hovering close to the fine line; the ninth has dropped far below, almost to the baseline, and every square after it is only a dashed outline. The lower rule reads 'VARIANCE, REMEMBERED'."
 coverAnimation: bottomline-customer-happiness-3-cx-stories-cfo
-seoDescription: "Customer experience and financial performance: three customer service stories and the lessons for CFOs, from managing variance to treating service as an asset."
+seoDescription: "Customer experience and financial performance: three service stories and their lessons for CFOs, from handling variance to viewing service as an asset."
 ---
 
 ### Introduction

@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/winning-chaos-himanshu-kher-mdvpf"
 coverImage: /img/winning-chaos.webp
 coverImageAlt: "Against a near-black background, a field of small ash squares scattered unevenly across the lower two-thirds, with no grid. Through them a single cream line climbs in short straight segments from at lower left to a filled cream circle at at upper right; a faint horizontal fine line marks where the line began. The lower rule reads 'DEFENCE, ABANDONED'."
 coverAnimation: winning-chaos
-seoDescription: "CFO strategy in volatile markets: how to respond to tariffs and inflation with cash discipline, pricing, M&A, resilient supply chains, automation and talent."
+seoDescription: "CFO strategy in volatile markets: how to handle tariffs and inflation through cash discipline, pricing, M&A, resilient supply chains, automation and talent."
 ---
 
 ## Forget the playbook – it’s time to reinvent

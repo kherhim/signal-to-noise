@@ -11,9 +11,12 @@
 // Nothing changes the checker until the owner merges the PR this opens. It
 // runs in a throwaway git worktree so the owner's checkout is never touched.
 //
-//   node scripts/line/humaniser-learn.mjs [--dry] [--since YYYY-MM-DD]
+//   node scripts/line/humaniser-learn.mjs [--dry] [--since YYYY-MM-DD] [--scheduled]
 //
 // --dry: no model call, no git, no files written; prints the proposals file.
+// --scheduled: launchd only; skips if this week's run already succeeded and
+// writes the HEARTBEAT_HUMANISER_LEARN repo variable. If today's branch already
+// exists it logs that and exits 0 (a manual run treats that as an error).
 // The repo is public. Gated text is unpublished drafting, so the output only
 // ever quotes the published sentence and shows the changed words of the
 // before; a shingle filter and the never-list check enforce that.
@@ -27,6 +30,7 @@ import { scannableText } from './claudish.mjs';
 import { splitFrontmatter } from './md.mjs';
 import { loadConfig, loadLedger, loadNeverList, neverListHits } from './queue.mjs';
 import { STAGING } from './state.mjs';
+import { runWithHeartbeat } from '../ops/heartbeat.mjs';
 import { loadRegister, measureRates, ownerTexts, lineTexts, lineSlugs, pairRegex, OWNER_MAX } from './register.mjs';
 
 export const OWNER_MAX_PER_1K = OWNER_MAX; // register.mjs owns the limit
@@ -286,7 +290,7 @@ function notify(msg) {
 // Every side-effecting collaborator, so tests reach no network, model or git.
 export const LEARN_DEPS = { runSkill, sh, notify, loadLedger, loadNeverList, neverListHits, loadConfig, now: () => new Date() };
 
-export function runLearn({ dry = false, since = null, root = ROOT, staging = STAGING, deps: injected = {} } = {}) {
+export function runLearn({ dry = false, since = null, scheduled = false, root = ROOT, staging = STAGING, deps: injected = {} } = {}) {
   const deps = { ...LEARN_DEPS, ...injected };
   const today = isoDay(deps.now());
   const branch = `humaniser-learn-${today}`;
@@ -297,8 +301,20 @@ export function runLearn({ dry = false, since = null, root = ROOT, staging = STA
     let base = root;
     if (!dry) {
       deps.sh('git', ['-C', root, 'fetch', '-q', 'origin', 'main']);
-      if (deps.sh('git', ['-C', root, 'branch', '--list', branch]).trim() || deps.sh('git', ['-C', root, 'ls-remote', '--heads', 'origin', branch]).trim())
+      if (deps.sh('git', ['-C', root, 'branch', '--list', branch]).trim() || deps.sh('git', ['-C', root, 'ls-remote', '--heads', 'origin', branch]).trim()) {
+        // A scheduled fire on a day that already made its proposals (a catch-up
+        // raced the slot) has nothing to do; only a manual run treats it as an error.
+        // The branch only counts as done if its PR exists (open, merged or closed):
+        // a pushed branch whose `gh pr create` failed, or a local branch left by a
+        // killed run, must stay a failure so the watchdog raises it.
+        if (scheduled) {
+          const pr = deps.sh('gh', ['pr', 'list', '--head', branch, '--state', 'all', '--json', 'url', '--jq', '.[0].url']).trim();
+          if (!pr) throw new Error(`branch ${branch} exists but has no PR; open one from the pushed branch or delete the branch`);
+          log('learn', `branch ${branch} already has its PR (${pr}); today's proposals were already made, nothing to do`);
+          return { md: null, count: 0, pr, already: true };
+        }
         throw new Error(`branch ${branch} already exists; today's proposals were already made`);
+      }
       wt = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'humaniser-learn-')), 'wt');
       deps.sh('git', ['-C', root, 'worktree', 'prune']); // a crashed run's registration
       deps.sh('git', ['-C', root, 'worktree', 'add', '-q', '-b', branch, wt, 'origin/main']);
@@ -467,9 +483,18 @@ if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1])))
   const si = process.argv.indexOf('--since');
   const since = si > 0 ? process.argv[si + 1] : null;
   if (since && !/^\d{4}-\d{2}-\d{2}$/.test(since)) { console.error('--since takes YYYY-MM-DD'); process.exit(2); }
-  try {
-    const r = runLearn({ dry: process.argv.includes('--dry'), since });
+  const dry = process.argv.includes('--dry');
+  const learn = async () => {
+    const r = runLearn({ dry, since, scheduled: process.argv.includes('--scheduled') });
     if (r.dry) console.log(r.md);
+    else if (r.already) console.log("Today's proposals were already made; nothing to do.");
     else console.log(r.pr ? `PR: ${r.pr}` : 'Nothing to propose; no PR.');
+  };
+  // --scheduled is passed only by the launchd job: at most one run per weekly
+  // period (catch-up after a missed slot), recorded in HEARTBEAT_HUMANISER_LEARN.
+  // A dry run never touches the heartbeat; manual runs behave as before.
+  try {
+    if (process.argv.includes('--scheduled') && !dry) await runWithHeartbeat('humaniser-learn', learn);
+    else await learn();
   } catch { process.exit(1); }
 }

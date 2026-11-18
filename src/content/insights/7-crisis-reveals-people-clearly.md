@@ -9,7 +9,7 @@ series:
   part: 7
 draft: false
 sourceUrl: "https://www.linkedin.com/pulse/7-crisis-reveals-people-clearly-himanshu-kher-kebic"
-seoDescription: "Leadership in a crisis: how high-stakes moments reveal who multiplies calm, who freezes and who steps up, and why that is the most honest performance review."
+seoDescription: "Leadership during a crisis: how pressure reveals people who spread calm, freeze or step forward, and why it gives the clearest performance review."
 ---
 
 Crisis doesn’t create character. It reveals it.

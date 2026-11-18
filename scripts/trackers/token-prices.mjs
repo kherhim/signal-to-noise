@@ -19,6 +19,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isMain } from '../lib/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DATA = path.join(ROOT, 'src', 'data', 'token-prices');
@@ -102,4 +103,4 @@ async function main() {
   console.log(`\nwrote ${path.relative(ROOT, out)}`);
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((e) => { console.error(e.message); process.exit(1); });
+if (isMain(import.meta.url, process.argv[1])) main().catch((e) => { console.error(e.message); process.exit(1); });

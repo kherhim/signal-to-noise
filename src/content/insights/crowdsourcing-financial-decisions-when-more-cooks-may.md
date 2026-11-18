@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/crowdsourcing-financial-decisions-whe
 coverImage: /img/crowdsourcing-financial-decisions-when-more-cooks-may.webp
 coverImageAlt: "Against a near-black background, forty small ash squares scatter widely above a ticked ruler scale, thickest around a dashed vertical fine line that marks one point on it. A filled cream circle rests on the scale touching that line, while a larger outline-drawn circle is placed well to its left. The lower rule reads 'JUDGEMENT, POOLED'."
 coverAnimation: crowdsourcing-financial-decisions-when-more-cooks-may
-seoDescription: "The wisdom of crowds in finance: how CFOs can apply Surowiecki's conditions of diversity and independence to forecasting, budgeting and investment decisions."
+seoDescription: "The wisdom of crowds in finance: how CFOs can use Surowiecki's conditions of diversity and independence in forecasts, budgets and investment choices."
 ---
 
 ### Introduction

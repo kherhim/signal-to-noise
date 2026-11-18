@@ -15,6 +15,13 @@ import { join, basename } from 'node:path';
 
 const SRC = new URL('../../_sources/buffett-letters/', import.meta.url).pathname;
 const DATA = new URL('../../src/data/buffett/', import.meta.url).pathname;
+// The corpus is local-only (not in git), so a fresh checkout such as CI
+// cannot verify excerpts. Skip with a clear line rather than fail the build.
+if (!existsSync(SRC)) {
+  console.log('verify-excerpts: SKIPPED, _sources/buffett-letters not present (local-only corpus)');
+  process.exit(0);
+}
+
 const letters = Object.fromEntries(JSON.parse(readFileSync(join(DATA, 'letters.json'), 'utf8')).map((l) => [l.id, l]));
 
 const norm = (s) => s

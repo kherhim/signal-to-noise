@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/once-upon-balance-sheet-10-reasons-wh
 coverImage: /img/once-upon-balance-sheet-10-reasons-why-storytelling-cfos.webp
 coverImageAlt: "Against a near-black background, a loose, ungridded field of small squares fills the frame, most of them ash outlines. A single cream fine line enters from the left, bends through seven of them, each of those seven filled cream, and exits right. Nothing else is lit. The lower rule reads 'STORY, THREADED'."
 coverAnimation: once-upon-balance-sheet-10-reasons-why-storytelling-cfos
-seoDescription: "Storytelling for CFOs: ten reasons narrative makes budgets, forecasts, earnings reports and investor relations land, with Ruth Porat as a worked example."
+seoDescription: "Storytelling for CFOs: ten reasons narrative helps budgets, forecasts, earnings reports and investor relations land, using Ruth Porat as a worked example."
 ---
 
 In the world of finance, numbers reign supreme. But what happens when the CFO decides to take a page out of a storyteller's book? Magic. Here are ten compelling reasons why the art of storytelling is an indispensable skill for modern CFOs.

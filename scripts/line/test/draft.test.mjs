@@ -6,7 +6,12 @@ import { exemplars, validateFrontmatter, normaliseInternalLinks, MIN_WORDS, MAX_
 test('exemplars returns four recent essays trimmed', () => {
   const e = exemplars(4);
   assert.equal((e.match(/^### /gm) ?? []).length, 4);
-  assert.ok(e.length < 4 * 5000);
+  // Trimmed means each body is capped at 600 words. A character cap broke
+  // on link-heavy essays (long SEC URLs) while the trim itself was correct.
+  for (const section of e.split(/^### /m).slice(1)) {
+    const body = section.split('\n').slice(1).join('\n');
+    assert.ok(body.split(/\s+/).filter(Boolean).length <= 600);
+  }
 });
 
 test('validateFrontmatter lists missing keys', () => {

@@ -8,7 +8,7 @@ sourceUrl: "https://www.linkedin.com/pulse/every-cfo-greedy-just-what-theyre-rea
 coverImage: /img/every-cfo-greedy-just-what-theyre-real-question.webp
 coverImageAlt: "Against a near-black background, a ruler ticked in years crosses the lower half. From one origin at its left, a steep ash line ends at the first tick in a dashed circle, while a cream line, flat at first, steepens away to a solid circle top right. The lower rule reads 'GREED, LONG-TERM'."
 coverAnimation: every-cfo-greedy-just-what-theyre-real-question
-seoDescription: "Short-term vs long-term thinking for CFOs: why protecting this year's EBITDA can make a company fragile, and why incentives should reward what compounds."
+seoDescription: "Short-term vs long-term thinking for CFOs: why defending this year's EBITDA can leave a company fragile, and why incentives need to reward what compounds."
 ---
 
 I've been thinking about this a lot lately, and I've come to believe there are really only two types of financial leadership — and the difference between them isn't talent or intelligence. It's time horizon.
