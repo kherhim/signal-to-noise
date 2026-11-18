@@ -48,7 +48,9 @@ for (const job of macJobs) {
     const script = p.args[2];
     const guard = `test -f ${p.cwd}/scripts/ops/heartbeat.mjs ||`;
     assert.ok(script.startsWith(guard), script);
-    assert.match(script, /exit 1; }; exec /);
+    // Optional: one `export NAME="$(/usr/bin/security find-generic-password ...)"` that loads a
+    // token from the macOS Keychain (launchd does not read .zshrc), then the exec.
+    assert.match(script, /exit 1; }; (?:export [A-Z_]+="\$\(\/usr\/bin\/security find-generic-password -a [\w.-]+ -s [\w-]+ -w\)"; )?exec /);
     assert.ok(script.indexOf('exec ') > script.indexOf(guard));
     const cmd = script.slice(script.indexOf('; exec ') + '; exec '.length);
     assert.equal(cmd, EXPECTED[job.name](p.cwd));
@@ -62,8 +64,9 @@ for (const job of macJobs) {
   test(`${job.name} plist guard: stops with a clear line when heartbeat.mjs is absent, runs when present`, () => {
     const p = readPlist(job.name);
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'plist-guard-'));
-    // Same script against a scratch checkout, with the real command swapped for an echo.
-    const script = p.args[2].split(p.cwd).join(dir).replace(/; exec .*$/, '; exec echo RAN');
+    // Same script against a scratch checkout, with the real command (and any Keychain
+    // export, so the test never reads the Keychain) swapped for an echo.
+    const script = p.args[2].split(p.cwd).join(dir).replace(/; (?:export [^;]*; )?exec .*$/, '; exec echo RAN');
     const run = () => {
       try { return { code: 0, out: execFileSync('/bin/sh', ['-c', script], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }) }; } catch (e) { return { code: e.status, out: String(e.stdout) }; }
     };
