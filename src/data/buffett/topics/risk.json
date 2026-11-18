@@ -1,0 +1,148 @@
+{
+  "topic": "risk",
+  "title": "Buffett on risk and the worst case",
+  "lede": "Buffett set out early to avoid permanent loss of capital, and by 1993 he had defined risk as the chance of loss or injury, never as price volatility. Super-cat insurance tested the idea in practice: he priced for the worst case and accepted lumpy years. After September 11th and the derivatives he inherited at Gen Re, the focus turned to correlated losses and counterparties failing together.",
+  "related": [
+    "buffett-on-the-fortress-balance-sheet",
+    "how-cfos-should-think-ma-balancing-risk-opportunity"
+  ],
+  "entries": [
+
+    {
+      "id": "1966-01-20_partnership",
+      "year": 1966,
+      "excerpt": "If the fifty individual expectations were not intercorrelated (what happens to one is associated with what happens to the other) I could put 2% of our capital into each one",
+      "note": "Diversification works only when outcomes are independent, and he says plainly that real opportunities seldom are.",
+      "corrected": false
+    },
+
+    {
+      "id": "1967-10-09_partnership",
+      "year": 1967,
+      "excerpt": "even though it may mean foregoing large, and apparently easy, profits to embrace an approach which I don't fully understand, have not practiced successfully and which, possibly, could lead to substantial permanent loss of capital.",
+      "note": "In a speculative market he names permanent loss of capital as the risk he will not run for easy profits.",
+      "corrected": false
+    },
+
+    {
+      "id": "1986_berkshire",
+      "year": 1986,
+      "excerpt": "Lou has consistently invested in undervalued common stocks that, individually, were unlikely to present him with a permanent loss and that, collectively, were close to risk-free.",
+      "note": "Praising GEICO's investment chief, he measures a portfolio by its chance of permanent loss, with no mention of price swings.",
+      "corrected": false
+    },
+
+    {
+      "id": "1987_berkshire",
+      "year": 1987,
+      "excerpt": "Volatility caused by money managers who speculate irrationally with huge sums will offer the true investor more chances to make intelligent investment moves. He can be hurt by such volatility only if he is forced, by either financial or psychological pressures, to sell at untoward times.",
+      "note": "Written after the October crash, it treats volatility as harmful only to a holder who can be forced to sell.",
+      "corrected": false
+    },
+
+    {
+      "id": "1990_berkshire",
+      "year": 1990,
+      "excerpt": "Note that we are not spreading risk as insurers typically do; we are concentrating it. Therefore, our yearly combined ratio on this business will almost never fall in the industry range of 100 - 120, but will instead be close to either zero or 300%.",
+      "note": "Entering super-cat insurance, he warns owners that results will swing between large profits and large losses.",
+      "corrected": false
+    },
+
+    {
+      "id": "1993_berkshire",
+      "year": 1993,
+      "excerpt": "In stating this opinion, we define risk, using dictionary terms, as \"the possibility of loss or injury.\" Academics, however, like to define investment \"risk\" differently, averring that it is the relative volatility of a stock or portfolio of stocks",
+      "note": "His clearest definition, set directly against beta and the academic habit of reading risk from past price movements.",
+      "corrected": false
+    },
+
+    {
+      "id": "1994_berkshire",
+      "year": 1994,
+      "excerpt": "Given the risks we accept, Ajit and I constantly focus on our \"worst case,\" knowing, of course, that it is difficult to judge what this is, since you could conceivably have a Long Island hurricane, a California earthquake, and Super Cat X all in the same year.",
+      "note": "The worst case becomes the planning figure, and he admits several catastrophes could arrive in one year.",
+      "corrected": false
+    },
+
+    {
+      "id": "1995_berkshire",
+      "year": 1995,
+      "excerpt": "These insurers don't issue single huge-limit policies as we do, but their small policies, in aggregate, can create a risk of staggering size.",
+      "note": "Many small policies can hide one large exposure when a single event hits them all at once.",
+      "corrected": false
+    },
+
+    {
+      "id": "2001_berkshire",
+      "year": 2001,
+      "excerpt": "They limit the business they accept in a manner that guarantees they will suffer no aggregation of losses from a single event or from related events that will threaten their solvency. They ceaselessly search for possible correlation among seemingly-unrelated risks.",
+      "note": "After September 11th exposed weak discipline at General Re, he states the rule on correlated losses as an underwriting principle.",
+      "corrected": false
+    },
+
+    {
+      "id": "2002_berkshire",
+      "year": 2002,
+      "excerpt": "In our view, however, derivatives are financial weapons of mass destruction, carrying dangers that, while now latent, are potentially lethal.",
+      "note": "The best-known line on derivatives, written while he was still unwinding the book that came with General Re.",
+      "corrected": false
+    },
+
+    {
+      "id": "2003_berkshire",
+      "year": 2003,
+      "excerpt": "When we began to liquidate Gen Re Securities in early 2002, it had 23,218 outstanding tickets with 884 counterparties (some having names I couldn't pronounce, much less creditworthiness I could evaluate).",
+      "note": "The cost of exit shows how counterparty risk builds up unseen in a derivatives book.",
+      "corrected": false
+    },
+
+    {
+      "id": "2005_berkshire",
+      "year": 2005,
+      "excerpt": "From a risk standpoint, it is far safer to have earnings from ten diverse and uncorrelated utility operations that cover interest charges by, say, a 2:1 ratio than it is to have far greater coverage provided by a single utility.",
+      "note": "With Katrina in view, he values independent earnings streams above a stronger ratio resting on one asset.",
+      "corrected": false
+    },
+
+    {
+      "id": "2006_berkshire",
+      "year": 2006,
+      "excerpt": "We are not willing, though, to take on even very small exposures at prices that don't reflect our evaluation of loss probabilities. Appropriate prices don't guarantee profits in any given year, but inappropriate prices most certainly guarantee eventual losses.",
+      "note": "Pricing discipline comes first, so Berkshire cut its wind exposures when new capital pushed super-cat rates down.",
+      "corrected": false
+    },
+
+    {
+      "id": "2008_berkshire",
+      "year": 2008,
+      "excerpt": "The ridiculous premium that Black-Scholes dictates in my extreme example is caused by the inclusion of volatility in the formula and by the fact that volatility is determined by how much stocks have moved around in some past period of days, months or years.",
+      "note": "Defending Berkshire's long-dated put options, he argues that a volatility input misprices risk over a century.",
+      "corrected": false
+    },
+
+    {
+      "id": "2014_berkshire",
+      "year": 2014,
+      "excerpt": "Volatility is far from synonymous with risk. Popular formulas that equate the two terms lead students, investors and CEOs astray.",
+      "note": "Two decades after the beta passage, he repeats the point and names business schools as its source.",
+      "corrected": false
+    },
+
+    {
+      "id": "2016_berkshire",
+      "year": 2016,
+      "excerpt": "For example, if the insurance industry should experience a $250 billion loss from some mega-catastrophe – a loss about triple anything it has ever experienced – Berkshire as a whole would likely record a large profit for the year.",
+      "note": "The worst case is now sized against the whole group, where other earnings absorb an industry-wide disaster.",
+      "corrected": false
+    },
+
+    {
+      "id": "2023_berkshire",
+      "year": 2023,
+      "excerpt": "One investment rule at Berkshire has not and will not change: Never risk permanent loss of capital.",
+      "note": "Late in his tenure he reduces the topic to one rule, unchanged since the partnership years.",
+      "corrected": false
+    }
+
+  ]
+}

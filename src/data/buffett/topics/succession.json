@@ -1,0 +1,109 @@
+{
+  "topic": "succession",
+  "title": "Buffett on succession",
+  "lede": "Early on, succession is about ownership: his stock passes to family and foundation, and the businesses must not depend on his health. From 2003 the board’s main job is picking his successor, and by 2005 he plans to split the CEO and investment roles. Later letters add a non-executive chairman as a safety valve, name Ajit Jain and Greg Abel, and end with Abel’s first letter on keeping the culture.",
+  "related": [
+    "nvidia-plan-b-was-its-cfo",
+    "when-culture-eats-your-strategy"
+  ],
+  "entries": [
+    {
+      "id": "1990_berkshire",
+      "year": 1990,
+      "excerpt": "I feel strongly that the fate of our businesses and their managers should not depend on my health - which, it should be added, is excellent - and I have planned accordingly.",
+      "note": "The first framing: succession protects the businesses and their managers from depending on one man’s health.",
+      "corrected": false
+    },
+    {
+      "id": "1993_berkshire",
+      "year": 1993,
+      "excerpt": "When my stock is transferred to either my wife or the foundation, Berkshire will enter the third governance mode, going forward with a vitally interested, but non-management, owner and with a management that must perform for that owner.",
+      "note": "He plans for ownership and management to separate, with family directors holding control and hired managers answering to them.",
+      "corrected": false
+    },
+    {
+      "id": "2003_berkshire",
+      "year": 2003,
+      "excerpt": "The primary job of our directors is to select my successor, either upon my death or disability, or when I begin to lose my marbles.",
+      "note": "Choosing the successor becomes the board’s main task, with four internal candidates discussed with and without him present.",
+      "corrected": false
+    },
+    {
+      "id": "2005_berkshire",
+      "year": 2005,
+      "excerpt": "On the minus side, none has my crossover experience that allows me to be comfortable making decisions in either the business arena or in investments. That problem will be solved by having another person in the organization handle marketable securities.",
+      "note": "The job he did alone will be split in two: an operating CEO and a separate investment manager.",
+      "corrected": false
+    },
+    {
+      "id": "2006_berkshire",
+      "year": 2006,
+      "excerpt": "Each of the three is much younger than I. The directors believe it’s important that my successor have the prospect of a long tenure.",
+      "note": "Age becomes a selection test, because a short tenure would force the board to repeat the exercise soon.",
+      "corrected": false
+    },
+    {
+      "id": "2007_berkshire",
+      "year": 2007,
+      "excerpt": "Last year I told you that we would also promptly complete a succession plan for the investment job at Berkshire, and we have indeed now identified four candidates who could succeed me in managing investments.",
+      "note": "The investment side, admitted a year earlier to be thin, now has its own bench of four.",
+      "corrected": false
+    },
+    {
+      "id": "2010_berkshire",
+      "year": 2010,
+      "excerpt": "please send me a letter (at home if you wish) giving your recommendation as who should take over tomorrow if you should become incapacitated overnight.",
+      "note": "Key-person risk extends to every subsidiary: each manager names a successor in writing, updated regularly.",
+      "corrected": false
+    },
+    {
+      "id": "2011_berkshire",
+      "year": 2011,
+      "excerpt": "Each will be handling a few billion dollars in 2012, but they have the brains, judgment and character to manage our entire portfolio when Charlie and I are no longer running Berkshire.",
+      "note": "With Todd Combs and Ted Weschler hired, the investment successors start small and earn the larger role.",
+      "corrected": false
+    },
+    {
+      "id": "2014_berkshire",
+      "year": 2014,
+      "excerpt": "In my service on the boards of nineteen public companies, however, I’ve seen how hard it is to replace a mediocre CEO if that person is also Chairman. (The deed usually gets done, but almost always very late.)",
+      "note": "He separates the chair from the CEO role so the board can act quickly if the successor fails.",
+      "corrected": false
+    },
+    {
+      "id": "2017_berkshire",
+      "year": 2017,
+      "excerpt": "Ajit is now responsible for insurance operations, and Greg oversees the rest of our businesses. Charlie and I will focus on investments and capital allocation.",
+      "note": "The likely successors take real operating authority while he is still there to watch them.",
+      "corrected": false
+    },
+    {
+      "id": "2018_berkshire",
+      "year": 2018,
+      "excerpt": "These moves were overdue. Berkshire is now far better managed than when I alone was supervising operations. Ajit and Greg have rare talents, and Berkshire blood flows through their veins.",
+      "note": "A year on, he admits the handover of operations should have come sooner.",
+      "corrected": false
+    },
+    {
+      "id": "2023_berkshire",
+      "year": 2023,
+      "excerpt": "Greg Abel, who runs all non-insurance operations for Berkshire – and in all respects is ready to be CEO of Berkshire tomorrow – was born and raised in Canada (he still plays hockey).",
+      "note": "After Munger’s death, the successor is named openly as ready now.",
+      "corrected": false
+    },
+    {
+      "id": "2024_berkshire",
+      "year": 2024,
+      "excerpt": "At 94, it won’t be long before Greg Abel replaces me as CEO and will be writing the annual letters. Greg shares the Berkshire creed that a “report” is what a Berkshire CEO annually owes to owners.",
+      "note": "The handover includes the letter itself, and the duty to report candidly to owners each year.",
+      "corrected": false
+    },
+    {
+      "id": "2025_abel",
+      "year": 2025,
+      "excerpt": "Charlie’s comment on May 1, 2021, that “Greg will keep the culture” will forever resonate with me. It was a reminder that our culture is our most treasured asset, a call to maintain what defines Berkshire, and a challenge to ensure our culture continues.",
+      "note": "Abel’s first letter treats keeping the culture as the successor’s first duty.",
+      "corrected": false
+    }
+  ]
+}

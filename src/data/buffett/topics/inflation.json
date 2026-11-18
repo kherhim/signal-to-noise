@@ -1,0 +1,116 @@
+{
+  "topic": "inflation",
+  "title": "Buffett on inflation",
+  "lede": "Buffett's early Berkshire letters treat inflation as a tax that can leave owners poorer while reported returns look healthy. Within a few years he had turned that into a buying test: favour businesses that raise prices easily and need little new capital, and distrust long bonds. The later letters widen the warning to paper money itself, and to fiscal deficits that tempt governments to inflate.",
+  "related": [
+    "winning-chaos",
+    "budgeting-for-deflation"
+  ],
+  "entries": [
+    {
+      "id": "1979_berkshire",
+      "year": 1979,
+      "excerpt": "When this index exceeds the rate of return earned on equity by the business, the investor’s purchasing power (real capital) shrinks even though he consumes nothing at all.",
+      "note": "Inflation plus the owner's tax bill sets the real hurdle, and a 20% return on equity can still fail it.",
+      "corrected": false
+    },
+    {
+      "id": "1980_berkshire",
+      "year": 1980,
+      "excerpt": "Of course, the two forms of taxation co-exist and interact since explicit taxes are levied on nominal, not real, income. Thus you pay income taxes on what would be deficits if returns to stockholders were measured in constant dollars.",
+      "note": "Tax falls on nominal income, so owners can pay tax on returns that are losses in real terms.",
+      "corrected": false
+    },
+    {
+      "id": "1981_berkshire",
+      "year": 1981,
+      "excerpt": "Such favored business must have two characteristics: (1) an ability to increase prices rather easily (even when product demand is flat and capacity is not fully utilized) without fear of significant loss of either market share or unit volume",
+      "note": "Pricing power is the first test of a business that can withstand rising prices.",
+      "corrected": false
+    },
+    {
+      "id": "1983_berkshire",
+      "year": 1983,
+      "excerpt": "It doesn’t work that way. Asset-heavy businesses generally earn low rates of return – rates that often barely provide enough capital to fund the inflationary needs of the existing business, with nothing left over for real growth, for distribution to owners, or for acquisition of new businesses.",
+      "note": "Hard assets give poor protection, because inflation forces asset-heavy firms to keep feeding capital into standing still.",
+      "corrected": false
+    },
+    {
+      "id": "1984_berkshire",
+      "year": 1984,
+      "excerpt": "We believe substantial inflation lies ahead, although we have no idea what the average rate will turn out to be. Furthermore, we think there is a small, but not insignificant, chance of runaway inflation.",
+      "note": "He avoids long bonds because he expects deficits to bring inflation back, with a small risk of a runaway spiral.",
+      "corrected": false
+    },
+    {
+      "id": "1985_berkshire",
+      "year": 1985,
+      "excerpt": "Meanwhile, the CPI has more than tripled. Therefore, each share commands about one-third the purchasing power it did at the end of 1964. Regular dividends have been paid but they, too, have shrunk significantly in purchasing power.",
+      "note": "Burlington shows the cost in practice: two decades of heavy reinvestment left each share worth a third in real terms.",
+      "corrected": false
+    },
+    {
+      "id": "1986_berkshire",
+      "year": 1986,
+      "excerpt": "Seeing no let-up in either trend, we continue to believe that the industry’s revenues must grow at close to 10% annually for it to just hold its own in terms of profitability, even though general inflation may be running only 2% - 4%.",
+      "note": "In insurance, claims costs ran well ahead of general inflation, so premiums had to grow far faster.",
+      "corrected": false
+    },
+    {
+      "id": "1987_berkshire",
+      "year": 1987,
+      "excerpt": "For the debtor government, the weapon of inflation is the economic equivalent of the \"H\" bomb, and that is why very few countries have been allowed to swamp the world with debt denominated in their own currency.",
+      "note": "A debtor government that borrows in its own currency faces steady pressure to inflate its debts away.",
+      "corrected": false
+    },
+    {
+      "id": "1993_berkshire",
+      "year": 1993,
+      "excerpt": "the real risk that an investor must assess is whether his aggregate after-tax receipts from an investment (including those he receives on sale) will, over his prospective holding period, give him at least as much purchasing power as he had to begin with",
+      "note": "Risk is redefined as the chance of losing purchasing power over the holding period, after tax.",
+      "corrected": false
+    },
+    {
+      "id": "2008_berkshire",
+      "year": 2008,
+      "excerpt": "These once-unthinkable dosages will almost certainly bring on unwelcome aftereffects. Their precise nature is anyone’s guess, though one likely consequence is an onslaught of inflation.",
+      "note": "The crisis rescue, he warns, is likely to bring inflation later as a cost of the cure.",
+      "corrected": false
+    },
+    {
+      "id": "2011_berkshire",
+      "year": 2011,
+      "excerpt": "Over the past century these instruments have destroyed the purchasing power of investors in many countries, even as the holders continued to receive timely payments of interest and principal.",
+      "note": "Cash and bonds look safe, but over a century they have repeatedly lost their holders' purchasing power.",
+      "corrected": false
+    },
+    {
+      "id": "2014_berkshire",
+      "year": 2014,
+      "excerpt": "The unconventional, but inescapable, conclusion to be drawn from the past fifty years is that it has been far safer to invest in a diversified collection of American businesses than to invest in securities – Treasuries, for example – whose values have been tied to American currency.",
+      "note": "Fifty years of data show diversified businesses have been safer stores of value than dollar-based securities.",
+      "corrected": false
+    },
+    {
+      "id": "2018_berkshire",
+      "year": 2018,
+      "excerpt": "You would now have an asset worth about $4,200, less than 1% of what would have been realized from a simple unmanaged investment in American business. The magical metal was no match for the American mettle.",
+      "note": "Gold bought as a hedge against deficits returned a tiny fraction of what American businesses delivered.",
+      "corrected": false
+    },
+    {
+      "id": "2022_berkshire",
+      "year": 2022,
+      "excerpt": "Berkshire also offers some modest protection from runaway inflation, but this attribute is far from perfect. Huge and entrenched fiscal deficits have consequences.",
+      "note": "Berkshire offers only partial protection from runaway inflation, and large fiscal deficits remain a real concern.",
+      "corrected": false
+    },
+    {
+      "id": "2024_berkshire",
+      "year": 2024,
+      "excerpt": "Paper money can see its value evaporate if fiscal folly prevails. In some countries, this reckless practice has become habitual, and, in our country’s short history, the U.S. has come close to the edge. Fixed-coupon bonds provide no protection against runaway currency.",
+      "note": "In one of his final annual letters, paper money and fixed-coupon bonds remain the assets most exposed to fiscal folly.",
+      "corrected": false
+    }
+  ]
+}

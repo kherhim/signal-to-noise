@@ -1,0 +1,94 @@
+{
+  "topic": "boards-and-auditors",
+  "title": "Buffett on boards and auditors",
+  "lede": "Buffett starts with the auditor's limits: in 1984 and 1987 he warns that an audit certifies management's own estimates. By 1993 he sets out what directors owe an absent owner. In 2002, after the accounting scandals, he names boardroom atmosphere, gives the audit committee four questions for its auditors, and keeps returning to one test of independence: directors who stand to lose their own money.",
+  "related": [
+    "8-biases-sitting-every-boardroom"
+  ],
+  "entries": [
+    {
+      "id": "1984_berkshire",
+      "year": 1984,
+      "excerpt": "If liabilities of an insurer, correctly stated, would exceed assets, it falls to the insurer to volunteer this morbid information. In other words, the corpse is supposed to file the death certificate.",
+      "note": "The first limit on audit: where the numbers rest on management's estimates, the auditor cannot check them.",
+      "corrected": false
+    },
+    {
+      "id": "1987_berkshire",
+      "year": 1987,
+      "excerpt": "The auditors use this reassuring language even though they know from long and painful experience that the numbers so certified are likely to differ dramatically from the true earnings of the period.",
+      "note": "He faults auditors less for error than for signing a clean opinion that hides how little they can verify.",
+      "corrected": false
+    },
+    {
+      "id": "1993_berkshire",
+      "year": 1993,
+      "excerpt": "I believe directors should behave as if there is a single absentee owner, whose long-term interest they should try to further in all proper ways. Unfortunately, \"long-term\" gives directors a lot of wiggle room.",
+      "note": "The first full statement of duty: the board stands in for one absent owner, and long-term can excuse much.",
+      "corrected": false
+    },
+    {
+      "id": "1998_berkshire",
+      "year": 1998,
+      "excerpt": "Though auditors should regard the investing public as their client, they tend to kowtow instead to the managers who choose them and dole out their pay. (“Whose bread I eat, his song I sing.”)",
+      "note": "The auditor's real client is whoever hires and pays them, which is usually the CEO.",
+      "corrected": false
+    },
+    {
+      "id": "2002_berkshire",
+      "year": 2002,
+      "excerpt": "Frequently, auditors knew about these deceptions. Too often, however, they remained silent. The key job of the audit committee is simply to get the auditors to divulge what they know.",
+      "note": "After the scandals, the audit committee gets one job, backed by four recorded questions put to the auditors.",
+      "corrected": false
+    },
+    {
+      "id": "2003_berkshire",
+      "year": 2003,
+      "excerpt": "Despite the lapdog behavior of independent fund directors, we did not conclude that they are bad people. They’re not. But sadly, “boardroom atmosphere” almost invariably sedates their fiduciary genes.",
+      "note": "Good people go quiet at the board table; the problem is the room, and better rules leave it intact.",
+      "corrected": false
+    },
+    {
+      "id": "2004_berkshire",
+      "year": 2004,
+      "excerpt": "In our view, based on our considerable boardroom experience, the least independent directors are likely to be those who receive an important fraction of their annual income from the fees they receive for board service",
+      "note": "Formal independence tests miss the director who needs the fee and wants the next seat.",
+      "corrected": false
+    },
+    {
+      "id": "2009_berkshire",
+      "year": 2009,
+      "excerpt": "Directors should hire a second advisor to make the case against the proposed acquisition, with its fee contingent on the deal not going through.",
+      "note": "A practical fix for one-sided deal advice: pay someone to argue the opposite case.",
+      "corrected": false
+    },
+    {
+      "id": "2010_berkshire",
+      "year": 2010,
+      "excerpt": "They receive token compensation: no options, no restricted stock and, for that matter, virtually no cash. We do not provide them directors and officers liability insurance, a given at almost every other large public company. If they mess up with your money, they will lose their money as well.",
+      "note": "Berkshire's own board as the model: token fees, no insurance cover, and directors' own wealth at risk.",
+      "corrected": false
+    },
+    {
+      "id": "2016_berkshire",
+      "year": 2016,
+      "excerpt": "During the accounting nonsense that flourished during the 1960s, the story was told of a CEO who, as his company revved up to go public, asked prospective auditors, “What is two plus two?” The answer that won the assignment, of course, was, “What number do you have in mind?”",
+      "note": "The old joke about auditor selection, told to show that pressure on reported numbers never really goes away.",
+      "corrected": false
+    },
+    {
+      "id": "2019_berkshire",
+      "year": 2019,
+      "excerpt": "If the NWD has seriously challenged his/her present CEO’s compensation or acquisition dreams, his or her candidacy will silently die. When seeking directors, CEOs don’t look for pit bulls. It’s the cocker spaniel that gets taken home.",
+      "note": "How rising director pay and CEO references reward the compliant director and screen out the challenger.",
+      "corrected": false
+    },
+    {
+      "id": "2025_thanksgiving_buffett",
+      "year": 2025,
+      "excerpt": "Charlie and I encountered this problem several times and failed to act. This failure can be a huge mistake. The Board must be alert to this possibility at the CEO level and the CEO must be alert to the possibility at subsidiaries.",
+      "note": "His last word on boards: watch for a loyal CEO's decline, which he admits he failed to act on.",
+      "corrected": false
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "topic": "tax",
+  "title": "Buffett on tax",
+  "lede": "Buffett treats tax as a real cost that timing can shrink. In 1963 he counted the tax on unrealised gains as a liability against his own net worth. By 1989 he described Berkshire's deferred tax as an interest-free loan from the Treasury, repaid only when it chooses to sell. Later letters set out what Berkshire pays and how tax shapes dividends, holdings and the decision to sell.",
+  "related": [
+    "buffett-on-capital-allocation",
+    "buffett-on-the-fortress-balance-sheet"
+  ],
+  "entries": [
+    {
+      "id": "1963-07-10_partnership",
+      "year": 1963,
+      "excerpt": "My net worth is the market value of holdings less the tax payable upon sale. The liability is just as real as the asset unless the value of the asset declines (ouch), the asset is given away (no comment), or I die with it.",
+      "note": "He counts the tax on unrealised gains as a real liability, and refuses to let it freeze a portfolio.",
+      "corrected": false
+    },
+    {
+      "id": "1979_berkshire",
+      "year": 1979,
+      "excerpt": "your after-tax purchasing power gain is likely to be very close to zero at a 14% inflation rate.  Most of the remaining six percentage points will go for income tax any time you wish to convert your twenty percentage points of nominal annual gain into cash.",
+      "note": "Even a 20% annual gain leaves owners close to nothing once 14% inflation and the tax on cashing out are paid.",
+      "corrected": false
+    },
+    {
+      "id": "1986_berkshire",
+      "year": 1986,
+      "excerpt": "What determines the outcome is the strength of the corporation’s business franchise and whether the profitability of that franchise is regulated.",
+      "note": "Who bears a change in corporate tax depends on franchise strength and regulation, so a rate cut need not reach profits.",
+      "corrected": false
+    },
+    {
+      "id": "1987_berkshire",
+      "year": 1987,
+      "excerpt": "The penalty applying to indirect ownership was greatly increased by the 1986 Tax Bill and, to a lesser extent, by the 1987 Bill, particularly in instances where the intermediary is an insurance company.",
+      "note": "He admits that holding securities through an insurer now costs shareholders more tax than owning them directly.",
+      "corrected": false
+    },
+    {
+      "id": "1989_berkshire",
+      "year": 1989,
+      "excerpt": "In economic terms, the liability resembles an interest-free loan from the U.S. Treasury that comes due only at our election (unless, of course, Congress moves to tax gains before they are realized).",
+      "note": "The defining image: deferred tax works as a loan with no interest, repaid only when Berkshire decides to sell.",
+      "corrected": false
+    },
+    {
+      "id": "1993_berkshire",
+      "year": 1993,
+      "excerpt": "However, the penalty our corporate form imposes is mitigated - though far from eliminated - by our strategy of investing for the long term.",
+      "note": "Buy-and-hold has a tax reason too, since gains are taxed only when realised, which softens the corporate penalty.",
+      "corrected": false
+    },
+    {
+      "id": "1996_berkshire",
+      "year": 1996,
+      "excerpt": "Charlie and I believe that large tax payments by Berkshire are entirely fitting. The contribution we thus make to society's well-being is at most only proportional to its contribution to ours.",
+      "note": "He reports an $860 million federal tax bill and calls large payments by Berkshire entirely fitting.",
+      "corrected": false
+    },
+    {
+      "id": "2000_berkshire",
+      "year": 2000,
+      "excerpt": "The tax code makes Berkshire’s owning 80% or more of a business far more profitable for us, proportionately, than our owning a smaller share.",
+      "note": "Owning 80% or more of a business lets dividends and retained earnings reach Berkshire with no further tax.",
+      "corrected": false
+    },
+    {
+      "id": "2003_berkshire",
+      "year": 2003,
+      "excerpt": "Berkshire, on your behalf and mine, will send the Treasury $3.3 billion for tax on its 2003 income, a sum equaling 2½% of the total income tax paid by all U.S. corporations in fiscal 2003.",
+      "note": "Berkshire's share of US corporate tax is two and a half times its share of corporate market value.",
+      "corrected": false
+    },
+    {
+      "id": "2011_berkshire",
+      "year": 2011,
+      "excerpt": "It’s noteworthy that the implicit inflation “tax” was more than triple the explicit income tax that our investor probably thought of as his main burden.",
+      "note": "Cash held in Treasury bills loses more to inflation than to income tax, a cost investors tend to overlook.",
+      "corrected": false
+    },
+    {
+      "id": "2014_berkshire",
+      "year": 2014,
+      "excerpt": "At Berkshire, we can – without incurring taxes or much in the way of other costs – move huge sums from businesses that have limited opportunities for incremental investment to other sectors with greater promise.",
+      "note": "A conglomerate can move cash between businesses without the tax and fees an individual shareholder would pay.",
+      "corrected": false
+    },
+    {
+      "id": "2016_berkshire",
+      "year": 2016,
+      "excerpt": "Berkshire, like most corporations, nets considerably more from a dollar of dividends than it reaps from a dollar of capital gains.",
+      "note": "Corporate maths reversed: Berkshire keeps more from a dollar of dividends than from a dollar of capital gains.",
+      "corrected": false
+    },
+    {
+      "id": "2018_berkshire",
+      "year": 2018,
+      "excerpt": "In effect, our country’s Treasury Department holds a special class of our stock – call this holding the AA shares – that receives large “dividends” (that is, tax payments) from Berkshire.",
+      "note": "He frames the Treasury as a holder of special shares, so the 2017 rate cut handed earnings back to owners.",
+      "corrected": false
+    },
+    {
+      "id": "2024_berkshire",
+      "year": 2024,
+      "excerpt": "For sixty years, Berkshire shareholders endorsed continuous reinvestment and that enabled the company to build its taxable income.",
+      "note": "Six decades of reinvestment with one dividend built the taxable income behind a record $26.8 billion payment.",
+      "corrected": false
+    }
+  ]
+}
