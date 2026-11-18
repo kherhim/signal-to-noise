@@ -109,5 +109,6 @@ with an instruction to the reader.
 Proposed by the weekly learn job from the owner's edits; each one is live because the owner merged it. Flag these as you flag the tells above.
 
 - **Management as stand-in subject for the company** (2026-10-26): Flag "management" as the subject of a company's decision where the company's name, or "it", would do the same work. Example, as published: "Citi built the supermarket at the top of the cycle and sold Smith Barney, a crown jewel, in the crisis to raise capital." (owner changed: Management assembled → Citi built; during → in)
+- **'While' joining two facts that do not contrast** (2026-11-09): Flag 'while' used to join two parallel facts that neither contrast nor happen at the same moment, where a plain 'and', or a person or company as subject, would do. Example, as published: "In the quarter it spent $44.9 billion on capital projects and took in $39.1 billion from operations." (owner changed: sentence rewritten (9 of 17 words changed))
 
 Return only the JSON described by the schema.
