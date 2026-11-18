@@ -65,6 +65,7 @@ const ALLOWLIST = new Set([
    personifications, place names, multi-word brands here. */
 const MULTI_WORD_ALLOWLIST = [
   ['Father', 'Time'],   // Personification
+  ['plan', 'B'],        // Idiom: "plan B"
 ];
 
 /* Strip leading/trailing quotes, brackets, parens, punctuation from a

@@ -429,6 +429,123 @@
       "source": "learned"
     },
     {
+      "formal": "deploy",
+      "plain": "spend",
+      "owner_per_1k": 0.14,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "overlook",
+      "plain": "miss",
+      "owner_per_1k": 0.14,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "repeatedly",
+      "plain": "many times",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "limited",
+      "plain": "little",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 0.08,
+      "source": "learned",
+      "except": [
+        "limited partner",
+        "limited company",
+        "limited liability"
+      ]
+    },
+    {
+      "formal": "consume",
+      "plain": "eat",
+      "owner_per_1k": 0.09,
+      "line_per_1k": 0.33,
+      "source": "learned"
+    },
+    {
+      "formal": "roughly",
+      "plain": "about",
+      "owner_per_1k": 0.07,
+      "line_per_1k": 1.25,
+      "source": "learned"
+    },
+    {
+      "formal": "flow through",
+      "plain": "reach",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "difference",
+      "plain": "gap",
+      "owner_per_1k": 0.14,
+      "line_per_1k": 0.75,
+      "source": "learned"
+    },
+    {
+      "formal": "incur",
+      "plain": "carry",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.33,
+      "source": "learned"
+    },
+    {
+      "formal": "unused",
+      "plain": "idle",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "previously",
+      "plain": "used to",
+      "owner_per_1k": 0.02,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "sentiment",
+      "plain": "mood",
+      "owner_per_1k": 0.18,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "scheduled to",
+      "plain": "due to",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.08,
+      "source": "learned"
+    },
+    {
+      "formal": "followed by",
+      "plain": "and",
+      "owner_per_1k": 0,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
+      "formal": "figure",
+      "plain": "number",
+      "owner_per_1k": 0.09,
+      "line_per_1k": 2.16,
+      "source": "learned"
+    },
+    {
+      "formal": "expand",
+      "plain": "grow",
+      "owner_per_1k": 0.25,
+      "line_per_1k": 0.17,
+      "source": "learned"
+    },
+    {
       "formal": "lengthy",
       "plain": "long",
       "owner_per_1k": 0,
@@ -468,7 +585,12 @@
       "plain": "deal",
       "owner_per_1k": 0.11,
       "line_per_1k": 0.57,
-      "source": "learned"
+      "source": "learned",
+      "except": [
+        "transaction costs",
+        "related-party transaction",
+        "related-party transactions"
+      ]
     },
     {
       "formal": "occupied",
