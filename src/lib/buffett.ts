@@ -37,6 +37,9 @@ export interface Topic {
   lede: string;
   related: string[];
   entries: TopicEntry[];
+  /* Date (YYYY-MM-DD) the owner's edit pass was done and the page went live.
+     Absent = still a draft; it builds only in a BUFFETT_TOPICS=1 preview. */
+  live?: string;
 }
 
 export const letters: Letter[] = (lettersJson as Letter[]).slice().sort((a, b) =>
@@ -53,6 +56,10 @@ export const lineById: Record<string, LineEntry> = Object.fromEntries(line.map((
 const topicModules = import.meta.glob<{ default: Topic }>('../data/buffett/topics/*.json', { eager: true });
 export const topics: Topic[] = Object.values(topicModules).map((m) => m.default).sort((a, b) => a.title.localeCompare(b.title));
 export const topicBySlug: Record<string, Topic> = Object.fromEntries(topics.map((t) => [t.topic, t]));
+/* Topic pages ship one at a time as each passes the owner's edit and the
+   gate. BUFFETT_TOPICS=1 previews every draft locally; never deploy with it. */
+export const topicPreview = process.env.BUFFETT_TOPICS === '1';
+export const liveTopics: Topic[] = topics.filter((t) => topicPreview || Boolean(t.live));
 
 /* Year ruler shared by the figures: 1959 → 2025 across x 200 → 2200. */
 export const YEAR_MIN = 1959;

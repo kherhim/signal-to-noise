@@ -3,14 +3,12 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import TopicTimeline from '../../../components/buffett/TopicTimeline.astro';
 import Attribution from '../../../components/buffett/Attribution.astro';
-import { topics, lettersById, kindLabel, dateLabel } from '../../../lib/buffett';
+import { liveTopics, lettersById, kindLabel, dateLabel } from '../../../lib/buffett';
 
-/* The topic pages carry ledes and notes drafted for the site owner's edit
-   pass. They build only when BUFFETT_TOPICS=1 is set, so the landing page
-   can ship ahead of the review. */
+/* A topic page builds once its JSON carries `live` (the owner's edit pass and
+   the gate are done). BUFFETT_TOPICS=1 previews the drafts too. */
 export async function getStaticPaths() {
-  if (process.env.BUFFETT_TOPICS !== '1') return [];
-  return topics.map((topic) => ({ params: { topic: topic.topic }, props: { topic } }));
+  return liveTopics.map((topic) => ({ params: { topic: topic.topic }, props: { topic } }));
 }
 
 const { topic } = Astro.props;
