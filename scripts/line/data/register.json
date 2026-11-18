@@ -443,13 +443,6 @@
       "source": "learned"
     },
     {
-      "formal": "underlying",
-      "plain": "underneath",
-      "owner_per_1k": 0.02,
-      "line_per_1k": 0.25,
-      "source": "learned"
-    },
-    {
       "formal": "repeatedly",
       "plain": "many times",
       "owner_per_1k": 0.07,
@@ -461,14 +454,12 @@
       "plain": "little",
       "owner_per_1k": 0.07,
       "line_per_1k": 0.08,
-      "source": "learned"
-    },
-    {
-      "formal": "since",
-      "plain": "because",
-      "owner_per_1k": 0.16,
-      "line_per_1k": 1.08,
-      "source": "learned"
+      "source": "learned",
+      "except": [
+        "limited partner",
+        "limited company",
+        "limited liability"
+      ]
     },
     {
       "formal": "consume",
@@ -499,20 +490,6 @@
       "source": "learned"
     },
     {
-      "formal": "lower",
-      "plain": "cut",
-      "owner_per_1k": 0.18,
-      "line_per_1k": 0.58,
-      "source": "learned"
-    },
-    {
-      "formal": "gain",
-      "plain": "win",
-      "owner_per_1k": 0.16,
-      "line_per_1k": 0.58,
-      "source": "learned"
-    },
-    {
       "formal": "incur",
       "plain": "carry",
       "owner_per_1k": 0,
@@ -527,24 +504,10 @@
       "source": "learned"
     },
     {
-      "formal": "assume",
-      "plain": "carry",
-      "owner_per_1k": 0.09,
-      "line_per_1k": 0.58,
-      "source": "learned"
-    },
-    {
       "formal": "previously",
       "plain": "used to",
       "owner_per_1k": 0.02,
       "line_per_1k": 0.17,
-      "source": "learned"
-    },
-    {
-      "formal": "disappear",
-      "plain": "gone",
-      "owner_per_1k": 0.07,
-      "line_per_1k": 0.25,
       "source": "learned"
     },
     {
