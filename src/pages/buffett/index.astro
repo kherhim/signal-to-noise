@@ -3,11 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BuffettLine from '../../components/buffett/BuffettLine.astro';
 import LettersSearch from '../../components/buffett/LettersSearch.astro';
 import Attribution from '../../components/buffett/Attribution.astro';
-import { letters, topics, YEAR_MIN, YEAR_MAX } from '../../lib/buffett';
+import { letters, topics, liveTopics, YEAR_MIN, YEAR_MAX } from '../../lib/buffett';
 
 const annual = letters.filter((l) => l.kind === 'annual').length;
-// Topic pages are held back until their drafted notes have been reviewed.
-const showTopics = process.env.BUFFETT_TOPICS === '1' && topics.length > 0;
+// Topic pages go live one at a time, after the owner's edit pass.
+const pending = topics.length - liveTopics.length;
 const partnership = letters.filter((l) => l.kind === 'partnership').length;
 ---
 
@@ -32,9 +32,9 @@ const partnership = letters.filter((l) => l.kind === 'partnership').length;
 
     <section class="mt-20" aria-labelledby="topics-heading">
       <h2 id="topics-heading" class="text-sm uppercase tracking-widest text-accent mb-6">Buffett on…</h2>
-      {showTopics ? (
+      {liveTopics.length > 0 && (
         <ul class="flex flex-wrap gap-3">
-          {topics.map((t) => (
+          {liveTopics.map((t) => (
             <li>
               <a href={`/buffett/on/${t.topic}/`}
                 class="inline-block rounded-full border border-divider/60 px-4 py-2 text-sm text-fg hover:border-accent/60 transition-colors">
@@ -43,8 +43,13 @@ const partnership = letters.filter((l) => l.kind === 'partnership').length;
             </li>
           ))}
         </ul>
-      ) : (
-        <p class="text-muted">Ten topic pages are being prepared, one for each question finance leaders repeatedly consider.</p>
+      )}
+      {pending > 0 && (
+        <p class={`text-muted${liveTopics.length > 0 ? ' mt-6' : ''}`}>
+          {liveTopics.length > 0
+            ? `${liveTopics.length} of ${topics.length} topic pages are live. A new one follows each week.`
+            : `${topics.length} topic pages, one for each question finance leaders return to, go live one a week from late November.`}
+        </p>
       )}
     </section>
 
