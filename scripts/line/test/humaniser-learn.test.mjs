@@ -123,7 +123,7 @@ const SKILL = '# Essay line: humaniser read\n\n1. A tell.\n\nReturn only the JSO
 const SECRET = 'The quarterly expenditure envelope remains firmly under review by the board.';
 const PUBLISHED = 'The quarterly spending remains under review by the board.';
 
-function fixture({ ownerText = 'The owner writes plainly about money and mills. '.repeat(40), register = true } = {}) {
+function fixture({ ownerText = 'The owner writes plainly about money and mills. '.repeat(40), register = true, rejected = undefined } = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'learn-root-'));
   const ins = path.join(root, 'src/content/insights');
   fs.mkdirSync(ins, { recursive: true });
@@ -133,7 +133,7 @@ function fixture({ ownerText = 'The owner writes plainly about money and mills. 
   const staging = path.join(root, '_sources/staging-articles');
   fs.mkdirSync(path.join(staging, 'line-essay'), { recursive: true });
   fs.writeFileSync(path.join(staging, 'line-essay', 'gated.md'), `---\ntitle: "Line"\n---\n\n${shared} ${SECRET} The company acquired a rival in May.\n`);
-  const base = { 'scripts/line/data/register.json': register ? JSON.stringify({ updated: '2026-10-01', note: 'n', pairs: [{ formal: 'utilise', plain: 'use', owner_per_1k: 0, line_per_1k: 0, source: 'seed', forms: ['utilise', 'utilize'] }, { formal: 'expenditure', plain: 'spending', owner_per_1k: 0, line_per_1k: 0, source: 'seed', except: ['capital expenditure'] }] }) : null, '.claude/skills/essay-line/humaniser/SKILL.md': SKILL };
+  const base = { 'scripts/line/data/register.json': register ? JSON.stringify({ updated: '2026-10-01', note: 'n', pairs: [{ formal: 'utilise', plain: 'use', owner_per_1k: 0, line_per_1k: 0, source: 'seed', forms: ['utilise', 'utilize'] }, { formal: 'expenditure', plain: 'spending', owner_per_1k: 0, line_per_1k: 0, source: 'seed', except: ['capital expenditure'] }], ...(rejected ? { rejected } : {}) }) : null, '.claude/skills/essay-line/humaniser/SKILL.md': SKILL };
   const calls = [], snap = {};
   const sh = (cmd, args) => {
     calls.push([cmd, ...args]);
@@ -274,4 +274,19 @@ test("scheduled: today's branch without a PR is a failure, not done (no model ca
   assert.throws(() => runLearn({ scheduled: true, root: f.root, staging: f.staging, deps }), /exists but has no PR/);
   assert.equal(modelCalls, 0);
   assert.ok(!f.calls.some((c) => c.includes('worktree') && c.includes('add')));
+});
+
+test('owner-rejected swaps are never proposed again, and the list survives the write', () => {
+  const rejected = [{ formal: 'acquire', plain: 'buy', rejected: '2026-10-20', why: 'owner: a finance term' }];
+  const f = fixture({ rejected });
+  const r = runLearn({ root: f.root, staging: f.staging, deps: f.deps(TELL_ITEMS) });
+  // "acquired" is an inflection of the rejected "acquire": listed as rejected, not added.
+  assert.match(r.md, /## Rejected candidates[\s\S]*acquired → bought: owner rejected it on 2026-10-20 \(owner: a finance term\)/);
+  assert.ok(!/### Register additions/.test(r.md));
+});
+
+test('applyRegister keeps the rejected list', () => {
+  const reg = { updated: '2026-10-01', pairs: [], rejected: [{ formal: 'since', plain: 'because', rejected: '2026-11-18', why: 'x' }] };
+  const out = applyRegister(reg, { add: [], drop: [], today: '2026-11-23' });
+  assert.deepEqual(out.rejected, reg.rejected);
 });

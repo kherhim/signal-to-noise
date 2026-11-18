@@ -20,6 +20,9 @@
 // Optional per-pair fields: `forms` (explicit list, replaces the stem rule)
 // and `except` (phrases that are terms of art, e.g. "capital expenditure",
 // blanked before matching in both the scanner and the measurement).
+// A top-level `rejected` list holds swaps the owner turned down at review
+// ({formal, plain, rejected, why}); the scanner ignores it and the weekly
+// learn job never proposes them again (humaniser-learn.mjs).
 //
 //   node scripts/line/register.mjs measure [--sources <dir>] [--dry]
 //
