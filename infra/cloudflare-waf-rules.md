@@ -28,7 +28,7 @@ If a legitimate URL ever needs one of these substrings, edit the rule rather tha
 disabling it. Bot Fight Mode deliberately NOT enabled: it cannot be scoped on the
 free plan and would challenge deploy.sh's curl checks.
 
-## AI crawlers: policy lives in robots.txt; check the dashboard
+## AI crawlers: robots.txt plus edge UA blocks for training-only bots
 
 Owner decision, 13 Nov 2026: AI search and answer assistants are allowed
 (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot,
@@ -37,45 +37,63 @@ disallowed in `public/robots.txt` (GPTBot, ClaudeBot, anthropic-ai,
 Google-Extended, Applebot-Extended, CCBot, Meta-ExternalAgent,
 cohere-training-data-crawler, Bytespider). Google-Extended and
 Applebot-Extended are opt-out tokens, not separate crawlers, so they can only
-be handled in robots.txt; never block Googlebot or Applebot at the edge.
+be handled in robots.txt; never block Googlebot, Bingbot or Applebot at the
+edge.
 
-robots.txt has no effect if Cloudflare blocks the allowed bots at the edge.
-Confirm, in the dashboard:
+On 13 Nov 2026, Training was set to Block in Security → Settings → AI Crawler
+and Agent access policies. From mid-September 2026 Cloudflare treats Googlebot,
+Bingbot and Applebot as mixed-purpose Search+Training crawlers, so Block also
+returns 403 to verified search crawlers. That showed up in Search Console
+from 17 Nov (“Blocked due to access forbidden (403)”), including `/` and
+several essays. Spoofed Googlebot UAs still returned 200, which is why the
+13 Nov curl check missed it.
 
-- **AI Crawl Control** (formerly AI Audit): the search and answer assistants
-  above are *Allow*, not *Block*.
-- **Security → Settings → AI Crawler and Agent access policies** (set 13 Nov
-  2026, owner: "my instructions prevail over Cloudflare's"): Search **Allow**,
-  Training **Block**, Agents **Allow**, every personal agent Allow. Bot
-  Preference Sync stays **off** so Cloudflare never rewrites robots.txt.
-  Training crawlers are now refused twice: by robots.txt and at the edge.
-- **Bot Fight Mode**: found ON on 13 Nov 2026 and switched OFF the same day to
-  match the decision above.
+Fix, 19 Nov 2026 (owner approved):
 
-Verified 13 Nov 2026 after these changes: GPTBot, ClaudeBot, CCBot, Bytespider
-→ 403; OAI-SearchBot, ChatGPT-User, Claude-SearchBot, PerplexityBot, Googlebot
-and a normal Safari UA → 200; live robots.txt identical to `public/robots.txt`.
-- **Managed robots.txt** is off, or it will prepend Disallow rules for AI
-  crawlers to the file the origin serves.
+- **AI Crawler and Agent access policies:** Search remains Allow (API:
+  `ai_search: disabled`), Training is **Disallow** (`ai_training: disallow`),
+  Agents remain Allow, every personal agent Allow. Bot Preference Sync stays
+  **off** so Cloudflare never rewrites robots.txt. Managed robots.txt stays
+  **off**. Bot Fight Mode stays **off**.
+- Training **Disallow** without Bot Preference Sync does not edge-block
+  training crawlers; edge blocking for those UAs is the custom WAF rule in
+  section 2.
+
+Verified 19 Nov 2026 after the change: Googlebot, OAI-SearchBot, ChatGPT-User
+and a normal Safari UA → 200 on `/` and an essay; GPTBot and ClaudeBot → 403;
+`/.env` → 403. A spoofed Googlebot UA is not a valid check that real Googlebot
+is allowed; confirm with a Search Console live test, then Validate fix.
 
 Quick check: `curl -A "OAI-SearchBot/1.0" -I https://signal-to-noise.co/` should
 return 200, not 403, and `curl https://signal-to-noise.co/robots.txt` should
 match `public/robots.txt`.
 
-## 2. Block non-compliant scrapers — deployed 13 Nov 2026, action Block, Active
+## 2. Block non-compliant scrapers and training-only crawlers — deployed 13 Nov 2026, training UAs added 19 Nov 2026, action Block, Active
 
-Action Block. For scrapers known to ignore robots.txt and send no readers:
+Rule id `4ab9ebc7df994d03a163b85fc9067ec3`. Action Block. Original rule covered
+scrapers known to ignore robots.txt and send no readers. On 19 Nov 2026 the
+expression was extended with training-only user agents so they stay blocked at
+the edge after Training was changed from Block to Disallow. Google-Extended
+and Applebot-Extended are not user agents and are not in this rule. Search and
+user-fetch bots (Googlebot, Bingbot, Applebot, OAI-SearchBot, ChatGPT-User,
+Claude-User, PerplexityBot, etc.) are not in this rule.
 
 ```
 (http.user_agent contains "Bytespider") or
 (http.user_agent contains "ImagesiftBot") or
 (http.user_agent contains "PetalBot") or
-(http.user_agent contains "Scrapy")
+(http.user_agent contains "Scrapy") or
+(lower(http.user_agent) contains "gptbot") or
+(lower(http.user_agent) contains "claudebot") or
+(lower(http.user_agent) contains "anthropic-ai") or
+(lower(http.user_agent) contains "ccbot") or
+(lower(http.user_agent) contains "meta-externalagent") or
+(lower(http.user_agent) contains "cohere-training-data-crawler") or
+(lower(http.user_agent) contains "diffbot") or
+(lower(http.user_agent) contains "omgilibot") or
+(lower(http.user_agent) contains "ai2bot") or
+(lower(http.user_agent) contains "img2dataset")
 ```
 
-Added in the dashboard (the tokens in `.env` can only purge cache and read
-analytics). The dashboard preview showed 1.99k matching requests (3.2% of all
-traffic) in the 30 days before deploy.
-
-Verified after deploy: Bytespider, PetalBot, Scrapy and ImagesiftBot user
-agents → 403; OAI-SearchBot, Claude-User, Googlebot and a normal Safari UA → 200.
+Verified 19 Nov 2026: GPTBot and ClaudeBot → 403; Googlebot, OAI-SearchBot,
+ChatGPT-User and a normal Safari UA → 200.
