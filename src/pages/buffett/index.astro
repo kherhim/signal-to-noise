@@ -1,19 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BuffettLine from '../../components/buffett/BuffettLine.astro';
-import LettersSearch from '../../components/buffett/LettersSearch.astro';
 import Attribution from '../../components/buffett/Attribution.astro';
 import { letters, topics, liveTopics, YEAR_MIN, YEAR_MAX } from '../../lib/buffett';
 
 const annual = letters.filter((l) => l.kind === 'annual').length;
-// Topic pages go live one at a time, after the owner's edit pass.
-const pending = topics.length - liveTopics.length;
 const partnership = letters.filter((l) => l.kind === 'partnership').length;
 ---
 
 <BaseLayout
   title="Buffett — Signal to Noise by Himanshu Kher"
-  description={`Sixty-six years of Warren Buffett's letters, seen through a CFO's lens: one line from every letter, ten themes followed from ${YEAR_MIN} to ${YEAR_MAX}, and a search through them all.`}
+  description={`Sixty-six years of Warren Buffett's letters, seen through a CFO's lens: one line from every letter and ${liveTopics.length} themes followed from ${YEAR_MIN} to ${YEAR_MAX}.`}
   ogImage="/og/buffett.jpg"
   starsDim
 >
@@ -24,7 +21,7 @@ const partnership = letters.filter((l) => l.kind === 'partnership').length;
         A CFO's reading of the letters
       </h1>
       <p class="text-lg text-muted leading-relaxed">
-        {letters.length} letters: {partnership} written to the partners of Buffett Partnership Ltd. and {annual} for Berkshire Hathaway shareholders, from {YEAR_MIN} to {YEAR_MAX}. One line selected from each, ten questions finance leaders return to, and a search of every page he wrote.
+        {letters.length} letters: {partnership} written to the partners of Buffett Partnership Ltd. and {annual} for Berkshire Hathaway shareholders, from {YEAR_MIN} to {YEAR_MAX}. One line selected from each, and a page for each question finance leaders return to.
       </p>
     </header>
 
@@ -44,18 +41,10 @@ const partnership = letters.filter((l) => l.kind === 'partnership').length;
           ))}
         </ul>
       )}
-      {pending > 0 && (
-        <p class={`text-muted${liveTopics.length > 0 ? ' mt-6' : ''}`}>
-          {liveTopics.length > 0
-            ? `${liveTopics.length} of ${topics.length} topic pages ${liveTopics.length === 1 ? 'is' : 'are'} live, with another arriving every week.`
-            : `${topics.length} topic pages, each covering a question finance leaders return to, will go live weekly from late November.`}
-        </p>
+      {liveTopics.length === 0 && (
+        <p class="text-muted">{topics.length} topic pages, each covering a question finance leaders return to, will go live weekly from late November.</p>
       )}
     </section>
-
-    <div class="mt-20 max-w-[720px]">
-      <LettersSearch />
-    </div>
 
     <div class="mt-20 max-w-[720px]">
       <Attribution />

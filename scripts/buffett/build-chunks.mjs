@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Builds the corpus file the browser searches: public/buffett/chunks.json,
+/* Builds the corpus file the browser searches: src/data/buffett/chunks.json (read by the site search index),
    an array of paragraph-sized chunks (≤ ~120 words) with compact keys:
    l = letter id, y = year, k = kind, t = text. The search component
    fetches it on the first keystroke (Cloudflare gzips it in transit) and
@@ -10,7 +10,7 @@ import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
 const SRC = new URL('../../_sources/buffett-letters/', import.meta.url).pathname;
-const OUT_DIR = new URL('../../public/buffett/', import.meta.url).pathname;
+const OUT_DIR = new URL('../../src/data/buffett/', import.meta.url).pathname;
 const LETTERS = JSON.parse(readFileSync(new URL('../../src/data/buffett/letters.json', import.meta.url), 'utf8'));
 const byId = Object.fromEntries(LETTERS.map((l) => [l.id, l]));
 

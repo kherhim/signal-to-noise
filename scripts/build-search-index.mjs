@@ -3,7 +3,7 @@
      1. The essay pages in dist/insights/. Only the region PostLayout marks
         with data-pagefind-body is read, so listings, tag pages and the
         share/subscribe furniture stay out of the index.
-     2. The Buffett letters, from public/buffett/chunks.json, as custom
+     2. The Buffett letters, from src/data/buffett/chunks.json, as custom
         records (the letters are not pages on this site). One record per
         paragraph chunk, so a hit shows the passage that matched.
    Every record carries a `type` filter, which /search uses to show essays
@@ -11,7 +11,7 @@
 import { readFile } from 'node:fs/promises';
 import * as pagefind from 'pagefind';
 
-const chunks = JSON.parse(await readFile('public/buffett/chunks.json', 'utf8'));
+const chunks = JSON.parse(await readFile('src/data/buffett/chunks.json', 'utf8'));
 const letters = JSON.parse(await readFile('src/data/buffett/letters.json', 'utf8'));
 const byId = Object.fromEntries(letters.map((l) => [l.id, l]));
 
